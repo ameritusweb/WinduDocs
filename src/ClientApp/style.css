@@ -1,0 +1,64 @@
+/* style.css */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import 'daisyui/dist/full.css';
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 1px #9d00ff, 0 0 2.5px #9d00ff, 0 0 5px #9d00ff, 0 0 10px #9d00ff;
+    }
+    100% {
+        text-shadow: 0 0 5px #9d00ff, 0 0 10px #9d00ff, 0 0 20px #9d00ff, 0 0 40px #9d00ff;
+    }
+}
+
+.windu-docs-title {
+    color: #ecece2;
+}
+
+.windu-docs-subtitle {
+    color: #2d9d91;
+    font-weight: 700;
+    font-size: 10px;
+}
+
+    .windu-glow {
+    font-size: 36px;
+    color: #9d00ff;
+    animation: glow 1.5s infinite alternate;
+    font-weight: 100;
+    }
+
+    .header {
+
+        /* Combine gradient and image as background */
+        background: 
+            /* Gradient: Fade from the image's background color to transparent */
+            linear-gradient(to right, #2d9d91 50%, hsla(174, 55%, 40%, 0.438) 100%),
+            
+            /* Image: Place on the right */
+            url('logo3.png') no-repeat right center;
+        
+            /* Ensure the image retains its original size */
+            background-size: auto, auto;
+    }
+
+    @keyframes saberglow {
+    0% {
+        box-shadow: 0 0 1px #f00, 0 0 2.5px #f00, 0 0 5px #f00, 0 0 10px #f00;
+    }
+    100% {
+        box-shadow: 0 0 5px #f00, 0 0 10px #f00, 0 0 20px #f00, 0 0 40px #f00;
+    }
+    }
+
+    #lightsaber {
+        position: absolute;
+        width: 5px;
+        height: 200vh;  /* Making it longer than the screen diagonal */
+        background: linear-gradient(to bottom, #fff, #f00);
+        transform-origin: 50% 50%;
+        display: none;
+        animation: saberglow 2s infinite alternate;
+    }

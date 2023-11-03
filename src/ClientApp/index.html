@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <script type="module" src="/main.js"></script>
+        <link rel="stylesheet" href="/style.css">
+        <link rel="icon" href="favicon.ico">
+    </head>
+    <body class="bg-gray-800" style="color: #ecece2">
+        <div id="lightsaber"></div>
+        <div class="flex items-stretch">
+            <!-- Column 1: Backdrop for Fixed Sidebar -->
+            <div class="w-64 flex flex-col p-4 relative z-20 pointer-events-none" style="width: 16rem">
+                <!-- Bottom 'About' and 'Contact' -->
+                <div class="absolute bottom-0 mb-4 ml-4 pointer-events-auto">
+                    <ul class="text-sm text-wdwhite">
+                        <li class="mb-2"><a href="#about" class="hover:text-purple-400">About</a></li>
+                        <li class="mb-2"><a href="#contact" class="hover:text-purple-400">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+    
+            <!-- Fixed Left Navigation -->
+            <div class="bg-transparent h-screen w-64 fixed flex flex-col p-4 text-wdwhite overflow-auto z-10" style="width: 13rem; background-color: #14041c;">
+                <div class="flex justify-center items-center flex-col">
+                    <div class="flex">
+                        <img width="155" src="logo3.png">
+                    </div>
+                    <div class="flex">
+                        <h1 class="windu-docs-title" style="font-size: 25px; margin-top:-17px;"><span class="windu-glow">Windu</span>Docs</h1>
+                    </div>
+                    <div style="margin-top:-7px;">
+                        <h5 class="windu-docs-subtitle">DYNAMIC DOCUMENTATION</h5>
+                    </div>
+                </div>
+                <ul class="mt-8 text-sm">
+                    <li class="mb-2"><a href="#dashboard" class="hover:text-purple-400">Dashboard</a></li>
+                    <li class="mb-2"><a href="#my-repos" class="hover:text-purple-400">My Repos</a></li>
+                    <li class="mb-2"><a href="#mdx-editor" class="hover:text-purple-400">MDX Editor</a></li>
+                    <li class="mb-2"><a href="#settings" class="hover:text-purple-400">Settings</a></li>
+                    <li class="mb-2"><a href="#guides" class="hover:text-purple-400">Guides</a></li>
+                    <li class="mb-2"><a href="#advanced-features" class="hover:text-purple-400">Advanced Features</a></li>
+                </ul>
+            </div>
+    
+            <!-- Column 2: Main Content -->
+            <div class="container mx-auto p-10 text-wdwhite ml-4 flex-grow">
+                <!-- Added Header -->
+                <div class="p-4 text-wdwhite mb-8 rounded-lg header sticky top-0 left-0 bottom-0" >
+                    <h1 class="text-2xl flex items-end text-wdwhite">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="transparent" stroke="#ecece2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        &nbsp;Welcome to WinduDocs</h1>
+                </div>
+                <h1 class="text-4xl font-bold mb-4">WinduDocs, What Is?</h1>
+                <p class="mb-6">Your go-to platform for dynamic, real-time documentation, WinduDocs is, hmmm. With developers and project overseers in mind, crafted it is. Listen to your GitHub repository changes, it does. Update the content automatically, it will. Hmmmmmm.</p>
+            
+                <h2 class="text-3xl font-bold mb-4">Choose WinduDocs, Why Must You?</h2>
+            
+                <section class="mb-6">
+                  <h3 class="text-2xl font-semibold mb-2">Updates, Real-Time Are, Hmmmmmm.</h3>
+                  <p>Say goodbye to outdated or stagnant scrolls, you will. Automatic and synced with GitHub, the way of WinduDocs is. Manual intervention, need you not.</p>
+                </section>
+            
+                <section class="mb-6">
+                  <h3 class="text-2xl font-semibold mb-2">Content, Customizable It Is</h3>
+                  <p>Tired of Markdown, the same old, you are? Fear not! Introduce, we do, a custom tongue of MDX. Tabbed sections, steppers, and alerts, include you can. Extend Markdown, it does. Rich and interactive, your scrolls can be. Tailwind and Daisy UI elements, harness you can.</p>
+                </section>
+            
+                <section class="mb-6">
+                  <h3 class="text-2xl font-semibold mb-2">Efficient and Quick, It Is</h3>
+                  <p>Speed, the essence of WinduDocs is. Advanced caching mechanisms, it uses. Light on resources, designed it is. Shared hosting environments, fit it does. Ahh, yes.</p>
+                </section>
+            
+                <section class="mb-6">
+                  <h3 class="text-2xl font-semibold mb-2">Navigation, Simple It Is</h3>
+                  <p>Table of Contents, dynamic it has. Collapsible sections, easy to navigate, they make. Quick and intuitive, the navigation is. Tabbed sections and steppers, find you will. Find what you seek, you will, with search built-in.</p>
+                </section>
+            
+                <section class="mb-6">
+                  <h3 class="text-2xl font-semibold mb-2">Developer-Friendly, It Is</h3>
+                  <p>Technically inclined, you are? Full-text search, it offers. Into your CI/CD pipeline, integrates it does. On .NET Core, built it is. Robust and extensible, the architecture is. Lead you through the galaxy of documentation, the Council of Advanced Guides will.</p>
+                </section>
+            
+                <section class="mb-6">
+                  <h3 class="text-2xl font-semibold mb-2">"Start, You Must!</h3>
+                  <p>Settle for less, why? First-class citizen, your documentation can be. Your journey with us, begin you should. May the docs be with you!</p>
+                </section>
+            
+              </div>
+        </div>
+    </body>
+</html>
