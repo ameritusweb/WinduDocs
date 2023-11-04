@@ -2,11 +2,12 @@ import { DSLRule, IMarkdownLexer, StateHandler, StateHandlers, Token, TokenRule 
 
 // The lexer class implements the IMarkdownLexer interface
 export class MarkdownLexer implements IMarkdownLexer {
-    input: string = '';
-    position: number = 0;
-    intermediatePosition: number = 0;
+    inputStack: string[] = []; // Stack to manage multiple levels of input
+    positionStack: number[] = []; // Stack to manage the corresponding positions
     tokens: Token[] = [];
     dsl: DSLRule[] = [];
+    additionalDsl: DSLRule[] = [];
+    stateStack: string[] = []; // Stack to manage the states
     currentState: string = '';
     plainTextBuffer: string = '';
   
@@ -15,22 +16,71 @@ export class MarkdownLexer implements IMarkdownLexer {
 
   constructor(input: string, dsl: DSLRule[]) {
     // ... initialization
-    this.input = input;
-    this.position = 0;
-    this.intermediatePosition = 0;
+    this.pushInput(input); // Push the initial input onto the stack
     this.tokens = [];
     this.dsl = dsl;
     this.currentState = this.dsl.find(rule => rule.isEntryPoint)?.Name || 'initial';
+    this.stateStack.push(this.currentState);
     this.states = {};
     this.plainTextBuffer = '';
     this.initializeStates();
   }
 
+  getLastState() {
+    return this.stateStack[this.stateStack.length - 1];
+  }
+
+  pushInput(newInput: string) {
+    this.inputStack.push(newInput);
+    this.positionStack.push(0); // Reset the position for the new input
+    this.stateStack.push(this.currentState);
+    this.currentState = 'initial'; // Reset state when pushing new input context
+  }
+
+  popInput() {
+    if (this.inputStack.length > 1) { // Ensure there's something to pop
+      this.inputStack.pop();
+      this.positionStack.pop();
+      this.stateStack.pop();
+    } else {
+      throw new Error('Input stack underflow');
+    }
+  }
+
+  // Method to get the current input from the stack
+  getCurrentInput(): string {
+    return this.inputStack[this.inputStack.length - 1];
+  }
+
+  // Method to get the current position from the stack
+  getCurrentPosition(): number {
+    return this.positionStack[this.positionStack.length - 1];
+  }
+
+  // Method to set the current position for the top input
+  setCurrentPosition(newPosition: number) {
+    this.positionStack[this.positionStack.length - 1] = newPosition;
+  }
+
+  addDsl(dsl: DSLRule[]) {
+    dsl.forEach((rule) => {
+        this.additionalDsl.unshift(rule);
+        if (!this.states[rule.Name])
+            this.states[rule.Name] = this.createStateHandler(rule);
+    });
+  }
+
+  removeDsl(dsl: DSLRule[]) {
+    this.additionalDsl = this.additionalDsl.slice(dsl.length);
+  }
+
   advanceBy(n: number) {
     // Append the substring to the plainTextBuffer
-    this.plainTextBuffer += this.input.substring(this.position, this.position + n);
+    const input = this.getCurrentInput();
+    let position = this.getCurrentPosition();
+    this.plainTextBuffer += input.substring(position, position + n);
     // Advance the position by n characters
-    this.position += n;
+    this.setCurrentPosition(position + n);
   }
 
   // Method to transition to a new state
@@ -38,21 +88,19 @@ export class MarkdownLexer implements IMarkdownLexer {
     this.currentState = newState;
   }
 
-  emitToken(type: string, value: string) {
+  emitToken(type: string, value: string, cleanup?: () => void) {
     if (value) {
       this.tokens.push({ type, value });
-      // If emitting a TEXT token, reset the plainTextBuffer as well
-      if (type === 'TEXT') {
-        this.plainTextBuffer = '';
-      }
+      if (cleanup)
+        cleanup();
     }
   }
 
   emitAnyPlainText() {
     if (this.plainTextBuffer.length > 0) {
+        const tokenType = this.getLastState() !== 'initial' ? this.getLastState().toUpperCase() : 'TEXT';
         // If there's accumulated plain text, emit it as a TEXT token
-        this.emitToken('TEXT', this.plainTextBuffer);
-        this.plainTextBuffer = ''; // Clear the plain text buffer
+        this.emitToken(tokenType, this.plainTextBuffer, () => { this.plainTextBuffer = '';  });
     }
   }
 
@@ -61,14 +109,17 @@ export class MarkdownLexer implements IMarkdownLexer {
 
     const defaultInitialStateHandler = () => {
 
-        const matches = this.dsl
+        const input = this.getCurrentInput();
+        let position = this.getCurrentPosition();
+        const domainSpecificLang = [...this.dsl, ...this.additionalDsl];
+        const matches = domainSpecificLang
             .map(rule => ({
                 pattern: new RegExp(rule.StartsWith, 'g'),
                 rule,
                 match: null
             } as any))
             .filter(rule => {
-                rule.match = rule.pattern.exec(this.input.substring(this.position));
+                rule.match = rule.pattern.exec(input.substring(position));
                 return rule.match !== null;
             });
 
@@ -140,7 +191,9 @@ export class MarkdownLexer implements IMarkdownLexer {
                 if (intermediateContent) {
                     // Process this intermediate content, which may include smaller patterns
                     // You would need a function that tokenizes the intermediate content and updates the tokens array
-                    this.tokenizeIntermediateContent(intermediateContent, 0);
+                    this.pushInput(intermediateContent);
+                    this.tokenize();
+                    this.popInput();
                 }
 
                 this.tokens.push({
@@ -152,16 +205,14 @@ export class MarkdownLexer implements IMarkdownLexer {
 
                 intermediateContent = content.substring(match.index + match[0].length);
                 if (intermediateContent) {
-                    this.tokenizeIntermediateContent(intermediateContent, 0);
+                    this.pushInput(intermediateContent);
+                    this.tokenize();
+                    this.popInput();
                 }
 
                 this.currentState = '' + state;
             
-                // Replace the matched content with placeholders to avoid re-matching
-                content = '';
-                //content = content.substring(0, match.index) +
-                //            replacement +
-                //            content.substring(match.index + match[0].length);
+                content = '\0'.repeat(content.length);
             }
         }
       
@@ -177,13 +228,30 @@ export class MarkdownLexer implements IMarkdownLexer {
 
         while ((tokenMatch = tokenPattern.exec(content))) {
           if (tokenRule.Name) {
+            let value = tokenMatch[0];
+            if (!value)
+            {
+                break;
+            }
+            if (tokenRule.Substring) {
+                value = value.substring(tokenRule.Substring);
+            }
+            let val = value.replace(/\0/g, '');
+            val = tokenRule.Trim ? val.replace(/\0/g, '').trim() : val;
             this.tokens.push({
               type: tokenRule.Name.toUpperCase(),
-              value: tokenMatch[0] // Use the entire match
+              value: tokenRule.TrimS ? ((val.match('([^\r\n\t]+\\n[^\r\n\t]+)') || [''])[0]) : val
             });
             // Replace the matched token content with placeholders to prevent re-matching
             content = content.substring(0, tokenMatch.index) + '\0'.repeat(tokenMatch[0].length) + content.substring(tokenMatch.index + tokenMatch[0].length);
-          }
+            if (!tokenRule.AllowMultiple) {
+                break;
+              }
+              else
+              {
+                tokenPattern.lastIndex = 0;
+              }
+            }
         }
       });
 
@@ -200,14 +268,16 @@ export class MarkdownLexer implements IMarkdownLexer {
 
     return () => {
        // Identify the start of the rule's pattern
+       const input = this.getCurrentInput();
+       let position = this.getCurrentPosition();
         let startPattern = new RegExp(rule.StartsWith, 'g');
-        let inputSubstring = this.input.substring(this.position);
+        let inputSubstring = input.substring(position);
         let startMatch = startPattern.exec(inputSubstring);
 
         let positionDiff = 0;
         if (startMatch && startMatch.index === 0) {
             positionDiff = startMatch[0].length;
-            this.position += positionDiff;
+            this.setCurrentPosition(position + positionDiff);
         } else {
             this.transition('initial');
             return;
@@ -229,48 +299,76 @@ export class MarkdownLexer implements IMarkdownLexer {
       this.tokens = unescapeTokens(this.tokens);
 
       // If there is any content left, create a token for it
-      if (content) {
-        this.tokens.push({
-          type: rule.Name.toUpperCase(),
-          value: content
-        });
+      if (rule.Content && content && !this.isNullString(content)) {
+
+        const initialLength = content.length;
+
+        if (rule.Content.StartDelimiter) {
+            let startPattern = new RegExp(rule.Content.StartDelimiter, 'g');
+            let startMatch = startPattern.exec(content);
+            if (startMatch)
+            {
+                content = content.substring(startMatch.index + startMatch[0].length).trimStart();
+            }
+
+            this.setCurrentPosition(this.getCurrentPosition() + (initialLength - content.length));
+        }
+
+        if (rule.Content.EndDelimiter) {
+            let endPattern = new RegExp(rule.Content.EndDelimiter, 'g');
+            endMatch = endPattern.exec(content);
+            if (endMatch)
+                content = content.substring(0, endMatch.index);
+        }
+
+        if (rule.Content.DslRules) {
+            
+            this.addDsl(rule.Content.DslRules);
+            this.pushInput(content);
+            this.tokenize();
+            this.popInput();
+            this.removeDsl(rule.Content.DslRules);
+        }
+        else {
+            this.tokens.push({
+            type: rule.Name.toUpperCase(),
+            value: content
+            });
+        }
       }
 
       // Update the lexer's position to after the matched content
-      this.position = endMatch ? this.position + (content || '').length + endMatch[0].length : this.input.length;
+      position = endMatch ? this.getCurrentPosition() + (content || '').length + endMatch[0].length : this.getCurrentInput().length;
+      this.setCurrentPosition(position);
 
       // Transition back to the initial state or to the next state as defined by the DSL
       this.transition('initial');
     };
   }
 
-  tokenizeIntermediateContent(intermediate: string, positionStart: number) {
-    this.intermediatePosition = positionStart;
-    while (this.intermediatePosition < intermediate.length) {
-        const handler: StateHandler = this.states[this.currentState];
-        if (handler) {
-          handler.call(this);
-        } else {
-          throw new Error(`State handler for state '${this.currentState}' not found.`);
+  isNullString(str: string) {
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] !== '\0') {
+          return false;
         }
       }
-  
-      this.emitAnyPlainText();
+      return true;
   }
     
-  // The tokenize method now safely calls the handler based on the current state
-  tokenize(): Token[] {
-    while (this.position < this.input.length) {
-      const handler: StateHandler = this.states[this.currentState];
-      if (handler) {
-        handler.call(this);
-      } else {
-        throw new Error(`State handler for state '${this.currentState}' not found.`);
-      }
+    // The tokenize method now safely calls the handler based on the current state
+    tokenize(): Token[] {
+        const input = this.getCurrentInput();
+        while (this.getCurrentPosition() < input.length) {
+            const handler: StateHandler = this.states[this.currentState];
+            if (handler) {
+                handler.call(this);
+            } else {
+                throw new Error(`State handler for state '${this.currentState}' not found.`);
+            }
+        }
+
+        this.emitAnyPlainText();
+
+        return this.tokens;
     }
-
-    this.emitAnyPlainText();
-
-    return this.tokens;
-  }
   }

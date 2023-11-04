@@ -6,16 +6,8 @@ export const dslRules: DSLRule[] = [
         "Name": "Header",
         "StartsWith": "^#{1,6}(?= )", // Lookahead to ensure space follows hash signs
         "EndsWith": "(?=\n|$)",       // Lookahead for newline or end of string
-        "TokenRules": [
-          {
-            "Name": "HeaderText",
-            "Pattern": "^#{1,6} (.+)", // Captures the text after '#' symbols and a space until the end of the line or string
-            "IsRequired": true
-          }
-        ],
+        "TokenRules": [],
         "Content": {
-          "StartDelimiter": "",        // No additional content delimiter needed
-          "EndDelimiter": "(?=\n|$)", // Lookahead for newline or end of string
           "ContentType": "Header"
         }
       },      
@@ -23,16 +15,8 @@ export const dslRules: DSLRule[] = [
         "Name": "BoldItalic",
         "StartsWith": "\\*\\*\\*", // BoldItalic starts with '***'
         "EndsWith": "\\*\\*\\*",   // BoldItalic ends with '***'
-        "TokenRules": [
-          {
-            "Name": "BoldItalicText",
-            "Pattern": "\\*\\*\\*(.*?)\\*\\*\\*", // Captures text within triple asterisks
-            "IsRequired": true
-          }
-        ],
+        "TokenRules": [],
         "Content": {
-          "StartDelimiter": "\\*\\*\\*",
-          "EndDelimiter": "\\*\\*\\*",
           "ContentType": "BoldItalic"
         }
       },
@@ -40,16 +24,8 @@ export const dslRules: DSLRule[] = [
         "Name": "Bold",
         "StartsWith": "(?<!\\*)\\*\\*(?!\\*)", // Bold starts with '**' not preceded or followed by another '*'
         "EndsWith": "(?<!\\*)\\*\\*(?!\\*)",   // Bold ends with '**' not preceded or followed by another '*'
-        "TokenRules": [
-          {
-            "Name": "BoldText",
-            "Pattern": "(?<!\\*)\\*\\*(.*?)(?<!\\*)\\*\\*(?!\\*)", // Captures text within double asterisks not part of triple asterisks
-            "IsRequired": true
-          }
-        ],
+        "TokenRules": [],
         "Content": {
-          "StartDelimiter": "\\*\\*",
-          "EndDelimiter": "\\*\\*",
           "ContentType": "Bold"
         }
       },      
@@ -57,16 +33,8 @@ export const dslRules: DSLRule[] = [
         "Name": "Italic",
         "StartsWith": "\\*",  // Italic starts with '*'
         "EndsWith": "\\*",    // Italic ends with '*'
-        "TokenRules": [
-          {
-            "Name": "ItalicText",
-            "Pattern": "\\*(.*?)\\*", // Captures text within single asterisks
-            "IsRequired": true
-          }
-        ],
+        "TokenRules": [],
         "Content": {
-          "StartDelimiter": "\\*",
-          "EndDelimiter": "\\*",
           "ContentType": "Italic"
         }
       },
@@ -75,22 +43,17 @@ export const dslRules: DSLRule[] = [
         "StartsWith": "\\[", // Link starts with '['
         "EndsWith": "\\)",   // Link ends with ')'
         "TokenRules": [
-          {
-            "Name": "LinkText",
-            "Pattern": "\\[([^\\]]+)\\]", // Captures text within brackets
-            "IsRequired": true
-          },
-          {
-            "Name": "Url",
-            "Pattern": "\\]\\((http[s]?:\\/\\/[^\\)]+)\\)", // Captures URL within parentheses
-            "IsRequired": true
-          }
-        ],
-        "Content": {
-          "StartDelimiter": "\\[",
-          "EndDelimiter": "\\)",
-          "ContentType": "Link"
-        }
+            {
+                "Name": "LinkText",
+                "Pattern": "([^\\]]+)", // Captures text within brackets without including them
+                "IsRequired": true
+              },
+              {
+                "Name": "Url",
+                "Pattern": "(?<=\\]\\()[^\\)]+", // Captures URL within parentheses without including them
+                "IsRequired": true
+              }
+        ]
       },      
       {
         "Name": "CustomAlert",
@@ -104,7 +67,7 @@ export const dslRules: DSLRule[] = [
           },
           {
             "Name": "Title",
-            "Pattern": "\".*?\"",
+            "Pattern": "(?<=\")[^\"]+(?=\")",
             "IsRequired": false
           },
           {
@@ -113,45 +76,114 @@ export const dslRules: DSLRule[] = [
             "IsRequired": false,
             "AllowMultiple": true
           }
+        ]
+      },
+      {
+        "Name": "Table",
+        "StartsWith": "^\\|", // A table starts with a pipe symbol at the beginning of a line
+        "EndsWith": "\\n(?=\\n|$)", // A table ends with a newline followed by either another newline or the end of the input
+        "TokenRules": [
+            {
+                "Name": "StripedModifier",
+                "Pattern": "--striped(?=\\n)", // Captures the --striped modifier following the header delimiter row
+                "IsRequired": false
+            },
+            {
+            "Name": "HeaderRow",
+            "Pattern": "^\\s*([^\\n\\|]+[ ]*\\|)+([^\\|]+\\|)((:?-+:?\\s*\\|)+)[ ]*\\n", // Captures the header row followed by the header delimiter row
+            "TrimS": true,
+            "IsRequired": true
+          },
+          {
+            "Name": "Row",
+            "Pattern": "^\\s*\\|*([^\\n\\|]+[ ]*\\|)+([^\\|]*)|$", // Captures a single table row
+            "Trim": true,
+            "IsRequired": false,
+            "AllowMultiple": true
+          }
         ],
         "Content": {
-          "StartDelimiter": "    ",
-          "EndDelimiter": "\n",
-          "ContentType": "String"
+          "ContentType": "TableContent",
+          "DslRules": [
+            {
+              "Name": "TableCell",
+              "StartsWith": "(?<=\\|)", // Cell content starts after a pipe
+              "EndsWith": "(?=\\|)",    // Cell content ends before a pipe
+              "TokenRules": [
+                {
+                  "Name": "CellContent",
+                  "Pattern": "[^\\|]+", // Captures the content of a single cell
+                  "IsRequired": true
+                }
+              ]
+            }
+          ]
         }
-      },
-    {
+      },      
+      {
         "Name": "TabsGroup",
         "StartsWith": "=== tabs",
-        "EndsWith": "\n(?=\\s*=== tabs|$)", // Ends with a newline followed by either '=== tabs' or end of input
+        "EndsWith": "\\n(===(?! tab)\\n|$)", // Ends before '===' followed by newline or end of input
         "TokenRules": [
           {
             "Name": "TabsGroupTitle",
-            "Pattern": "=== tabs \"(.*?)\"", // Captures the title of the tabs group
-            "IsRequired": true
+            "Pattern": "(?<=\")[^\"]+(?=\")", // Captures the title of the tabs group
+            "IsRequired": false
           }
         ],
         "Content": {
-          "StartDelimiter": "\n",
-          "EndDelimiter": "\n(?=\\s*=== tabs|$)", // Ends with a newline followed by either '=== tabs' or end of input
-          "ContentType": "TabsGroupContent"
+            "StartDelimiter": "\n",
+            "EndDelimiter": "",
+            "ContentType": "TabsGroupContent",
+            "DslRules": [
+                {
+                    "Name": "Tab",
+                    "StartsWith": "=== tab",
+                    "EndsWith": "\\n(?=\\s*=== (tab\\n|\\n)|$)", // Ends before '===' followed by newline or end of input
+                    "TokenRules": [
+                      {
+                        "Name": "TabTitle",
+                        "Pattern": "(?<=\")[^\"]+(?=\")", // Captures the title of the individual tab
+                        "IsRequired": true
+                      }
+                    ],
+                    "Content": {
+                      "StartDelimiter": "\\n",
+                      "EndDelimiter": "\\n(?=\\s*===($|\\s|\\s*tab\\s*\"))", // Ends before '===' followed by newline or end of input
+                      "ContentType": "TabContent"
+                    }
+                  }
+            ]
         }
       },
       {
-        "Name": "Tab",
-        "StartsWith": "=== tab",
-        "EndsWith": "\n(?=\\s*=== tab|$)", // Ends with a newline followed by either '=== tab' or end of input
+        "Name": "Icon",
+        "StartsWith": "--(?=(feather|hero))", // Starts with -- and a positive lookahead for 'feather' or 'hero'
+        "EndsWith": "(?=\\s|$)", // Ends with whitespace or end of the line
         "TokenRules": [
           {
-            "Name": "TabTitle",
-            "Pattern": "=== tab \"(.*?)\"", // Captures the title of the individual tab
+            "Name": "IconLibrary",
+            "Pattern": "(feather|hero)", // Captures the icon library (feather or hero)
+            "IsRequired": true
+          },
+          {
+            "Name": "IconColor",
+            "Pattern": "-([a-z]+-[0-9]{3})", // Captures the tailwind color class (e.g., blue-500)
+            "Substring": 1,
+            "IsRequired": true
+          },
+          {
+            "Name": "IconSize",
+            "Pattern": "-([1-9]|1[0-9]|20)", // Captures the icon size (1 to 20 representing 1rem to 20rem)
+            "Substring": 1,
+            "IsRequired": true
+          },
+          {
+            "Name": "IconName",
+            "Pattern": "-([a-z-]+)", // Captures the icon name using kebab-case
+            "Substring": 1,
             "IsRequired": true
           }
-        ],
-        "Content": {
-          "StartDelimiter": "\n",
-          "EndDelimiter": "\n(?=\\s*=== tab|$)", // Ends with a newline followed by either '=== tab' or end of input
-          "ContentType": "TabContent"
-        }
-      }
+        ]
+      }      
 ];

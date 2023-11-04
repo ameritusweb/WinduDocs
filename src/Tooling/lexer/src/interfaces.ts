@@ -4,15 +4,19 @@ export interface TokenRule {
     Pattern: string;
     IsRequired: boolean;
     AllowMultiple?: boolean; // Optional property for rules that can appear multiple times
+    Trim?: boolean;
+    TrimS?: boolean;
     Escapable?: boolean;
+    Substring?: number;
   }
   
   // Interface for the content specification within a DSL rule
   export interface ContentSpecification {
-    StartDelimiter: string;
-    EndDelimiter: string;
-    ContentType: 'String' | 'TabsGroupContent' | 'TabContent' | 'Bold' | 'Italic' | 'BoldItalic' | 'Link' | 'Header'; // Expand with more content types as needed
-  }
+    StartDelimiter?: string;
+    EndDelimiter?: string;
+    ContentType: 'String' | 'TabsGroupContent' | 'TabContent' | 'TableContent' | 'Bold' | 'Italic' | 'BoldItalic' | 'Link' | 'Header'; // Expand with more content types as needed
+    DslRules?: DSLRule[];
+    }
   
   // Interface for an entire DSL rule
   export interface DSLRule {
@@ -20,7 +24,7 @@ export interface TokenRule {
     StartsWith: string;
     EndsWith: string;
     TokenRules: TokenRule[];
-    Content: ContentSpecification;
+    Content?: ContentSpecification;
     isEntryPoint?: boolean; // Optional property to indicate the entry point for the lexer
     Escapable?: boolean; // Optional property to indicate if the token can be escaped
   }
@@ -38,8 +42,8 @@ export type StateHandlers = {
   
   // Interface for the lexer itself
   export interface IMarkdownLexer {
-    input: string;
-    position: number;
+    inputStack: string[];
+    positionStack: number[];
     tokens: Token[];
     dsl: DSLRule[];
     currentState: string;
