@@ -2,11 +2,24 @@ import { dslRules } from "./dsl-rules";
 import { MarkdownLexer } from "./markdown-lexer";
 
 console.log("Hello, TypeScript with Nodemon!!");
-const input = `| Header 1 | Header 2 | Header 3 | --striped
-        |:--------:|:--------:|:--------:|
-        | Data 1   | Data 2   | Data 3   |
-        | Data 4   | Data 5   | Data 6   |`;
-        
-            const lexer = new MarkdownLexer(input, dslRules);
-            const tokens = lexer.tokenize();
+const inputText = `=== tree-view
+                │
+                ├── src/
+                │   ├── NodeServer/                # Node.js server related files
+                │   │   ├── src/                   # Node.js source files
+                │   │   ├── package.json           # Node.js project dependencies
+                │   │   └── ...
+                │   │
+                │   └── ClientApp/                 # Frontend TypeScript/CSS/AJAX files
+                │       └── ...
+                │
+                └── test/                          # Test files for backend and frontend
+                └── LICENSE                        # License file
+                ===`;
+                
+                    // Instantiate the lexer with the input text and the DSL rules for the tree view
+                    const lexer = new MarkdownLexer(inputText, dslRules);
+                
+                    // Perform tokenization
+                    const tokens = lexer.tokenize();
 const aa = tokens;

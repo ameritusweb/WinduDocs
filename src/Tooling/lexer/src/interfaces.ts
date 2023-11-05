@@ -3,6 +3,10 @@ export interface TokenRule {
     Name: string;
     Pattern: string;
     IsRequired: boolean;
+    Transform?: string;
+    CaptureGroup?: string;
+    MatchCaptureGroup?: number;
+    IsTokenizable?: boolean;
     AllowMultiple?: boolean; // Optional property for rules that can appear multiple times
     Trim?: boolean;
     TrimS?: boolean;
@@ -14,7 +18,7 @@ export interface TokenRule {
   export interface ContentSpecification {
     StartDelimiter?: string;
     EndDelimiter?: string;
-    ContentType: 'String' | 'TabsGroupContent' | 'TabContent' | 'TableContent' | 'Bold' | 'Italic' | 'BoldItalic' | 'Link' | 'Header'; // Expand with more content types as needed
+    ContentType: 'String' | 'TabsGroupContent' | 'TabContent' | 'TableContent' | 'FormulaContent' | 'TreeViewContent' | 'CardContent' | 'CardBodyContent' | 'CardHeaderContent' | 'ModalContent' | 'Bold' | 'Italic' | 'BoldItalic' | 'Link' | 'Header'; // Expand with more content types as needed
     DslRules?: DSLRule[];
     }
   

@@ -1,4 +1,4 @@
-import { DSLRule } from './interfaces'; // Assuming you have defined interfaces in a separate file
+import { DSLRule } from './interfaces';
 
 // Your DSL rules
 export const dslRules: DSLRule[] = [ 
@@ -89,6 +89,11 @@ export const dslRules: DSLRule[] = [
                 "IsRequired": false
             },
             {
+                "Name": "InlineXLSJSXModifier",
+                "Pattern": "--with-xls-jsx", // Modifier to indicate a table or tree view supports XLS-JSX
+                "IsRequired": false
+            },
+            {
             "Name": "HeaderRow",
             "Pattern": "^\\s*([^\\n\\|]+[ ]*\\|)+([^\\|]+\\|)((:?-+:?\\s*\\|)+)[ ]*\\n", // Captures the header row followed by the header delimiter row
             "TrimS": true,
@@ -139,7 +144,7 @@ export const dslRules: DSLRule[] = [
                 {
                     "Name": "Tab",
                     "StartsWith": "=== tab",
-                    "EndsWith": "\\n(?=\\s*=== (tab\\n|\\n)|$)", // Ends before '===' followed by newline or end of input
+                    "EndsWith": "\\n(?=\\s*=== (tab\\n|tab\\s|\\n)|$)", // Ends before '===' followed by newline or end of input
                     "TokenRules": [
                       {
                         "Name": "TabTitle",
@@ -185,5 +190,207 @@ export const dslRules: DSLRule[] = [
             "IsRequired": true
           }
         ]
-      }      
+      },
+      {
+        "Name": "ToggleButton",
+        "StartsWith": "--(?=(toggle-))",
+        "EndsWith": "$",
+        "TokenRules": [
+          {
+            "Name": "ToggleType",
+            "Pattern": "(?<=(toggle-))([a-zA-Z0-9-]+)",
+            "IsRequired": true
+          },
+          {
+            "Name": "ToggleTarget",
+            "Pattern": "\"([^\"]+)\"",
+            "MatchCaptureGroup": 1,
+            "IsRequired": true
+          }
+        ]
+      },
+      {
+        "Name": "Modal",
+        "StartsWith": "=== modal",
+        "EndsWith": "\n===",
+        "TokenRules": [
+            {
+                "Name": "ModalType",
+                "Pattern": "(-[a-zA-Z0-9-]+)",
+                "IsRequired": true
+              }
+        ],
+        "Content": {
+          "StartDelimiter": "\n",
+          "EndDelimiter": "",
+          "ContentType": "ModalContent"
+        }
+      },
+      {
+        "Name": "Card",
+        "StartsWith": "^=== card",
+        "EndsWith": "\\n[\\s]*===(?! (body|header))",
+        "TokenRules": [],
+        "Content": {
+          "StartDelimiter": "\n",
+          "EndDelimiter": "",
+          "ContentType": "CardContent",
+          "DslRules": [
+            {
+              "Name": "CardHeader",
+              "StartsWith": "=== header[\\s]*\\n",
+              "EndsWith": "\\n[\\s]*(?=(=== body))",
+              "TokenRules": [],
+              "Content": {
+                "StartDelimiter": "\\n",
+                "EndDelimiter": "\\n===",
+                "ContentType": "CardHeaderContent",
+                "DslRules": [] // Nested DSL rules for content within the header can be added here if needed
+              }
+            },
+            {
+              "Name": "CardBody",
+              "StartsWith": "=== body[\\s]*\\n",
+              "EndsWith": "",
+              "TokenRules": [],
+              "Content": {
+                "StartDelimiter": "",
+                "EndDelimiter": "\\n===",
+                "ContentType": "CardBodyContent",
+                "DslRules": [] // Nested DSL rules for content within the body can be added here if needed
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Name": "TreeView",
+        "StartsWith": "^=== tree-view\\n",
+        "EndsWith": "\\n[\\s]*===",
+        "TokenRules": [
+            {
+                "Name": "InlineXLSJSXModifier",
+                "Pattern": "--with-xls-jsx", // Modifier to indicate a table or tree view supports XLS-JSX
+                "IsRequired": false
+            }
+        ],
+        "Content": {
+          "StartDelimiter": "",
+          "EndDelimiter": "",
+          "ContentType": "TreeViewContent",
+          "DslRules": [
+            {
+              "Name": "TreeNode",
+              "StartsWith": "", // The TreeNode does not have a specific start pattern, it's a continuation of the tree
+              "EndsWith": "\\n",   // The TreeNode does not have a specific end pattern, it's determined by the next node or end of tree
+              "TokenRules": [
+                {
+                  "Name": "Indentation",
+                  "Pattern": "^(│   )*",
+                  "CaptureGroup": "indentation",
+                  "Transform": "countMatches", // Custom property that indicates a transformation to count matches of the capture group
+                  "IsRequired": true
+                },
+                {
+                  "Name": "TreeNodeContent",
+                  "Pattern": "──[\\s]+([^#\\n]+)", // Captures the content of the tree node excluding the hash and newlines
+                  "MatchCaptureGroup": 1,
+                  "Trim": true,
+                  "IsRequired": true
+                },
+                {
+                  "Name": "Tooltip",
+                  "Pattern": "#[\\s](.*)$", // Captures the tooltip content after the hash
+                  "MatchCaptureGroup": 1,
+                  "IsRequired": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "Name": "ExcelFormula",
+        "StartsWith": "{=",
+        "EndsWith": "}",
+        "TokenRules": [
+          {
+            "Name": "FormulaType",
+            "Pattern": "(IF)",
+            "IsRequired": true
+          },
+          {
+            "Name": "Condition",
+            "Pattern": "\\(([A-Z]+[0-9]+\\s*>\\s*[0-9]+)\\,",
+            "MatchCaptureGroup": 1,
+            "IsRequired": true
+          },
+          {
+            "Name": "TrueValue",
+            "Pattern": "\\s*\"([^\"]+)\"[\\s]*\\,",
+            "MatchCaptureGroup": 1,
+            "IsRequired": true
+          },
+          {
+            "Name": "FalseValue",
+            "Pattern": "\\s*\"([^\"]+)\"[\\s]*\\)",
+            "MatchCaptureGroup": 1,
+            "IsRequired": true
+          }
+        ]
+      },
+      {
+        "Name": "SumRange",
+        "StartsWith": "\\{", // SumRange starts with '{'
+        "EndsWith": "\\}",   // SumRange ends with '}'
+        "TokenRules": [
+          {
+            "Name": "CellReferenceStart",
+            "Pattern": "[A-Z]+\\d+(?=\\:)", // Matches the starting cell reference of a range
+            "IsRequired": true
+          },
+          {
+            "Name": "CellReferenceEnd",
+            "Pattern": "(?<=\\:)[A-Z]+\\d+", // Matches the ending cell reference of a range
+            "IsRequired": true
+          }
+        ]
+      },
+      {
+        "Name": "Chart",
+        "StartsWith": "--chart-(?=(simple-(bar|pie|line)))", // Matches the chart type at the beginning
+        "EndsWith": "$", // Assumes chart definitions are on a single line
+        "TokenRules": [
+          {
+            "Name": "ChartType",
+            "Pattern": "simple-(bar|pie|line)",
+            "IsRequired": true
+          },
+          {
+            "Name": "DataSource",
+            "Pattern": '--data-source "(\\{[A-Z][0-9]+:[A-Z][0-9]+\\})"',
+            "MatchCaptureGroup": 1,
+            "IsTokenizable": true,
+            "IsRequired": true
+          },
+          {
+            "Name": "Title",
+            "Pattern": '--title "([^"]+)"',
+            "MatchCaptureGroup": 1,
+            "IsRequired": false
+          },
+          {
+            "Name": "Subtitle",
+            "Pattern": '--subtitle "([^"]+)"',
+            "MatchCaptureGroup": 1,
+            "IsRequired": false
+          },
+          {
+            "Name": "Reference",
+            "Pattern": '--reference "([^"]+)"',
+            "MatchCaptureGroup": 1,
+            "IsRequired": false
+          }
+        ]
+      }
 ];

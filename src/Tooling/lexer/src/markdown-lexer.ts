@@ -89,7 +89,11 @@ export class MarkdownLexer implements IMarkdownLexer {
   }
 
   emitToken(type: string, value: string, cleanup?: () => void) {
-    if (value) {
+    if (type) {
+      if (type === 'TEXT' && !value)
+      {
+        return;
+      }
       this.tokens.push({ type, value });
       if (cleanup)
         cleanup();
@@ -233,15 +237,29 @@ export class MarkdownLexer implements IMarkdownLexer {
             {
                 break;
             }
+            if (tokenRule.MatchCaptureGroup !== undefined && tokenRule.MatchCaptureGroup !== null)
+            {
+                value = tokenMatch[tokenRule.MatchCaptureGroup];
+            }
             if (tokenRule.Substring) {
                 value = value.substring(tokenRule.Substring);
             }
             let val = value.replace(/\0/g, '');
             val = tokenRule.Trim ? val.replace(/\0/g, '').trim() : val;
-            this.tokens.push({
-              type: tokenRule.Name.toUpperCase(),
-              value: tokenRule.TrimS ? ((val.match('([^\r\n\t]+\\n[^\r\n\t]+)') || [''])[0]) : val
-            });
+
+            if (tokenRule.IsTokenizable)
+            {
+                this.pushInput(val);
+                this.tokenize();
+                this.popInput();
+            }
+            else
+            {
+                this.tokens.push({
+                type: tokenRule.Name.toUpperCase(),
+                value: tokenRule.TrimS ? ((val.match('([^\r\n\t]+\\n[^\r\n\t]+)') || [''])[0]) : val
+                });
+            }
             // Replace the matched token content with placeholders to prevent re-matching
             content = content.substring(0, tokenMatch.index) + '\0'.repeat(tokenMatch[0].length) + content.substring(tokenMatch.index + tokenMatch[0].length);
             if (!tokenRule.AllowMultiple) {
@@ -283,11 +301,13 @@ export class MarkdownLexer implements IMarkdownLexer {
             return;
         }
 
+      this.emitToken(`START${rule.Name.toUpperCase()}`, '');
+
       // Capture content until the end of the rule's pattern
-      let endPattern = new RegExp(rule.EndsWith, 'g');
+      let endPattern = new RegExp(rule.EndsWith, 'gm');
       inputSubstring = inputSubstring.substring(positionDiff);
       let endMatch = endPattern.exec(inputSubstring);
-      let content = inputSubstring.slice(0, endMatch ? endMatch.index : undefined);
+      let content = inputSubstring.slice(0, endMatch && rule.EndsWith ? endMatch.index : inputSubstring.length);
 
       // Process the content for overlapping patterns
       content = handleOverlappingPatterns(content);
@@ -316,9 +336,9 @@ export class MarkdownLexer implements IMarkdownLexer {
 
         if (rule.Content.EndDelimiter) {
             let endPattern = new RegExp(rule.Content.EndDelimiter, 'g');
-            endMatch = endPattern.exec(content);
-            if (endMatch)
-                content = content.substring(0, endMatch.index);
+            let contentEndMatch = endPattern.exec(content);
+            if (contentEndMatch)
+                content = content.substring(0, contentEndMatch.index);
         }
 
         if (rule.Content.DslRules) {
@@ -340,6 +360,8 @@ export class MarkdownLexer implements IMarkdownLexer {
       // Update the lexer's position to after the matched content
       position = endMatch ? this.getCurrentPosition() + (content || '').length + endMatch[0].length : this.getCurrentInput().length;
       this.setCurrentPosition(position);
+
+      this.emitToken(`END${rule.Name.toUpperCase()}`, '');
 
       // Transition back to the initial state or to the next state as defined by the DSL
       this.transition('initial');
