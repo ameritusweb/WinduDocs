@@ -1,0 +1,18 @@
+[
+  {
+    "type": "STARTTOGGLEBUTTON",
+    "value": ""
+  },
+  {
+    "type": "TOGGLETYPE",
+    "value": "details-modal"
+  },
+  {
+    "type": "TOGGLETARGET",
+    "value": "Toggle Details"
+  },
+  {
+    "type": "ENDTOGGLEBUTTON",
+    "value": ""
+  }
+]

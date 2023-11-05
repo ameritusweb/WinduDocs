@@ -1,0 +1,22 @@
+[
+  {
+    "type": "TEXT",
+    "value": "This is "
+  },
+  {
+    "type": "STARTITALIC",
+    "value": ""
+  },
+  {
+    "type": "ITALIC",
+    "value": "italic"
+  },
+  {
+    "type": "ENDITALIC",
+    "value": ""
+  },
+  {
+    "type": "TEXT",
+    "value": " text"
+  }
+]

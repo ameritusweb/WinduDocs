@@ -1,0 +1,26 @@
+[
+  {
+    "type": "STARTCUSTOMALERT",
+    "value": ""
+  },
+  {
+    "type": "TYPE",
+    "value": "warning"
+  },
+  {
+    "type": "TITLE",
+    "value": "Attention!"
+  },
+  {
+    "type": "MODIFIERS",
+    "value": "--strong"
+  },
+  {
+    "type": "MODIFIERS",
+    "value": "--emphasis"
+  },
+  {
+    "type": "ENDCUSTOMALERT",
+    "value": ""
+  }
+]

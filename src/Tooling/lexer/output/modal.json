@@ -1,0 +1,22 @@
+[
+  {
+    "type": "STARTMODAL",
+    "value": ""
+  },
+  {
+    "type": "MODAL",
+    "value": "-details-modal\n                Here is the "
+  },
+  {
+    "type": "BOLD",
+    "value": "detailed information"
+  },
+  {
+    "type": "MODAL",
+    "value": " that you can show or hide.\n                ===\n                "
+  },
+  {
+    "type": "ENDMODAL",
+    "value": ""
+  }
+]

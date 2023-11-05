@@ -1,0 +1,26 @@
+[
+  {
+    "type": "STARTICON",
+    "value": ""
+  },
+  {
+    "type": "ICONLIBRARY",
+    "value": "feather"
+  },
+  {
+    "type": "ICONCOLOR",
+    "value": "blue-500"
+  },
+  {
+    "type": "ICONSIZE",
+    "value": "1"
+  },
+  {
+    "type": "ICONNAME",
+    "value": "alert-circle"
+  },
+  {
+    "type": "ENDICON",
+    "value": ""
+  }
+]

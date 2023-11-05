@@ -1,0 +1,22 @@
+[
+  {
+    "type": "STARTBOLD",
+    "value": ""
+  },
+  {
+    "type": "BOLD",
+    "value": "This is "
+  },
+  {
+    "type": "BOLD_ITALIC",
+    "value": "bold and italic"
+  },
+  {
+    "type": "BOLD",
+    "value": " text"
+  },
+  {
+    "type": "ENDBOLD",
+    "value": ""
+  }
+]

@@ -223,11 +223,28 @@ export class MarkdownLexer implements IMarkdownLexer {
         return content;
       };      
 
+      const countOccurrences = (string: string, subString: string) => {
+        if (subString.length <= 0) return (string.length + 1);
+    
+        let n = 0,
+            pos = 0,
+            step = subString.length;
+    
+        while (true) {
+            pos = string.indexOf(subString, pos);
+            if (pos >= 0) {
+                ++n;
+                pos += step;
+            } else break;
+        }
+        return n;
+    }
+
     // Helper method to apply token rules
     const applyTokenRules = (content: string, tokenRules: TokenRule[]): string => {
       tokenRules.forEach(tokenRule => {
         let tokenPatternString = tokenRule.Escapable ? `(?<!\\\\)${tokenRule.Pattern}` : tokenRule.Pattern;
-        let tokenPattern = new RegExp(tokenPatternString, 'g');
+        let tokenPattern = new RegExp(tokenPatternString, 'gm');
         let tokenMatch;
 
         while ((tokenMatch = tokenPattern.exec(content))) {
@@ -243,6 +260,12 @@ export class MarkdownLexer implements IMarkdownLexer {
             }
             if (tokenRule.Substring) {
                 value = value.substring(tokenRule.Substring);
+            }
+            if (tokenRule.CountOccurrences)
+            {
+                let matches = content.match(tokenPattern);
+                let count = matches ? matches.reduce((sum, match) => sum + match.length, 0) : 0;
+                value = '' + count;//countOccurrences(content, tokenMatch[tokenRule.CountOccurrences]);
             }
             let val = value.replace(/\0/g, '');
             val = tokenRule.Trim ? val.replace(/\0/g, '').trim() : val;
@@ -323,6 +346,8 @@ export class MarkdownLexer implements IMarkdownLexer {
 
         const initialLength = content.length;
 
+        content = this.trimNullChars(content);
+
         if (rule.Content.StartDelimiter) {
             let startPattern = new RegExp(rule.Content.StartDelimiter, 'g');
             let startMatch = startPattern.exec(content);
@@ -366,6 +391,10 @@ export class MarkdownLexer implements IMarkdownLexer {
       // Transition back to the initial state or to the next state as defined by the DSL
       this.transition('initial');
     };
+  }
+
+  trimNullChars(str: string) {
+    return str.replace(/^\0+/, '');
   }
 
   isNullString(str: string) {

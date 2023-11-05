@@ -4,10 +4,19 @@ import { DSLRule } from './interfaces';
 export const dslRules: DSLRule[] = [ 
     {
         "Name": "Header",
-        "StartsWith": "^#{1,6}(?= )", // Lookahead to ensure space follows hash signs
+        "StartsWith": "^(?=#{1,6} )", // Lookahead to ensure space follows hash signs
         "EndsWith": "(?=\n|$)",       // Lookahead for newline or end of string
-        "TokenRules": [],
+        "TokenRules": [
+            {
+                "Name": "HeaderLevel",
+                "Pattern": "^(#)(#{1,5})",           // This will match a sequence of '#' at the start of the line
+                "CountOccurrences": 1,    // This is a special property to indicate that we want to count the occurrences of the matched pattern
+                "IsRequired": true
+              }
+        ],
         "Content": {
+            "StartDelimiter": "[ ]",
+            "EndDelimiter": "",
           "ContentType": "Header"
         }
       },      
@@ -286,9 +295,8 @@ export const dslRules: DSLRule[] = [
               "TokenRules": [
                 {
                   "Name": "Indentation",
-                  "Pattern": "^(│   )*",
-                  "CaptureGroup": "indentation",
-                  "Transform": "countMatches", // Custom property that indicates a transformation to count matches of the capture group
+                  "Pattern": "([│|├|└]+)",
+                  "CountOccurrences": 1,
                   "IsRequired": true
                 },
                 {
@@ -392,5 +400,25 @@ export const dslRules: DSLRule[] = [
             "IsRequired": false
           }
         ]
-      }
+      },
+      {
+          "Name": "CodeBlock",
+          "StartsWith": "^```\\s*", // Matches the start of a code block with an optional language identifier
+          "EndsWith": "\\n[\\s]*(```\\n|$)",            // Matches the end of a code block
+          "TokenRules": [
+            {
+              "Name": "Language",
+              "Pattern": "[\\s]*(\\w+)", // Matches the language identifier
+              "MatchCaptureGroup": 1,
+              "IsRequired": false
+            }
+          ],
+          "Content": {
+            "ContentType": "CodeContent",
+            "StartDelimiter": "\\n",          // The content starts after the newline following the opening backticks
+            "EndDelimiter": "(?=\\n?```)", // The content ends at the newline preceding the closing backticks
+            // No nested DSL rules needed as syntax highlighting is handled by ColorCode library
+            "DslRules": []
+          }
+      }  
 ];

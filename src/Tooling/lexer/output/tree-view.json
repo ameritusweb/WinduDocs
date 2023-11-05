@@ -1,0 +1,214 @@
+[
+  {
+    "type": "STARTTREEVIEW",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "1"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "1"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "src/"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "2"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "NodeServer/"
+  },
+  {
+    "type": "TOOLTIP",
+    "value": "Node.js server related files"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "3"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "src/"
+  },
+  {
+    "type": "TOOLTIP",
+    "value": "Node.js source files"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "3"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "package.json"
+  },
+  {
+    "type": "TOOLTIP",
+    "value": "Node.js project dependencies"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "3"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "..."
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "2"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "2"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "ClientApp/"
+  },
+  {
+    "type": "TOOLTIP",
+    "value": "Frontend TypeScript/CSS/AJAX files"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "2"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "..."
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "1"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "1"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "test/"
+  },
+  {
+    "type": "TOOLTIP",
+    "value": "Test files for backend and frontend"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "STARTTREENODE",
+    "value": ""
+  },
+  {
+    "type": "INDENTATION",
+    "value": "1"
+  },
+  {
+    "type": "TREENODECONTENT",
+    "value": "LICENSE"
+  },
+  {
+    "type": "TOOLTIP",
+    "value": "License file"
+  },
+  {
+    "type": "ENDTREENODE",
+    "value": ""
+  },
+  {
+    "type": "ENDTREEVIEW",
+    "value": ""
+  }
+]

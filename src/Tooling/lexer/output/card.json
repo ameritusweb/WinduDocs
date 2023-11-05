@@ -1,0 +1,34 @@
+[
+  {
+    "type": "STARTCARD",
+    "value": ""
+  },
+  {
+    "type": "STARTCARDHEADER",
+    "value": ""
+  },
+  {
+    "type": "CARDHEADER",
+    "value": "This is my card header."
+  },
+  {
+    "type": "ENDCARDHEADER",
+    "value": ""
+  },
+  {
+    "type": "STARTCARDBODY",
+    "value": ""
+  },
+  {
+    "type": "CARDBODY",
+    "value": "This is my card body."
+  },
+  {
+    "type": "ENDCARDBODY",
+    "value": ""
+  },
+  {
+    "type": "ENDCARD",
+    "value": ""
+  }
+]

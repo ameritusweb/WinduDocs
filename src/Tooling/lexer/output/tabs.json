@@ -1,0 +1,46 @@
+[
+  {
+    "type": "STARTTABSGROUP",
+    "value": ""
+  },
+  {
+    "type": "TABSGROUPTITLE",
+    "value": "Sample Tabs"
+  },
+  {
+    "type": "STARTTAB",
+    "value": ""
+  },
+  {
+    "type": "TABTITLE",
+    "value": "Tab 1"
+  },
+  {
+    "type": "TAB",
+    "value": "Content for tab 1"
+  },
+  {
+    "type": "ENDTAB",
+    "value": ""
+  },
+  {
+    "type": "STARTTAB",
+    "value": ""
+  },
+  {
+    "type": "TABTITLE",
+    "value": "Tab 2"
+  },
+  {
+    "type": "TAB",
+    "value": "Content for tab 2"
+  },
+  {
+    "type": "ENDTAB",
+    "value": ""
+  },
+  {
+    "type": "ENDTABSGROUP",
+    "value": ""
+  }
+]

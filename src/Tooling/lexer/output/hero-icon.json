@@ -1,0 +1,26 @@
+[
+  {
+    "type": "STARTICON",
+    "value": ""
+  },
+  {
+    "type": "ICONLIBRARY",
+    "value": "hero"
+  },
+  {
+    "type": "ICONCOLOR",
+    "value": "green-600"
+  },
+  {
+    "type": "ICONSIZE",
+    "value": "2"
+  },
+  {
+    "type": "ICONNAME",
+    "value": "academic-cap"
+  },
+  {
+    "type": "ENDICON",
+    "value": ""
+  }
+]

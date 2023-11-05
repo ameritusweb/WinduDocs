@@ -1,14 +1,27 @@
 import { MarkdownLexer } from '../src/markdown-lexer'
 import { dslRules } from '../src/dsl-rules'
+import { cleanupOutputDirectory, writeAllTokensToFile, writeTokensToFile } from '../src/file-utils';
+
+beforeAll(() => {
+    cleanupOutputDirectory();
+});
+
+afterAll(() => {
+    writeAllTokensToFile();
+});
 
 describe('MarkdownLexer', () => {
     it('should tokenize a header', () => {
-      const input = '# Header 1';
+      const input = '##### Header 5';
       const lexer = new MarkdownLexer(input, dslRules);
       const tokens = lexer.tokenize();
+
+      writeTokensToFile('header', tokens);
+
       expect(tokens).toEqual([
         { type: 'STARTHEADER', value: '' },
-        { type: 'HEADER', value: ' Header 1' },
+        { type: 'HEADERLEVEL', value: '5' },
+        { type: 'HEADER', value: 'Header 5' },
         { type: 'ENDHEADER', value: ''}
       ]);
     });
@@ -17,6 +30,9 @@ describe('MarkdownLexer', () => {
         const input = 'This is **bold** text';
         const lexer = new MarkdownLexer(input, dslRules);
         const tokens = lexer.tokenize();
+
+        writeTokensToFile('bold', tokens);
+
         expect(tokens).toEqual([
           { type: 'TEXT', value: 'This is ' },
           { type: 'STARTBOLD', value: '' },
@@ -30,6 +46,9 @@ describe('MarkdownLexer', () => {
         const input = 'This is *italic* text';
         const lexer = new MarkdownLexer(input, dslRules);
         const tokens = lexer.tokenize();
+
+        writeTokensToFile('italic', tokens);
+
         expect(tokens).toEqual([
           { type: 'TEXT', value: 'This is ' },
           { type: 'STARTITALIC', value: '' },
@@ -43,6 +62,9 @@ describe('MarkdownLexer', () => {
           const input = '**This is ***bold and italic*** text**';
           const lexer = new MarkdownLexer(input, dslRules);
           const tokens = lexer.tokenize();
+
+          writeTokensToFile('nested-bold-italic', tokens);
+
           expect(tokens).toEqual([
             { type: 'STARTBOLD', value: '' },
             { type: 'BOLD', value: 'This is ' },
@@ -56,6 +78,9 @@ describe('MarkdownLexer', () => {
             const input = '[OpenAI](https://openai.com)';
             const lexer = new MarkdownLexer(input, dslRules);
             const tokens = lexer.tokenize();
+
+            writeTokensToFile('link', tokens);
+
             expect(tokens).toEqual([
               { type: 'STARTLINK', value: '' },
               { type: 'LINKTEXT', value: 'OpenAI' },
@@ -69,6 +94,9 @@ describe('MarkdownLexer', () => {
             const input = '!!! warning "Attention!" --strong --emphasis';
             const lexer = new MarkdownLexer(input, dslRules);
             const tokens = lexer.tokenize();
+
+            writeTokensToFile('custom-alert', tokens);
+
             expect(tokens).toEqual([
               { type: 'STARTCUSTOMALERT', value: '' },
               { type: 'TYPE', value: 'warning' },
@@ -84,6 +112,9 @@ describe('MarkdownLexer', () => {
             const input = '=== tabs "Sample Tabs"\n=== tab "Tab 1"\nContent for tab 1\n=== tab "Tab 2"\nContent for tab 2\n===\n';
             const lexer = new MarkdownLexer(input, dslRules);
             const tokens = lexer.tokenize();
+
+            writeTokensToFile('tabs', tokens);
+
             expect(tokens).toEqual([
               { type: 'STARTTABSGROUP', value: '' },
               { type: 'TABSGROUPTITLE', value: 'Sample Tabs' },
@@ -108,6 +139,9 @@ describe('MarkdownLexer', () => {
               const lexer = new MarkdownLexer(input, dslRules);
               const tokens = lexer.tokenize();
           
+
+              writeTokensToFile('table', tokens);
+
               // Adjust the expected tokens based on your specific token structure
               expect(tokens).toEqual([
                 expect.objectContaining({ type: 'STARTTABLE', value: '' }),
@@ -127,6 +161,9 @@ describe('MarkdownLexer', () => {
               const lexer = new MarkdownLexer(input, dslRules);
               const tokens = lexer.tokenize();
           
+
+              writeTokensToFile('table-striped', tokens);
+
               // Adjust the expected tokens based on your specific token structure
               expect(tokens).toEqual([
                 expect.objectContaining({ type: 'STARTTABLE', value: '' }),
@@ -144,6 +181,8 @@ describe('MarkdownLexer', () => {
               const lexer = new MarkdownLexer(input, dslRules);
               const tokens = lexer.tokenize();
           
+              writeTokensToFile('feather-icon', tokens);
+
               // Define the expected tokens without considering the order
               const expectedTokens = [
                   expect.objectContaining({
@@ -174,6 +213,8 @@ describe('MarkdownLexer', () => {
               const lexer = new MarkdownLexer(input, dslRules);
               const tokens = lexer.tokenize();
           
+              writeTokensToFile('hero-icon', tokens);
+
               // Define the expected tokens without considering the order
               const expectedTokens = [
                   expect.objectContaining({
@@ -208,6 +249,9 @@ This is my card body.
                 const lexer = new MarkdownLexer(input, dslRules); // Assuming the dslRules include the card definition with nested header and body
                 const tokens = lexer.tokenize();
               
+
+                writeTokensToFile('card', tokens);
+
                 expect(tokens).toEqual([
                   expect.objectContaining({ type: 'STARTCARD', value: '' }),
                   expect.objectContaining({ type: 'STARTCARDHEADER', value: '' }),
@@ -225,6 +269,9 @@ This is my card body.
                 const lexer = new MarkdownLexer(input, dslRules); // Assuming the dslRules include the toggle button definition
                 const tokens = lexer.tokenize();
               
+
+                writeTokensToFile('toggle-button', tokens);
+
                 expect(tokens).toEqual([
                   expect.objectContaining({ type: 'STARTTOGGLEBUTTON', value: '' }),
                   expect.objectContaining({ type: 'TOGGLETYPE', value: 'details-modal' }),
@@ -238,6 +285,8 @@ This is my card body.
                 const lexer = new MarkdownLexer(input, dslRules);
                 const tokens = lexer.tokenize();
             
+                writeTokensToFile('bar-chart', tokens);
+
                 expect(tokens).toEqual([
                   { type: 'STARTCHART', value: ''},
                   { type: 'CHARTTYPE', value: 'simple-bar' },
@@ -257,6 +306,9 @@ This is my card body.
                 const lexer = new MarkdownLexer(input, dslRules);
                 const tokens = lexer.tokenize();
             
+
+                writeTokensToFile('pie-chart', tokens);
+
                 expect(tokens).toEqual([
                   { type: 'STARTCHART', value: ''},
                   { type: 'CHARTTYPE', value: 'simple-pie' },
@@ -308,6 +360,9 @@ This is my card body.
                     const lexer = new MarkdownLexer(input, dslRules); // Assuming the dslRules include the modal definition
                     const tokens = lexer.tokenize();
                 
+
+                    writeTokensToFile('modal', tokens);
+
                     expect(tokens).toEqual([
                         expect.objectContaining({ type: 'STARTMODAL', value: '' }),
                       expect.objectContaining({ type: 'MODAL', value: expect.stringContaining('Here') }),
@@ -340,6 +395,9 @@ This is my card body.
                     // Perform tokenization
                     const tokens = lexer.tokenize();
                 
+
+                    writeTokensToFile('tree-view', tokens);
+
                     // Define expected tokens
                     const expectedTokens = [
                       { type: 'STARTTREEVIEW', value: '' }, // The opening token for tree view
@@ -351,5 +409,23 @@ This is my card body.
                 
                     // Check if the tokens produced by the lexer match the expected tokens
                     expect(tokens).toEqual(expect.arrayContaining(expectedTokens));
+                  });
+
+                  it('should tokenize a code block with language specifier', () => {
+                    const input = "```javascript\nconsole.log('Hello, world!');\n```";
+                    // Instantiate the lexer with the input text and the DSL rules for the tree view
+                    const lexer = new MarkdownLexer(input, dslRules);
+                
+                    // Perform tokenization
+                    const tokens = lexer.tokenize();
+                
+
+                    writeTokensToFile('code-block', tokens);
+                    expect(tokens).toEqual([
+                        expect.objectContaining({ type: 'STARTCODEBLOCK', value: '' }),
+                      expect.objectContaining({ type: 'LANGUAGE', value: 'javascript' }),
+                      expect.objectContaining({ type: 'CODEBLOCK', value: expect.stringContaining('console.log(\'Hello, world!\');') }),
+                      expect.objectContaining({ type: 'ENDCODEBLOCK', value: '' })
+                    ]);
                   });
   });

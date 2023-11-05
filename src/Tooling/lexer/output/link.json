@@ -1,0 +1,18 @@
+[
+  {
+    "type": "STARTLINK",
+    "value": ""
+  },
+  {
+    "type": "LINKTEXT",
+    "value": "OpenAI"
+  },
+  {
+    "type": "URL",
+    "value": "https://openai.com"
+  },
+  {
+    "type": "ENDLINK",
+    "value": ""
+  }
+]

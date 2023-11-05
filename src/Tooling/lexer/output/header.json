@@ -1,0 +1,18 @@
+[
+  {
+    "type": "STARTHEADER",
+    "value": ""
+  },
+  {
+    "type": "HEADERLEVEL",
+    "value": "5"
+  },
+  {
+    "type": "HEADER",
+    "value": "Header 5"
+  },
+  {
+    "type": "ENDHEADER",
+    "value": ""
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "type": "STARTCHART",
+    "value": ""
+  },
+  {
+    "type": "CHARTTYPE",
+    "value": "simple-bar"
+  },
+  {
+    "type": "STARTSUMRANGE",
+    "value": ""
+  },
+  {
+    "type": "CELLREFERENCESTART",
+    "value": "A1"
+  },
+  {
+    "type": "CELLREFERENCEEND",
+    "value": "B10"
+  },
+  {
+    "type": "ENDSUMRANGE",
+    "value": ""
+  },
+  {
+    "type": "TITLE",
+    "value": "Sales Data"
+  },
+  {
+    "type": "SUBTITLE",
+    "value": "2023"
+  },
+  {
+    "type": "REFERENCE",
+    "value": "Ref1"
+  },
+  {
+    "type": "ENDCHART",
+    "value": ""
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "type": "TEXT",
+    "value": "This is "
+  },
+  {
+    "type": "STARTBOLD",
+    "value": ""
+  },
+  {
+    "type": "BOLD",
+    "value": "bold"
+  },
+  {
+    "type": "ENDBOLD",
+    "value": ""
+  },
+  {
+    "type": "TEXT",
+    "value": " text"
+  }
+]

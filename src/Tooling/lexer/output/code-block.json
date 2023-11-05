@@ -1,0 +1,18 @@
+[
+  {
+    "type": "STARTCODEBLOCK",
+    "value": ""
+  },
+  {
+    "type": "LANGUAGE",
+    "value": "javascript"
+  },
+  {
+    "type": "CODEBLOCK",
+    "value": "console.log('Hello, world!');"
+  },
+  {
+    "type": "ENDCODEBLOCK",
+    "value": ""
+  }
+]

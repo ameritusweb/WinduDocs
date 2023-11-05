@@ -1,0 +1,30 @@
+[
+  {
+    "type": "STARTCHART",
+    "value": ""
+  },
+  {
+    "type": "CHARTTYPE",
+    "value": "simple-pie"
+  },
+  {
+    "type": "STARTSUMRANGE",
+    "value": ""
+  },
+  {
+    "type": "CELLREFERENCESTART",
+    "value": "C1"
+  },
+  {
+    "type": "CELLREFERENCEEND",
+    "value": "D9"
+  },
+  {
+    "type": "ENDSUMRANGE",
+    "value": ""
+  },
+  {
+    "type": "ENDCHART",
+    "value": ""
+  }
+]
