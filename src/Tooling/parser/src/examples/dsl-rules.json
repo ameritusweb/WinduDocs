@@ -1,0 +1,474 @@
+[
+    {
+      "Name": "Header",
+      "StartsWith": "^(?=#{1,6} )",
+      "EndsWith": "(?=\n|$)",
+      "TokenRules": [
+        {
+          "Name": "HeaderLevel",
+          "Pattern": "^(#)(#{1,5})",
+          "CountOccurrences": 1,
+          "IsRequired": true
+        }
+      ],
+      "Content": {
+        "StartDelimiter": "[ ]",
+        "EndDelimiter": "",
+        "ContentType": "Header"
+      }
+    },
+    {
+      "Name": "BoldItalic",
+      "StartsWith": "\\*\\*\\*",
+      "EndsWith": "\\*\\*\\*",
+      "TokenRules": [],
+      "Content": {
+        "ContentType": "BoldItalic"
+      }
+    },
+    {
+      "Name": "Bold",
+      "StartsWith": "(?<!\\*)\\*\\*(?!\\*)",
+      "EndsWith": "(?<!\\*)\\*\\*(?!\\*)",
+      "TokenRules": [],
+      "Content": {
+        "ContentType": "Bold"
+      }
+    },
+    {
+      "Name": "Italic",
+      "StartsWith": "\\*",
+      "EndsWith": "\\*",
+      "TokenRules": [],
+      "Content": {
+        "ContentType": "Italic"
+      }
+    },
+    {
+      "Name": "Link",
+      "StartsWith": "\\[",
+      "EndsWith": "\\)",
+      "TokenRules": [
+        {
+          "Name": "LinkText",
+          "Pattern": "([^\\]]+)",
+          "IsRequired": true
+        },
+        {
+          "Name": "Url",
+          "Pattern": "(?<=\\]\\()[^\\)]+",
+          "IsRequired": true
+        }
+      ]
+    },
+    {
+      "Name": "CustomAlert",
+      "StartsWith": "!!!",
+      "EndsWith": "\n",
+      "TokenRules": [
+        {
+          "Name": "Type",
+          "Pattern": "(info|warning|error)",
+          "IsRequired": true
+        },
+        {
+          "Name": "Title",
+          "Pattern": "(?<=\")[^\"]+(?=\")",
+          "IsRequired": false
+        },
+        {
+          "Name": "Modifiers",
+          "Pattern": "--[a-z]+",
+          "IsRequired": false,
+          "AllowMultiple": true
+        }
+      ]
+    },
+    {
+      "Name": "TableOld",
+      "StartsWith": ",,,,,,",
+      "EndsWith": "\\n(?=\\n|$)",
+      "TokenRules": [
+        {
+          "Name": "StripedModifier",
+          "Pattern": "--striped(?=\\n)",
+          "IsRequired": false
+        },
+        {
+          "Name": "InlineXLSJSXModifier",
+          "Pattern": "--with-xls-jsx",
+          "IsRequired": false
+        },
+        {
+          "Name": "HeaderRow",
+          "Pattern": "^\\s*([^\\n\\|]+[ ]*\\|)+([^\\|]+\\|)((:?-+:?\\s*\\|)+)[ ]*\\n",
+          "TrimS": true,
+          "IsRequired": true
+        },
+        {
+          "Name": "Row",
+          "Pattern": "^\\s*\\|*([^\\n\\|]+[ ]*\\|)+([^\\|]*)|$",
+          "Trim": true,
+          "IsRequired": false,
+          "AllowMultiple": true
+        }
+      ],
+      "Content": {
+        "ContentType": "TableContent",
+        "DslRules": [
+          {
+            "Name": "TableCell",
+            "StartsWith": "(?<=\\|)",
+            "EndsWith": "(?=\\|)",
+            "TokenRules": [
+              {
+                "Name": "CellContent",
+                "Pattern": "[^\\|]+",
+                "IsRequired": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Table",
+      "StartsWith": "^\\|(?=([^\\n\\|]*\\|)+[\\w-\\s]*\\n[\\s]*\\|(:?-+:?\\|)+\\n)",
+      "EndsWith": "\\n(?=\\n|$)",
+      "IsTokenizable": false,
+      "TokenRules": [
+        {
+          "Name": "StripedModifier",
+          "Pattern": "--striped(?=\\n)",
+          "IsRequired": false
+        },
+        {
+          "Name": "InlineXLSJSXModifier",
+          "Pattern": "--with-xls-jsx",
+          "IsRequired": false
+        }
+      ],
+      "Content": {
+        "ContentType": "TableContent",
+        "StartDelimiter": "",
+        "EndDelimiter": "",
+        "DslRules": [
+          {
+            "Name": "HeaderRow",
+            "StartsWith": "(?=([\\w-\\s]+(\\|))+[^\\|]+\\|(:?-+:?\\|)+\\n)",
+            "EndsWith": "(?<=\\|(:?-+:?\\|)+)\\n",
+            "ExcludeEnding": true,
+            "TokenRules": [
+              {
+                "Name": "HeaderCell",
+                "Pattern": "([^\\|\\n]+)\\|",
+                "MatchCaptureGroup": 1,
+                "IsRequired": true,
+                "AllowMultiple": true
+              }
+            ]
+          },
+          {
+            "Name": "Row",
+            "StartsWith": "^\\|",
+            "EndsWith": "\\n",
+            "TokenRules": [
+              {
+                "Name": "RowCell",
+                "Pattern": "([^\\|\\n]+)\\|",
+                "MatchCaptureGroup": 1,
+                "IsRequired": true,
+                "AllowMultiple": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Name": "TabsGroup",
+      "StartsWith": "=== tabs",
+      "EndsWith": "\\n(===(?! tab)\\n|$)",
+      "TokenRules": [
+        {
+          "Name": "TabsGroupTitle",
+          "Pattern": "(?<=\")[^\"]+(?=\")",
+          "IsRequired": false
+        }
+      ],
+      "Content": {
+        "StartDelimiter": "\n",
+        "EndDelimiter": "",
+        "ContentType": "TabsGroupContent",
+        "DslRules": [
+          {
+            "Name": "Tab",
+            "StartsWith": "=== tab",
+            "EndsWith": "\\n(?=\\s*=== (tab\\n|tab\\s|\\n)|$)",
+            "TokenRules": [
+              {
+                "Name": "TabTitle",
+                "Pattern": "(?<=\")[^\"]+(?=\")",
+                "IsRequired": true
+              }
+            ],
+            "Content": {
+              "StartDelimiter": "\\n",
+              "EndDelimiter": "\\n(?=\\s*===($|\\s|\\s*tab\\s*\"))",
+              "ContentType": "TabContent"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Name": "Icon",
+      "StartsWith": "--(?=(feather|hero))",
+      "EndsWith": "(?=\\s|$)",
+      "TokenRules": [
+        {
+          "Name": "IconLibrary",
+          "Pattern": "(feather|hero)",
+          "IsRequired": true
+        },
+        {
+          "Name": "IconColor",
+          "Pattern": "-([a-z]+-[0-9]{3})",
+          "Substring": 1,
+          "IsRequired": true
+        },
+        {
+          "Name": "IconSize",
+          "Pattern": "-([1-9]|1[0-9]|20)",
+          "Substring": 1,
+          "IsRequired": true
+        },
+        {
+          "Name": "IconName",
+          "Pattern": "-([a-z-]+)",
+          "Substring": 1,
+          "IsRequired": true
+        }
+      ]
+    },
+    {
+      "Name": "ToggleButton",
+      "StartsWith": "--(?=(toggle-))",
+      "EndsWith": "$",
+      "TokenRules": [
+        {
+          "Name": "ToggleType",
+          "Pattern": "(?<=(toggle-))([a-zA-Z0-9-]+)",
+          "IsRequired": true
+        },
+        {
+          "Name": "ToggleTarget",
+          "Pattern": "\"([^\"]+)\"",
+          "MatchCaptureGroup": 1,
+          "IsRequired": true
+        }
+      ]
+    },
+    {
+      "Name": "Modal",
+      "StartsWith": "=== modal",
+      "EndsWith": "\n===",
+      "TokenRules": [
+        {
+          "Name": "ModalType",
+          "Pattern": "(-[a-zA-Z0-9-]+)",
+          "IsRequired": true
+        }
+      ],
+      "Content": {
+        "StartDelimiter": "\n",
+        "EndDelimiter": "",
+        "ContentType": "ModalContent"
+      }
+    },
+    {
+      "Name": "Card",
+      "StartsWith": "^=== card",
+      "EndsWith": "\\n[\\s]*===(?! (body|header))",
+      "TokenRules": [],
+      "Content": {
+        "StartDelimiter": "\n",
+        "EndDelimiter": "",
+        "ContentType": "CardContent",
+        "DslRules": [
+          {
+            "Name": "CardHeader",
+            "StartsWith": "=== header[\\s]*\\n",
+            "EndsWith": "\\n[\\s]*(?=(=== body))",
+            "TokenRules": [],
+            "Content": {
+              "StartDelimiter": "\\n",
+              "EndDelimiter": "\\n===",
+              "ContentType": "CardHeaderContent",
+              "DslRules": []
+            }
+          },
+          {
+            "Name": "CardBody",
+            "StartsWith": "=== body[\\s]*\\n",
+            "EndsWith": "",
+            "TokenRules": [],
+            "Content": {
+              "StartDelimiter": "",
+              "EndDelimiter": "\\n===",
+              "ContentType": "CardBodyContent",
+              "DslRules": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "Name": "TreeView",
+      "StartsWith": "^=== tree-view\\n",
+      "EndsWith": "\\n[\\s]*===",
+      "TokenRules": [
+        {
+          "Name": "InlineXLSJSXModifier",
+          "Pattern": "--with-xls-jsx",
+          "IsRequired": false
+        }
+      ],
+      "Content": {
+        "StartDelimiter": "",
+        "EndDelimiter": "",
+        "ContentType": "TreeViewContent",
+        "DslRules": [
+          {
+            "Name": "TreeNode",
+            "StartsWith": "",
+            "EndsWith": "\\n",
+            "TokenRules": [
+              {
+                "Name": "Indentation",
+                "Pattern": "([│|├|└]+)",
+                "CountOccurrences": 1,
+                "IsRequired": true
+              },
+              {
+                "Name": "TreeNodeContent",
+                "Pattern": "──[\\s]+([^#\\n]+)",
+                "MatchCaptureGroup": 1,
+                "Trim": true,
+                "IsRequired": true
+              },
+              {
+                "Name": "Tooltip",
+                "Pattern": "#[\\s](.*)$",
+                "MatchCaptureGroup": 1,
+                "IsRequired": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "Name": "ExcelFormula",
+      "StartsWith": "{=",
+      "EndsWith": "}",
+      "TokenRules": [
+        {
+          "Name": "FormulaType",
+          "Pattern": "(IF)",
+          "IsRequired": true
+        },
+        {
+          "Name": "Condition",
+          "Pattern": "\\(([A-Z]+[0-9]+\\s*>\\s*[0-9]+)\\,",
+          "MatchCaptureGroup": 1,
+          "IsRequired": true
+        },
+        {
+          "Name": "TrueValue",
+          "Pattern": "\\s*\"([^\"]+)\"[\\s]*\\,",
+          "MatchCaptureGroup": 1,
+          "IsRequired": true
+        },
+        {
+          "Name": "FalseValue",
+          "Pattern": "\\s*\"([^\"]+)\"[\\s]*\\)",
+          "MatchCaptureGroup": 1,
+          "IsRequired": true
+        }
+      ]
+    },
+    {
+      "Name": "SumRange",
+      "StartsWith": "\\{",
+      "EndsWith": "\\}",
+      "TokenRules": [
+        {
+          "Name": "CellReferenceStart",
+          "Pattern": "[A-Z]+\\d+(?=\\:)",
+          "IsRequired": true
+        },
+        {
+          "Name": "CellReferenceEnd",
+          "Pattern": "(?<=\\:)[A-Z]+\\d+",
+          "IsRequired": true
+        }
+      ]
+    },
+    {
+      "Name": "Chart",
+      "StartsWith": "--chart-(?=(simple-(bar|pie|line)))",
+      "EndsWith": "$",
+      "TokenRules": [
+        {
+          "Name": "ChartType",
+          "Pattern": "simple-(bar|pie|line)",
+          "IsRequired": true
+        },
+        {
+          "Name": "DataSource",
+          "Pattern": "--data-source \"(\\{[A-Z][0-9]+:[A-Z][0-9]+\\})\"",
+          "MatchCaptureGroup": 1,
+          "IsTokenizable": true,
+          "IsRequired": true
+        },
+        {
+          "Name": "Title",
+          "Pattern": "--title \"([^\"]+)\"",
+          "MatchCaptureGroup": 1,
+          "IsRequired": false
+        },
+        {
+          "Name": "Subtitle",
+          "Pattern": "--subtitle \"([^\"]+)\"",
+          "MatchCaptureGroup": 1,
+          "IsRequired": false
+        },
+        {
+          "Name": "Reference",
+          "Pattern": "--reference \"([^\"]+)\"",
+          "MatchCaptureGroup": 1,
+          "IsRequired": false
+        }
+      ]
+    },
+    {
+      "Name": "CodeBlock",
+      "StartsWith": "^```\\s*",
+      "EndsWith": "\\n[\\s]*(```\\n|$)",
+      "TokenRules": [
+        {
+          "Name": "Language",
+          "Pattern": "[\\s]*(\\w+)",
+          "MatchCaptureGroup": 1,
+          "IsRequired": false
+        }
+      ],
+      "Content": {
+        "ContentType": "CodeContent",
+        "StartDelimiter": "\\n",
+        "EndDelimiter": "(?=\\n?```)",
+        "DslRules": []
+      }
+    }
+  ]
