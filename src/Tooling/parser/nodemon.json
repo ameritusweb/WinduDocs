@@ -1,7 +1,7 @@
 {
-    "watch": ["src"],
+    "watch": ["generators"],
     "ext": "ts",
-    "ignore": ["src/**/*.spec.ts"],
-    "exec": "ts-node ./src/main.ts"
+    "ignore": ["generators/**/*.spec.ts"],
+    "exec": "ts-node ./generators/icons.ts"
   }
   

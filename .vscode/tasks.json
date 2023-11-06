@@ -12,6 +12,18 @@
 			"presentation": {
 				"reveal": "silent"
 			}
+		},
+		{
+			"type": "npm",
+			"script": "build",
+			"path": "src/Tooling/parser",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build - src/Tooling/parser",
+			"detail": "tsc",
+			"presentation": {
+				"reveal": "silent"
+			}
 		}
 	]
 }

@@ -7,13 +7,25 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Lexer",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/src/tooling/lexer/src/main.ts",
             "preLaunchTask": "npm: build - src/Tooling/lexer",
             "outFiles": ["${workspaceFolder}/src/tooling/lexer/dist/**/*.js"],
+            "sourceMaps": true
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Parser",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/src/tooling/parser/src/main.ts",
+            "preLaunchTask": "npm: build - src/Tooling/parser",
+            "outFiles": ["${workspaceFolder}/src/tooling/parser/dist/**/*.js"],
             "sourceMaps": true
         }
     ]
