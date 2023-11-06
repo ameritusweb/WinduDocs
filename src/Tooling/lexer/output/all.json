@@ -164,16 +164,64 @@
     "value": ""
   },
   {
-    "type": "HEADERROW",
-    "value": " Header 1 | Header 2 | Header 3 |\n          |:--------:|:--------:|:--------:|"
+    "type": "STARTHEADERROW",
+    "value": ""
   },
   {
-    "type": "ROW",
-    "value": "| Data 1   | Data 2   | Data 3   |"
+    "type": "HEADERCELL",
+    "value": " Header 1 "
   },
   {
-    "type": "ROW",
-    "value": "| Data 4   | Data 5   | Data 6   |"
+    "type": "HEADERCELL",
+    "value": " Header 2 "
+  },
+  {
+    "type": "HEADERCELL",
+    "value": " Header 3 "
+  },
+  {
+    "type": "ENDHEADERROW",
+    "value": ""
+  },
+  {
+    "type": "STARTROW",
+    "value": ""
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 1   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 2   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 3   "
+  },
+  {
+    "type": "ENDROW",
+    "value": ""
+  },
+  {
+    "type": "STARTROW",
+    "value": ""
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 4   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 5   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 6   "
+  },
+  {
+    "type": "ENDROW",
+    "value": ""
   },
   {
     "type": "ENDTABLE",
@@ -188,16 +236,64 @@
     "value": "--striped"
   },
   {
-    "type": "HEADERROW",
-    "value": " Header 1 | Header 2 | Header 3 | \n          |:--------:|:--------:|:--------:|"
+    "type": "STARTHEADERROW",
+    "value": ""
   },
   {
-    "type": "ROW",
-    "value": "| Data 1   | Data 2   | Data 3   |"
+    "type": "HEADERCELL",
+    "value": " Header 1 "
   },
   {
-    "type": "ROW",
-    "value": "| Data 4   | Data 5   | Data 6   |"
+    "type": "HEADERCELL",
+    "value": " Header 2 "
+  },
+  {
+    "type": "HEADERCELL",
+    "value": " Header 3 "
+  },
+  {
+    "type": "ENDHEADERROW",
+    "value": ""
+  },
+  {
+    "type": "STARTROW",
+    "value": ""
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 1   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 2   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 3   "
+  },
+  {
+    "type": "ENDROW",
+    "value": ""
+  },
+  {
+    "type": "STARTROW",
+    "value": ""
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 4   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 5   "
+  },
+  {
+    "type": "ROWCELL",
+    "value": " Data 6   "
+  },
+  {
+    "type": "ENDROW",
+    "value": ""
   },
   {
     "type": "ENDTABLE",

@@ -1,3 +1,3 @@
 function createItalic(rule) {
-    return `createElement("i", null, "${rule.ITALIC}")`;
+    return `createElement("i", null, "${escapeStringForJs(rule.ITALIC)}")`;
 }

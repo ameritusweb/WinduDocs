@@ -19,7 +19,7 @@ export interface TokenRule {
   export interface ContentSpecification {
     StartDelimiter?: string;
     EndDelimiter?: string;
-    ContentType: 'String' | 'TabsGroupContent' | 'TabContent' | 'CodeContent' | 'TableContent' | 'FormulaContent' | 'TreeViewContent' | 'CardContent' | 'CardBodyContent' | 'CardHeaderContent' | 'ModalContent' | 'Bold' | 'Italic' | 'BoldItalic' | 'Link' | 'Header'; // Expand with more content types as needed
+    ContentType: 'String' | 'TabsGroupContent' | 'TabContent' | 'RowContent' | 'HeaderRowContent' | 'CodeContent' | 'TableContent' | 'FormulaContent' | 'TreeViewContent' | 'CardContent' | 'CardBodyContent' | 'CardHeaderContent' | 'ModalContent' | 'Bold' | 'Italic' | 'BoldItalic' | 'Link' | 'Header'; // Expand with more content types as needed
     DslRules?: DSLRule[];
     }
   
@@ -28,6 +28,8 @@ export interface TokenRule {
     Name: string;
     StartsWith: string;
     EndsWith: string;
+    ExcludeEnding?: boolean;
+    IsTokenizable?: boolean;
     TokenRules: TokenRule[];
     Content?: ContentSpecification;
     isEntryPoint?: boolean; // Optional property to indicate the entry point for the lexer
@@ -40,7 +42,7 @@ export interface TokenRule {
     value: string;
   }
 
-  export type StateHandler = () => void;
+  export type StateHandler = (dslRule?: DSLRule) => void;
 export type StateHandlers = {
   [key: string]: StateHandler;
 };
@@ -55,4 +57,8 @@ export type StateHandlers = {
     plainTextBuffer: string;
     tokenize(): Token[];
     states: StateHandlers;
+  }
+
+  export interface CustomExecResult extends RegExpExecArray {
+    lookbehindLength: number;
   }

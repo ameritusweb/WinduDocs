@@ -88,8 +88,8 @@ export const dslRules: DSLRule[] = [
         ]
       },
       {
-        "Name": "Table",
-        "StartsWith": "^\\|", // A table starts with a pipe symbol at the beginning of a line
+        "Name": "TableOld",
+        "StartsWith": ",,,,,,", // A table starts with a pipe symbol at the beginning of a line
         "EndsWith": "\\n(?=\\n|$)", // A table ends with a newline followed by either another newline or the end of the input
         "TokenRules": [
             {
@@ -133,7 +133,61 @@ export const dslRules: DSLRule[] = [
             }
           ]
         }
-      },      
+      }, 
+      {
+        "Name": "Table",
+        "StartsWith": "^\\|(?=([^\\n\\|]*\\|)+[\\w-\\s]*\\n[\\s]*\\|(:?-+:?\\|)+\\n)", // A table starts with a pipe symbol at the beginning of a line
+        "EndsWith": "\\n(?=\\n|$)", // A table ends with a newline followed by either another newline or the end of the input
+        "IsTokenizable": false,
+        "TokenRules": [
+          {
+            "Name": "StripedModifier",
+            "Pattern": "--striped(?=\\n)", // Captures the --striped modifier following the header delimiter row
+            "IsRequired": false
+          },
+          {
+              "Name": "InlineXLSJSXModifier",
+              "Pattern": "--with-xls-jsx", // Modifier to indicate a table or tree view supports XLS-JSX
+              "IsRequired": false
+          },
+        ],
+        "Content": {
+          "ContentType": "TableContent",
+          "StartDelimiter": "", // No specific start delimiter needed for table content
+          "EndDelimiter": "",   // No specific end delimiter needed for table content
+          "DslRules": [
+            {
+              "Name": "HeaderRow",
+              "StartsWith": "(?=([\\w-\\s]+(\\|))+[^\\|]+\\|(:?-+:?\\|)+\\n)", // Header row starts with a pipe
+              "EndsWith": "(?<=\\|(:?-+:?\\|)+)\\n",    // Header row ends with a newline
+              "ExcludeEnding": true,
+              "TokenRules": [
+                {
+                  "Name": "HeaderCell",
+                  "Pattern": "([^\\|\\n]+)\\|", // Captures the content of each header cell
+                  "MatchCaptureGroup": 1,
+                  "IsRequired": true,
+                  "AllowMultiple": true
+                }
+              ]
+            },
+            {
+              "Name": "Row",
+              "StartsWith": "^\\|", // Row starts with a pipe
+              "EndsWith": "\\n",    // Row ends with a newline
+              "TokenRules": [
+                {
+                  "Name": "RowCell",
+                  "Pattern": "([^\\|\\n]+)\\|", // Captures the content of each row cell
+                  "MatchCaptureGroup": 1,
+                  "IsRequired": true,
+                  "AllowMultiple": true
+                }
+              ]
+            }
+          ]
+        }
+      },           
       {
         "Name": "TabsGroup",
         "StartsWith": "=== tabs",

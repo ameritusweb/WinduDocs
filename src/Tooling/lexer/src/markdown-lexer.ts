@@ -1,4 +1,5 @@
-import { DSLRule, IMarkdownLexer, StateHandler, StateHandlers, Token, TokenRule } from "./interfaces";
+import { CustomExecResult, DSLRule, IMarkdownLexer, StateHandler, StateHandlers, Token, TokenRule } from "./interfaces";
+import * as Reg1 from 'regexp-tree';
 
 // The lexer class implements the IMarkdownLexer interface
 export class MarkdownLexer implements IMarkdownLexer {
@@ -63,7 +64,7 @@ export class MarkdownLexer implements IMarkdownLexer {
   }
 
   addDsl(dsl: DSLRule[]) {
-    dsl.forEach((rule) => {
+    dsl.reverse().forEach((rule) => {
         this.additionalDsl.unshift(rule);
         if (!this.states[rule.Name])
             this.states[rule.Name] = this.createStateHandler(rule);
@@ -101,7 +102,7 @@ export class MarkdownLexer implements IMarkdownLexer {
   }
 
   emitAnyPlainText() {
-    if (this.plainTextBuffer.length > 0) {
+    if (this.plainTextBuffer.trim().length > 0) {
         const tokenType = this.getLastState() !== 'initial' ? this.getLastState().toUpperCase() : 'TEXT';
         // If there's accumulated plain text, emit it as a TEXT token
         this.emitToken(tokenType, this.plainTextBuffer, () => { this.plainTextBuffer = '';  });
@@ -111,7 +112,7 @@ export class MarkdownLexer implements IMarkdownLexer {
   // Initialize the state handlers based on the DSL
   initializeStates(): void {
 
-    const defaultInitialStateHandler = () => {
+    const defaultInitialStateHandler = (rule?: DSLRule) => {
 
         const input = this.getCurrentInput();
         let position = this.getCurrentPosition();
@@ -136,7 +137,9 @@ export class MarkdownLexer implements IMarkdownLexer {
                     // Advance by the minimum index found and consume those characters
                     this.advanceBy(minIndexMatch.match.index);
                 } else {
-                    this.emitAnyPlainText();
+                    if (!rule || rule.IsTokenizable || rule.IsTokenizable === undefined) {
+                        this.emitAnyPlainText();
+                    }
 
                     // Handle the token match
                     this.transition(minIndexMatch.rule.Name);
@@ -327,9 +330,9 @@ export class MarkdownLexer implements IMarkdownLexer {
       this.emitToken(`START${rule.Name.toUpperCase()}`, '');
 
       // Capture content until the end of the rule's pattern
-      let endPattern = new RegExp(rule.EndsWith, 'gm');
+      // let endPattern = new RegExp(rule.EndsWith, 'gm');
       inputSubstring = inputSubstring.substring(positionDiff);
-      let endMatch = endPattern.exec(inputSubstring);
+      let endMatch = this.customExec(inputSubstring, rule.EndsWith, rule.ExcludeEnding); // endPattern.exec(inputSubstring);
       let content = inputSubstring.slice(0, endMatch && rule.EndsWith ? endMatch.index : inputSubstring.length);
 
       // Process the content for overlapping patterns
@@ -370,7 +373,7 @@ export class MarkdownLexer implements IMarkdownLexer {
             
             this.addDsl(rule.Content.DslRules);
             this.pushInput(content);
-            this.tokenize();
+            this.tokenize(rule);
             this.popInput();
             this.removeDsl(rule.Content.DslRules);
         }
@@ -392,6 +395,113 @@ export class MarkdownLexer implements IMarkdownLexer {
       this.transition('initial');
     };
   }
+  
+  customExec(inputString: string, fullPattern: string, excludeEnding?: boolean): CustomExecResult | null {
+    // Find all the groups in the pattern
+    const groupRegex: RegExp = /\((?:\?[:!=<])?[^)]+\)/g;
+    const groups: RegExpMatchArray | null = fullPattern.match(groupRegex);
+  
+    // If there are no groups, or the last group is not a lookbehind, use the standard exec
+    if (!groups || !/\(\?<=[^)]+\)$/.test(groups[groups.length - 1])) {
+
+      let regex = new RegExp(fullPattern, 'gm');
+      let match = regex.exec(inputString);
+      if (match) {
+        let result: CustomExecResult = Object.assign(match, { lookbehindLength: 0 });
+        return result;
+      }
+      return null;
+    }
+
+    const pattern = fullPattern;
+    let ast = Reg1.parse('/' + pattern + '/gm');
+    let astStr = JSON.stringify(ast, null, 2);
+    console.log(astStr);
+
+    let currentGroupNumber = 0;
+    const groupTypes: string[] = [];
+
+    // The transformer will replace lookbehinds with non-lookbehind capture groups
+     const lookbehindTransformer = {
+         Group(path: any) {
+            const { node } = path;
+
+            if (node.capturing) {
+                groupTypes[currentGroupNumber++] = 'Regular';
+            }
+         },
+         Assertion(path: any) {
+         const { node } = path;
+     
+         if (node.kind === 'Lookbehind' || node.kind === 'Lookahead') {
+             groupTypes[currentGroupNumber++] = node.kind;
+             // Here we replace the lookbehind with a regular capturing group
+             path.replace({
+             type: 'Group',
+             capturing: true,
+             expression: node.assertion,
+             });
+         }
+         },
+     };
+
+     // Transform the AST
+     const transformedAst = Reg1.transform(ast, lookbehindTransformer).toRegExp();
+
+     const ee = new RegExp(transformedAst, 'gm');
+     const ex = ee.exec(inputString);
+
+     if (ex) {
+        let matchStart = ex.index;
+        let matchEnd = matchStart + ex[0].length;
+        let newMatch = inputString.substring(matchStart, matchEnd);
+        let lookbehindLength = 0; // To store the total length of all lookbehinds
+      
+        if (!excludeEnding) {
+            for (let i = 1; i < ex.length; i++) {
+            if (groupTypes[i - 1] !== 'Regular') {
+                const part = ex[i];
+                lookbehindLength += part.length; // Accumulate the length of lookbehind parts
+                newMatch = newMatch.replace(part, ''); // Remove the lookbehind part from the match
+            }
+            }
+        
+            // Assign the reconstructed match to ex[0]
+            ex[0] = newMatch;
+        }
+      
+        // Calculate the new index based on whether excludeEnding is true or false
+        let newIndex = excludeEnding ? matchStart : matchStart + lookbehindLength;
+      
+        // Create the result object with the modified index
+        let result1 = Object.assign(ex, { lookbehindLength: lookbehindLength, index: newIndex });
+        return result1;
+      }
+      
+
+      /*
+  
+    // Extract the lookbehind group and the main pattern
+    const lookbehindGroup: string | undefined = groups.pop();
+    const mainPattern: string = fullPattern.replace(groupRegex, '').replace(lookbehindGroup || '', '') + groups.join('');
+  
+    // Construct the regex to capture content before the target pattern
+    let combinedPattern: string = `${mainPattern}${lookbehindGroup}`;
+    let combinedRegex = new RegExp(combinedPattern, 'gm');
+  
+    // Find the first match
+    let match: RegExpExecArray | null = combinedRegex.exec(inputString);
+    if (match) {
+        let lookbehindContent: string = match[match.length - 1];
+        let lookbehindLength: number = lookbehindContent.length;
+        // Construct a match result similar to the native exec function
+        let result: CustomExecResult = Object.assign(match, { lookbehindLength: lookbehindLength });
+        return result;
+    }*/
+
+    // Return null if no match is found
+    return null;
+  }  
 
   trimNullChars(str: string) {
     return str.replace(/^\0+/, '');
@@ -407,18 +517,21 @@ export class MarkdownLexer implements IMarkdownLexer {
   }
     
     // The tokenize method now safely calls the handler based on the current state
-    tokenize(): Token[] {
+    tokenize(dslRule?: DSLRule): Token[] {
         const input = this.getCurrentInput();
         while (this.getCurrentPosition() < input.length) {
             const handler: StateHandler = this.states[this.currentState];
             if (handler) {
-                handler.call(this);
+                handler.call(this, dslRule);
             } else {
                 throw new Error(`State handler for state '${this.currentState}' not found.`);
             }
         }
 
-        this.emitAnyPlainText();
+        if (!dslRule || dslRule.IsTokenizable || dslRule.IsTokenizable === undefined)
+        {
+            this.emitAnyPlainText();
+        }
 
         return this.tokens;
     }
