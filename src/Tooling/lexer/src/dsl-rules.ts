@@ -88,53 +88,6 @@ export const dslRules: DSLRule[] = [
         ]
       },
       {
-        "Name": "TableOld",
-        "StartsWith": ",,,,,,", // A table starts with a pipe symbol at the beginning of a line
-        "EndsWith": "\\n(?=\\n|$)", // A table ends with a newline followed by either another newline or the end of the input
-        "TokenRules": [
-            {
-                "Name": "StripedModifier",
-                "Pattern": "--striped(?=\\n)", // Captures the --striped modifier following the header delimiter row
-                "IsRequired": false
-            },
-            {
-                "Name": "InlineXLSJSXModifier",
-                "Pattern": "--with-xls-jsx", // Modifier to indicate a table or tree view supports XLS-JSX
-                "IsRequired": false
-            },
-            {
-            "Name": "HeaderRow",
-            "Pattern": "^\\s*([^\\n\\|]+[ ]*\\|)+([^\\|]+\\|)((:?-+:?\\s*\\|)+)[ ]*\\n", // Captures the header row followed by the header delimiter row
-            "TrimS": true,
-            "IsRequired": true
-          },
-          {
-            "Name": "Row",
-            "Pattern": "^\\s*\\|*([^\\n\\|]+[ ]*\\|)+([^\\|]*)|$", // Captures a single table row
-            "Trim": true,
-            "IsRequired": false,
-            "AllowMultiple": true
-          }
-        ],
-        "Content": {
-          "ContentType": "TableContent",
-          "DslRules": [
-            {
-              "Name": "TableCell",
-              "StartsWith": "(?<=\\|)", // Cell content starts after a pipe
-              "EndsWith": "(?=\\|)",    // Cell content ends before a pipe
-              "TokenRules": [
-                {
-                  "Name": "CellContent",
-                  "Pattern": "[^\\|]+", // Captures the content of a single cell
-                  "IsRequired": true
-                }
-              ]
-            }
-          ]
-        }
-      }, 
-      {
         "Name": "Table",
         "StartsWith": "^\\|(?=([^\\n\\|]*\\|)+[\\w-\\s]*\\n[\\s]*\\|(:?-+:?\\|)+\\n)", // A table starts with a pipe symbol at the beginning of a line
         "EndsWith": "\\n(?=\\n|$)", // A table ends with a newline followed by either another newline or the end of the input

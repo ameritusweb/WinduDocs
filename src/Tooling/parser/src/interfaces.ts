@@ -11,5 +11,6 @@ export type Rule = {
   
 export type ASTNode = {
     [key: string]: any;
+    TYPE: string;
     children?: ASTNode[];
   };

@@ -85,53 +85,6 @@
       ]
     },
     {
-      "Name": "TableOld",
-      "StartsWith": ",,,,,,",
-      "EndsWith": "\\n(?=\\n|$)",
-      "TokenRules": [
-        {
-          "Name": "StripedModifier",
-          "Pattern": "--striped(?=\\n)",
-          "IsRequired": false
-        },
-        {
-          "Name": "InlineXLSJSXModifier",
-          "Pattern": "--with-xls-jsx",
-          "IsRequired": false
-        },
-        {
-          "Name": "HeaderRow",
-          "Pattern": "^\\s*([^\\n\\|]+[ ]*\\|)+([^\\|]+\\|)((:?-+:?\\s*\\|)+)[ ]*\\n",
-          "TrimS": true,
-          "IsRequired": true
-        },
-        {
-          "Name": "Row",
-          "Pattern": "^\\s*\\|*([^\\n\\|]+[ ]*\\|)+([^\\|]*)|$",
-          "Trim": true,
-          "IsRequired": false,
-          "AllowMultiple": true
-        }
-      ],
-      "Content": {
-        "ContentType": "TableContent",
-        "DslRules": [
-          {
-            "Name": "TableCell",
-            "StartsWith": "(?<=\\|)",
-            "EndsWith": "(?=\\|)",
-            "TokenRules": [
-              {
-                "Name": "CellContent",
-                "Pattern": "[^\\|]+",
-                "IsRequired": true
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
       "Name": "Table",
       "StartsWith": "^\\|(?=([^\\n\\|]*\\|)+[\\w-\\s]*\\n[\\s]*\\|(:?-+:?\\|)+\\n)",
       "EndsWith": "\\n(?=\\n|$)",
