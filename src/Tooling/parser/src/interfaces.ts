@@ -6,7 +6,7 @@ export type Token = {
 export type Rule = {
     Name: string;
     TokenRules: { Name: string; Pattern: string; CountOccurrences?: number; IsRequired?: boolean }[];
-    Content: { ContentType: string };
+    Content: { ContentType: string, DslRules: Rule[] };
   };
   
 export type ASTNode = {
