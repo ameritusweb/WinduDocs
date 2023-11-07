@@ -52,6 +52,31 @@ export const CodeEditor: React.FC = () => {
     const html = (event.currentTarget as HTMLDivElement).innerHTML;
     setCode(html);
   };
+
+  function removeZeroWidthSpaces() {
+    const walker = document.createTreeWalker(
+        contentEditableRef.current!,
+        NodeFilter.SHOW_TEXT,
+        null
+      );
+      
+      let nodesToRemove = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        if (node.nodeValue?.includes('\u200B')) {
+          // Collect nodes that include zero-width space characters
+          nodesToRemove.push(node);
+        }
+      }
+      
+      // Replace each text node's value by removing all zero-width space characters
+      nodesToRemove.forEach((textNode) => {
+        if (textNode.nodeValue) {
+          textNode.nodeValue = textNode.nodeValue.replace(/\u200B/g, '');
+        }
+      });
+      
+  }
   
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Tab') {
@@ -63,6 +88,9 @@ export const CodeEditor: React.FC = () => {
       insertTextAtCursor('<br class="new-line-placeholder">\u200B'); // Include a zero-width space after the <br> to ensure it gets rendered
       // Manually trigger the update to the code state
       setCode(contentEditableRef.current?.innerHTML || '');
+    }
+    else if (event.key === 'Backspace') {
+        contentEditableRef.current && removeZeroWidthSpaces();
     }
   };
   
