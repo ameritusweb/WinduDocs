@@ -477,28 +477,7 @@ export class MarkdownLexer implements IMarkdownLexer {
         let result1 = Object.assign(ex, { lookbehindLength: lookbehindLength, index: newIndex });
         return result1;
       }
-      
-
-      /*
   
-    // Extract the lookbehind group and the main pattern
-    const lookbehindGroup: string | undefined = groups.pop();
-    const mainPattern: string = fullPattern.replace(groupRegex, '').replace(lookbehindGroup || '', '') + groups.join('');
-  
-    // Construct the regex to capture content before the target pattern
-    let combinedPattern: string = `${mainPattern}${lookbehindGroup}`;
-    let combinedRegex = new RegExp(combinedPattern, 'gm');
-  
-    // Find the first match
-    let match: RegExpExecArray | null = combinedRegex.exec(inputString);
-    if (match) {
-        let lookbehindContent: string = match[match.length - 1];
-        let lookbehindLength: number = lookbehindContent.length;
-        // Construct a match result similar to the native exec function
-        let result: CustomExecResult = Object.assign(match, { lookbehindLength: lookbehindLength });
-        return result;
-    }*/
-
     // Return null if no match is found
     return null;
   }  
