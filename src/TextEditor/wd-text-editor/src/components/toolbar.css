@@ -1,0 +1,82 @@
+.toolbar {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .tab {
+    padding: 10px;
+    padding-bottom: 2rem;
+    cursor: pointer;
+    border: none;
+    background: none;
+    outline: none;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .tab:focus {
+    outline: none !important;
+  }
+  
+  .tab::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .tab.active {
+    font-weight: bold;
+  }
+  
+  .tab.active::after {
+    background-color: blue;
+    width: calc(100% - 20px); /* Adjust to align with text width */
+    margin: 0 auto; /* Center the pseudo-element */
+  }
+  
+  .tab.active:hover::after {
+    width: 100%; /* Extend to full width on hover */
+  }
+  
+  .tab-content {
+    padding: 10px;
+  }
+  
+/* Additional styles for toolbar buttons */
+.toolbar-button {
+    padding: 8px 16px;
+    margin-right: 8px; /* Add some space between buttons */
+    border: 1px solid #ddd; /* Subtle border for the buttons */
+    background-color: #f9f9f9; /* Light background for the buttons */
+    border-radius: 4px; /* Rounded corners for the buttons */
+    cursor: pointer;
+    outline: none;
+    font-size: 14px; /* Adjust font size as needed */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .toolbar-button:hover {
+    background-color: #e7e7e7; /* Slightly darker background on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  }
+  
+  .toolbar-button:active {
+    background-color: #d7d7d7; /* Even darker for the active state */
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1); /* Inner shadow for a pressed effect */
+  }
+  
+  
