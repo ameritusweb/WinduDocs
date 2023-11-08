@@ -205,41 +205,6 @@
     ]
   },
   {
-    "Name": "ToggleButton",
-    "StartsWith": "--(?=(toggle-))",
-    "EndsWith": "$",
-    "TokenRules": [
-      {
-        "Name": "ToggleType",
-        "Pattern": "(?<=(toggle-))([a-zA-Z0-9-]+)",
-        "IsRequired": true
-      },
-      {
-        "Name": "ToggleTarget",
-        "Pattern": "\"([^\"]+)\"",
-        "MatchCaptureGroup": 1,
-        "IsRequired": true
-      }
-    ]
-  },
-  {
-    "Name": "Modal",
-    "StartsWith": "=== modal",
-    "EndsWith": "\n===",
-    "TokenRules": [
-      {
-        "Name": "ModalType",
-        "Pattern": "(-[a-zA-Z0-9-]+)",
-        "IsRequired": true
-      }
-    ],
-    "Content": {
-      "StartDelimiter": "\n",
-      "EndDelimiter": "",
-      "ContentType": "ModalContent"
-    }
-  },
-  {
     "Name": "Card",
     "StartsWith": "^=== card",
     "EndsWith": "\\n[\\s]*===(?! (body|header))",
@@ -319,6 +284,41 @@
           ]
         }
       ]
+    }
+  },
+  {
+    "Name": "ToggleButton",
+    "StartsWith": "--(?=(toggle-))",
+    "EndsWith": "$",
+    "TokenRules": [
+      {
+        "Name": "ToggleType",
+        "Pattern": "(?<=(toggle-))([a-zA-Z0-9-]+)",
+        "IsRequired": true
+      },
+      {
+        "Name": "ToggleTarget",
+        "Pattern": "\"([^\"]+)\"",
+        "MatchCaptureGroup": 1,
+        "IsRequired": true
+      }
+    ]
+  },
+  {
+    "Name": "Modal",
+    "StartsWith": "=== modal",
+    "EndsWith": "\n===",
+    "TokenRules": [
+      {
+        "Name": "ModalType",
+        "Pattern": "(-[a-zA-Z0-9-]+)",
+        "IsRequired": true
+      }
+    ],
+    "Content": {
+      "StartDelimiter": "\n",
+      "EndDelimiter": "",
+      "ContentType": "ModalContent"
     }
   },
   {

@@ -1,5 +1,5 @@
 import { RefObject, useState } from 'react';
-import { isAtEnd, removeZeroWidthSpaces } from '../utils/editor-utilities';
+import { isAtEnd } from '../utils/editor-utilities';
 
 // Custom hook for managing text operations
 export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>) => {
