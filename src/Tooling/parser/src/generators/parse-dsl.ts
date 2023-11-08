@@ -6,5 +6,6 @@ import { ASTFactory } from './ast-factory'
 export function parseDsl() {
 
     const factory = new ASTFactory(dslRules as Rule[]);
-    factory.buildAST(kitchenSink);
+    const astRoot = factory.buildAST(kitchenSink);
+    console.log(JSON.stringify(astRoot, null, 2));
 }

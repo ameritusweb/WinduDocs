@@ -5,7 +5,7 @@ export type Token = {
   
 export type Rule = {
     Name: string;
-    TokenRules: { Name: string; Pattern: string; CountOccurrences?: number; IsRequired?: boolean }[];
+    TokenRules: { Name: string; Pattern: string; CountOccurrences?: number; IsRequired?: boolean, AllowMultiple?: boolean; }[];
     Content: { ContentType: string, DslRules: Rule[] };
   };
   

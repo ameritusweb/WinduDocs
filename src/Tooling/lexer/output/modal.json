@@ -8,8 +8,16 @@
     "value": "-details-modal\n                Here is the "
   },
   {
+    "type": "STARTBOLD",
+    "value": ""
+  },
+  {
     "type": "BOLD",
     "value": "detailed information"
+  },
+  {
+    "type": "ENDBOLD",
+    "value": ""
   },
   {
     "type": "MODAL",

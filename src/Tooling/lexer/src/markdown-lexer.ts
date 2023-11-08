@@ -177,7 +177,7 @@ export class MarkdownLexer implements IMarkdownLexer {
       
           switch (match[1].length) {
             case 3:
-              type = 'BOLD_ITALIC';
+              type = 'BOLDITALIC';
               replacement = '\0'.repeat(match[0].length);
               break;
             case 2:
@@ -204,8 +204,22 @@ export class MarkdownLexer implements IMarkdownLexer {
                 }
 
                 this.tokens.push({
-                    type,
-                    value: match[2] // The captured content without the markers
+                  type: 'START' + type,
+                  value: ''
+                });
+
+                this.currentState = type;
+                const innerContent = handleOverlappingPatterns(match[2]);
+                if (!this.isNullString(innerContent.trim())) {
+                  this.tokens.push({
+                      type,
+                      value: innerContent // The captured content without the markers
+                  });
+                }
+
+                this.tokens.push({
+                  type: 'END' + type,
+                  value: ''
                 });
 
                 this.currentState = '' + state;
@@ -282,8 +296,8 @@ export class MarkdownLexer implements IMarkdownLexer {
             else
             {
                 this.tokens.push({
-                type: tokenRule.Name.toUpperCase(),
-                value: tokenRule.TrimS ? ((val.match('([^\r\n\t]+\\n[^\r\n\t]+)') || [''])[0]) : val
+                  type: tokenRule.Name.toUpperCase(),
+                  value: tokenRule.TrimS ? ((val.match('([^\r\n\t]+\\n[^\r\n\t]+)') || [''])[0]) : val
                 });
             }
             // Replace the matched token content with placeholders to prevent re-matching

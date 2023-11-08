@@ -53,7 +53,14 @@ export class ASTFactory {
       const node: ASTNode = {} as ASTNode;
       rule.TokenRules.forEach(tokenRule => {
         // The token name in all caps is the property name
-        node[tokenRule.Name.toUpperCase()] = null; // Initialize with null or appropriate value
+        if (tokenRule.AllowMultiple)
+        {
+          node[tokenRule.Name.toUpperCase()] = [];
+        }
+        else
+        {
+          node[tokenRule.Name.toUpperCase()] = null; // Initialize with null or appropriate value
+        }
       });
       node.children = [];
       node["TYPE"] = rule.Name;
@@ -85,7 +92,14 @@ export class ASTFactory {
           const currStack = stack[stack.length - 1];
           const current = currStack.node;
           if (current.hasOwnProperty(token.type)) {
-            current[token.type] = token.value;
+            if (Array.isArray(current[token.type]))
+            {
+              current[token.type].push(token.value);
+            }
+            else
+            {
+              current[token.type] = token.value;
+            }
           }
           else {
             const rule = currStack.rule;

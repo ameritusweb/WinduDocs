@@ -1,0 +1,320 @@
+{
+    "TYPE": "root",
+    "children": [
+      {
+        "HEADERLEVEL": "5",
+        "children": [],
+        "TYPE": "Header",
+        "HEADER": "Header 5"
+      },
+      {
+        "TYPE": "Text",
+        "TEXT": "This is "
+      },
+      {
+        "children": [],
+        "TYPE": "Bold",
+        "BOLD": "bold"
+      },
+      {
+        "TYPE": "Text",
+        "TEXT": " text"
+      },
+      {
+        "TYPE": "Text",
+        "TEXT": "This is "
+      },
+      {
+        "children": [],
+        "TYPE": "Italic",
+        "ITALIC": "italic"
+      },
+      {
+        "TYPE": "Text",
+        "TEXT": " text"
+      },
+      {
+        "TYPE": "Bold",
+        "BOLD": " text"
+      },
+      {
+        "LINKTEXT": "OpenAI",
+        "URL": "https://openai.com",
+        "children": [],
+        "TYPE": "Link"
+      },
+      {
+        "TYPE": "warning",
+        "TITLE": "Attention!",
+        "MODIFIERS": [
+          "--strong",
+          "--emphasis"
+        ],
+        "children": []
+      },
+      {
+        "TABSGROUPTITLE": "Sample Tabs",
+        "children": [
+          {
+            "TABTITLE": "Tab 1",
+            "children": [],
+            "TYPE": "Tab",
+            "TAB": "Content for tab 1"
+          },
+          {
+            "TABTITLE": "Tab 2",
+            "children": [],
+            "TYPE": "Tab",
+            "TAB": "Content for tab 2"
+          }
+        ],
+        "TYPE": "TabsGroup"
+      },
+      {
+        "STRIPEDMODIFIER": null,
+        "INLINEXLSJSXMODIFIER": null,
+        "children": [
+          {
+            "HEADERCELL": [
+              " Header 1 ",
+              " Header 2 ",
+              " Header 3 "
+            ],
+            "children": [],
+            "TYPE": "HeaderRow"
+          },
+          {
+            "ROWCELL": [
+              " Data 1   ",
+              " Data 2   ",
+              " Data 3   "
+            ],
+            "children": [],
+            "TYPE": "Row"
+          },
+          {
+            "ROWCELL": [
+              " Data 4   ",
+              " Data 5   ",
+              " Data 6   "
+            ],
+            "children": [],
+            "TYPE": "Row"
+          }
+        ],
+        "TYPE": "Table"
+      },
+      {
+        "STRIPEDMODIFIER": "--striped",
+        "INLINEXLSJSXMODIFIER": null,
+        "children": [
+          {
+            "HEADERCELL": [
+              " Header 1 ",
+              " Header 2 ",
+              " Header 3 "
+            ],
+            "children": [],
+            "TYPE": "HeaderRow"
+          },
+          {
+            "ROWCELL": [
+              " Data 1   ",
+              " Data 2   ",
+              " Data 3   "
+            ],
+            "children": [],
+            "TYPE": "Row"
+          },
+          {
+            "ROWCELL": [
+              " Data 4   ",
+              " Data 5   ",
+              " Data 6   "
+            ],
+            "children": [],
+            "TYPE": "Row"
+          }
+        ],
+        "TYPE": "Table"
+      },
+      {
+        "ICONLIBRARY": "feather",
+        "ICONCOLOR": "blue-500",
+        "ICONSIZE": "1",
+        "ICONNAME": "alert-circle",
+        "children": [],
+        "TYPE": "Icon"
+      },
+      {
+        "ICONLIBRARY": "hero",
+        "ICONCOLOR": "green-600",
+        "ICONSIZE": "2",
+        "ICONNAME": "academic-cap",
+        "children": [],
+        "TYPE": "Icon"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "TYPE": "CardHeader",
+            "CARDHEADER": "This is my card header."
+          },
+          {
+            "children": [],
+            "TYPE": "CardBody",
+            "CARDBODY": "This is my card body."
+          }
+        ],
+        "TYPE": "Card"
+      },
+      {
+        "TOGGLETYPE": "details-modal",
+        "TOGGLETARGET": "Toggle Details",
+        "children": [],
+        "TYPE": "ToggleButton"
+      },
+      {
+        "CHARTTYPE": "simple-bar",
+        "DATASOURCE": null,
+        "TITLE": "Sales Data",
+        "SUBTITLE": "2023",
+        "REFERENCE": "Ref1",
+        "children": [
+          {
+            "CELLREFERENCESTART": "A1",
+            "CELLREFERENCEEND": "B10",
+            "children": [],
+            "TYPE": "SumRange"
+          }
+        ],
+        "TYPE": "Chart"
+      },
+      {
+        "CHARTTYPE": "simple-pie",
+        "DATASOURCE": null,
+        "TITLE": null,
+        "SUBTITLE": null,
+        "REFERENCE": null,
+        "children": [
+          {
+            "CELLREFERENCESTART": "C1",
+            "CELLREFERENCEEND": "D9",
+            "children": [],
+            "TYPE": "SumRange"
+          }
+        ],
+        "TYPE": "Chart"
+      },
+      {
+        "MODALTYPE": null,
+        "children": [
+          {
+            "children": [],
+            "TYPE": "Bold",
+            "BOLD": "detailed information"
+          }
+        ],
+        "TYPE": "Modal",
+        "MODAL": " that you can show or hide.\n                ===\n                "
+      },
+      {
+        "INLINEXLSJSXMODIFIER": null,
+        "children": [
+          {
+            "INDENTATION": "1",
+            "TREENODECONTENT": null,
+            "TOOLTIP": null,
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "1",
+            "TREENODECONTENT": "src/",
+            "TOOLTIP": null,
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "2",
+            "TREENODECONTENT": "NodeServer/",
+            "TOOLTIP": "Node.js server related files",
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "3",
+            "TREENODECONTENT": "src/",
+            "TOOLTIP": "Node.js source files",
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "3",
+            "TREENODECONTENT": "package.json",
+            "TOOLTIP": "Node.js project dependencies",
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "3",
+            "TREENODECONTENT": "...",
+            "TOOLTIP": null,
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "2",
+            "TREENODECONTENT": null,
+            "TOOLTIP": null,
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "2",
+            "TREENODECONTENT": "ClientApp/",
+            "TOOLTIP": "Frontend TypeScript/CSS/AJAX files",
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "2",
+            "TREENODECONTENT": "...",
+            "TOOLTIP": null,
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "1",
+            "TREENODECONTENT": null,
+            "TOOLTIP": null,
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "1",
+            "TREENODECONTENT": "test/",
+            "TOOLTIP": "Test files for backend and frontend",
+            "children": [],
+            "TYPE": "TreeNode"
+          },
+          {
+            "INDENTATION": "1",
+            "TREENODECONTENT": "LICENSE",
+            "TOOLTIP": "License file",
+            "children": [],
+            "TYPE": "TreeNode"
+          }
+        ],
+        "TYPE": "TreeView"
+      },
+      {
+        "LANGUAGE": "javascript",
+        "children": [],
+        "TYPE": "CodeBlock",
+        "CODEBLOCK": "console.log('Hello, world!');"
+      }
+    ]
+  }
+  

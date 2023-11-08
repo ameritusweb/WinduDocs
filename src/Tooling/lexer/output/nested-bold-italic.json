@@ -8,8 +8,16 @@
     "value": "This is "
   },
   {
-    "type": "BOLD_ITALIC",
+    "type": "STARTBOLDITALIC",
+    "value": ""
+  },
+  {
+    "type": "BOLDITALIC",
     "value": "bold and italic"
+  },
+  {
+    "type": "ENDBOLDITALIC",
+    "value": ""
   },
   {
     "type": "BOLD",

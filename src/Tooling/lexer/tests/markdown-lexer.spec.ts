@@ -68,7 +68,9 @@ describe('MarkdownLexer', () => {
           expect(tokens).toEqual([
             { type: 'STARTBOLD', value: '' },
             { type: 'BOLD', value: 'This is ' },
-            { type: 'BOLD_ITALIC', value: 'bold and italic' },
+            { type: 'STARTBOLDITALIC', value: '' },
+            { type: 'BOLDITALIC', value: 'bold and italic' },
+            { type: 'ENDBOLDITALIC', value: '' },
             { type: 'BOLD', value: ' text' },
             { type: 'ENDBOLD', value: '' },
           ]);
@@ -101,7 +103,7 @@ describe('MarkdownLexer', () => {
               { type: 'STARTCUSTOMALERT', value: '' },
               { type: 'TYPE', value: 'warning' },
               { type: 'TITLE', value: 'Attention!' },
-              { type: 'MODIFIERS', value: '--strong' },
+              { type: 'MODIFIERS', value: '--strong'},
               { type: 'MODIFIERS', value: '--emphasis' },
               { type: 'ENDCUSTOMALERT', value: '' }
             ]);
@@ -367,7 +369,9 @@ This is my card body.
                     expect(tokens).toEqual([
                         expect.objectContaining({ type: 'STARTMODAL', value: '' }),
                       expect.objectContaining({ type: 'MODAL', value: expect.stringContaining('Here') }),
+                      expect.objectContaining({ type: 'STARTBOLD', value: '' }),
                       expect.objectContaining({ type: 'BOLD', value: 'detailed information' }),
+                      expect.objectContaining({ type: 'ENDBOLD', value: '' }),
                       expect.objectContaining({ type: 'MODAL', value: expect.stringContaining('show or hide') }),
                       expect.objectContaining({ type: 'ENDMODAL', value: '' })
                     ]);
