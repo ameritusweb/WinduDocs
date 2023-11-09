@@ -11,6 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "cwd": "${workspaceFolder}/src/tooling/lexer",
             "program": "${workspaceFolder}/src/tooling/lexer/src/main.ts",
             "preLaunchTask": "npm: build - src/Tooling/lexer",
             "outFiles": ["${workspaceFolder}/src/tooling/lexer/dist/**/*.js"],
@@ -23,6 +24,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "cwd": "${workspaceFolder}/src/tooling/parser",
             "program": "${workspaceFolder}/src/tooling/parser/src/main.ts",
             "preLaunchTask": "npm: build - src/Tooling/parser",
             "outFiles": ["${workspaceFolder}/src/tooling/parser/dist/**/*.js"],

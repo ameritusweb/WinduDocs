@@ -2,10 +2,14 @@ import hljs from 'highlight.js';
 import { readSvgFiles, writeFile } from './generators/icons';
 import * as fs from 'fs/promises';
 import { parseDsl } from './generators/parse-dsl';
+import { convertJSX } from './generators/convert-jsx.js';
 
 console.log("Hello, TypeScript with Nodemon!!");
 
-parseDsl();
+const jsx = convertJSX('..\\..\\src\\jsx\\link.jsx');
+
+console.log(jsx);
+//parseDsl();
 
 /*
 async function main() {
