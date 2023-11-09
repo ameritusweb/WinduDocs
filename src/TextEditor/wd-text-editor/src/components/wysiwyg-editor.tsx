@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 declare const Prism: typeof import('prismjs');
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useTextOperations } from '../hooks/use-text-operations';
 import './wysiwyg-editor.css';
 
@@ -18,15 +18,50 @@ export const WysiwygEditor: React.FC = () => {
 
   // ... rest of the component code
 
-  const postBackspace = (div: HTMLDivElement) => {
+  useEffect(() => {
+    if (contentEditableRef.current)
+    {
+        contentEditableRef.current.innerHTML = '<div></div>';
+    }
+  }, []);
+
+  const postBackspace = (div: HTMLDivElement, nodeRef: Node, offset: number) => {
     
     const nodes = div.childNodes;
-    const node = nodes[0];
+    const node = nodes[1];
     if (node && node.firstChild && node.firstChild.nodeName === 'BR')
     {
         const parent = node.firstChild.parentElement;
         const newNode = document.createTextNode('');
         parent?.replaceChild(newNode, node.firstChild);
+        focusOnNode(div, newNode);
+    }
+  }
+
+  const postEnter = (div: HTMLDivElement) => {
+    
+    const selection = window.getSelection();
+    if (!selection)
+    {
+        return;
+    }
+
+    const range = selection.getRangeAt(0);
+    const node = range.startContainer;
+    if (node && node.firstChild && node.firstChild.nodeName === 'BR')
+    {
+        const parent = node;
+        const grandparent = node.parentElement;
+        const newNode = document.createTextNode('');
+        const firstChild = node.firstChild;
+        // parent?.replaceChild(newNode, node.firstChild);
+        grandparent?.insertBefore(firstChild, parent!);
+        parent?.appendChild(newNode);
+        const prev = firstChild.previousSibling as Element;
+        if (prev.outerHTML === '<div><br></div>')
+        {
+            prev.parentElement?.insertBefore(prev.firstChild!, prev);
+        }
         focusOnNode(div, newNode);
     }
   }
@@ -46,19 +81,50 @@ export const WysiwygEditor: React.FC = () => {
     }
 
     if (event.key === 'Backspace') {
-        setTimeout(postBackspace.bind(this, contentEditableRef.current), 1);
+        if (contentEditableRef.current.childNodes.length <= 2)
+        {
+            if (contentEditableRef.current.lastElementChild 
+                && 
+                contentEditableRef.current.lastElementChild.firstChild
+                &&
+                contentEditableRef.current.lastElementChild.firstChild.textContent?.length === 0)
+                {
+                    event.preventDefault();
+                    //contentEditableRef.current.lastElementChild.firstChild.textContent = '';
+                    contentEditableRef.current.focus();
+                }
+                else if (contentEditableRef.current.lastElementChild
+                    &&
+                    !contentEditableRef.current.lastElementChild.firstChild)
+                    {
+                        event.preventDefault();
+
+                        contentEditableRef.current.focus();
+                    }
+        }
+        const selection = window.getSelection();
+        if (selection)
+        {
+            const range = selection.getRangeAt(0);
+            const container = range.startContainer;
+            const offset = range.startOffset;
+            setTimeout(postBackspace.bind(this, contentEditableRef.current, container, offset), 1);
+        }
         return;
     }
 
     if (event.key === 'Enter') {
+        setTimeout(postEnter.bind(this, contentEditableRef.current), 1);
         return;
     }
 
-    event.preventDefault();
+    if (event.key.length === 1) {
+        event.preventDefault();
 
-    if (state === 'h1')
-    {
-        makeH1(contentEditableRef.current, event.key);
+        if (state === 'h1')
+        {
+            makeH1(contentEditableRef.current, event.key);
+        }
     }
 
   };
@@ -91,7 +157,15 @@ export const WysiwygEditor: React.FC = () => {
             const start = range.startOffset;
             const container = range.startContainer;
             
-            if (editor.childNodes.length > 0)
+            if (container.nodeName === 'DIV')
+            {
+                const h1 = document.createElement('h1');
+                const text = document.createTextNode(`${key}`);
+                h1.appendChild(text);
+                editor.appendChild(h1);
+                focusOnNode(editor, text);
+            }
+            else if (Array.from(editor.childNodes).slice(1).length > 0)
             {
                 const node = container as Element | Text;
                 if (node.nodeValue)
