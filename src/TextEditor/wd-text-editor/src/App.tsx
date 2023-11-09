@@ -1,8 +1,8 @@
 declare const Prism: typeof import('prismjs');
 import './prism/prism.js'
 import './App.css'
-import { CodeEditor } from './components/code-editor';
 import { Toolbar } from './components/toolbar';
+import { WysiwygEditor } from './components/wysiwyg-editor.js';
 
 function App() {
 
@@ -14,7 +14,7 @@ function App() {
         <div className="card inline-flex m-12 w-[60rem] h-[90rem] bg-base-100 shadow-xl">
           <div className="card-body items-center text-center">
             <div className="w-full">
-              <CodeEditor />
+              <WysiwygEditor />
             </div>
           </div>
         </div>
