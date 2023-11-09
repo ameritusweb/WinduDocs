@@ -34,8 +34,19 @@
         "TEXT": " text"
       },
       {
+        "children": [
+          {
+            "children": [],
+            "TYPE": "BoldItalic",
+            "BOLDITALIC": "bold and italic"
+          },
+          {
+            "TYPE": "Text",
+            "TEXT": " text"
+          }
+        ],
         "TYPE": "Bold",
-        "BOLD": " text"
+        "BOLD": "This is "
       },
       {
         "LINKTEXT": "OpenAI",
@@ -44,7 +55,7 @@
         "TYPE": "Link"
       },
       {
-        "TYPE": "warning",
+        "TYPE": "CustomAlert",
         "TITLE": "Attention!",
         "MODIFIERS": [
           "--strong",
@@ -208,16 +219,20 @@
         "TYPE": "Chart"
       },
       {
-        "MODALTYPE": null,
+        "MODALTYPE": "-details-modal",
         "children": [
           {
             "children": [],
             "TYPE": "Bold",
             "BOLD": "detailed information"
+          },
+          {
+            "TYPE": "Text",
+            "TEXT": " that you can show or hide."
           }
         ],
         "TYPE": "Modal",
-        "MODAL": " that you can show or hide.\n                ===\n                "
+        "MODAL": " \n                Here is the "
       },
       {
         "INLINEXLSJSXMODIFIER": null,

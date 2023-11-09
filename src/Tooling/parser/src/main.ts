@@ -7,14 +7,14 @@ import { bundle } from './generators/bundle';
 
 console.log("Hello, TypeScript with Nodemon!!");
 
-//bundle();
+bundle();
 
 /*
 const jsx = convertJSX('..\\..\\src\\jsx\\link.jsx');
 
 console.log(jsx);
 */
-parseDsl();
+//parseDsl();
 
 /*
 async function main() {

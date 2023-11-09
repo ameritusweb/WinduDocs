@@ -20,10 +20,18 @@ export class JsBundler {
     // Read and append each required function to the bundle
     requiredFunctions.forEach((func) => {
       const fileName: string | undefined = this.functionMappings[func];
-      const filePath = path.join(__dirname, `..\\templates\\${fileName}`);
-      if (filePath) {
-        const functionContent: string = fs.readFileSync(filePath, 'utf-8');
-        bundle += functionContent + '\n';
+      if (fileName) {
+        const filePath = path.join(__dirname, `..\\..\\src\\templates\\${fileName}`);
+        if (filePath) {
+            const functionContent: string = fs.readFileSync(filePath, 'utf-8');
+            bundle += `
+            ${functionContent}
+            `;
+        }
+      }
+      else
+      {
+        console.log(`must add ${func}`);
       }
     });
 
