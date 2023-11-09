@@ -1,4 +1,6 @@
 function createTabTitle(rule) {
 
-    return `createElement("div", { "className": "tab tab-bordered" }, "${escapeStringForJs(rule.TABTITLE)}"`;
+    return `createElement("div", { "class": "tab tab-bordered" }, "${escapeStringForJs(rule.TABTITLE)}"`;
 }
+
+WD.createTabTitle = createTabTitle;

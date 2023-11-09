@@ -101,7 +101,7 @@ describe('MarkdownLexer', () => {
 
             expect(tokens).toEqual([
               { type: 'STARTCUSTOMALERT', value: '' },
-              { type: 'TYPE', value: 'warning' },
+              { type: 'ALERTTYPE', value: 'warning' },
               { type: 'TITLE', value: 'Attention!' },
               { type: 'MODIFIERS', value: '--strong'},
               { type: 'MODIFIERS', value: '--emphasis' },

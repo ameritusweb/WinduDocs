@@ -12,3 +12,5 @@ function createElement(tag, props, ...children) {
     html += `</${tag}>`;
     return html;
   }
+
+  WD.Element = createElement;

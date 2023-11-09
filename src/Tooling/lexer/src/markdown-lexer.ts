@@ -101,11 +101,11 @@ export class MarkdownLexer implements IMarkdownLexer {
     }
   }
 
-  emitAnyPlainText() {
+  emitAnyPlainText(forceText?: boolean) {
     if (this.plainTextBuffer.trim().length > 0) {
         const tokenType = this.getLastState() !== 'initial' ? this.getLastState().toUpperCase() : 'TEXT';
         // If there's accumulated plain text, emit it as a TEXT token
-        this.emitToken(tokenType, this.plainTextBuffer, () => { this.plainTextBuffer = '';  });
+        this.emitToken(forceText ? 'TEXT' : tokenType, this.plainTextBuffer, () => { this.plainTextBuffer = '';  });
     }
   }
 
@@ -226,8 +226,9 @@ export class MarkdownLexer implements IMarkdownLexer {
 
                 intermediateContent = content.substring(match.index + match[0].length);
                 if (intermediateContent) {
+
                     this.pushInput(intermediateContent);
-                    this.tokenize();
+                    this.tokenize(rule, true);
                     this.popInput();
                 }
 
@@ -239,23 +240,6 @@ export class MarkdownLexer implements IMarkdownLexer {
       
         return content;
       };      
-
-      const countOccurrences = (string: string, subString: string) => {
-        if (subString.length <= 0) return (string.length + 1);
-    
-        let n = 0,
-            pos = 0,
-            step = subString.length;
-    
-        while (true) {
-            pos = string.indexOf(subString, pos);
-            if (pos >= 0) {
-                ++n;
-                pos += step;
-            } else break;
-        }
-        return n;
-    }
 
     // Helper method to apply token rules
     const applyTokenRules = (content: string, tokenRules: TokenRule[]): string => {
@@ -349,11 +333,11 @@ export class MarkdownLexer implements IMarkdownLexer {
       let endMatch = this.customExec(inputSubstring, rule.EndsWith, rule.ExcludeEnding); // endPattern.exec(inputSubstring);
       let content = inputSubstring.slice(0, endMatch && rule.EndsWith ? endMatch.index : inputSubstring.length);
 
+       // Apply the token rules to the remaining content
+       content = applyTokenRules(content, rule.TokenRules);
+       
       // Process the content for overlapping patterns
       content = handleOverlappingPatterns(content);
-
-      // Apply the token rules to the remaining content
-      content = applyTokenRules(content, rule.TokenRules);
 
       // Unescape any escaped characters in the tokens we've collected so far
       this.tokens = unescapeTokens(this.tokens);
@@ -510,7 +494,7 @@ export class MarkdownLexer implements IMarkdownLexer {
   }
     
     // The tokenize method now safely calls the handler based on the current state
-    tokenize(dslRule?: DSLRule): Token[] {
+    tokenize(dslRule?: DSLRule, shouldForceText?: boolean): Token[] {
         const input = this.getCurrentInput();
         while (this.getCurrentPosition() < input.length) {
             const handler: StateHandler = this.states[this.currentState];
@@ -523,7 +507,7 @@ export class MarkdownLexer implements IMarkdownLexer {
 
         if (!dslRule || dslRule.IsTokenizable || dslRule.IsTokenizable === undefined)
         {
-            this.emitAnyPlainText();
+            this.emitAnyPlainText(shouldForceText);
         }
 
         return this.tokens;

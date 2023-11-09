@@ -1,14 +1,13 @@
 import { dslRules } from "./dsl-rules";
 import { MarkdownLexer } from "./markdown-lexer";
 
-const input = `| Header 1 | Header 2 | Header 3 | --striped
-          |:--------:|:--------:|:--------:|
-          | Data 1   | Data 2   | Data 3   |
-          | Data 4   | Data 5   | Data 6   |`;
-          
-              const lexer = new MarkdownLexer(input, dslRules);
-              const tokens = lexer.tokenize();
-
+const input = `=== modal-details-modal
+                Here is the **detailed information** that you can show or hide.
+                ===
+                `;
+                const lexer = new MarkdownLexer(input, dslRules); // Assuming the dslRules include the modal definition
+                const tokens = lexer.tokenize();
+                
 console.log('complete');
 /*
 import * as fs from 'fs/promises';

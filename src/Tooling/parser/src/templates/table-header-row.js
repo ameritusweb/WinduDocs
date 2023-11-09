@@ -4,3 +4,5 @@ function createTableHeaderRow(rule) {
 
     return `createElement("tr", null, "${childrenStr}")`;
 }
+
+WD.createTableHeaderRow = createTableHeaderRow;

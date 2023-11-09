@@ -31,3 +31,5 @@ function createHighlightedElement(codeBlock, language) {
   return createElementCode;
 
 }
+
+WD.createHighlightedElement = createHighlightedElement;

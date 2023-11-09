@@ -3,13 +3,18 @@ import { readSvgFiles, writeFile } from './generators/icons';
 import * as fs from 'fs/promises';
 import { parseDsl } from './generators/parse-dsl';
 import { convertJSX } from './generators/convert-jsx.js';
+import { bundle } from './generators/bundle';
 
 console.log("Hello, TypeScript with Nodemon!!");
 
+//bundle();
+
+/*
 const jsx = convertJSX('..\\..\\src\\jsx\\link.jsx');
 
 console.log(jsx);
-//parseDsl();
+*/
+parseDsl();
 
 /*
 async function main() {

@@ -4,8 +4,12 @@
     "value": ""
   },
   {
+    "type": "MODALTYPE",
+    "value": "-details-modal"
+  },
+  {
     "type": "MODAL",
-    "value": "-details-modal\n                Here is the "
+    "value": " \n                Here is the "
   },
   {
     "type": "STARTBOLD",
@@ -20,8 +24,8 @@
     "value": ""
   },
   {
-    "type": "MODAL",
-    "value": " that you can show or hide.\n                ===\n                "
+    "type": "TEXT",
+    "value": " that you can show or hide."
   },
   {
     "type": "ENDMODAL",

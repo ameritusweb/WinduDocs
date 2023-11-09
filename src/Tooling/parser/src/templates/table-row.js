@@ -4,3 +4,5 @@ function createTableRow(rule) {
 
     return `createElement("tr", null, "${childrenStr}")`;
 }
+
+WD.createTableRow = createTableRow;

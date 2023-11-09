@@ -14,3 +14,7 @@ export type ASTNode = {
     TYPE: string;
     children?: ASTNode[];
   };
+  
+export interface FunctionMappings {
+    [key: string]: string;
+  }

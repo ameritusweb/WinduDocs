@@ -70,7 +70,7 @@ export const dslRules: DSLRule[] = [
         "EndsWith": "\n",
         "TokenRules": [
           {
-            "Name": "Type",
+            "Name": "AlertType",
             "Pattern": "(info|warning|error)",
             "IsRequired": true
           },
@@ -228,11 +228,12 @@ export const dslRules: DSLRule[] = [
       {
         "Name": "Modal",
         "StartsWith": "=== modal",
-        "EndsWith": "\n===",
+        "EndsWith": "\n[\\s]*===",
         "TokenRules": [
             {
                 "Name": "ModalType",
-                "Pattern": "(-[a-zA-Z0-9-]+)",
+                "Pattern": "(-[a-z|A-Z|0-9|-]+)[\\s]*\n",
+                "MatchCaptureGroup": 1,
                 "IsRequired": true
               }
         ],

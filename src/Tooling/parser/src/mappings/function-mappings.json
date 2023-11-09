@@ -1,0 +1,8 @@
+{
+    "Bold": "bold.js",
+    "Italic": "italic.js",
+    "TreeView": "tree-view.js",
+    "TreeNode": "tree-node.js",
+    "Card": "card.js",
+    "root": "root.js"
+}

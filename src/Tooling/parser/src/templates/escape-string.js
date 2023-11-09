@@ -6,3 +6,5 @@ function escapeStringForJs(str) {
               .replace(/\r/g, '\\r')
               .replace(/\t/g, '\\t');
 }
+
+WD.escapeStringForJs = escapeStringForJs;
