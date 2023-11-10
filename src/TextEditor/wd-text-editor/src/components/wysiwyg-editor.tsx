@@ -35,6 +35,13 @@ export const WysiwygEditor: React.FC = () => {
         const newNode = document.createTextNode('');
         parent?.replaceChild(newNode, node.firstChild);
         focusOnNode(div, newNode);
+        console.log('a');
+    }
+    else if (node && !node.firstChild && node === nodeRef && node.nodeName === 'DIV')
+    {
+        const br = document.createElement('br');
+        node.parentElement?.insertBefore(br, node);
+        console.log('b');
     }
   }
 
@@ -56,13 +63,13 @@ export const WysiwygEditor: React.FC = () => {
         const firstChild = node.firstChild;
         // parent?.replaceChild(newNode, node.firstChild);
         grandparent?.insertBefore(firstChild, parent!);
-        parent?.appendChild(newNode);
+        // parent?.appendChild(newNode);
         const prev = firstChild.previousSibling as Element;
         if (prev.outerHTML === '<div><br></div>')
         {
             prev.parentElement?.insertBefore(prev.firstChild!, prev);
         }
-        focusOnNode(div, newNode);
+        focusOnNode(div, parent);
     }
   }
 
@@ -81,34 +88,69 @@ export const WysiwygEditor: React.FC = () => {
     }
 
     if (event.key === 'Backspace') {
-        if (contentEditableRef.current.childNodes.length <= 2)
-        {
-            if (contentEditableRef.current.lastElementChild 
-                && 
-                contentEditableRef.current.lastElementChild.firstChild
-                &&
-                contentEditableRef.current.lastElementChild.firstChild.textContent?.length === 0)
-                {
-                    event.preventDefault();
-                    //contentEditableRef.current.lastElementChild.firstChild.textContent = '';
-                    contentEditableRef.current.focus();
-                }
-                else if (contentEditableRef.current.lastElementChild
-                    &&
-                    !contentEditableRef.current.lastElementChild.firstChild)
-                    {
-                        event.preventDefault();
-
-                        contentEditableRef.current.focus();
-                    }
-        }
         const selection = window.getSelection();
         if (selection)
         {
             const range = selection.getRangeAt(0);
-            const container = range.startContainer;
+            let container = range.startContainer;
+            if (container.hasChildNodes() && container.childNodes.length === 1)
+            {
+                container = container.firstChild as Node;
+            }
             const offset = range.startOffset;
+
+            const grandparent = container.parentNode?.parentNode;
+            if (grandparent && (grandparent.textContent || '').length === 1)
+            {
+                container.parentElement?.remove();
+                const br = document.createElement('br');
+                grandparent?.parentElement?.insertBefore(br, grandparent);
+                event.preventDefault();
+                return;
+            }
+
+            const prev = container.previousSibling;
+            if (container.nodeName === 'DIV' && !container.hasChildNodes() && prev && prev.nodeName === 'BR')
+            {
+                if (contentEditableRef.current.childNodes.length > 2)
+                {
+                    (container as Element).remove();
+                    (prev as Element).remove();
+                }   
+                event.preventDefault();
+                return;
+            }
+
+            if (container === contentEditableRef.current)
+            {
+                const aa = 1;
+            }
+
+            if (contentEditableRef.current.childNodes.length <= 2)
+            {
+                if (contentEditableRef.current.lastElementChild 
+                    && 
+                    contentEditableRef.current.lastElementChild.firstChild
+                    &&
+                    contentEditableRef.current.lastElementChild.firstChild.textContent?.length === 1)
+                    {
+                        event.preventDefault();
+                        contentEditableRef.current.lastElementChild.firstChild.remove();
+                        //contentEditableRef.current.lastElementChild.firstChild.textContent = '';
+                        contentEditableRef.current.focus();
+                    }
+                    else if (contentEditableRef.current.lastElementChild
+                        &&
+                        !contentEditableRef.current.lastElementChild.firstChild)
+                        {
+                            event.preventDefault();
+
+                            contentEditableRef.current.focus();
+                        }
+            }
+
             setTimeout(postBackspace.bind(this, contentEditableRef.current, container, offset), 1);
+            
         }
         return;
     }
@@ -129,10 +171,35 @@ export const WysiwygEditor: React.FC = () => {
 
   };
 
-  function focusOnNode(editor: HTMLDivElement, text: Text) {
+  function focusOnNode(editor: HTMLDivElement, node: Node, offset?: number) {
+    let length = editor.childNodes.length;
+    while (length--)
+    {
+        const node1 = editor.childNodes[length];
+        if (node1.nodeName === 'BR')
+        {
+            if (node1.nextSibling?.hasChildNodes())
+            {
+                node1.remove();
+            }
+        }
+        if (length > 0 && node1.nodeName === 'DIV' && !node1.hasChildNodes() && node1.previousSibling && node1.previousSibling.nodeName !== 'BR')
+        {
+            node1.remove();
+        }
+    }
+
     const range = new Range();
-                range.setStartAfter(text);
-                range.setEndAfter(text);
+        if (offset)
+        {
+            range.setStart(node, offset + 1);
+            range.setEnd(node, offset + 1);
+        }
+        else
+        {
+                range.setStartAfter(node);
+                range.setEndAfter(node);
+        }
 
                 const selection = window.getSelection();
                 selection?.removeAllRanges();
@@ -156,42 +223,77 @@ export const WysiwygEditor: React.FC = () => {
             const range = selection.getRangeAt(0);
             const start = range.startOffset;
             const container = range.startContainer;
-            
-            if (container.nodeName === 'DIV')
+            let startNode: Node | null = null;
+            if (container.childNodes.length === 0)
+            {
+                startNode = container;
+            }
+            else if (container.childNodes.length <= start)
+            {
+                startNode = container.childNodes[start - 1];
+            }
+            else if (container.childNodes[start].nodeName === 'BR')
+            {
+                startNode = container.childNodes[start].nextSibling;
+            }
+            else
+            {
+                startNode = container.childNodes[start]; 
+            }
+
+            if (!startNode)
+            {
+                return;
+            }
+
+            if (container.nodeName === 'DIV' && startNode.nodeName !== '#text')
             {
                 const h1 = document.createElement('h1');
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
-                editor.appendChild(h1);
+                startNode.appendChild(h1);
                 focusOnNode(editor, text);
-            }
-            else if (Array.from(editor.childNodes).slice(1).length > 0)
-            {
-                const node = container as Element | Text;
-                if (node.nodeValue)
-                {
-                    const length = node.nodeValue.length;
-                    const html = node.nodeValue.slice(0, start) + 
-                                    key + 
-                                    (start === length ? '' : node.nodeValue.slice(start));
-                    node.nodeValue = html;
-                    focusOnNode(editor, node as Text);
-                }
-                else
-                {
-                    //const node = editor.childNodes[start === 0 ? 0 : start - 1];
-                    const text = node.childNodes[start === 0 ? 0 : start - 1] as Text;
-                    text.textContent = text.textContent + key;
-                    focusOnNode(editor, text);
-                }
             }
             else
             {
                 const h1 = document.createElement('h1');
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
-                editor.appendChild(h1);
-                focusOnNode(editor, text);
+                const child = startNode;
+                if (container.nodeName === 'H1')
+                {
+                    const text = container.childNodes[start === 0 ? 0 : start - 1] as Text;
+                    text.textContent = text.textContent + key;
+                    focusOnNode(editor, text);
+                }
+                else if (container.nodeName === '#text')
+                {
+                    if (container.textContent)
+                        container.textContent = container.textContent.substring(0, start) + key + container.textContent.substring(start);
+                    else
+                        container.textContent = container.textContent + key;
+                    focusOnNode(editor, container as Text, start);
+                }
+                else if (child.nodeName === '#text')
+                {
+                    if (child.textContent)
+                        child.textContent = child.textContent.substring(0, start) + key + child.textContent.substring(start);
+                    else
+                        child.textContent = child.textContent + key;
+                    focusOnNode(editor, text, start);
+                }
+                else if (child.childNodes.length === 0)
+                {
+                    child.appendChild(h1);
+                    focusOnNode(editor, h1.firstChild as Text);
+                }
+                else
+                {
+                    const text = child.childNodes[start === 0 ? 0 : start - 1] as Text;
+                    text.textContent = text.textContent + key;
+                    focusOnNode(editor, text);
+                }
+                
                 
             }
           }
