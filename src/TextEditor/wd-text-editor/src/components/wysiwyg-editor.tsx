@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 declare const Prism: typeof import('prismjs');
 import React, { useRef, useState, useEffect } from 'react';
-import { useTextOperations } from '../hooks/use-text-operations';
 import './wysiwyg-editor.css';
 
 interface CurrentState {
@@ -12,16 +11,38 @@ export const WysiwygEditor: React.FC = () => {
   const [states, setStates] = useState<CurrentState[]>([]);
   const [state, setState] = useState<string>('h1');
   const contentEditableRef = useRef<HTMLDivElement>(null);
-  const {
-    handleDefault
-  } = useTextOperations(contentEditableRef);
-
   // ... rest of the component code
 
   useEffect(() => {
     if (contentEditableRef.current)
     {
-        contentEditableRef.current.innerHTML = '<div></div>';
+        contentEditableRef.current.innerHTML = `<h1 id="sample-markdown">Sample Markdown</h1>
+
+
+
+
+<p>This is a paragraph with <strong>bold</strong> text and <em>italic</em> text.</p>
+<h2 id="table">Table</h2>
+
+
+<table>
+<thead>
+<tr>
+<th><p>Header 1</p></th>
+<th><p>Header 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p>Row 1</p></td>
+<td><p>Data 1</p></td>
+</tr>
+<tr>
+<td><p>Row 2</p></td>
+<td><p>Data 2</p></td>
+</tr>
+</tbody>
+</table>`;
     }
   }, []);
 
@@ -187,10 +208,6 @@ export const WysiwygEditor: React.FC = () => {
           }
     }
   }
-
-  const onInput = (event: React.FormEvent<HTMLDivElement>) => {
-
-  };
   
   return (
     <div className='relative w-full' style={{ padding: '10px', minHeight: '30px'}}>
@@ -198,7 +215,6 @@ export const WysiwygEditor: React.FC = () => {
         contentEditable
         ref={contentEditableRef}
         className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_5rem] cursor-text text-left text-base"
-        onInput={onInput}
         onKeyDown={onKeyDown}
         id="contentEditable"
         style={{
