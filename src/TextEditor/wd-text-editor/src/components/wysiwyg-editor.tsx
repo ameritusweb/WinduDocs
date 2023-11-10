@@ -25,54 +25,6 @@ export const WysiwygEditor: React.FC = () => {
     }
   }, []);
 
-  const postBackspace = (div: HTMLDivElement, nodeRef: Node, offset: number) => {
-    
-    const nodes = div.childNodes;
-    const node = nodes[1];
-    if (node && node.firstChild && node.firstChild.nodeName === 'BR')
-    {
-        const parent = node.firstChild.parentElement;
-        const newNode = document.createTextNode('');
-        parent?.replaceChild(newNode, node.firstChild);
-        focusOnNode(div, newNode);
-        console.log('a');
-    }
-    else if (node && !node.firstChild && node === nodeRef && node.nodeName === 'DIV')
-    {
-        const br = document.createElement('br');
-        node.parentElement?.insertBefore(br, node);
-        console.log('b');
-    }
-  }
-
-  const postEnter = (div: HTMLDivElement) => {
-    
-    const selection = window.getSelection();
-    if (!selection)
-    {
-        return;
-    }
-
-    const range = selection.getRangeAt(0);
-    const node = range.startContainer;
-    if (node && node.firstChild && node.firstChild.nodeName === 'BR')
-    {
-        const parent = node;
-        const grandparent = node.parentElement;
-        const newNode = document.createTextNode('');
-        const firstChild = node.firstChild;
-        // parent?.replaceChild(newNode, node.firstChild);
-        grandparent?.insertBefore(firstChild, parent!);
-        // parent?.appendChild(newNode);
-        const prev = firstChild.previousSibling as Element;
-        if (prev.outerHTML === '<div><br></div>')
-        {
-            prev.parentElement?.insertBefore(prev.firstChild!, prev);
-        }
-        focusOnNode(div, parent);
-    }
-  }
-
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!contentEditableRef.current)
     {
@@ -97,7 +49,6 @@ export const WysiwygEditor: React.FC = () => {
             {
                 container = container.firstChild as Node;
             }
-            const offset = range.startOffset;
 
             const grandparent = container.parentNode?.parentNode;
             if (grandparent && (grandparent.textContent || '').length === 1)
@@ -106,6 +57,7 @@ export const WysiwygEditor: React.FC = () => {
                 const br = document.createElement('br');
                 grandparent?.parentElement?.insertBefore(br, grandparent);
                 event.preventDefault();
+                
                 return;
             }
 
@@ -118,45 +70,10 @@ export const WysiwygEditor: React.FC = () => {
                     (prev as Element).remove();
                 }   
                 event.preventDefault();
+                
                 return;
             }
-
-            if (container === contentEditableRef.current)
-            {
-                const aa = 1;
-            }
-
-            if (contentEditableRef.current.childNodes.length <= 2)
-            {
-                if (contentEditableRef.current.lastElementChild 
-                    && 
-                    contentEditableRef.current.lastElementChild.firstChild
-                    &&
-                    contentEditableRef.current.lastElementChild.firstChild.textContent?.length === 1)
-                    {
-                        event.preventDefault();
-                        contentEditableRef.current.lastElementChild.firstChild.remove();
-                        //contentEditableRef.current.lastElementChild.firstChild.textContent = '';
-                        contentEditableRef.current.focus();
-                    }
-                    else if (contentEditableRef.current.lastElementChild
-                        &&
-                        !contentEditableRef.current.lastElementChild.firstChild)
-                        {
-                            event.preventDefault();
-
-                            contentEditableRef.current.focus();
-                        }
-            }
-
-            setTimeout(postBackspace.bind(this, contentEditableRef.current, container, offset), 1);
-            
         }
-        return;
-    }
-
-    if (event.key === 'Enter') {
-        setTimeout(postEnter.bind(this, contentEditableRef.current), 1);
         return;
     }
 
@@ -172,23 +89,6 @@ export const WysiwygEditor: React.FC = () => {
   };
 
   function focusOnNode(editor: HTMLDivElement, node: Node, offset?: number) {
-    let length = editor.childNodes.length;
-    while (length--)
-    {
-        const node1 = editor.childNodes[length];
-        if (node1.nodeName === 'BR')
-        {
-            if (node1.nextSibling?.hasChildNodes())
-            {
-                node1.remove();
-            }
-        }
-        if (length > 0 && node1.nodeName === 'DIV' && !node1.hasChildNodes() && node1.previousSibling && node1.previousSibling.nodeName !== 'BR')
-        {
-            node1.remove();
-        }
-    }
-
     const range = new Range();
         if (offset)
         {
@@ -232,7 +132,7 @@ export const WysiwygEditor: React.FC = () => {
             {
                 startNode = container.childNodes[start - 1];
             }
-            else if (container.childNodes[start].nodeName === 'BR')
+            else if (container.childNodes[start].nodeName === 'BR' && container.childNodes[start].nextSibling)
             {
                 startNode = container.childNodes[start].nextSibling;
             }
@@ -246,7 +146,15 @@ export const WysiwygEditor: React.FC = () => {
                 return;
             }
 
-            if (container.nodeName === 'DIV' && startNode.nodeName !== '#text')
+            if (startNode.nodeName === 'BR')
+            {
+                const h1 = document.createElement('h1');
+                const text = document.createTextNode(`${key}`);
+                h1.appendChild(text);
+                startNode.parentNode?.replaceChild(h1, startNode);
+                focusOnNode(editor, text);
+            }
+            else if (container.nodeName === 'DIV' && startNode.nodeName !== '#text')
             {
                 const h1 = document.createElement('h1');
                 const text = document.createTextNode(`${key}`);
@@ -259,12 +167,12 @@ export const WysiwygEditor: React.FC = () => {
                 const h1 = document.createElement('h1');
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
-                const child = startNode;
                 if (container.nodeName === 'H1')
                 {
                     const text = container.childNodes[start === 0 ? 0 : start - 1] as Text;
                     text.textContent = text.textContent + key;
                     focusOnNode(editor, text);
+                    
                 }
                 else if (container.nodeName === '#text')
                 {
@@ -273,36 +181,14 @@ export const WysiwygEditor: React.FC = () => {
                     else
                         container.textContent = container.textContent + key;
                     focusOnNode(editor, container as Text, start);
+                    
                 }
-                else if (child.nodeName === '#text')
-                {
-                    if (child.textContent)
-                        child.textContent = child.textContent.substring(0, start) + key + child.textContent.substring(start);
-                    else
-                        child.textContent = child.textContent + key;
-                    focusOnNode(editor, text, start);
-                }
-                else if (child.childNodes.length === 0)
-                {
-                    child.appendChild(h1);
-                    focusOnNode(editor, h1.firstChild as Text);
-                }
-                else
-                {
-                    const text = child.childNodes[start === 0 ? 0 : start - 1] as Text;
-                    text.textContent = text.textContent + key;
-                    focusOnNode(editor, text);
-                }
-                
-                
             }
           }
     }
   }
 
   const onInput = (event: React.FormEvent<HTMLDivElement>) => {
-    // Capturing innerHTML to include structural HTML like <div> and <br>
-    // const html = (event.currentTarget as HTMLDivElement).innerHTML;
 
   };
   
