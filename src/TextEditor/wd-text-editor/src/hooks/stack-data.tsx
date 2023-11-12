@@ -1,35 +1,34 @@
 import { ASTNode } from "./use-stack";
 
 interface StackDataType {
-    _stacks: (ASTNode[])[];
-    _stackHeight: number;
+    stacks: (ASTNode[])[];
+    stackHeight: number;
+    maxStackHeight: number;
+    preState: string;
+    lastNode: Text | null;
+    lastChangedAST: ASTNode | null;
+    lastCharacter: string | null;
 }
 
-class StackData {
+class StackData implements StackDataType {
 
-    // Shared properties
-    get stacks(): (ASTNode[])[]
-    {
-        return ((StackData.prototype as any) as StackDataType)._stacks;
-    }
-    
-    set stacks(nodes: (ASTNode[])[]) {
-        ((StackData.prototype as any) as StackDataType)._stacks = nodes;
-    }
-
-    get stackHeight(): number
-    {
-        return ((StackData.prototype as any) as StackDataType)._stackHeight;
-    }
-    
-    set stackHeight(height: number) {
-        ((StackData.prototype as any) as StackDataType)._stackHeight = height;
+    constructor(stacks: (ASTNode[])[], stackHeight: number, maxStackHeight: number, preState: string, lastNode: Text | null, lastChangedAST: ASTNode | null, lastCharacter: string | null) {
+        this.stacks = stacks;
+        this.stackHeight = stackHeight;
+        this.maxStackHeight = maxStackHeight;
+        this.preState = preState;
+        this.lastNode = lastNode;
+        this.lastChangedAST = lastChangedAST;
+        this.lastCharacter = lastCharacter;
     }
 
+    stacks: (ASTNode[])[];
+    stackHeight: number;
+    maxStackHeight: number;
+    preState: string;
+    lastNode: Text | null;
+    lastChangedAST: ASTNode | null;
+    lastCharacter: string | null;
 }
 
-// Initialize the shared properties
-((StackData.prototype as any) as StackDataType)._stacks = [[]];
-((StackData.prototype as any) as StackDataType)._stackHeight = -1;
-
-export default new StackData();
+export default new StackData([[]], 0, 0, '', null, null, null);

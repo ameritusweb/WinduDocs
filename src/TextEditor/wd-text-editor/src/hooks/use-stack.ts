@@ -5,7 +5,10 @@ export interface ASTNode {
     nodeName: string;
     attributes: { [key: string]: string };
     children: ASTNode[];
+    childIndex?: number;
+    prevTextContent?: string | null;
     textContent?: string | null;
+    mode: string;
     hasChanged: boolean;
     hasDescendantChanged: boolean;
     depth: number;
@@ -15,68 +18,21 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
 
     const stackData = StackData;
 
-    function init(div: HTMLDivElement)
+    const init = (div: HTMLDivElement) =>
     {
         stackData.stacks = Array.from(div.childNodes || []).map(() => []);
-        stackData.stackHeight = -1;
+        stackData.stackHeight = 0;
     }
 
-    function createAST(domNode: Node | Text, changedNode: Node | Text, depth = 0, parentHasChanged = false): ASTNode {
-        const hasChanged = domNode === changedNode;
-        let hasDescendantChanged = hasChanged || parentHasChanged;
-
-        // Handle text nodes
-        if (domNode.nodeType === Node.TEXT_NODE) {
-            return {
-                nodeName: '#text',
-                attributes: {},
-                children: [],
-                textContent: domNode.textContent || '',
-                hasChanged: domNode === changedNode,
-                hasDescendantChanged: false,
-                depth
-            };
-        }
-    
-        // Handle element nodes
-        const element = domNode;
-        const astNode: ASTNode = {
-            nodeName: element.nodeName,
-            attributes: {},
-            children: [],
-            textContent: null,
-            hasChanged,
-            hasDescendantChanged,
-            depth
-        };
-    
-        // Add attributes
-        for (const attr of (element as Element).attributes) {
-            astNode.attributes[attr.name] = attr.value;
-        }
-    
-       // Recursively create AST for children
-        element.childNodes.forEach(childNode => {
-            const childAST = createAST(childNode, changedNode, depth + 1, hasDescendantChanged);
-            astNode.children.push(childAST);
-            if (childAST.hasDescendantChanged) {
-                hasDescendantChanged = true;
-            }
-        });
-
-        astNode.hasDescendantChanged = hasDescendantChanged;
-        return astNode;
+    const preState = (content: string) => {
+        stackData.preState = content;
     }
 
-    const findNodeIndex = (node: Node | Text) => {
-        while (node.parentElement !== contentEditableRef.current)
-        {
-            node = node.parentElement as Node;
-        }
-        return Array.from(contentEditableRef.current?.childNodes || []).findIndex((n) => n === node);
+    const lastCharacter = (character: string) => {
+        stackData.lastCharacter = character;
     }
 
-    function createSubtreeAST(changedNode: Node | Text) {
+    const createSubtreeAST = (changedNode: Node | Text) => {
         let currentNode = changedNode;
         let ast = null;
         let currentDepth = 0;
@@ -92,6 +48,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
                 textContent: currentNode.nodeType === Node.TEXT_NODE ? currentNode.textContent : null,
                 hasChanged: currentNode === changedNode,
                 hasDescendantChanged: currentNode !== changedNode,
+                mode: 'undo',
                 depth: currentDepth++
             };
     
@@ -101,34 +58,71 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
                     currentAST.attributes[attr.name] = attr.value;
                 }
             }
+            else if (currentAST.hasChanged) {
+                currentAST.prevTextContent = stackData.preState;
+                stackData.lastChangedAST = currentAST;
+            }
     
             ast = currentAST;
-            currentNode = parent;
-    
+
             // Stop if we've reached the root of the editor
-            if (currentNode === contentEditableRef.current) {
+            if (parent === contentEditableRef.current) {
+                ast.childIndex = Array.from(contentEditableRef.current.childNodes).findIndex((n) => n === currentNode);
                 break;
             }
+
+            currentNode = parent;
         }
     
         return ast;
-    }    
+    }
+
+    const isMergeable = (character: string) => {
+        if (character === 'Backspace')
+        {
+            return true;
+        }
+
+        if (character === ' ' && stackData.lastCharacter !== '')
+        {
+            return false;
+        }
+        
+        if (character === '\n')
+        {
+            return false;
+        }
+
+        return true;
+    }
     
-    const captureState = (changedNode: Node | Text) => {
+    const captureState = (changedNode: Node | Text, character: string) => {
         const stateStacks = stackData.stacks;
         const stackHeight = stackData.stackHeight;
-        const nodeIndex = findNodeIndex(changedNode);
-        if (nodeIndex >= 0 && nodeIndex < stateStacks.length) {
-            const editorRootNode = contentEditableRef.current; // Obtain the root node of the editor
-            const newAST = createAST(editorRootNode?.childNodes[nodeIndex] as Node | Text, changedNode);
-
+        if (stackData.lastNode === changedNode && stackData.lastChangedAST !== null && isMergeable(character))
+        {
+            stackData.lastChangedAST.textContent = changedNode.textContent;
+        }
+        else
+        {
+            const newAST = createSubtreeAST(changedNode as Node | Text);
+            const nodeIndex = newAST?.childIndex || 0;
             let updatedStacks = [...stateStacks];
             let newStack = updatedStacks[nodeIndex].slice(0, stackHeight + 1);
-            newStack.push(newAST);
+            newStack.push(newAST!);
             updatedStacks[nodeIndex] = newStack;
             
             stackData.stacks = updatedStacks;
             stackData.stackHeight = stackHeight + 1;
+            if (stackData.stackHeight > stackData.maxStackHeight)
+            {
+                stackData.maxStackHeight = stackData.stackHeight;
+            }
+        }
+        if (changedNode.nodeName === '#text')
+        {
+            stackData.lastNode = changedNode as Text;
+            stackData.lastCharacter = character;
         }
     };
 
@@ -154,20 +148,22 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
     const redo = () => {
         const stackHeight = stackData.stackHeight;
         const stacks = stackData.stacks;
+        const maxStackHeight = stackData.maxStackHeight;
         // Check if there's a next state to go to
         if (contentEditableRef.current) {
-            if (stackHeight < stacks[0].length - 1 && contentEditableRef.current.childNodes.length === stacks.length) {
-                let newHeight = stackHeight + 1;
-                stackData.stackHeight = newHeight;
+            if (stackHeight < maxStackHeight && contentEditableRef.current.childNodes.length === stacks.length) {
 
                 stacks.forEach((stack, index) => {
-                    if (stack.length > newHeight) {
-                        const ast = stack[newHeight];
+                    if (stack.length > stackHeight) {
+                        const ast = stack[stackHeight];
                         if (ast) {
                             applyAST(ast, contentEditableRef.current!.childNodes[index]);
                         }
                     }
                 });
+
+                let newHeight = stackHeight + 1;
+                stackData.stackHeight = newHeight;
             }
         }
     };
@@ -175,7 +171,16 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
     const applyAST = (astNode: ASTNode, domNode: Node | Text) => {
         // Handle text nodes
         if (astNode.nodeName === '#text') {
-            (domNode as Text).textContent = astNode.textContent || '';
+            if (astNode.mode === 'undo')
+            {
+                (domNode as Text).textContent = astNode.prevTextContent || '';
+                astNode.mode = 'redo';
+            }
+            else
+            {
+                (domNode as Text).textContent = astNode.textContent || '';
+                astNode.mode = 'undo';
+            }
             return;
         }
     
@@ -246,9 +251,10 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
     
     return {
         init,
+        preState,
+        lastCharacter,
         captureState,
         undo,
         redo
     };
-
 }

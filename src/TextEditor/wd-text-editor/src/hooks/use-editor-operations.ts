@@ -68,7 +68,7 @@ export const useEditorOperations = (contentEditableRef: RefObject<HTMLDivElement
         return '';
     }
 
-    const focusOnNode = (editor: HTMLDivElement, node: Node, offset?: number) => {
+    const focusOnNode = (editor: HTMLDivElement, node: Node, key: string, offset?: number) => {
         const range = new Range();
             if (offset)
             {
@@ -85,7 +85,7 @@ export const useEditorOperations = (contentEditableRef: RefObject<HTMLDivElement
             selection?.removeAllRanges();
             selection?.addRange(range);
 
-            captureState(node);
+            captureState(node, key);
 
             editor.focus();
     }

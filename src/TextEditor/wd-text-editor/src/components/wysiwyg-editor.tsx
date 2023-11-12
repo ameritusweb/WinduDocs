@@ -7,6 +7,8 @@ import { useStack } from '../hooks/use-stack';
 
 export const WysiwygEditor: React.FC = () => {
   const contentEditableRef = useRef<HTMLDivElement>(null);
+  const inputContainer = useRef<Node | Text | null>(null);
+  const keyPress = useRef<string | null>(null);
   
   const {
     state
@@ -21,6 +23,8 @@ export const WysiwygEditor: React.FC = () => {
 
   const {
     init,
+    preState,
+    captureState,
     undo,
     redo
   } = useStack(contentEditableRef);
@@ -57,11 +61,30 @@ init(contentEditableRef.current);
     }
   }, []);
 
+  const onInput = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!contentEditableRef.current)
+    {
+      return;
+    }
+
+    if (keyPress.current === 'Backspace') {
+        let container = inputContainer.current as Node;
+        if (container.hasChildNodes() && container.childNodes.length === 1)
+        {
+            container = container.firstChild as Node;
+        }
+
+        captureState(container, keyPress.current);
+    }
+  }
+
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!contentEditableRef.current)
     {
       return;
     }
+
+    keyPress.current = event.key;
 
     if (event.key === 'Shift' || event.key === 'Alt' || event.key === 'Control') {
       return;
@@ -83,41 +106,53 @@ init(contentEditableRef.current);
       return;
     }
 
+    const selection = window.getSelection();
+      if (selection)
+      {
+          const range = selection.getRangeAt(0);
+          let container = range.startContainer;
+          inputContainer.current = container;
+      }
+      
+
     if (event.key === 'Backspace') {
-        const selection = window.getSelection();
-        if (selection)
+
+      let container = inputContainer.current as Node;
+        
+        if (container.hasChildNodes() && container.childNodes.length === 1)
         {
-            const range = selection.getRangeAt(0);
-            let container = range.startContainer;
-            if (container.hasChildNodes() && container.childNodes.length === 1)
-            {
-                container = container.firstChild as Node;
-            }
-
-            const grandparent = container.parentNode?.parentNode;
-            if (grandparent && (grandparent.textContent || '').length === 1)
-            {
-                container.parentElement?.remove();
-                const br = document.createElement('br');
-                grandparent?.parentElement?.insertBefore(br, grandparent);
-                event.preventDefault();
-                
-                return;
-            }
-
-            const prev = container.previousSibling;
-            if (container.nodeName === 'DIV' && !container.hasChildNodes() && prev && prev.nodeName === 'BR')
-            {
-                if (contentEditableRef.current.childNodes.length > 2)
-                {
-                    (container as Element).remove();
-                    (prev as Element).remove();
-                }   
-                event.preventDefault();
-                
-                return;
-            }
+            container = container.firstChild as Node;
         }
+
+        const grandparent = container.parentNode?.parentNode;
+        if (grandparent && (grandparent.textContent || '').length === 1)
+        {
+            container.parentElement?.remove();
+            const br = document.createElement('br');
+            grandparent?.parentElement?.insertBefore(br, grandparent);
+            event.preventDefault();
+            
+            return;
+        }
+
+        const prev = container.previousSibling;
+        if (container.nodeName === 'DIV' && !container.hasChildNodes() && prev && prev.nodeName === 'BR')
+        {
+            if (contentEditableRef.current.childNodes.length > 2)
+            {
+                (container as Element).remove();
+                (prev as Element).remove();
+            }   
+            event.preventDefault();
+            
+            return;
+        }
+
+        if (container.nodeName === '#text')
+        {
+          preState(container.textContent || '');
+        }
+        
         return;
     }
 
@@ -179,7 +214,8 @@ init(contentEditableRef.current);
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
                 startNode.parentNode?.parentNode?.replaceChild(h1, startNode.parentNode);
-                focusOnNode(editor, text);
+                preState('');
+                focusOnNode(editor, text, key);
             }
             else if (container.nodeName === 'DIV' && startNode.nodeName !== '#text')
             {
@@ -187,7 +223,8 @@ init(contentEditableRef.current);
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
                 startNode.appendChild(h1);
-                focusOnNode(editor, text);
+                preState('');
+                focusOnNode(editor, text, key);
             }
             else
             {
@@ -197,20 +234,22 @@ init(contentEditableRef.current);
                 if (container.nodeName === state.toUpperCase())
                 {
                     const text = container.childNodes[start === 0 ? 0 : start - 1] as Text;
+                    preState('' + text.textContent);
                     text.textContent = text.textContent + key;
-                    focusOnNode(editor, text);
+                    focusOnNode(editor, text, key);
                     
                 }
                 else if (container.nodeName === '#text')
                 {
                     if (container.parentElement?.nodeName === state.toUpperCase())
                     {
+                      preState('' + container.textContent);
                       if (container.textContent)
                           container.textContent = container.textContent.substring(0, start) + key + container.textContent.substring(start);
                       else
                           container.textContent = container.textContent + key;
 
-                      focusOnNode(editor, container as Text, start);
+                      focusOnNode(editor, container as Text, key, start);
                     }
                     else if (container.parentElement?.nodeName && !validateParent(state.toUpperCase(), container.parentElement?.nodeName))
                     {
@@ -218,8 +257,9 @@ init(contentEditableRef.current);
                     }
                     else
                     {
+                      preState('');
                       splitAndInsertNode(container as Text, h1, start);
-                      focusOnNode(editor, text, start);
+                      focusOnNode(editor, text, key, start);
                     }
                 }
             }
@@ -234,6 +274,7 @@ init(contentEditableRef.current);
         ref={contentEditableRef}
         className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_5rem] cursor-text text-left text-base"
         onKeyDown={onKeyDown}
+        onInput={onInput}
         id="contentEditable"
         style={{
           color: 'rgba(100, 100, 100, 1)',
