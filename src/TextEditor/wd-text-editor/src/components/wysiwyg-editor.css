@@ -59,11 +59,24 @@
   table td>:last-child {
     margin-bottom: 0;
   }
+
+  table tr:nth-child(even) {
+    background-color: #f2f2f211;
+}
+
+table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
   
   table tr {
     background-color: #ffffff;
     border-top: 1px solid hsla(210,18%,87%,1);
   }
+
+  table tr:hover {
+    background-color: #f2f2f266;
+}
 
   ol {
     counter-reset: section; /* Create a new instance of the counter at the start of each ol */
@@ -151,6 +164,7 @@ code {
   max-height:inherit;
   height:inherit;
   padding:0 1em;
+  line-height: 1.45;
   display: inline-flex;
   overflow:auto
 }
