@@ -1,48 +1,59 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-declare const Prism: typeof import('prismjs');
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import './wysiwyg-editor.css';
-
-interface CurrentState {
-    state: string;
-}
+import { useEditorOperations } from '../hooks/use-editor-operations';
+import { useEditorContext } from '../hooks/use-editor-context';
+import { useStack } from '../hooks/use-stack';
 
 export const WysiwygEditor: React.FC = () => {
-  const [states, setStates] = useState<CurrentState[]>([]);
-  const [state, setState] = useState<string>('h1');
   const contentEditableRef = useRef<HTMLDivElement>(null);
-  // ... rest of the component code
+  
+  const {
+    state
+  } = useEditorContext();
+
+  const {
+    determineState,
+    focusOnNode,
+    splitAndInsertNode,
+    validateParent
+  } = useEditorOperations(contentEditableRef);
+
+  const {
+    init,
+    undo,
+    redo
+  } = useStack(contentEditableRef);
 
   useEffect(() => {
     if (contentEditableRef.current)
     {
-        contentEditableRef.current.innerHTML = `<h1 id="sample-markdown">Sample Markdown</h1>
-
-
-
+      
+        contentEditableRef.current.innerHTML = `<h1 id="sample-markdown">Sample Markdown</h1><h2 id="conventional">Conventional</h2><h3 id="ovational">Ovational</h3><h4 id="boldly-explorational">Boldly Explorational</h4><h5 id="crew-of-the-enterprise">Crew of the Enterprise</h5><h6 id="its-continuing-mission">It's continuing mission</h6>
+<p>This is a paragraph with both <strong><em>bold and italic</em></strong> text.</p>
+<p>This is an inline code example: <code>let x = 5;</code></p>
+<ol><li><p>First Level Item 1</p><ol><li><p>Second Level Item 1</p><ol><li><p>Third Level Item 1</p></li><li><p>Third Level Item 2</p></li></ol></li><li><p>Second Level Item 2</p></li></ol></li><li><p>First Level Item 2</p><ol><li><p>Second Level Item 3</p><ol><li><p>Third Level Item 3</p></li><li><p>Third Level Item 4</p></li></ol></li><li><p>Second Level Item 4</p></li></ol></li><li><p>First Level Item 3</p></li></ol>
+<ul><li><p>First level ordered item</p><ul><li><p>First level unordered item</p></li><li><p>Another first level unordered item</p></li></ul></li><li><p>Second level ordered item</p></li></ul>
 
 <p>This is a paragraph with <strong>bold</strong> text and <em>italic</em> text.</p>
 <h2 id="table">Table</h2>
+<table><thead><tr><th><p>Header 1</p></th><th><p>Header 2</p></th></tr></thead><tbody><tr><td><p>Row 1 <strong>test</strong></p></td><td><p>Data 1 <em>test</em></p></td></tr><tr><td><p>Row 2</p></td><td><p>Data 2</p></td></tr></tbody></table>
 
+<h2 id="blockquote">Blockquote</h2><blockquote><p>t
+This is a blockquote.</p><p>It can span
+multiple lines.</p></blockquote>
 
-<table>
-<thead>
-<tr>
-<th><p>Header 1</p></th>
-<th><p>Header 2</p></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>Row 1</p></td>
-<td><p>Data 1</p></td>
-</tr>
-<tr>
-<td><p>Row 2</p></td>
-<td><p>Data 2</p></td>
-</tr>
-</tbody>
-</table>`;
+<h2 id="links">Links</h2>
+<p>This is a <a href="https://openai.com">link to OpenAI</a>.</p>
+<h2 id="javascript-code-block">JavaScript Code Block</h2>
+<hr />
+<pre><code>console.log('Hello, world!');
+console.log('This is line 2!');
+</code></pre>
+`;
+
+init(contentEditableRef.current);
+
     }
   }, []);
 
@@ -56,7 +67,19 @@ export const WysiwygEditor: React.FC = () => {
       return;
     }
 
-    if ((event.key === 'v' || event.key === 'x') && event.ctrlKey) {
+    if ((event.key === 'v' || event.key === 'x' || event.key === 'z' || event.key === 'y') && event.ctrlKey) {
+
+      if (event.key === 'z')
+      {
+        undo();
+        event.preventDefault();
+      }
+      else if (event.key === 'y')
+      {
+        redo();
+        event.preventDefault();
+      }
+
       return;
     }
 
@@ -101,39 +124,22 @@ export const WysiwygEditor: React.FC = () => {
     if (event.key.length === 1) {
         event.preventDefault();
 
-        if (state === 'h1')
+        let autoState: string | null = null;
+        if (state === 'unselected')
         {
-            makeH1(contentEditableRef.current, event.key);
+          autoState = determineState();
         }
+
+        makeContent(contentEditableRef.current, event.key, autoState || state);
     }
 
   };
 
-  function focusOnNode(editor: HTMLDivElement, node: Node, offset?: number) {
-    const range = new Range();
-        if (offset)
-        {
-            range.setStart(node, offset + 1);
-            range.setEnd(node, offset + 1);
-        }
-        else
-        {
-                range.setStartAfter(node);
-                range.setEndAfter(node);
-        }
-
-                const selection = window.getSelection();
-                selection?.removeAllRanges();
-                selection?.addRange(range);
-
-                editor.focus();
-  }
-
-  function makeH1(editor: HTMLDivElement, key: string) {
+  function makeContent(editor: HTMLDivElement, key: string, state: string) {
     const selection = window.getSelection();
     if (selection && selection.toString() && selection.type === 'Range') {
         const range = selection.getRangeAt(0);
-        const h1 = document.createElement('h1');
+        const h1 = document.createElement(state);
         h1.innerHTML = key;
         range.deleteContents();
         range.insertNode(h1);
@@ -169,15 +175,15 @@ export const WysiwygEditor: React.FC = () => {
 
             if (startNode.nodeName === 'BR')
             {
-                const h1 = document.createElement('h1');
+                const h1 = document.createElement(state);
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
-                startNode.parentNode?.replaceChild(h1, startNode);
+                startNode.parentNode?.parentNode?.replaceChild(h1, startNode.parentNode);
                 focusOnNode(editor, text);
             }
             else if (container.nodeName === 'DIV' && startNode.nodeName !== '#text')
             {
-                const h1 = document.createElement('h1');
+                const h1 = document.createElement(state);
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
                 startNode.appendChild(h1);
@@ -185,10 +191,10 @@ export const WysiwygEditor: React.FC = () => {
             }
             else
             {
-                const h1 = document.createElement('h1');
+                const h1 = document.createElement(state);
                 const text = document.createTextNode(`${key}`);
                 h1.appendChild(text);
-                if (container.nodeName === 'H1')
+                if (container.nodeName === state.toUpperCase())
                 {
                     const text = container.childNodes[start === 0 ? 0 : start - 1] as Text;
                     text.textContent = text.textContent + key;
@@ -197,12 +203,24 @@ export const WysiwygEditor: React.FC = () => {
                 }
                 else if (container.nodeName === '#text')
                 {
-                    if (container.textContent)
-                        container.textContent = container.textContent.substring(0, start) + key + container.textContent.substring(start);
+                    if (container.parentElement?.nodeName === state.toUpperCase())
+                    {
+                      if (container.textContent)
+                          container.textContent = container.textContent.substring(0, start) + key + container.textContent.substring(start);
+                      else
+                          container.textContent = container.textContent + key;
+
+                      focusOnNode(editor, container as Text, start);
+                    }
+                    else if (container.parentElement?.nodeName && !validateParent(state.toUpperCase(), container.parentElement?.nodeName))
+                    {
+                      // TODO: Show tooltip for invalid action.
+                    }
                     else
-                        container.textContent = container.textContent + key;
-                    focusOnNode(editor, container as Text, start);
-                    
+                    {
+                      splitAndInsertNode(container as Text, h1, start);
+                      focusOnNode(editor, text, start);
+                    }
                 }
             }
           }

@@ -1,0 +1,84 @@
+[
+    {
+      "Name": "H1",
+        "GroupName":"Heading",
+        "State": "h1"
+    },
+    {
+        "Name": "H2",
+          "GroupName":"Heading",
+          "State": "h2"
+      },
+      {
+        "Name": "H3",
+          "GroupName":"Heading",
+          "State": "h3"
+      },
+      {
+        "Name": "H4",
+          "GroupName":"Heading",
+          "State": "h4"
+      },
+      {
+        "Name": "H5",
+          "GroupName":"Heading",
+          "State": "h5"
+      },
+      {
+        "Name": "H6",
+          "GroupName":"Heading",
+          "State": "h6"
+      },
+    {
+      "Name": "Bold + Italic",
+      "GroupName": "Text Styles",
+      "State": [ "strong", "em" ]
+    },
+    {
+      "Name": "Bold",
+      "GroupName": "Text Styles",
+      "State": "strong"
+    },
+    {
+      "Name": "Italic",
+      "GroupName": "Text Styles",
+      "State": "em"
+    },
+    {
+      "Name": "Link"
+    },
+    {
+      "Name": "Table"
+    },
+    {
+        "Name": "Numbered",
+        "GroupName":"List"
+    },
+    {
+        "Name": "Bulleted",
+        "GroupName":"List"
+    },
+    {
+        "Name": "<<",
+        "GroupName":"List"
+    },
+    {
+        "Name": ">>",
+        "GroupName":"List"
+    },
+    {
+      "Name": "Inline",
+      "GroupName": "Code Block"
+    },
+    {
+        "Name": "Fenced",
+        "GroupName":"Code Block"
+    },
+    {
+        "Name": "Block Quote"
+    },
+    {
+        "Name": "Insert Horizontal Rule",
+        "GroupName":"Misc"
+    }
+  ]
