@@ -6,8 +6,8 @@ import customPrefixer from './postcss-custom-prefixer.js';
 export default {
   plugins: [
     tailwindcss,
-    autoprefixer,
-    customPrefixer({ 'prefix': 'twwd', exclude: ['App.css', 'index.css'] })
+    autoprefixer//,
+    //customPrefixer({ 'prefix': 'twwd', exclude: ['App.css', 'index.css'] })
     // other plugins you might want to use
   ],
 };
