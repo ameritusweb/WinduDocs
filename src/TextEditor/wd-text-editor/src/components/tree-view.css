@@ -1,0 +1,39 @@
+/* Custom styles for tree connectors */
+.tree-container li::before, .tree-container li::after {
+    content: '';
+    left: 3px;
+    position: absolute;
+    right: auto;
+  }
+  
+  .tree-container li::before {
+    border-left: 1px solid #999;
+    bottom: 50px;
+    height: 100%;
+    top: -5px;
+    width: 1px;
+  }
+  
+  .tree-container li::after {
+    border-top: 1px solid #999;
+    height: 20px;
+    top: 20px;
+  }
+  
+  .tree-container li::after {
+    width: 25px;
+  }
+  
+  .tree-container li {
+    margin-left: 25px;
+  }
+  
+  .tree-container > ul > li {
+    margin-left: 0px;
+  }
+  
+  /* This specifically targets the last child of each nested list to shorten the vertical connector */
+  .tree-container li:last-child::before {
+    height: 25px;
+  }
+  
