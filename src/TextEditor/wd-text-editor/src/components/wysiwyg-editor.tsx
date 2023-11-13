@@ -17,6 +17,7 @@ export const WysiwygEditor: React.FC = () => {
   const {
     determineState,
     focusOnNode,
+    cedAncestorSelector,
     splitAndInsertNode,
     validateParent
   } = useEditorOperations(contentEditableRef);
@@ -110,8 +111,23 @@ init(contentEditableRef.current);
       if (selection)
       {
           const range = selection.getRangeAt(0);
-          let container = range.startContainer;
+          const container = range.startContainer;
           inputContainer.current = container;
+      }
+
+      if (event.key === 'Enter') {
+
+        event.preventDefault();
+        
+        let container = inputContainer.current as Node;
+        
+        if (container.hasChildNodes() && container.childNodes.length === 1)
+        {
+            container = container.firstChild as Node;
+        }
+
+        const ol = cedAncestorSelector(container, 'ol > li', 3);
+
       }
       
 
@@ -228,9 +244,6 @@ init(contentEditableRef.current);
             }
             else
             {
-                const h1 = document.createElement(state);
-                const text = document.createTextNode(`${key}`);
-                h1.appendChild(text);
                 if (container.nodeName === state.toUpperCase())
                 {
                     const text = container.childNodes[start === 0 ? 0 : start - 1] as Text;
@@ -241,7 +254,7 @@ init(contentEditableRef.current);
                 }
                 else if (container.nodeName === '#text')
                 {
-                    if (container.parentElement?.nodeName === state.toUpperCase())
+                    if (container.parentElement?.nodeName === state.toUpperCase() || state === '#text')
                     {
                       preState('' + container.textContent);
                       if (container.textContent)
@@ -257,6 +270,9 @@ init(contentEditableRef.current);
                     }
                     else
                     {
+                      const h1 = document.createElement(state);
+                      const text = document.createTextNode(`${key}`);
+                      h1.appendChild(text);
                       preState('');
                       splitAndInsertNode(container as Text, h1, start);
                       focusOnNode(editor, text, key, start);

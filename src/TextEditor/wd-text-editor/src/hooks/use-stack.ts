@@ -107,8 +107,8 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
         {
             const newAST = createSubtreeAST(changedNode as Node | Text);
             const nodeIndex = newAST?.childIndex || 0;
-            let updatedStacks = [...stateStacks];
-            let newStack = updatedStacks[nodeIndex].slice(0, stackHeight + 1);
+            const updatedStacks = [...stateStacks];
+            const newStack = updatedStacks[nodeIndex].slice(0, stackHeight + 1);
             newStack.push(newAST!);
             updatedStacks[nodeIndex] = newStack;
             
@@ -135,7 +135,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
         const stacks = stackData.stacks;
         if (contentEditableRef.current) {
             if (stackHeight > 0 && contentEditableRef.current.childNodes.length === stacks.length) {
-                let newHeight = stackHeight - 1;
+                const newHeight = stackHeight - 1;
                 stackData.stackHeight = newHeight;
 
                 stacks.forEach((stack, index) => {
@@ -166,7 +166,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
                     }
                 });
 
-                let newHeight = stackHeight + 1;
+                const newHeight = stackHeight + 1;
                 stackData.stackHeight = newHeight;
             }
         }
@@ -196,7 +196,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
     
             // Remove any attributes that are no longer present
             Array.from(domNode.attributes).forEach(attr => {
-                if (!astNode.attributes.hasOwnProperty(attr.name)) {
+                if (!Object.prototype.hasOwnProperty.call(astNode.attributes, attr.name)) {
                     domNode.removeAttribute(attr.name);
                 }
             });

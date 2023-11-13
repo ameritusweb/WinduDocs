@@ -1,22 +1,28 @@
 // content.js
 window.addEventListener("message", (event) => {
     if (event.source === window && event.data && (event.data.mutations || event.data.stacks)) {
-        chrome.runtime.sendMessage(event.data);
+        if (chrome.runtime.id) {
+            chrome.runtime.sendMessage(event.data);
+        }
     }
 });
 
-const pageAccessedByReload = (
-    (window.performance.navigation && window.performance.navigation.type === 1) ||
-    window.performance
-      .getEntriesByType('navigation')
-      .map((nav) => nav.type)
-      .includes('reload')
-  );
-
-if (pageAccessedByReload)
-{
-    chrome.runtime.sendMessage({ 'pageLoaded': true });
+function detectReload() {
+    const pageAccessedByReload = (
+        (window.performance.navigation && window.performance.navigation.type === 1) ||
+        window.performance
+          .getEntriesByType('navigation')
+          .map((nav) => nav.type)
+          .includes('reload')
+      );
+    
+    if (pageAccessedByReload)
+    {
+        chrome.runtime.sendMessage({ 'pageLoaded': true });
+    }
 }
+
+detectReload();
 
 function createNodeHierarchy(node) {
     if (!node) {
