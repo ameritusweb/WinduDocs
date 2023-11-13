@@ -10,7 +10,7 @@ interface StackDataType {
     lastCharacter: string | null;
 }
 
-class StackData implements StackDataType {
+export class StackData implements StackDataType {
 
     constructor(stacks: (ASTNode[])[], stackHeight: number, maxStackHeight: number, preState: string, lastNode: Text | null, lastChangedAST: ASTNode | null, lastCharacter: string | null) {
         this.stacks = stacks;

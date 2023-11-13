@@ -124,6 +124,10 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
             stackData.lastNode = changedNode as Text;
             stackData.lastCharacter = character;
         }
+
+        const message = Object.assign({}, stackData);
+        message.lastNode = null;
+        window.postMessage(message, "*");
     };
 
     const undo = () => {

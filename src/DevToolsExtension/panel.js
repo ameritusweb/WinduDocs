@@ -60,7 +60,7 @@ function updateTreeView() {
             const contentEditableDiv = doc.body.firstChild;
 
             // Now update your extension's DOM
-            const root = document.querySelector('.tree-container > ul');
+            const root = document.querySelector('#EditableDiv .tree-container > ul');
             root.innerHTML = '';
 
             if (contentEditableDiv) {
@@ -101,6 +101,7 @@ function injectMutationObserverScript() {
 
 
 let updateTimeout;
+let stacksTimeout;
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message.mutations) {
@@ -112,6 +113,15 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         // Update the tree view with a delay
         updateTimeout = setTimeout(() => {
             updateTreeView(); // Pass any necessary data to this function
+        }, 150);
+    } else if (message.stacks) {
+        // Clear any previous timeout
+        if (stacksTimeout) {
+            clearTimeout(stacksTimeout);
+        }
+
+        stacksTimeout = setTimeout(() => {
+            buildUndoRedoTreeView(message.stacks);
         }, 150);
     }
 });
@@ -126,15 +136,112 @@ function toggleNode(node) {
 
 // Add event listener for expanding/collapsing nodes
 document.addEventListener('DOMContentLoaded', () => {
-    const treeView = document.querySelector('.tree-container');
+    const treeView = document.querySelector('#EditableDiv .tree-container');
 
     treeView.addEventListener('click', (event) => {
         if (event.target.tagName === 'SPAN') {
             toggleNode(event.target.parentNode);
         }
     });
+
+    const undoRedoView = document.querySelector('#UndoRedo .tree-container');
+
+    undoRedoView.addEventListener('click', (event) => {
+        if (event.target.tagName === 'SPAN') {
+            toggleNode(event.target.parentNode);
+        }
+    });
+
+
+     // Attach event listeners
+  document.getElementById("openEditableDiv").addEventListener("click", function(event) {
+    openTab(event, 'EditableDiv');
+  });
+  document.getElementById("openUndoRedo").addEventListener("click", function(event) {
+    openTab(event, 'UndoRedo');
+  });
+
+  // Open the default tab
+  document.getElementById("openEditableDiv").click();
 });
 
+function createASTTreeNode(astNode) {
+    let treeLi = document.createElement('li');
+    treeLi.className = "relative pl-6";
+
+    let treeSpan = document.createElement('span');
+    treeSpan.className = "relative inline-block rounded border border-gray-400 m-1 cursor-pointer p-[3px] px-[8px] hover:bg-[#eee] hover:border-[#94a0b4] hover:text-black";
+    treeSpan.textContent = `${astNode.nodeName} (Mode: ${astNode.mode}, Changed: ${astNode.hasChanged})`;
+    if (astNode.prevTextContent)
+    {
+        treeSpan.textContent += `\nPrevious Text Content: ${astNode.prevTextContent}`;
+    }
+    if (astNode.textContent)
+    {
+        treeSpan.textContent += `\nText Content: ${astNode.textContent}`;
+    }
+
+    treeLi.appendChild(treeSpan);
+
+    if (astNode.children && astNode.children.length > 0) {
+        let childUl = document.createElement('ul');
+        childUl.className = "list-none m-0 p-0";
+        treeLi.appendChild(childUl);
+
+        astNode.children.forEach(childNode => {
+            childUl.appendChild(createASTTreeNode(childNode));
+        });
+    }
+
+    return treeLi;
+}
+
+function buildUndoRedoTreeView(undoRedoData) {
+    const root = document.querySelector('#UndoRedo .tree-container > ul');
+    root.innerHTML = '';
+
+    undoRedoData.forEach((stack, index) => {
+        let stackLi = document.createElement('li');
+        stackLi.className = "relative pl-6";
+
+        let stackSpan = document.createElement('span');
+        stackSpan.className = "relative inline-block rounded border border-gray-400 m-1 cursor-pointer p-[3px] px-[8px] hover:bg-[#eee] hover:border-[#94a0b4] hover:text-black";
+        stackSpan.textContent = `Stack ${index + 1}`;
+        stackLi.appendChild(stackSpan);
+
+        let astUl = document.createElement('ul');
+        astUl.className = "list-none m-0 p-0";
+        stackLi.appendChild(astUl);
+
+        stack.forEach(astNode => {
+            astUl.appendChild(createASTTreeNode(astNode));
+        });
+
+        root.appendChild(stackLi);
+    });
+}
+
+function openTab(evt, tabName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+  
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+  
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+  
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "inline";
+    evt.currentTarget.className += " active";
+  }
+  
 // Initial call to build the tree and start observing
 updateTreeView();
 injectMutationObserverScript();

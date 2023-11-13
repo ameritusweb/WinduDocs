@@ -4,6 +4,12 @@
     "version": "1.0",
     "permissions": ["devtools"],
     "devtools_page": "devtools.html",
+    "icons": {
+        "16": "images/panel-icon.png",
+        "32": "images/panel-icon.png",
+        "48": "images/panel-icon.png",
+        "128": "images/panel-icon.png"
+    },
     "web_accessible_resources": ["images/*"],
     "content_scripts": [
         {
