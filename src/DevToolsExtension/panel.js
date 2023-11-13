@@ -123,8 +123,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         stacksTimeout = setTimeout(() => {
             buildUndoRedoTreeView(message.stacks);
         }, 150);
-    } else if (message.contextInfo) {
-        console.log('received context info');
     } else if (message.pageLoaded) {
         updateTreeView();
         resetUndoRedoTreeView();
@@ -207,7 +205,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
 });
 
 function scrollIntoView(nodeInfo) {
-    const aa = 1;
+    // TODO: Scroll into view
 }
 
 function createASTTreeNode(astNode) {

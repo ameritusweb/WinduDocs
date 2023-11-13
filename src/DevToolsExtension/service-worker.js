@@ -3,9 +3,9 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.storage.local.set({ 'activeTabId': currentTab.id });
 });
 
-chrome.tabs.onActivated.addListener(moveToFirstPosition);
+chrome.tabs.onActivated.addListener(handleTabActivated);
 
-async function moveToFirstPosition(activeInfo) {
+async function handleTabActivated(activeInfo) {
     try {
         if (activeInfo.tabId === -1)
         {
