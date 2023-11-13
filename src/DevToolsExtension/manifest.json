@@ -1,8 +1,11 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Content Editable Tree View",
     "version": "1.0",
-    "permissions": ["devtools"],
+    "permissions": ["devtools", "contextMenus", "debugger", "activeTab", "storage", "tabs", "scripting"],
+    "host_permissions": [
+        "http://localhost:5173/"
+    ],
     "devtools_page": "devtools.html",
     "icons": {
         "16": "images/panel-icon.png",
@@ -10,7 +13,18 @@
         "48": "images/panel-icon.png",
         "128": "images/panel-icon.png"
     },
-    "web_accessible_resources": ["images/*"],
+    "background": {
+        "service_worker": "service-worker.js",
+        "type": "module"
+    },
+    "web_accessible_resources": [{
+        "resources": [
+          "images/*"
+        ],
+        "matches": [
+          "*://*/*"
+        ]
+    }],
     "content_scripts": [
         {
           "matches": ["<all_urls>"],

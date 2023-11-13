@@ -123,6 +123,11 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         stacksTimeout = setTimeout(() => {
             buildUndoRedoTreeView(message.stacks);
         }, 150);
+    } else if (message.contextInfo) {
+        console.log('received context info');
+    } else if (message.pageLoaded) {
+        updateTreeView();
+        resetUndoRedoTreeView();
     }
 });
 
@@ -163,7 +168,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Open the default tab
   document.getElementById("openEditableDiv").click();
+
+  //let queryOptions = { active: true, lastFocusedWindow: true };
+  /*chrome.tabs.query(queryOptions).then((t) => {
+
+    chrome.scripting.executeScript({
+        target: {tabId: t[0].id},
+        files: ['content.js']
+      });
+
+  });*/
+
+  chrome.storage.local.get(["activeTabId"]).then((res) => {
+    chrome.scripting.executeScript({
+        target: {tabId: res.activeTabId},
+        files: ['content.js']
+      });
+  }).catch((err) => {
+    console.warn(err);
+  });
+
+  chrome.contextMenus.create({
+    id: "inspectNode",
+    title: "Inspect Node",
+    contexts: ["editable"],
 });
+
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+    if (info.menuItemId === "inspectNode") {
+        chrome.storage.local.get(["nodeInfo"]).then((res) => {
+            scrollIntoView(res.nodeInfo);
+          }).catch((err) => {
+            console.warn(err);
+          });
+    }
+});
+
+});
+
+function scrollIntoView(nodeInfo) {
+    const aa = 1;
+}
 
 function createASTTreeNode(astNode) {
     let treeLi = document.createElement('li');
@@ -194,6 +239,11 @@ function createASTTreeNode(astNode) {
     }
 
     return treeLi;
+}
+
+function resetUndoRedoTreeView() {
+    const root = document.querySelector('#UndoRedo .tree-container > ul');
+    root.innerHTML = '';
 }
 
 function buildUndoRedoTreeView(undoRedoData) {
