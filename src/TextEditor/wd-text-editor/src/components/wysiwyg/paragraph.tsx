@@ -24,6 +24,9 @@ const Paragraph: React.FC<ParagraphProps> = ({ id, content }) => {
         if (updateType === 'remove') {
           cursorPositionRef.current = selection.getRangeAt(0).startOffset - 2;
         }
+        else if (updateType === 'removeSelected') {
+          cursorPositionRef.current = selection.getRangeAt(0).startOffset - 1;
+        }
         else
         {
           cursorPositionRef.current = selection.getRangeAt(0).startOffset;
@@ -43,7 +46,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ id, content }) => {
     };
   
     useEffect(() => {
-      const observer = new MutationObserver((mutationsList, observer) => {
+      const observer = new MutationObserver((mutationsList) => {
         // Check for the specific mutation type, if necessary
         if (mutationsList.length > 0) {
           restoreCursorPosition(mutationsList[0].target);
