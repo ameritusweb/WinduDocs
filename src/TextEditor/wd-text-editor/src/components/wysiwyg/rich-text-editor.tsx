@@ -12,8 +12,12 @@ import AlertBlock from "./alert-block";
 import ast from './test-data.json';
 import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
+import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 
 const RichTextEditor = () => {
+
+    const astRef = useRef<AstNode>(ast);
+    const { convertToMarkdown } = useMarkdownGenerator();
 
     const renderNode = (node: AstNode) => {
         switch (node.NodeName) {
@@ -57,6 +61,8 @@ const RichTextEditor = () => {
 
         event.preventDefault();
 
+        const markdown = convertToMarkdown(astRef.current);
+        console.log(JSON.stringify(markdown, null, 2));
     }
 
     return (

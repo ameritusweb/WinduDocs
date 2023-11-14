@@ -63,6 +63,9 @@ const Paragraph: React.FC<ParagraphProps> = ({ id, content }) => {
         saveCursorPosition(update.type);
         setAst(update.nodes.map((u) => Object.assign({}, u)));
 
+        if (event.code === 'Space') {
+          return;
+        }
         event.stopPropagation();
 
     }

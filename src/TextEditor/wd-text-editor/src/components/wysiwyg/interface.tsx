@@ -5,7 +5,6 @@ export interface AstNodeAttributes {
     IsHeader?: string;
     IsOrdered?: string;
     Language?: string;
-    // Add other common attribute properties here as optional
   }
 
 export interface AstNode {
