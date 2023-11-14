@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { AstNode } from "./interface";
 import Paragraph from "./paragraph";
 import Heading from "./heading";
@@ -51,10 +51,20 @@ const RichTextEditor = () => {
         }
     };
 
+    const editorRef = useRef<HTMLDivElement | null>(null);
+
+    const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+
+        event.preventDefault();
+
+    }
+
     return (
         <div className='relative w-full' style={{ padding: '10px', minHeight: '30px'}}>
             <div key={ast.Guid} 
-                 contentEditable={true}
+                 ref={editorRef}
+                 onKeyDown={onKeyDown}
+                 contentEditable={false}
                  className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_5rem] cursor-text text-left text-base"
                  id="contentEditable"
                  suppressContentEditableWarning={true}

@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useRef } from "react";
 import Strong from "./strong";
 import { AstNode } from "./interface";
+import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 
 export interface EmphasisProps {
     children: AstNode[];
 }
 
 const Emphasis: React.FC<EmphasisProps> = ({ children }) => {
+    
+    const emRef = useRef<HTMLElement | null>(null);
+    const { updateAst } = useRichTextEditor(children);
+
+    const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+
+        event.preventDefault();
+
+        if (emRef.current) {
+            updateAst(event, emRef.current);
+        }
+
+        event.stopPropagation();
+
+    }
+    
     return (
-        <em>
+        <em ref={emRef} onKeyDown={onKeyDown} tabIndex={1}>
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'Strong':
