@@ -64,10 +64,8 @@ const RichTextEditor = () => {
             <div key={ast.Guid} 
                  ref={editorRef}
                  onKeyDown={onKeyDown}
-                 contentEditable={false}
                  className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_5rem] cursor-text text-left text-base"
-                 id="contentEditable"
-                 suppressContentEditableWarning={true}
+                 id="richTextEditor"
                  style={{
                  color: 'rgba(100, 100, 100, 1)',
                  fontFamily: 'Consolas,Monaco,\'Andale Mono\',\'Ubuntu Mono\',monospace'
