@@ -3,12 +3,13 @@ import TableRow from "./table-row";
 import { AstNode } from "./interface";
 
 export interface TableProps {
+    id: string;
     children: AstNode[];
 }
 
-const Table: React.FC<TableProps> = ({ children }) => {
+const Table: React.FC<TableProps> = ({ id, children }) => {
     return (
-        <table>
+        <table id={id}>
             <tbody>
                 {children.map((child) => {
                     if (child.NodeName === 'TableRow') {

@@ -18,15 +18,15 @@ const RichTextEditor = () => {
     const renderNode = (node: AstNode) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph key={node.Guid} content={node.Children} />;
+                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} />;
             case 'HeadingBlock':
-                return <Heading key={node.Guid} level={node.Attributes.Level || ''} children={node.Children} />;
+                return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} />;
             case 'OrderedListBlock':
                 return <OrderedList key={node.Guid} children={node.Children} />;
             case 'UnorderedListBlock':
                 return <UnorderedList key={node.Guid} children={node.Children} />;
             case 'Table':
-                return <Table key={node.Guid} children={node.Children} />;
+                return <Table key={node.Guid} id={node.Guid} children={node.Children} />;
             case 'ListBlock':
                 if (node.Attributes.IsOrdered && node.Attributes.IsOrdered === 'True') {
                     return <OrderedList key={node.Guid} children={node.Children} />
@@ -36,7 +36,7 @@ const RichTextEditor = () => {
             case 'QuoteBlock':
                 return <QuoteBlock key={node.Guid} children={node.Children} />;
             case 'ThematicBreakBlock':
-                return <HorizontalRule key={node.Guid} />;
+                return <HorizontalRule id={node.Guid} key={node.Guid} />;
              case 'FencedCodeBlock':
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
                     return <AlertBlock key={node.Guid} type={node.Attributes.Language} text={node.TextContent || ''} />;
