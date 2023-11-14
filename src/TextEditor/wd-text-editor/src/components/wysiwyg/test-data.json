@@ -1654,6 +1654,17 @@
         "Guid": "f198423b-5632-422e-90a8-c26191b6cce7",
         "TextContent": "console.log(\u0027Hello, world!\u0027);\nconsole.log(\u0027This is line 2!\u0027);",
         "Children": []
+      },
+      {
+        "NodeName": "FencedCodeBlock",
+        "Attributes": {
+          "Language": "type-alert-info"
+        },
+        "ChildIndex": 41,
+        "Depth": 1,
+        "Guid": "f198423b-5632-422e-90a8-c26191b6dde7",
+        "TextContent": "console.log(\u0027Hello, world!\u0027);\nconsole.log(\u0027This is line 2!\u0027);",
+        "Children": []
       }
     ]
   }
