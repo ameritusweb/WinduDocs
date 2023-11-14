@@ -1,0 +1,170 @@
+h1 {
+    font-size: 2em;
+    line-height: 1.5;
+  }
+   h2 {
+    font-size: 1.5em;
+    line-height: 1.4;
+  }
+   h3 {
+    font-size: 1.17em;
+    line-height: 1.3;
+  }
+   h4 {
+    font-size: 1em;
+    line-height: 1.2;
+  }
+   h5 {
+    font-size: 0.83em;
+    line-height: 1.1;
+  }
+   h6 {
+    font-size: 0.67em;
+    line-height: 1;
+  }
+   a {
+    text-decoration: underline;
+  }
+   blockquote {
+    border-left: 4px solid #ccc;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 16px;
+  }
+   code,
+   pre {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    white-space: pre-wrap;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 5px 10px;
+  }
+   code {
+    font-size: 85%;
+    padding: 0px;
+  }
+
+  table th {
+    font-weight: 600;
+    background-color: #f6f8fa;
+  }
+  
+  table th,
+  table td {
+    padding: 6px 13px;
+    border: 1px solid #d0d7de;
+  }
+  
+  table td>:last-child {
+    margin-bottom: 0;
+  }
+
+  table tr:nth-child(even) {
+    background-color: #f2f2f211;
+}
+
+table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+  
+  table tr {
+    background-color: #ffffff;
+    border-top: 1px solid hsla(210,18%,87%,1);
+  }
+
+  table tr:hover {
+    background-color: #f2f2f266;
+}
+
+  ol {
+    counter-reset: section; /* Create a new instance of the counter at the start of each ol */
+    list-style-type: none; /* Removes default list styling */
+  }
+  
+  li {
+    counter-increment: section; /* Increment the counter */
+    position: relative; /* Needed for the absolute positioning of the before content */
+  }
+  
+  ol li:before {
+    content: counters(section, ".") ". "; /* Display the counter */
+    position: absolute; /* Position the counter */
+    color: rgb(172, 172, 190);
+  }
+
+  ol > li:before {
+    transform: matrix(1, 0, 0, 1, -27.5556, 0);
+  }
+
+  ol > li > ol > li:before {
+    transform: matrix(1, 0, 0, 1, -40.5556, 0);
+  }
+
+  ol > li > ol > li > ol > li:before {
+    transform: matrix(1, 0, 0, 1, -57.5556, 0);
+  }
+  
+  ol, ul {
+    margin-left: 0;
+    padding-left: 0;
+  }
+  
+  ol li {
+    margin-left: 25px; /* Adjust as needed for outer indentation */
+    padding-left: 6px; /* Adjust as needed for inner spacing */
+    list-style-position: inside; /* Ensures the bullet/number is inside the padding area */
+    position: relative; /* For positioning of custom counters or bullets, if any */
+  }
+
+  ol > li ol > li {
+    padding-left: 20px;
+  }
+  
+  /* Additional styling for nested lists */
+  ol ol, ul ul {
+    margin-left: 20px; /* Increase indentation for each nested level */
+  }
+  
+ul {
+  padding-left: 1.5em;
+}
+
+ul > li {
+  list-style-type: none;
+}
+
+ul > li::before {
+  content: '\2022';
+  position: absolute;
+  margin-left: -20px;
+}
+
+pre {
+  position:relative;
+  margin:.5em 0;
+  overflow:visible;
+  padding:1px
+  }
+
+  pre > code {
+      position:relative;
+      z-index:1;
+      border-left:10px solid #358ccb;
+      box-shadow:-1px 0 0 0 #358ccb, 0 0 0 1px #dfdfdf;
+      background-color:#fdfdfd;
+      background-image:linear-gradient(transparent 50%,rgba(69,142,209,.04) 50%);
+      background-size:3em 3em;
+      background-origin:content-box;
+      background-attachment:local
+  }
+
+code {
+  max-height:inherit;
+  height:inherit;
+  padding:0 1em;
+  line-height: 1.45;
+  display: inline-flex;
+  overflow:auto
+}
