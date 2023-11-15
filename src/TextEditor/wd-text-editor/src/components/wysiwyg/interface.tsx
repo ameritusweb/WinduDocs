@@ -22,3 +22,8 @@ export interface AstNode {
     content: AstNode[];
     updater?: (nodes: AstNode[]) => void;
   }
+
+  export interface AstUpdate {
+    nodes: AstNode[];
+    type: string;
+}

@@ -1,12 +1,7 @@
-import { AstNode } from "../components/wysiwyg/interface";
+import { AstNode, AstUpdate } from "../components/wysiwyg/interface";
 import { handleBackspaceKeyPress, handleCharacterInsertion, handleEnterKeyPress } from "../rich-text-editor/handlers";
 import { createNewAstNode, createNewAstNodeFromFormat } from "../rich-text-editor/node-operations";
 import EditorData, { EditorDataType } from "./editor-data";
-
-export interface AstUpdate {
-    nodes: AstNode[];
-    type: string;
-}
 
 export const useRichTextEditor = () => {
 
@@ -32,7 +27,9 @@ export const useRichTextEditor = () => {
             }
             else if (key.length === 1) {
                 event.preventDefault();
-                handleCharacterInsertion(container, children, event.key, startOffset);
+                const update = handleCharacterInsertion(container, children, event.key, startOffset);
+                if (update)
+                    return update;
             }
         }
 

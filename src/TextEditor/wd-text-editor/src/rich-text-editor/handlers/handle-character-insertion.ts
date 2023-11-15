@@ -1,9 +1,9 @@
-import { AstNode } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate } from "../../components/wysiwyg/interface";
 import { findNodeByGuid } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 
 // Handle character insertion
-const handleCharacterInsertion = (container: Node, children: AstNode[], key: string, startOffset: number) => {
+const handleCharacterInsertion = (container: Node, children: AstNode[], key: string, startOffset: number): AstUpdate | null => {
     if (container.nodeName === '#text')
     {
         const parent = container.parentElement;
@@ -31,6 +31,8 @@ const handleCharacterInsertion = (container: Node, children: AstNode[], key: str
             }
         }
     }
+
+    return null;
 };
 
 export default handleCharacterInsertion;
