@@ -12,7 +12,7 @@ const TableCell: React.FC<TableCellProps> = ({ children }) => {
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph key={child.Guid} content={child.Children} />;
+                        return <Paragraph key={child.Guid} id={child.Guid} content={child.Children} higherLevelContent={children} />;
                     default:
                         return null;
                 }

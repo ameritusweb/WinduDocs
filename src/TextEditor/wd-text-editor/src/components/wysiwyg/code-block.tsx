@@ -13,7 +13,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ id, language, node }) => {
     return (
         <pre>
             <code className={`rich-code language-${language}`}>
-                {<Paragraph key={`para-${id}`} id={`para-${id}`} content={[node]} />}
+                {<Paragraph key={`para-${id}`} id={`para-${id}`} content={[node]} higherLevelContent={[]} />}
             </code>
         </pre>
     );

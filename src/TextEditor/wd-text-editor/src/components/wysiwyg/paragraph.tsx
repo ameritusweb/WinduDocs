@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { HTMLAttributes, MutableRefObject, useEffect, useRef, useState } from "react";
 import { AstNode } from "./interface";
 import Strong from "./strong";
 import Emphasis from "./emphasis";
@@ -6,12 +6,16 @@ import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 
-export interface ParagraphProps {
-    id: string;
-    content: AstNode[];
-}
+type ParagraphProps = {
+  id: string;
+  content: AstNode[];
+  higherLevelContent: AstNode[];
+  render?: (props: { children: React.ReactNode }) => JSX.Element;
+};
 
-const Paragraph: React.FC<ParagraphProps> = ({ id, content }) => {
+type DynamicTagProps = HTMLAttributes<HTMLParagraphElement | HTMLSpanElement> & ParagraphProps;
+
+const Paragraph: React.FC<DynamicTagProps> = ({ id, content, higherLevelContent, render }) => {
 
     const [ast, setAst] = useState<AstNode[]>(content);
     const { updateAst } = useRichTextEditor();
@@ -73,8 +77,29 @@ const Paragraph: React.FC<ParagraphProps> = ({ id, content }) => {
 
     }
 
+    if (render)
+    {
+      return render({
+        children: ast.map((item) => {
+          switch (item.NodeName) {
+            case 'Strong':
+              return <Strong key={item.Guid} id={item.Guid}>{item.Children}</Strong>;
+            case 'Emphasis':
+              return <Emphasis key={item.Guid} id={item.Guid}>{item.Children}</Emphasis>;
+            case 'CodeInline':
+              return <CodeInline key={item.Guid} id={item.Guid}>{item.TextContent}</CodeInline>;
+            case 'Link':
+              return <Link key={item.Guid} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
+            case 'Text':
+            default:
+              return <React.Fragment key={item.Guid}>{item.TextContent}</React.Fragment>;
+          }
+        })
+      });
+  }
+
     return (
-      <p id={id} ref={paraRef} className="rich-para" tabIndex={1} contentEditable={true} suppressContentEditableWarning={true} onKeyDown={onKeyDown}>
+      <span id={id} ref={paraRef} className="rich-para" tabIndex={1} contentEditable={true} suppressContentEditableWarning={true} onKeyDown={onKeyDown}>
         {ast.map((item) => {
           switch (item.NodeName) {
             case 'Strong':
@@ -84,13 +109,13 @@ const Paragraph: React.FC<ParagraphProps> = ({ id, content }) => {
             case 'CodeInline':
               return <CodeInline key={item.Guid} id={item.Guid}>{item.TextContent}</CodeInline>;
             case 'Link':
-              return <Link key={item.Guid} id={item.Guid} url={item.Attributes.Url || ''}>{item.TextContent}</Link>
+              return <Link key={item.Guid} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
             case 'Text':
             default:
               return <React.Fragment key={item.Guid}>{item.TextContent}</React.Fragment>;
           }
         })}
-      </p>
+      </span>
     );
   };
   

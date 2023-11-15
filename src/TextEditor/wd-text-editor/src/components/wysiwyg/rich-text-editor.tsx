@@ -19,10 +19,10 @@ const RichTextEditor = () => {
     const astRef = useRef<AstNode>(ast);
     const { convertToMarkdown } = useMarkdownGenerator();
 
-    const renderNode = (node: AstNode) => {
+    const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} />;
+                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={higherLevelContent} />;
             case 'HeadingBlock':
                 return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} />;
             case 'OrderedListBlock':
@@ -61,7 +61,7 @@ const RichTextEditor = () => {
 
         event.preventDefault();
 
-        const markdown = convertToMarkdown(astRef.current);
+        const markdown = convertToMarkdown(astRef.current, 0);
         console.log(JSON.stringify(markdown, null, 2));
     }
 
@@ -76,7 +76,7 @@ const RichTextEditor = () => {
                  color: 'rgba(100, 100, 100, 1)',
                  fontFamily: 'Consolas,Monaco,\'Andale Mono\',\'Ubuntu Mono\',monospace'
                  }}>
-                 {ast.Children.map(renderNode)}
+                 {ast.Children.map((c) => renderNode(c, ast.Children))}
             </div>
         </div>
     );

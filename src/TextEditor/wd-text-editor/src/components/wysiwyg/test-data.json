@@ -1550,9 +1550,9 @@
       {
         "NodeName": "ParagraphBlock",
         "Attributes": {},
-        "ChildIndex": 34,
+        "ChildIndex": 2,
         "Depth": 1,
-        "Guid": "586a1c0b-1607-487d-bd47-c1b18e65a77f",
+        "Guid": "b5db1768-7f25-49a7-90e8-6b0d63d07a30",
         "TextContent": null,
         "Children": [
           {
@@ -1560,7 +1560,7 @@
             "Attributes": {},
             "ChildIndex": 0,
             "Depth": 2,
-            "Guid": "6b0484f4-f2ce-4bdd-ba1d-acf719511abd",
+            "Guid": "8dca4773-e31d-4f45-a8f3-0d42118b4f86",
             "TextContent": "This is a ",
             "Children": []
           },
@@ -1572,16 +1572,54 @@
             },
             "ChildIndex": 0,
             "Depth": 2,
-            "Guid": "b0ba847f-13d4-4eee-82cb-c41a9cbfa405",
-            "TextContent": "link to OpenAI",
-            "Children": []
+            "Guid": "f267be03-705f-4c00-b88d-5d694081579a",
+            "TextContent": null,
+            "Children": [
+              {
+                "NodeName": "Text",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Depth": 3,
+                "Guid": "77696d75-ded0-42a9-a37b-8fdbe5ab0c84",
+                "TextContent": "link ",
+                "Children": []
+              },
+              {
+                "NodeName": "Strong",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Depth": 3,
+                "Guid": "49633872-1c77-4398-9bdd-9142ca99c719",
+                "TextContent": null,
+                "Children": [
+                  {
+                    "NodeName": "Text",
+                    "Attributes": {},
+                    "ChildIndex": 0,
+                    "Depth": 4,
+                    "Guid": "f67c75da-8c79-416e-bf97-c7c8cd1a5228",
+                    "TextContent": "to",
+                    "Children": []
+                  }
+                ]
+              },
+              {
+                "NodeName": "Text",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Depth": 3,
+                "Guid": "13e5fbda-f54b-4341-9421-8367147b0d94",
+                "TextContent": " OpenAI",
+                "Children": []
+              }
+            ]
           },
           {
             "NodeName": "Text",
             "Attributes": {},
             "ChildIndex": 0,
             "Depth": 2,
-            "Guid": "188be1e4-4f4b-40ae-8768-38a7a818e707",
+            "Guid": "b4e57995-36d4-4a17-9696-ca6f641404f6",
             "TextContent": ".",
             "Children": []
           }

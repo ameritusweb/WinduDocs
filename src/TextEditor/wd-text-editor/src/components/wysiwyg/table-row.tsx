@@ -15,7 +15,7 @@ export interface TableHeaderProps {
 const ThCell: React.FC<TableHeaderProps> = ({ children }) => <th>{children.map((child) => {
     switch (child.NodeName) {
         case 'ParagraphBlock':
-            return <Paragraph key={child.Guid} content={child.Children} />;
+            return <Paragraph key={child.Guid} id={child.Guid} content={child.Children} higherLevelContent={children} />;
         default:
             return null;
     }
