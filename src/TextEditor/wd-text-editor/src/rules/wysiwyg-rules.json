@@ -29,6 +29,11 @@
           "GroupName":"Heading",
           "State": "h6"
       },
+      {
+        "Name": "Normal",
+        "GroupName": "Text Styles",
+        "State": [ "normal" ]
+      },
     {
       "Name": "Bold + Italic",
       "GroupName": "Text Styles",

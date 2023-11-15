@@ -6,17 +6,18 @@ export interface HeadingProps {
     id: string;
     level: string;
     children: AstNode[];
+    higherLevelChildren: AstNode[];
     rootUpdater: (nodes: AstNode[]) => void;
 }
 
-export const Heading: React.FC<HeadingProps> = ({ id, level, children, rootUpdater }) => {
+export const Heading: React.FC<HeadingProps> = ({ id, level, children, higherLevelChildren, rootUpdater }) => {
     // Determine the tag based on the format. Default to 'p' for plain text.
     const Tag = level ? `h${level}` : 'p';
   
     const elementChildren = children.map((child) => {
         switch (child.NodeName) {
             case 'Text':
-                return <Paragraph key={child.Guid} id={child.Guid} content={[child]} higherLevelContent={{ content: children, updater: rootUpdater }} render={props => <span {...props}></span>} />;
+                return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
             default:
                 return null;
         }

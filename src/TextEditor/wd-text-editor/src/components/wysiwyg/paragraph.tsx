@@ -6,6 +6,7 @@ import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
+import EditorData, { EditorDataType } from "../../hooks/editor-data";
 
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
@@ -32,6 +33,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const { updateAst } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
     const cursorPositionRef = useRef<number>(0);
+    const editorData: EditorDataType = EditorData;
 
     const saveCursorPosition = (updateType: string) => {
       const selection = window.getSelection();
@@ -77,7 +79,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
-        const update = updateAst(event, ast, higherLevelAst);
+        const update = updateAst(event, ast, higherLevelAst, props.higherLevelContent?.id);
         saveCursorPosition(update.type);
         if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
           props.higherLevelContent.updater(update.nodes);

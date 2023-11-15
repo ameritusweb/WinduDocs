@@ -13,16 +13,16 @@ export const BlankLine: React.FC<BlankLineProps> = ({ format, self, higherLevelC
     
     const [lineFormat, setLineFormat] = useState<string | null | undefined>(format);
     const blankLineRef = useRef<HTMLElement | null>(null);
-    const { createNewAstNode } = useRichTextEditor();
+    const { createNewAstNode, createNewAstNodeFromFormat } = useRichTextEditor();
 
     // Determine the tag based on the format. Default to 'p' for plain text.
-    const Tag = lineFormat ? `h${lineFormat}` : 'p';
+    const Tag = lineFormat && lineFormat !== 'unselected' ? lineFormat : 'p';
   
     const onFocus = () => {
       const editorData: EditorDataType = EditorData;
-      if (editorData.editorState && editorData.editorState.startsWith('h'))
+      if (editorData.editorState)
       {
-        setLineFormat(editorData.editorState.substring(1));
+        setLineFormat(editorData.editorState);
         setTimeout(function(this: React.RefObject<HTMLElement | null>) {
           this.current?.focus();
         }.bind(blankLineRef), 1);
@@ -48,7 +48,15 @@ export const BlankLine: React.FC<BlankLineProps> = ({ format, self, higherLevelC
           const index = higherLevelContent.content.findIndex((c) => c === self);
           higherLevelContent.content.splice(index, 1);
           higherLevelContent.updater(higherLevelContent.content);
+        } else if (event.key.length === 1) {
+          const index = higherLevelContent.content.findIndex((c) => c === self);
+          higherLevelContent.content.splice(index, 1);
+          const newNode = createNewAstNodeFromFormat(lineFormat || '', event.key);
+          higherLevelContent.content.splice(index, 0, newNode);
+          higherLevelContent.updater(higherLevelContent.content);
         }
+
+        event.stopPropagation();
       }
 
     }

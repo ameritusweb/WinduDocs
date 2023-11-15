@@ -16,6 +16,10 @@ const Emphasis: React.FC<EmphasisProps> = ({ id, children }) => {
                         return <Strong key={child.Guid} id={child.Guid} children={child.Children} />;
                     case 'Text':
                         return <React.Fragment key={child.Guid}>{child.TextContent}</React.Fragment>;
+                    case 'Emphasis':
+                        return child.Children.map((child) => {
+                            return <Strong key={child.Guid} id={child.Guid} children={child.Children} />;
+                        });
                     default:
                         return null;
                 }

@@ -27,9 +27,9 @@ const RichTextEditor = () => {
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph<HTMLParagraphElement> key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
+                return <Paragraph<HTMLParagraphElement> key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
             case 'HeadingBlock':
-                return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} rootUpdater={updateContent} />;
+                return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
             case 'OrderedListBlock':
                 return <OrderedList key={node.Guid} children={node.Children} />;
             case 'UnorderedListBlock':

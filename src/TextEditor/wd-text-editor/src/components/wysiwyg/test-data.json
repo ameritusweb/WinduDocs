@@ -11,7 +11,141 @@
       "Attributes": {},
       "ChildIndex": 0,
       "Depth": 1,
-      "Guid": "eb45bca1-938b-4ce5-b3e1-a415ae4b4791",
+      "Guid": "11e46628-d715-44d6-a82f-6218fcba0a0b",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Emphasis",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "78b01b6a-bcb9-4f96-bcf3-e2a62e977402",
+          "TextContent": null,
+          "Children": [
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "70630e34-9437-46a6-b598-3e7de18e95d1",
+              "TextContent": "This is a paragraph with both ",
+              "Children": []
+            },
+            {
+              "NodeName": "Emphasis",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "a70841ad-12f1-43c6-aa50-11ed4c50f0b6",
+              "TextContent": null,
+              "Children": [
+                {
+                  "NodeName": "Strong",
+                  "Attributes": {},
+                  "ChildIndex": 0,
+                  "Depth": 4,
+                  "Guid": "7c91aca3-51bb-4eb0-934a-43d4af06ae26",
+                  "TextContent": null,
+                  "Children": [
+                    {
+                      "NodeName": "Text",
+                      "Attributes": {},
+                      "ChildIndex": 0,
+                      "Depth": 5,
+                      "Guid": "6f0fd004-5075-4f7c-ad27-fa2da2ef3dd7",
+                      "TextContent": "bold and italic",
+                      "Children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "a2db9f80-329d-4de6-8c5b-26ea2d85ef56",
+              "TextContent": " text",
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 0,
+      "Depth": 1,
+      "Guid": "2ad2dfcb-a3fa-4d23-b608-2db796899ca8",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Strong",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "e309aee3-a939-478f-a468-f255b7e3d84c",
+          "TextContent": null,
+          "Children": [
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "8dd67ab2-3c0f-434b-ac31-cb920d505bfd",
+              "TextContent": "This is a paragraph with both ",
+              "Children": []
+            },
+            {
+              "NodeName": "Strong",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "9282fdf0-7bbb-47e1-813c-ee85b3fecec2",
+              "TextContent": null,
+              "Children": [
+                {
+                  "NodeName": "Emphasis",
+                  "Attributes": {},
+                  "ChildIndex": 0,
+                  "Depth": 4,
+                  "Guid": "38ace1b7-b00c-4eda-9b92-56140a30d259",
+                  "TextContent": null,
+                  "Children": [
+                    {
+                      "NodeName": "Text",
+                      "Attributes": {},
+                      "ChildIndex": 0,
+                      "Depth": 5,
+                      "Guid": "d1f07841-d575-4ab7-a878-2c442170340a",
+                      "TextContent": "bold and italic",
+                      "Children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "2aad215f-4600-4495-912a-174168460807",
+              "TextContent": " text",
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 0,
+      "Depth": 1,
+      "Guid": "11023bdf-1bf5-4714-af07-f001f35d3372",
       "TextContent": null,
       "Children": [
         {
@@ -19,7 +153,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "6162a392-0da9-4663-969b-d3640558a018",
+          "Guid": "fbd271d5-d214-4f37-82a4-b739f0326691",
           "TextContent": "This is a paragraph with both ",
           "Children": []
         },
@@ -28,7 +162,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "0f03ea1c-097d-4297-b83a-7660cd28b4b5",
+          "Guid": "f652b69b-6fd0-466f-8879-70d068dc1850",
           "TextContent": null,
           "Children": [
             {
@@ -36,7 +170,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "4fa7f2f8-2c7a-4668-b634-447622264271",
+              "Guid": "8c586042-b237-4c33-aad9-9066f6be4db8",
               "TextContent": null,
               "Children": [
                 {
@@ -44,7 +178,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "d48cad6f-b523-4ebd-bf9b-41745a4c7ac5",
+                  "Guid": "a59db773-cc9a-4569-b1e9-4d10261db275",
                   "TextContent": "bold and italic",
                   "Children": []
                 }
@@ -57,7 +191,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "6863e83a-76d8-463c-baba-0e7cc1c0f5ec",
+          "Guid": "663d9b11-43a6-4ffd-ad69-a811109f0669",
           "TextContent": " text.",
           "Children": []
         },
@@ -66,7 +200,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "a87b6c69-c643-4ead-b76c-24a6f13403c3",
+          "Guid": "7bc1eb6a-1569-4b06-9029-60f6c48152e4",
           "TextContent": "\n",
           "Children": []
         },
@@ -75,7 +209,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "0b2345f9-3d69-459f-916b-130d79a80e54",
+          "Guid": "3faee14a-439e-4e01-8ecb-463ca541a0d8",
           "TextContent": "This is another paragraph.",
           "Children": []
         }
@@ -86,7 +220,7 @@
       "Attributes": {},
       "ChildIndex": 1,
       "Depth": 1,
-      "Guid": "a2b5eac7-c50e-4934-ae6f-2110aa283e67",
+      "Guid": "a1caede2-450d-4466-9a11-8308e0b6991a",
       "TextContent": null,
       "Children": []
     },
@@ -95,17 +229,27 @@
       "Attributes": {},
       "ChildIndex": 2,
       "Depth": 1,
-      "Guid": "6723f1ab-cb73-4b89-a1db-16a45018ab6a",
+      "Guid": "3473e791-f6cc-46d5-985f-9a9ea27ac3c6",
       "TextContent": null,
       "Children": [
         {
-          "NodeName": "Text",
+          "NodeName": "Strong",
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "6ca06037-bb37-4128-9e69-3ceae957ccf8",
-          "TextContent": "This is a third paragraph",
-          "Children": []
+          "Guid": "06eb3545-31f5-4cf9-8d62-b3880f1c4d4e",
+          "TextContent": null,
+          "Children": [
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "716e1ea9-ca0e-4f0a-878d-5d5a6bc58af8",
+              "TextContent": "of bold text",
+              "Children": []
+            }
+          ]
         }
       ]
     },
@@ -114,7 +258,7 @@
       "Attributes": {},
       "ChildIndex": 3,
       "Depth": 1,
-      "Guid": "fab5b174-076e-4e49-9f61-68cb941b32d5",
+      "Guid": "17d394cc-6e11-4c7f-b7c4-78c4411d39ce",
       "TextContent": null,
       "Children": []
     },

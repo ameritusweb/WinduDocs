@@ -83,6 +83,32 @@ export const useRichTextEditor = () => {
 
     }
 
+    const createNewAstNodeFromFormat = (format: string, content: string): AstNode => {
+        switch (format) {
+            case 'h1':
+            case 'h2':
+            case 'h3':
+            case 'h4':
+            case 'h5':
+            case 'h6':
+                {
+                    const level = format.substring(1);
+                    const newNode = createNewAstNode('HeadingBlock', 0, 0, null);
+                    const newTextNode = createNewAstNode('Text', 0, 0, content);
+                    newNode.Children.push(newTextNode);
+                    newNode.Attributes.Level = level;
+                    return newNode;
+                }
+            default:
+                {
+                    const newNode = createNewAstNode('ParagraphBlock', 0, 0, null);
+                    const newTextNode = createNewAstNode('Text', 0, 0, content);
+                    newNode.Children.push(newTextNode);
+                    return newNode;
+                }
+        }
+    }
+
     const moveArray = <T>(
         sourceArray: T[], 
         sliceStart: number, 
@@ -99,6 +125,31 @@ export const useRichTextEditor = () => {
         // Insert the extracted slice into the destination array at the specified index.
         destinationArray.splice(destinationIndex, 0, ...extractedSlice);
     }
+
+    const splitNode = (node: AstNode, index: number): [AstNode, AstNode] => {
+        if (!node.TextContent || node.TextContent.length === 0) {
+          throw new Error("Node does not have text content or the content is empty.");
+        }
+      
+        if (index < 0 || index > node.TextContent.length) {
+          throw new Error("Index is out of bounds.");
+        }
+      
+        const leftText = node.TextContent.substring(0, index);
+        const rightText = node.TextContent.substring(index);
+      
+        const leftNode: AstNode = {
+          ...node,
+          TextContent: leftText,
+        };
+      
+        const rightNode: AstNode = {
+          ...node,
+          TextContent: rightText,
+        };
+      
+        return [leftNode, rightNode];
+      }
 
     const findNodeByGuid = (nodes: AstNode[], guid: string): AstNode | null => {
         for (const node of nodes) {
@@ -126,7 +177,7 @@ export const useRichTextEditor = () => {
         return null;
     }
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[]): AstUpdate => {
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], higherLevelId?: string): AstUpdate => {
 
         const sel = window.getSelection();
         const key = event.key;
@@ -180,6 +231,36 @@ export const useRichTextEditor = () => {
                                         if (higherLevelIndex !== null) {
                                             const newBlank = createNewAstNode('BlankLine', 0, 0, null);
                                             higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
+                                            return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                        }
+                                        else if (higherLevelId) {
+                                            const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
+                                            if (higherLevelIndex) {
+                                                const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                                higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
+                                                return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (parent.nodeName === 'SPAN' || parent.nodeName === 'P') {
+                                const gparent = parent.parentElement;
+                                if (gparent) {
+                                    const childNodes = Array.from(parent.childNodes);
+                                    const childIndex = childNodes.findIndex((c) => c === container);
+                                    const child = children[childIndex];
+                                    if (child) {
+                                        const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                                        if (higherLevelIndex !== null) {
+                                            const [node1, node2] = splitNode(child, startOffset);
+                                            children.splice(childIndex, 1, node1, node2);
+                                            const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
+                                            moveArray(children, childIndex + 1, newPara.Children, 0);
+                                            higherLevelChildren.splice(higherLevelIndex + 1, 0, newPara);
                                             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                         }
                                     }
@@ -284,6 +365,7 @@ export const useRichTextEditor = () => {
     return {
         editorData,
         updateAst,
-        createNewAstNode
+        createNewAstNode,
+        createNewAstNodeFromFormat
       };
 }
