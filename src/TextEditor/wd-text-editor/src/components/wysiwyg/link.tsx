@@ -9,7 +9,7 @@ interface LinkProps {
 }
 
 const Link: React.FC<LinkProps> = ({ id, url, children }) => {
-    return <a id={id} href={url}>{<Paragraph key={`para-${id}`} id={`para-${id}`} content={children} higherLevelContent={[]} render={props => <span {...props}></span>} />}</a>;
+    return <a id={id} href={url}>{<Paragraph key={`para-${id}`} id={id} content={children} higherLevelContent={[]} render={props => <span {...props}></span>} />}</a>;
 };
 
 export default Link;

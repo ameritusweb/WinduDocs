@@ -223,6 +223,10 @@ export const useRichTextEditor = () => {
                         const parentId = parent.id;
                         let child = findNodeByGuid(children, parentId);
                         if (child) {
+                            if (child.Children.length) {
+                                const index = Array.from(parent.childNodes).findIndex((c) => c === container);
+                                child = child.Children[index];
+                            }
                             replaceText(container, child, startOffset, event.key);
                             return { type: 'insert', nodes: children.map((c, ind) => {
                                 return Object.assign({}, c)
