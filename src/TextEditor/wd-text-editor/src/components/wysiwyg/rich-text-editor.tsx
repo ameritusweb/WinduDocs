@@ -24,10 +24,14 @@ const RichTextEditor = () => {
         setHigherLevelAst(nodes);
     }
 
+    const copyChildren = (node: AstNode) => {
+        return node.Children.map((c) => Object.assign({}, c));
+    }
+
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} render={props => <span {...props}></span>}/>;
+                return <Paragraph key={node.Guid} id={node.Guid} content={copyChildren(node)} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} render={props => <span {...props}></span>}/>;
             case 'HeadingBlock':
                 return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} rootUpdater={updateContent} />;
             case 'OrderedListBlock':
