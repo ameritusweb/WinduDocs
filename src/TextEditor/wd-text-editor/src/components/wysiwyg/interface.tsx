@@ -16,3 +16,8 @@ export interface AstNode {
     TextContent: string | null;
     Children: AstNode[];
   }
+
+  export interface HigherLevelProps {
+    content: AstNode[];
+    updater?: (nodes: AstNode[]) => void;
+  }

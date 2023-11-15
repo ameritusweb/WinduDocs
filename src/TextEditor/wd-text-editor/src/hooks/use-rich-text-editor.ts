@@ -115,7 +115,18 @@ export const useRichTextEditor = () => {
         return null;
     }
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[]): AstUpdate => {
+    const findHigherlevelIndex = (nodes: AstNode[], higherLevelNodes: AstNode[]): number | null => {
+        let index = 0;
+        for (const higherLevelItem of higherLevelNodes) {
+            if (higherLevelItem.Children === nodes) {
+                return index;
+            }
+            index++;
+        }
+        return null;
+    }
+
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[]): AstUpdate => {
 
         const sel = window.getSelection();
         const key = event.key;
@@ -144,13 +155,14 @@ export const useRichTextEditor = () => {
                                     const childIndex = childNodes.findIndex((c) => c === container);
                                     let child = children[childIndex];
                                     if (child) {
-                                        const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
-                                        moveArray(children, childIndex + 1, newPara.Children, 0);
-                                        const gchildIndex = Array.from(gparent.childNodes).findIndex((c) => c === parent);
-                                        let gchild = children[childIndex];
-                                        if (gchild) {
-    
-                                        }   
+                                        const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                                        if (higherLevelIndex !== null) {
+                                            const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
+                                            moveArray(children, childIndex, newPara.Children, 0);
+                                            const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                            higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank, newPara);
+                                            return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                        }
                                     }
                                 }
                             }

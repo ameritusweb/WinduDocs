@@ -5,12 +5,13 @@ import Emphasis from "./emphasis";
 import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
+import { HigherLevelProps } from './interface';
 
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
   content: AstNode[];
-  higherLevelContent: AstNode[];
   render: (props: RenderProps<T>) => JSX.Element;
+  higherLevelContent?: HigherLevelProps;
 }
 
 interface RenderProps<T extends HTMLElement> {
@@ -27,6 +28,7 @@ interface RenderProps<T extends HTMLElement> {
 const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const [ast, setAst] = useState<AstNode[]>(props.content);
+    const [higherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
     const { updateAst } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
     const cursorPositionRef = useRef<number>(0);
@@ -75,9 +77,15 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
-        const update = updateAst(event, ast);
+        const update = updateAst(event, ast, higherLevelAst);
         saveCursorPosition(update.type);
-        setAst(update.nodes.map((u) => Object.assign({}, u)));
+        if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
+          props.higherLevelContent.updater(update.nodes);
+        }
+        else
+        {
+          setAst(update.nodes);
+        }
 
         if (event.code === 'Space') {
           return;

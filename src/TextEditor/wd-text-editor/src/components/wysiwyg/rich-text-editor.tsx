@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { AstNode } from "./interface";
 import Paragraph from "./paragraph";
 import Heading from "./heading";
@@ -18,13 +18,18 @@ const RichTextEditor = () => {
 
     const astRef = useRef<AstNode>(ast);
     const { convertToMarkdown } = useMarkdownGenerator();
+    const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
+
+    const updateContent = (nodes: AstNode[]) => {
+        setHigherLevelAst(nodes);
+    }
 
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={higherLevelContent} render={props => <span {...props}></span>}/>;
+                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} render={props => <span {...props}></span>}/>;
             case 'HeadingBlock':
-                return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} />;
+                return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} rootUpdater={updateContent} />;
             case 'OrderedListBlock':
                 return <OrderedList key={node.Guid} children={node.Children} />;
             case 'UnorderedListBlock':
@@ -76,7 +81,7 @@ const RichTextEditor = () => {
                  color: 'rgba(100, 100, 100, 1)',
                  fontFamily: 'Consolas,Monaco,\'Andale Mono\',\'Ubuntu Mono\',monospace'
                  }}>
-                 {ast.Children.map((c) => renderNode(c, ast.Children))}
+                 {higherLevelAst.map((c) => renderNode(c, higherLevelAst))}
             </div>
         </div>
     );
