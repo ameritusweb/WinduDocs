@@ -1,16 +1,19 @@
 import React from "react";
+import Paragraph from "./paragraph";
+import { AstNode } from "./interface";
 
 interface CodeBlockProps {
+    id: string;
     language: string;
-    text: string;
+    node: AstNode;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ language, text }) => {
-    // You can add language-specific formatting or syntax highlighting here
+const CodeBlock: React.FC<CodeBlockProps> = ({ id, language, node }) => {
+
     return (
         <pre>
-            <code className={`language-${language}`}>
-                {text}
+            <code className={`rich-code language-${language}`}>
+                {<Paragraph key={`para-${id}`} id={`para-${id}`} content={[node]} />}
             </code>
         </pre>
     );

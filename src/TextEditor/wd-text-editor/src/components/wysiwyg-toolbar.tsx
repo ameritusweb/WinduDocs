@@ -4,6 +4,7 @@ import { ToolbarButton } from './toolbar-button';
 import './wysiwyg-toolbar.css'; // Import the CSS stylesheet
 import rules from '../rules/wysiwyg-rules.json';
 import { useEditorContext } from '../hooks/use-editor-context';
+import EditorData, { EditorDataType } from '../hooks/editor-data';
 
 interface ToolbarProps {
 
@@ -36,6 +37,8 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
         setState
       } = useEditorContext();
 
+    const editorData: EditorDataType = EditorData;
+
     const renderTabContent = (rules: any[], groupName: string) => {
         // Filter rules based on the active group
         const filteredRules = rules.filter(rule => rule.GroupName === groupName);
@@ -46,7 +49,10 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
             key={rule.Name} 
             label={rule.Name.toUpperCase()}
             isActive={rule.State === state}
-            onClick={() => setState(rule.State)} 
+            onClick={() => {
+              setState(rule.State);
+              editorData.editorState = rule.State;
+            }} 
           />
         ));
       };         

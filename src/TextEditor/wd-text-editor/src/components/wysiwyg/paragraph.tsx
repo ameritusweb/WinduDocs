@@ -74,7 +74,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ id, content }) => {
     }
 
     return (
-      <p id={id} ref={paraRef} tabIndex={1} contentEditable={true} suppressContentEditableWarning={true} onKeyDown={onKeyDown}>
+      <p id={id} ref={paraRef} className="rich-para" tabIndex={1} contentEditable={true} suppressContentEditableWarning={true} onKeyDown={onKeyDown}>
         {ast.map((item) => {
           switch (item.NodeName) {
             case 'Strong':

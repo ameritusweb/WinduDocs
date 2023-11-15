@@ -43,9 +43,9 @@ const RichTextEditor = () => {
                 return <HorizontalRule id={node.Guid} key={node.Guid} />;
              case 'FencedCodeBlock':
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
-                    return <AlertBlock key={node.Guid} type={node.Attributes.Language} text={node.TextContent || ''} />;
+                    return <AlertBlock key={node.Guid} id={node.Guid} type={node.Attributes.Language} node={node} />;
                 } else {
-                    return <CodeBlock key={node.Guid} language={node.Attributes.Language || ''} text={node.TextContent || ''} />;
+                    return <CodeBlock key={node.Guid} id={node.Guid} language={node.Attributes.Language || ''} node={node} />;
                 }
             case 'BlankLine':
                 return <BlankLine key={node.Guid} format={null} />

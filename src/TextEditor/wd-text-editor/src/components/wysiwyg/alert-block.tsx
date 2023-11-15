@@ -1,11 +1,14 @@
 import React from "react";
+import { AstNode } from "./interface";
+import Paragraph from "./paragraph";
 
 interface AlertBlockProps {
+    id: string;
     type: string; // Extracted from the language attribute
-    text: string; // The text content of the alert
+    node: AstNode; // The text content of the alert
 }
 
-const AlertBlock: React.FC<AlertBlockProps> = ({ type, text }) => {
+const AlertBlock: React.FC<AlertBlockProps> = ({ id, type, node }) => {
     const getSvg = (type: string) => {
         switch (type) {
             case 'type-alert-success':
@@ -26,9 +29,9 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ type, text }) => {
     };
 
     return (
-        <div className={`alert`}>
+        <div className={`rich-alert alert`}>
             {getSvg(type)}
-            <span>{text}</span>
+            {<Paragraph key={`para-${id}`} id={`para-${id}`} content={[node]} />}
         </div>
     );
 };

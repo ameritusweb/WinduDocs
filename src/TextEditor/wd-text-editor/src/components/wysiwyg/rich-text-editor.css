@@ -168,3 +168,7 @@ code {
   display: inline-flex;
   overflow:auto
 }
+
+.blank-line:focus, .rich-code:focus, .rich-alert:focus, .rich-para:focus {
+  outline: 1px dotted rgba(200, 200, 200, 0.5);
+}
