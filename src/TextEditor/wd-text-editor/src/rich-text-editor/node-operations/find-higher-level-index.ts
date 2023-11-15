@@ -1,4 +1,4 @@
-import { AstNode } from "../../../components/wysiwyg/interface";
+import { AstNode } from "../../components/wysiwyg/interface";
 
 const findHigherlevelIndex = (nodes: AstNode[], higherLevelNodes: AstNode[]): number | null => {
     let index = 0;

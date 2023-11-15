@@ -1,5 +1,5 @@
 import { generateKey } from ".";
-import { AstNode } from "../../../components/wysiwyg/interface";
+import { AstNode } from "../../components/wysiwyg/interface";
 
 const createNewAstNode = (name: string, index: number, depth: number, text: string | null, children?: AstNode[]): AstNode => {
 

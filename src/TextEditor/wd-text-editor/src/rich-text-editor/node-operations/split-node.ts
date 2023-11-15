@@ -1,4 +1,4 @@
-import { AstNode } from "../../../components/wysiwyg/interface";
+import { AstNode } from "../../components/wysiwyg/interface";
 
 const splitNode = (node: AstNode, index: number): [AstNode, AstNode] => {
     if (!node.TextContent || node.TextContent.length === 0) {

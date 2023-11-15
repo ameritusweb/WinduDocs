@@ -1,4 +1,4 @@
-import { AstNode } from "../../../components/wysiwyg/interface";
+import { AstNode } from "../../components/wysiwyg/interface";
 
 const removeText = (container: Node, child: AstNode, start: number, end: number) => {
     const diff = end - start;

@@ -1,4 +1,4 @@
-import { AstNode } from "../../../components/wysiwyg/interface";
+import { AstNode } from "../../components/wysiwyg/interface";
 
 const findNodeByGuid = (nodes: AstNode[], guid: string): AstNode | null => {
     for (const node of nodes) {

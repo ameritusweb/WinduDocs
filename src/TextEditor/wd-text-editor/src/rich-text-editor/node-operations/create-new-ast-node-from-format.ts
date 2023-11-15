@@ -1,5 +1,5 @@
 import { createNewAstNode } from ".";
-import { AstNode } from "../../../components/wysiwyg/interface";
+import { AstNode } from "../../components/wysiwyg/interface";
 
 const createNewAstNodeFromFormat = (format: string, content: string): AstNode => {
     switch (format) {

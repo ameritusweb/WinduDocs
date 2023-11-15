@@ -1,4 +1,4 @@
-import { AstNode } from "../../../components/wysiwyg/interface";
+import { AstNode } from "../../components/wysiwyg/interface";
 
 const replaceText = (container: Node, child: AstNode, start: number, key: string) => {
 
