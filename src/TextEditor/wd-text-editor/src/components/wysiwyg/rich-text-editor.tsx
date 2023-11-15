@@ -22,7 +22,7 @@ const RichTextEditor = () => {
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={higherLevelContent} />;
+                return <Paragraph key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={higherLevelContent} render={props => <span {...props}></span>}/>;
             case 'HeadingBlock':
                 return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} />;
             case 'OrderedListBlock':

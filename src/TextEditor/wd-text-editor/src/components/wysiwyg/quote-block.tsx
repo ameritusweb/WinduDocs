@@ -13,7 +13,7 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({ children }) => {
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph key={child.Guid} id={child.Guid} content={child.Children} higherLevelContent={children} />;
+                        return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} content={child.Children} higherLevelContent={children} render={props => <p {...props}></p>} />;
                     case 'BlankLine':
                         return <BlankLine key={child.Guid} />;
                     // Handle other node types if necessary

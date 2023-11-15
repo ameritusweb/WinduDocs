@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { HTMLAttributes, LegacyRef, MutableRefObject, RefObject, useEffect, useRef, useState } from "react";
 import { AstNode } from "./interface";
 import Strong from "./strong";
 import Emphasis from "./emphasis";
@@ -6,20 +6,29 @@ import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 
-type ParagraphProps = {
+interface ParagraphProps<T extends HTMLElement> {
   id: string;
   content: AstNode[];
   higherLevelContent: AstNode[];
-  render?: (props: { children: React.ReactNode }) => JSX.Element;
-};
+  render: (props: RenderProps<T>) => JSX.Element;
+}
 
-type DynamicTagProps = HTMLAttributes<HTMLParagraphElement | HTMLSpanElement> & ParagraphProps;
+interface RenderProps<T extends HTMLElement> {
+  id: string;
+  ref: MutableRefObject<T | null>;
+  className: string;
+  tabIndex: number;
+  contentEditable: boolean;
+  suppressContentEditableWarning: boolean;
+  onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
+  children: React.ReactNode;
+}
 
-const Paragraph: React.FC<DynamicTagProps> = ({ id, content, higherLevelContent, render }) => {
+const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
-    const [ast, setAst] = useState<AstNode[]>(content);
+    const [ast, setAst] = useState<AstNode[]>(props.content);
     const { updateAst } = useRichTextEditor();
-    const paraRef = useRef<HTMLParagraphElement | null>(null);
+    const paraRef = useRef<T | null>(null);
     const cursorPositionRef = useRef<number>(0);
 
     const saveCursorPosition = (updateType: string) => {
@@ -77,46 +86,32 @@ const Paragraph: React.FC<DynamicTagProps> = ({ id, content, higherLevelContent,
 
     }
 
-    if (render)
-    {
-      return render({
-        children: ast.map((item) => {
-          switch (item.NodeName) {
-            case 'Strong':
-              return <Strong key={item.Guid} id={item.Guid}>{item.Children}</Strong>;
-            case 'Emphasis':
-              return <Emphasis key={item.Guid} id={item.Guid}>{item.Children}</Emphasis>;
-            case 'CodeInline':
-              return <CodeInline key={item.Guid} id={item.Guid}>{item.TextContent}</CodeInline>;
-            case 'Link':
-              return <Link key={item.Guid} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
-            case 'Text':
-            default:
-              return <React.Fragment key={item.Guid}>{item.TextContent}</React.Fragment>;
-          }
-        })
-      });
-  }
+    const renderProps: RenderProps<T> = {
+      id: props.id,
+      ref: paraRef,
+      className: "rich-para",
+      tabIndex: 1,
+      contentEditable: true,
+      suppressContentEditableWarning: true,
+      onKeyDown,
+      children: ast.map((item) => {
+        switch (item.NodeName) {
+          case 'Strong':
+            return <Strong key={item.Guid} id={item.Guid}>{item.Children}</Strong>;
+          case 'Emphasis':
+            return <Emphasis key={item.Guid} id={item.Guid}>{item.Children}</Emphasis>;
+          case 'CodeInline':
+            return <CodeInline key={item.Guid} id={item.Guid}>{item.TextContent}</CodeInline>;
+          case 'Link':
+            return <Link key={item.Guid} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
+          case 'Text':
+          default:
+            return <React.Fragment key={item.Guid}>{item.TextContent}</React.Fragment>;
+        }
+      })
+  };
 
-    return (
-      <span id={id} ref={paraRef} className="rich-para" tabIndex={1} contentEditable={true} suppressContentEditableWarning={true} onKeyDown={onKeyDown}>
-        {ast.map((item) => {
-          switch (item.NodeName) {
-            case 'Strong':
-              return <Strong key={item.Guid} id={item.Guid}>{item.Children}</Strong>;
-            case 'Emphasis':
-              return <Emphasis key={item.Guid} id={item.Guid}>{item.Children}</Emphasis>;
-            case 'CodeInline':
-              return <CodeInline key={item.Guid} id={item.Guid}>{item.TextContent}</CodeInline>;
-            case 'Link':
-              return <Link key={item.Guid} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
-            case 'Text':
-            default:
-              return <React.Fragment key={item.Guid}>{item.TextContent}</React.Fragment>;
-          }
-        })}
-      </span>
-    );
+  return props.render(renderProps);
   };
   
   export default Paragraph;

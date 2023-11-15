@@ -31,7 +31,7 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, type, node }) => {
     return (
         <div className={`rich-alert alert`}>
             {getSvg(type)}
-            {<Paragraph key={`para-${id}`} id={`para-${id}`} content={[node]} higherLevelContent={[]} />}
+            {<Paragraph key={`para-${id}`} id={`para-${id}`} content={[node]} higherLevelContent={[]} render={props => <span {...props}></span>} />}
         </div>
     );
 };
