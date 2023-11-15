@@ -1,8 +1,8 @@
-import { AstNode } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
 import { createNewAstNode, findHigherlevelIndex, splitNode } from "../node-operations";
 
-const handleEnterKeyPress = (container: Node, children: AstNode[], higherLevelChildren: AstNode[], range: Range, startOffset: number, higherLevelId?: string) => {
+const handleEnterKeyPress = (container: Node, children: AstNode[], higherLevelChildren: AstNode[], range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
     if (commonAncestor.nodeName !== '#text') {
 
@@ -76,6 +76,18 @@ const handleEnterKeyPress = (container: Node, children: AstNode[], higherLevelCh
                                 moveArray(children, childIndex + 1, newPara.Children, 0);
                                 higherLevelChildren.splice(higherLevelIndex + 1, 0, newPara);
                                 return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                            } else if (higherLevelId) {
+                                const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
+                                if (higherLevelIndex) {
+                                    const higherLevelChild = higherLevelChildren[higherLevelIndex];
+                                    const [node1, node2] = splitNode(child, startOffset);
+                                    children.splice(childIndex, 1, node1);
+                                    const newNode = createNewAstNode(higherLevelChild.NodeName, 0, 0, null);
+                                    newNode.Attributes = Object.assign({}, higherLevelChild.Attributes);
+                                    newNode.Children.push(node2);
+                                    higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
+                                    return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                }
                             }
                         }
                     }
@@ -83,6 +95,8 @@ const handleEnterKeyPress = (container: Node, children: AstNode[], higherLevelCh
             }
         }
     }
+
+    return null;
 };
 
 export default handleEnterKeyPress;

@@ -19,11 +19,15 @@ export const useRichTextEditor = () => {
             const endOffset = range.endOffset;
             if (key === 'Enter') {
                 event.preventDefault();
-                handleEnterKeyPress(container, children, higherLevelChildren, range, startOffset, higherLevelId)
+                const update = handleEnterKeyPress(container, children, higherLevelChildren, range, startOffset, higherLevelId);
+                if (update)
+                    return update;
             }
             else if (key === 'Backspace') {
                 event.preventDefault();
-                handleBackspaceKeyPress(container, endContainer, children, range, startOffset, endOffset);
+                const update = handleBackspaceKeyPress(container, endContainer, children, range, startOffset, endOffset);
+                if (update)
+                    return update;
             }
             else if (key.length === 1) {
                 event.preventDefault();

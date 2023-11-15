@@ -1,9 +1,9 @@
-import { AstNode } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
 import { removeText } from "../text-manipulation";
 
 // Handle Backspace key press
-const handleBackspaceKeyPress = (container: Node, endContainer: Node, children: AstNode[], range: Range, startOffset: number, endOffset: number) => {
+const handleBackspaceKeyPress = (container: Node, endContainer: Node, children: AstNode[], range: Range, startOffset: number, endOffset: number): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
     if (commonAncestor.nodeName !== '#text') {
         const ancestorChildNodes = processArray(Array.from(commonAncestor.childNodes) as (Node | Text)[], (i) => i === container, (j) => j === endContainer);
@@ -57,6 +57,8 @@ const handleBackspaceKeyPress = (container: Node, endContainer: Node, children: 
             }
         }
     }
+
+    return null;
 };
 
 export default handleBackspaceKeyPress;
