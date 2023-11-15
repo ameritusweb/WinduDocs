@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, LegacyRef, MutableRefObject, RefObject, useEffect, useRef, useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { AstNode } from "./interface";
 import Strong from "./strong";
 import Emphasis from "./emphasis";
