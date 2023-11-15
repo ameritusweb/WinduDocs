@@ -148,12 +148,12 @@ export const useRichTextEditor = () => {
                     if (parent) {
                         if (startOffset === 0)
                         {
-                            if (parent.nodeName === 'SPAN') {
+                            if (parent.nodeName === 'SPAN' || parent.nodeName === 'P') {
                                 const gparent = parent.parentElement;
                                 if (gparent) {
                                     const childNodes = Array.from(parent.childNodes);
                                     const childIndex = childNodes.findIndex((c) => c === container);
-                                    let child = children[childIndex];
+                                    const child = children[childIndex];
                                     if (child) {
                                         const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                                         if (higherLevelIndex !== null) {
@@ -161,6 +161,25 @@ export const useRichTextEditor = () => {
                                             moveArray(children, childIndex, newPara.Children, 0);
                                             const newBlank = createNewAstNode('BlankLine', 0, 0, null);
                                             higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank, newPara);
+                                            return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                        }
+                                    }
+                                }
+                            }
+                        } 
+                        else if (startOffset === container.textContent?.length)
+                        {
+                            if (parent.nodeName === 'SPAN' || parent.nodeName === 'P') {
+                                const gparent = parent.parentElement;
+                                if (gparent) {
+                                    const childNodes = Array.from(parent.childNodes);
+                                    const childIndex = childNodes.findIndex((c) => c === container);
+                                    const child = children[childIndex];
+                                    if (child) {
+                                        const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                                        if (higherLevelIndex !== null) {
+                                            const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                            higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
                                             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                         }
                                     }
@@ -191,15 +210,15 @@ export const useRichTextEditor = () => {
                                 }
                                 else
                                 {
-                                    let start = isStartNode ? startOffset : 0;
-                                    let end = isEndNode ? endOffset : (node.textContent || '').length;
+                                    const start = isStartNode ? startOffset : 0;
+                                    const end = isEndNode ? endOffset : (node.textContent || '').length;
                                     removeText(node, child, start, end);
                                 }
                             }
                         }
                         return { 
                             type: 'removeSelected', 
-                            nodes: children.map((c, ind) => Object.assign({}, c)) 
+                            nodes: children.map((c) => Object.assign({}, c)) 
                         };
                     }
                 } else {
@@ -240,7 +259,7 @@ export const useRichTextEditor = () => {
                                 child = child.Children[index];
                             }
                             replaceText(container, child, startOffset, event.key);
-                            return { type: 'insert', nodes: children.map((c, ind) => {
+                            return { type: 'insert', nodes: children.map((c) => {
                                 return Object.assign({}, c)
                             }) };
                         } else {
@@ -264,6 +283,7 @@ export const useRichTextEditor = () => {
 
     return {
         editorData,
-        updateAst
+        updateAst,
+        createNewAstNode
       };
 }

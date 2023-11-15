@@ -1,14 +1,19 @@
 import React, { useRef, useState } from "react";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
+import { AstNode, HigherLevelProps } from "./interface";
+import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 
 export interface BlankLineProps {
+    higherLevelContent: HigherLevelProps;
+    self: AstNode;
     format?: string | null;
 }
 
-export const BlankLine: React.FC<BlankLineProps> = ({ format }) => {
+export const BlankLine: React.FC<BlankLineProps> = ({ format, self, higherLevelContent }) => {
     
     const [lineFormat, setLineFormat] = useState<string | null | undefined>(format);
     const blankLineRef = useRef<HTMLElement | null>(null);
+    const { createNewAstNode } = useRichTextEditor();
 
     // Determine the tag based on the format. Default to 'p' for plain text.
     const Tag = lineFormat ? `h${lineFormat}` : 'p';
@@ -28,10 +33,30 @@ export const BlankLine: React.FC<BlankLineProps> = ({ format }) => {
       setLineFormat(null);
     }
 
+    const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+
+      event.preventDefault();
+
+      if (higherLevelContent.updater)
+      {
+        if (event.key === 'Enter') {
+          const index = higherLevelContent.content.findIndex((c) => c === self);
+          const newLine = createNewAstNode('BlankLine', 0, 0, null);
+          higherLevelContent.content.splice(index + 1, 0, newLine);
+          higherLevelContent.updater(higherLevelContent.content);
+        } else if (event.key === 'Backspace') {
+          const index = higherLevelContent.content.findIndex((c) => c === self);
+          higherLevelContent.content.splice(index, 1);
+          higherLevelContent.updater(higherLevelContent.content);
+        }
+      }
+
+    }
+
     // Use React.createElement to dynamically create the element
     return React.createElement(
       Tag,
-      { ref: blankLineRef, className: "blank-line", onFocus: onFocus, onBlur: onBlur, contentEditable: true, suppressContentEditableWarning: true },
+      { ref: blankLineRef, className: "blank-line", onFocus: onFocus, onBlur: onBlur, onKeyDown: onKeyDown, contentEditable: true, suppressContentEditableWarning: true },
       '\n'
     );
   };

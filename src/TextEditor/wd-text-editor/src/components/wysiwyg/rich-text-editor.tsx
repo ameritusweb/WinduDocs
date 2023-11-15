@@ -21,17 +21,13 @@ const RichTextEditor = () => {
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
 
     const updateContent = (nodes: AstNode[]) => {
-        setHigherLevelAst(nodes);
-    }
-
-    const copyChildren = (node: AstNode) => {
-        return node.Children.map((c) => Object.assign({}, c));
+        setHigherLevelAst(nodes.map((n) => Object.assign({}, n)));
     }
 
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph key={node.Guid} id={node.Guid} content={copyChildren(node)} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} render={props => <span {...props}></span>}/>;
+                return <Paragraph<HTMLParagraphElement> key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
             case 'HeadingBlock':
                 return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} rootUpdater={updateContent} />;
             case 'OrderedListBlock':
@@ -57,7 +53,7 @@ const RichTextEditor = () => {
                     return <CodeBlock key={node.Guid} id={node.Guid} language={node.Attributes.Language || ''} node={node} />;
                 }
             case 'BlankLine':
-                return <BlankLine key={node.Guid} format={null} />
+                return <BlankLine key={node.Guid} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
             // ... handle other types as needed
             default:
                 return null;
