@@ -23,7 +23,7 @@ export const applyUpdateOperation = (ast: AstNode, operation: AstOperation<'upda
     // Update the node with the new attributes
     const node = findNodeById(ast, operation.targetNodeId);
     if (node) {
-        Object.assign(node.Attributes, operation.payload!.newAttributes);
+        node.TextContent = '' + operation.payload!.newTextContent;
     }
     return ast;
 }

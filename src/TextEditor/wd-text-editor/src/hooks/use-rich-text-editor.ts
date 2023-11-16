@@ -21,19 +21,19 @@ export const useRichTextEditor = () => {
             const endOffset = range.endOffset;
             if (key === 'Enter') {
                 event.preventDefault();
-                const update = handleEnterKeyPress(container, children, higherLevelChildren, range, startOffset, higherLevelId);
+                const update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, range, startOffset, higherLevelId);
                 if (update)
                     return update;
             }
             else if (key === 'Backspace') {
                 event.preventDefault();
-                const update = handleBackspaceKeyPress(container, endContainer, children, range, startOffset, endOffset);
+                const update = handleBackspaceKeyPress(historyManager, container, endContainer, children, range, startOffset, endOffset);
                 if (update)
                     return update;
             }
             else if (key.length === 1) {
                 event.preventDefault();
-                const update = handleCharacterInsertion(container, children, event.key, startOffset);
+                const update = handleCharacterInsertion(historyManager, container, children, event.key, startOffset);
                 if (update)
                     return update;
             }

@@ -1,9 +1,9 @@
-import { AstNode, AstUpdate } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { findNodeByGuid } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 
 // Handle character insertion
-const handleCharacterInsertion = (container: Node, children: AstNode[], key: string, startOffset: number): AstUpdate | null => {
+const handleCharacterInsertion = (historyManager: IHistoryManager, container: Node, children: AstNode[], key: string, startOffset: number): AstUpdate | null => {
     if (container.nodeName === '#text')
     {
         const parent = container.parentElement;
@@ -15,7 +15,9 @@ const handleCharacterInsertion = (container: Node, children: AstNode[], key: str
                     const index = Array.from(parent.childNodes).findIndex((c) => c === container);
                     child = child.Children[index];
                 }
+                const oldText = '' + child.TextContent;
                 replaceText(container, child, startOffset, key);
+                historyManager.recordChildTextUpdate(oldText, child);
                 return { type: 'insert', nodes: children.map((c) => {
                     return Object.assign({}, c)
                 }) };
@@ -23,7 +25,9 @@ const handleCharacterInsertion = (container: Node, children: AstNode[], key: str
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
                 child = children[index];
                 if (child) {
+                    const oldText = '' + child.TextContent;
                     replaceText(container, child, startOffset, key);
+                    historyManager.recordChildTextUpdate(oldText, child);
                     return { type: 'insert', nodes: children.map((c, ind) => {
                         return ind === index ? Object.assign({}, c) : c
                     }) };

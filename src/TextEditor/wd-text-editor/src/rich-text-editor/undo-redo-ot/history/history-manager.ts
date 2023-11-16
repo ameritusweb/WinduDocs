@@ -1,4 +1,5 @@
 import { AstNode, AstOperation, IHistoryManager } from "../../../components/wysiwyg/interface";
+import createNodeOperation from "../operations/create-node-operation";
 import { applyOperation } from "../operations/operation-handlers";
 import OperationStack from "./operation-stack";
 
@@ -16,7 +17,11 @@ class HistoryManager implements IHistoryManager {
         this.redoStack.clear();
     }
 
-    recordOperation(operation: AstOperation, partOfTransaction = false): void {
+    recordChildTextUpdate(oldTextContent: string, child: AstNode): void {
+        this.recordOperation<'update'>(createNodeOperation('update', { nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent: '' + child.TextContent }), false);
+    }
+
+    recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction = false): void {
         if (!partOfTransaction) {
             this.undoStack.startTransaction();
         }
@@ -89,9 +94,9 @@ class HistoryManager implements IHistoryManager {
             case 'add':
                 return { ...operation, type: 'remove' };
             case 'remove':
-                return { ...operation, type: 'add', payload: { newNode: operation.oldState } };
+                return { ...operation, type: 'add', payload: { newNode: operation.oldState as AstNode } };
             case 'update':
-                return { ...operation, payload: { newAttributes: operation.oldState } };
+                return { ...operation, payload: { newTextContent: operation.oldState as string | null } };
             default:
                 throw new Error('Invalid operation type');
         }

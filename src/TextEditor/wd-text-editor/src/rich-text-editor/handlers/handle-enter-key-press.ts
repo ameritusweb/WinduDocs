@@ -1,8 +1,8 @@
-import { AstNode, AstUpdate } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
 import { createNewAstNode, findHigherlevelIndex, splitNode } from "../node-operations";
 
-const handleEnterKeyPress = (container: Node, children: AstNode[], higherLevelChildren: AstNode[], range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
+const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
     if (commonAncestor.nodeName !== '#text') {
 

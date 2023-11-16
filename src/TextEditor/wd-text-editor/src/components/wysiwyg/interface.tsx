@@ -35,7 +35,7 @@ export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' |
   targetNodeId: string;
   payload?: OperationPayloads[Type];
   timestamp: number;
-  oldState?: AstNode | AstNodeAttributes; // Adjust this based on what oldState represents
+  oldState?: AstNode | string; // Adjust this based on what oldState represents
 }
 
 export interface AddNodeParams {
@@ -49,15 +49,16 @@ export interface RemoveNodeParams {
 
 export interface UpdateNodeParams {
   nodeId: string;
-  newAttributes: AstNodeAttributes;
-  oldAttributes: AstNodeAttributes;
+  newTextContent: string | null;
+  oldTextContent: string | null;
 }
 
 export type Transaction = AstOperation[];
 
 export interface IHistoryManager {
   clear(): void;
-  recordOperation(operation: AstOperation, partOfTransaction?: boolean): void;
+  recordChildTextUpdate(oldTextContent: string, child: AstNode): void;
+  recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
   performOperationsAsTransaction(ast: AstNode, operations: AstOperation[], historyManager: IHistoryManager): AstNode;
   performOperation(ast: AstNode, operation: AstOperation, partOfTransaction?: boolean): AstNode;
@@ -71,11 +72,11 @@ export interface AddNodePayload {
 }
 
 export interface RemoveNodePayload {
-
+  id: string;
 }
 
 export interface UpdateNodePayload {
-  newAttributes: AstNodeAttributes;
+  newTextContent: string | null;
 }
 
 export interface OperationPayloads {
