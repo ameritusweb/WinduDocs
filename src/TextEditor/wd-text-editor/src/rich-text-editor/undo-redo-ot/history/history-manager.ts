@@ -1,3 +1,4 @@
+import { incrementEnd, trimSpecial } from "..";
 import { AstNode, AstOperation, IHistoryManager } from "../../../components/wysiwyg/interface";
 import createNodeOperation from "../operations/create-node-operation";
 import { applyOperation } from "../operations/operation-handlers";
@@ -19,13 +20,10 @@ class HistoryManager implements IHistoryManager {
 
     recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode): void {
         const oldVersion = child.Version || 'V0';
-        let int = parseInt(oldVersion.substring(1));
-        if (int >= Number.MAX_SAFE_INTEGER)
-        {
-            int = 0;
-        }
-        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: oldVersion, newVersion: 'V' + (int + 1), nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent }), false);
-        child.Version = 'V' + (int + 1);
+        const trimmed = trimSpecial(oldVersion, { startString: 'R' });
+        const newVersion = incrementEnd(trimmed);
+        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, newVersion, nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent }), false);
+        child.Version = newVersion;
     }
 
     recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction = false): void {
