@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import { AstNode } from "./interface";
+import { AstNode, CursorPositionType } from "./interface";
 import Strong from "./strong";
 import Emphasis from "./emphasis";
 import CodeInline from "./code-inline";
@@ -30,39 +30,31 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const [ast, setAst] = useState<AstNode[]>(props.content);
     const [higherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
-    const { updateAst } = useRichTextEditor();
+    const { updateAst, getCursorPosition } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
-    const cursorPositionRef = useRef<number>(0);
+    const cursorPositionRef = useRef<CursorPositionType | null>(null);
     const editorData: EditorDataType = EditorData;
 
     const saveCursorPosition = (updateType: string) => {
-      const selection = window.getSelection();
-      if (selection && selection.rangeCount > 0) {
-        if (updateType === 'remove') {
-          cursorPositionRef.current = selection.getRangeAt(0).startOffset - 2;
-        }
-        else if (updateType === 'removeSelected') {
-          cursorPositionRef.current = selection.getRangeAt(0).startOffset - 1;
-        }
-        else
-        {
-          cursorPositionRef.current = selection.getRangeAt(0).startOffset;
-        }
+      const cursorPosition = getCursorPosition(updateType);
+      if (cursorPosition) {
+        cursorPositionRef.current = cursorPosition;
       }
     };
   
     const restoreCursorPosition = (node: Node) => {
       const selection = window.getSelection();
       const range = new Range();
-      if (node.firstChild)
-      {
-        node = node.firstChild;
-      }
-      range.setStart(node, cursorPositionRef.current + 1);
-      range.setEnd(node, cursorPositionRef.current + 1);
-      if (selection && range) {
-        selection.removeAllRanges();
-        selection.addRange(range);
+      if (cursorPositionRef.current) {
+        if ((node as Element).id === cursorPositionRef.current.parentId && node.hasChildNodes()) {
+          node = node.childNodes[cursorPositionRef.current.index];
+        }
+        range.setStart(node, cursorPositionRef.current.offset + 1);
+        range.setEnd(node, cursorPositionRef.current.offset + 1);
+        if (selection && range) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
       }
     };
   

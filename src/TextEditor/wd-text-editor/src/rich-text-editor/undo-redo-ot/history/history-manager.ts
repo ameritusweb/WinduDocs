@@ -17,10 +17,15 @@ class HistoryManager implements IHistoryManager {
         this.redoStack.clear();
     }
 
-    recordChildTextUpdate(oldTextContent: string, child: AstNode): void {
-        const oldVersion = child.Version || 0;
-        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: oldVersion, newVersion: oldVersion + 1, nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent }), false);
-        child.Version = oldVersion + 1;
+    recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode): void {
+        const oldVersion = child.Version || 'V0';
+        let int = parseInt(oldVersion.substring(1));
+        if (int >= Number.MAX_SAFE_INTEGER)
+        {
+            int = 0;
+        }
+        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: oldVersion, newVersion: 'V' + (int + 1), nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent }), false);
+        child.Version = 'V' + (int + 1);
     }
 
     recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction = false): void {
@@ -98,7 +103,7 @@ class HistoryManager implements IHistoryManager {
             case 'remove':
                 return { ...operation, type: 'add', payload: { newNode: operation.oldState as AstNode } };
             case 'update':
-                return { ...operation, payload: { newVersion: operation.oldVersion as number, newTextContent: operation.oldState as string | null } };
+                return { ...operation, payload: { newVersion: 'R' + operation.oldVersion as string, newTextContent: operation.oldState as string | null } };
             default:
                 throw new Error('Invalid operation type');
         }

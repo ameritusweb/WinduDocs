@@ -17,7 +17,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 }
                 const oldText = '' + child.TextContent;
                 replaceText(container, child, startOffset, key);
-                historyManager.recordChildTextUpdate(oldText, child);
+                historyManager.recordChildTextUpdate(oldText, startOffset, child);
                 return { type: 'insert', nodes: children.map((c) => {
                     return Object.assign({}, c)
                 }) };
@@ -27,7 +27,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 if (child) {
                     const oldText = '' + child.TextContent;
                     replaceText(container, child, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, child);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child);
                     return { type: 'insert', nodes: children.map((c, ind) => {
                         return ind === index ? Object.assign({}, c) : c
                     }) };

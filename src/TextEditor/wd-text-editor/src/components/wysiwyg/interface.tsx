@@ -15,7 +15,7 @@ export interface AstNode {
     Depth: number;
     TextContent: string | null;
     Children: AstNode[];
-    Version?: number;
+    Version?: string;
   }
 
   export interface HigherLevelProps {
@@ -37,7 +37,13 @@ export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' |
   payload?: OperationPayloads[Type];
   timestamp: number;
   oldState?: AstNode | string; // Adjust this based on what oldState represents
-  oldVersion?: number;
+  oldVersion?: string;
+}
+
+export interface CursorPositionType {
+  offset: number;
+  parentId: string;
+  index: number;
 }
 
 export interface AddNodeParams {
@@ -53,15 +59,15 @@ export interface UpdateNodeParams {
   nodeId: string;
   newTextContent: string | null;
   oldTextContent: string | null;
-  newVersion: number | undefined;
-  oldVersion: number | undefined;
+  newVersion: string | undefined;
+  oldVersion: string | undefined;
 }
 
 export type Transaction = AstOperation[];
 
 export interface IHistoryManager {
   clear(): void;
-  recordChildTextUpdate(oldTextContent: string, child: AstNode): void;
+  recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode): void;
   recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
   performOperationsAsTransaction(ast: AstNode, operations: AstOperation[], historyManager: IHistoryManager): AstNode;
@@ -81,7 +87,7 @@ export interface RemoveNodePayload {
 
 export interface UpdateNodePayload {
   newTextContent: string | null;
-  newVersion: number | undefined;
+  newVersion: string | undefined;
 }
 
 export interface OperationPayloads {
