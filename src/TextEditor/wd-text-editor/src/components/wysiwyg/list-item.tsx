@@ -14,15 +14,15 @@ const ListItem: React.FC<ListItemProps> = ({ children }) => {
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph key={child.Guid} id={child.Guid} content={child.Children} higherLevelContent={{ content: children }} render={props => <span {...props}></span>} />;
+                        return <Paragraph key={child.Guid + (child.Version || '0')} id={child.Guid} content={child.Children} higherLevelContent={{ content: children }} render={props => <span {...props}></span>} />;
                     case 'ListBlock':
                         if (child.Attributes.IsOrdered && child.Attributes.IsOrdered === 'True')
                         {
-                            return <OrderedList key={child.Guid} children={child.Children} />;
+                            return <OrderedList key={child.Guid + (child.Version || '0')} children={child.Children} />;
                         }
                         else
                         {
-                            return <UnorderedList key={child.Guid} children={child.Children} />;
+                            return <UnorderedList key={child.Guid + (child.Version || '0')} children={child.Children} />;
                         }
                     default:
                         return null;

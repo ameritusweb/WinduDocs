@@ -14,7 +14,7 @@ class OperationStack {
 
     // Adds an operation to the current active transaction
     addToTransaction(operation: AstOperation): void {
-        if (this.isEmpty() || this.stack[this.stack.length - 1].length === 0) {
+        if (this.isEmpty()) {
             throw new Error('No active transaction to add to');
         }
         this.stack[this.stack.length - 1].push(operation);

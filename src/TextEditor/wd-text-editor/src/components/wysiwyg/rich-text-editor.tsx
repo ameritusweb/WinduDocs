@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { AstNode } from "./interface";
+import { AstNode, IHistoryManager } from "./interface";
 import Paragraph from "./paragraph";
 import Heading from "./heading";
 import OrderedList from "./ordered-list";
@@ -13,47 +13,51 @@ import ast from './test-data.json';
 import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
+import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
 
 const RichTextEditor = () => {
 
     const astRef = useRef<AstNode>(ast);
     const { convertToMarkdown } = useMarkdownGenerator();
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
+    const historyManager: IHistoryManager = HistoryManager;
 
     const updateContent = (nodes: AstNode[]) => {
-        setHigherLevelAst(nodes.map((n) => Object.assign({}, n)));
+        const upToDateAst = nodes.map((n) => Object.assign({}, n));
+        setHigherLevelAst(upToDateAst);
+        astRef.current.Children = upToDateAst;
     }
 
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph<HTMLParagraphElement> key={node.Guid} id={node.Guid} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
+                return <Paragraph<HTMLParagraphElement> key={node.Guid + (node.Version || '0')} id={node.Guid} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
             case 'HeadingBlock':
-                return <Heading key={node.Guid} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
+                return <Heading key={node.Guid + (node.Version || '0')} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
             case 'OrderedListBlock':
-                return <OrderedList key={node.Guid} children={node.Children} />;
+                return <OrderedList key={node.Guid + (node.Version || '0')} children={node.Children} />;
             case 'UnorderedListBlock':
-                return <UnorderedList key={node.Guid} children={node.Children} />;
+                return <UnorderedList key={node.Guid + (node.Version || '0')} children={node.Children} />;
             case 'Table':
-                return <Table key={node.Guid} id={node.Guid} children={node.Children} />;
+                return <Table key={node.Guid + (node.Version || '0')} id={node.Guid} children={node.Children} />;
             case 'ListBlock':
                 if (node.Attributes.IsOrdered && node.Attributes.IsOrdered === 'True') {
-                    return <OrderedList key={node.Guid} children={node.Children} />
+                    return <OrderedList key={node.Guid + (node.Version || '0')} children={node.Children} />
                 } else {
-                    return <UnorderedList key={node.Guid} children={node.Children} />
+                    return <UnorderedList key={node.Guid + (node.Version || '0')} children={node.Children} />
                 }
             case 'QuoteBlock':
-                return <QuoteBlock key={node.Guid} children={node.Children} />;
+                return <QuoteBlock key={node.Guid + (node.Version || '0')} children={node.Children} />;
             case 'ThematicBreakBlock':
-                return <HorizontalRule id={node.Guid} key={node.Guid} />;
+                return <HorizontalRule id={node.Guid} key={node.Guid + (node.Version || '0')}/>;
              case 'FencedCodeBlock':
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
-                    return <AlertBlock key={node.Guid} id={node.Guid} type={node.Attributes.Language} node={node} />;
+                    return <AlertBlock key={node.Guid + (node.Version || '0')} id={node.Guid} type={node.Attributes.Language} node={node} />;
                 } else {
-                    return <CodeBlock key={node.Guid} id={node.Guid} language={node.Attributes.Language || ''} node={node} />;
+                    return <CodeBlock key={node.Guid + (node.Version || '0')} id={node.Guid} language={node.Attributes.Language || ''} node={node} />;
                 }
             case 'BlankLine':
-                return <BlankLine key={node.Guid} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
+                return <BlankLine key={node.Guid + (node.Version || '0')} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
             // ... handle other types as needed
             default:
                 return null;
@@ -64,10 +68,26 @@ const RichTextEditor = () => {
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
+        if (event.ctrlKey)
+        {
+            if (event.key === 'z')
+            {
+                const updatedAst = historyManager.undo(astRef.current);
+                if (updatedAst)
+                    updateContent(updatedAst.Children);
+            } else if (event.key === 'y')
+            {
+                const updatedAst = historyManager.redo(astRef.current);
+                if (updatedAst)
+                    updateContent(updatedAst.Children);
+            }
+        }
+
         event.preventDefault();
 
-        const markdown = convertToMarkdown(astRef.current, 0);
-        console.log(JSON.stringify(markdown, null, 2));
+        return;
+        //const markdown = convertToMarkdown(astRef.current, 0);
+        //console.log(JSON.stringify(markdown, null, 2));
     }
 
     return (

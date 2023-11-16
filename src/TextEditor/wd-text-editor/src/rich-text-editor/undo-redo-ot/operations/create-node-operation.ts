@@ -32,8 +32,12 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
             return {
                 type: 'update',
                 targetNodeId: (params as UpdateNodeParams).nodeId,
-                payload: { newTextContent: (params as UpdateNodeParams).newTextContent },
+                payload: { 
+                    newVersion: (params as UpdateNodeParams).newVersion, 
+                    newTextContent: (params as UpdateNodeParams).newTextContent
+                },
                 oldState: (params as UpdateNodeParams).oldTextContent,
+                oldVersion: (params as UpdateNodeParams).oldVersion,
                 timestamp: Date.now()
             } as OperationReturnMap[T]; // Type assertion here
         default:

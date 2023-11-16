@@ -14,8 +14,8 @@ const TableRow: React.FC<TableRowProps> = ({ children, isHeader }) => {
             {children.map((child) => {
                 if (child.NodeName === 'TableCell') {
                     return isHeader ? 
-                        <TableHeaderCell key={child.Guid}>{child.Children}</TableHeaderCell> :
-                        <TableCell key={child.Guid} children={child.Children} />;
+                        <TableHeaderCell key={child.Guid + (child.Version || '0')}>{child.Children}</TableHeaderCell> :
+                        <TableCell key={child.Guid + (child.Version || '0')} children={child.Children} />;
                 }
                 return null;
             })}

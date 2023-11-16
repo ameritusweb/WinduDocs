@@ -18,7 +18,9 @@ class HistoryManager implements IHistoryManager {
     }
 
     recordChildTextUpdate(oldTextContent: string, child: AstNode): void {
-        this.recordOperation<'update'>(createNodeOperation('update', { nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent: '' + child.TextContent }), false);
+        const oldVersion = child.Version || 0;
+        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: oldVersion, newVersion: oldVersion + 1, nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent }), false);
+        child.Version = oldVersion + 1;
     }
 
     recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction = false): void {
@@ -96,15 +98,15 @@ class HistoryManager implements IHistoryManager {
             case 'remove':
                 return { ...operation, type: 'add', payload: { newNode: operation.oldState as AstNode } };
             case 'update':
-                return { ...operation, payload: { newTextContent: operation.oldState as string | null } };
+                return { ...operation, payload: { newVersion: operation.oldVersion as number, newTextContent: operation.oldState as string | null } };
             default:
                 throw new Error('Invalid operation type');
         }
     }    
 
-    undo(ast: AstNode): AstNode {
+    undo(ast: AstNode): AstNode | null {
         if (this.undoStack.isEmpty()) {
-            throw new Error('No operations to undo');
+            return null;
         }
 
         const transactionToUndo = this.undoStack.pop();
@@ -120,9 +122,9 @@ class HistoryManager implements IHistoryManager {
     }
 
     // Redoes the last transaction
-    redo(ast: AstNode): AstNode {
+    redo(ast: AstNode): AstNode | null {
         if (this.redoStack.isEmpty()) {
-            throw new Error('No operations to redo');
+            return null;
         }
 
         const transactionToRedo = this.redoStack.pop();

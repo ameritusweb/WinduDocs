@@ -54,6 +54,10 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const restoreCursorPosition = (node: Node) => {
       const selection = window.getSelection();
       const range = new Range();
+      if (node.firstChild)
+      {
+        node = node.firstChild;
+      }
       range.setStart(node, cursorPositionRef.current + 1);
       range.setEnd(node, cursorPositionRef.current + 1);
       if (selection && range) {
@@ -66,7 +70,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       const observer = new MutationObserver((mutationsList) => {
         // Check for the specific mutation type, if necessary
         if (mutationsList.length > 0) {
-          restoreCursorPosition(mutationsList[0].target);
+          restoreCursorPosition(mutationsList[mutationsList.length - 1].target);
         }
       });
   
@@ -78,6 +82,12 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     }, [/* dependencies */]);
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+
+
+      if ((event.key === 'z' || event.key === 'y') && event.ctrlKey)
+      {
+        return;
+      }
 
         const update = updateAst(event, ast, higherLevelAst, props.higherLevelContent?.id);
         saveCursorPosition(update.type);
@@ -107,16 +117,16 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       children: ast.map((item) => {
         switch (item.NodeName) {
           case 'Strong':
-            return <Strong key={item.Guid} id={item.Guid}>{item.Children}</Strong>;
+            return <Strong key={item.Guid + (item.Version || '0')} id={item.Guid}>{item.Children}</Strong>;
           case 'Emphasis':
-            return <Emphasis key={item.Guid} id={item.Guid}>{item.Children}</Emphasis>;
+            return <Emphasis key={item.Guid + (item.Version || '0')} id={item.Guid}>{item.Children}</Emphasis>;
           case 'CodeInline':
-            return <CodeInline key={item.Guid} id={item.Guid}>{item.TextContent}</CodeInline>;
+            return <CodeInline key={item.Guid + (item.Version || '0')} id={item.Guid}>{item.TextContent}</CodeInline>;
           case 'Link':
-            return <Link key={item.Guid} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
+            return <Link key={item.Guid + (item.Version || '0')} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
           case 'Text':
           default:
-            return <React.Fragment key={item.Guid}>{item.TextContent}</React.Fragment>;
+            return <React.Fragment key={item.Guid + (item.Version || '0')}>{item.TextContent}</React.Fragment>;
         }
       })
   };

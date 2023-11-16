@@ -13,12 +13,12 @@ const Strong: React.FC<StrongProps> = ({ id, children }) => {
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'Emphasis':
-                        return <Emphasis key={child.Guid} id={child.Guid} children={child.Children} />;
+                        return <Emphasis key={child.Guid + (child.Version || '0')} id={child.Guid} children={child.Children} />;
                     case 'Text':
-                        return <React.Fragment key={child.Guid}>{child.TextContent}</React.Fragment>;
+                        return <React.Fragment key={child.Guid + (child.Version || '0')}>{child.TextContent}</React.Fragment>;
                     case 'Strong':
                         return child.Children.map((child) => {
-                            return <Emphasis key={child.Guid} id={child.Guid} children={child.Children} />;
+                            return <Emphasis key={child.Guid + (child.Version || '0')} id={child.Guid} children={child.Children} />;
                         });
                     default:
                         return null;

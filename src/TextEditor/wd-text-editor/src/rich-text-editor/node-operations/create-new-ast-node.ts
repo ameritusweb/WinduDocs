@@ -10,7 +10,8 @@ const createNewAstNode = (name: string, index: number, depth: number, text: stri
         ChildIndex: index,
         Depth: depth,
         Children: children || [],
-        TextContent: text
+        TextContent: text,
+        Version: 0
     };
 
     return astNode;

@@ -10,7 +10,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ children }) => {
     return (
         <ol>
             {children.map((child) =>
-                child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid} children={child.Children} /> : null
+                child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} children={child.Children} /> : null
             )}
         </ol>
     );

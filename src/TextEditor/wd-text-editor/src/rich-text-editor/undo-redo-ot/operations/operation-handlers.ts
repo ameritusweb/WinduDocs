@@ -23,6 +23,7 @@ export const applyUpdateOperation = (ast: AstNode, operation: AstOperation<'upda
     // Update the node with the new attributes
     const node = findNodeById(ast, operation.targetNodeId);
     if (node) {
+        node.Version = operation.payload!.newVersion;
         node.TextContent = '' + operation.payload!.newTextContent;
     }
     return ast;

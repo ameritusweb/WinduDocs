@@ -1,7 +1,7 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../components/wysiwyg/interface";
 import { handleBackspaceKeyPress, handleCharacterInsertion, handleEnterKeyPress } from "../rich-text-editor/handlers";
 import { createNewAstNode, createNewAstNodeFromFormat } from "../rich-text-editor/node-operations";
-import HistoryManager from "../rich-text-editor/undo-redo-ot/history/history-manager";
+import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import EditorData, { EditorDataType } from "./editor-data";
 
 export const useRichTextEditor = () => {

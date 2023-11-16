@@ -15,6 +15,7 @@ export interface AstNode {
     Depth: number;
     TextContent: string | null;
     Children: AstNode[];
+    Version?: number;
   }
 
   export interface HigherLevelProps {
@@ -36,6 +37,7 @@ export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' |
   payload?: OperationPayloads[Type];
   timestamp: number;
   oldState?: AstNode | string; // Adjust this based on what oldState represents
+  oldVersion?: number;
 }
 
 export interface AddNodeParams {
@@ -51,6 +53,8 @@ export interface UpdateNodeParams {
   nodeId: string;
   newTextContent: string | null;
   oldTextContent: string | null;
+  newVersion: number | undefined;
+  oldVersion: number | undefined;
 }
 
 export type Transaction = AstOperation[];
@@ -63,8 +67,8 @@ export interface IHistoryManager {
   performOperationsAsTransaction(ast: AstNode, operations: AstOperation[], historyManager: IHistoryManager): AstNode;
   performOperation(ast: AstNode, operation: AstOperation, partOfTransaction?: boolean): AstNode;
   getReverseOperation(operation: AstOperation): AstOperation;
-  undo(ast: AstNode): AstNode;
-  redo(ast: AstNode): AstNode;
+  undo(ast: AstNode): AstNode | null;
+  redo(ast: AstNode): AstNode | null;
 }
 
 export interface AddNodePayload {
@@ -77,6 +81,7 @@ export interface RemoveNodePayload {
 
 export interface UpdateNodePayload {
   newTextContent: string | null;
+  newVersion: number | undefined;
 }
 
 export interface OperationPayloads {

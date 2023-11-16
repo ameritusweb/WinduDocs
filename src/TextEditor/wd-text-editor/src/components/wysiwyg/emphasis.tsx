@@ -13,12 +13,12 @@ const Emphasis: React.FC<EmphasisProps> = ({ id, children }) => {
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'Strong':
-                        return <Strong key={child.Guid} id={child.Guid} children={child.Children} />;
+                        return <Strong key={child.Guid + (child.Version || '0')} id={child.Guid} children={child.Children} />;
                     case 'Text':
-                        return <React.Fragment key={child.Guid}>{child.TextContent}</React.Fragment>;
+                        return <React.Fragment key={child.Guid + (child.Version || '0')}>{child.TextContent}</React.Fragment>;
                     case 'Emphasis':
                         return child.Children.map((child) => {
-                            return <Strong key={child.Guid} id={child.Guid} children={child.Children} />;
+                            return <Strong key={child.Guid + (child.Version || '0')} id={child.Guid} children={child.Children} />;
                         });
                     default:
                         return null;

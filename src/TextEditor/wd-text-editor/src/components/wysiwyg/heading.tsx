@@ -17,7 +17,7 @@ export const Heading: React.FC<HeadingProps> = ({ id, level, children, higherLev
     const elementChildren = children.map((child) => {
         switch (child.NodeName) {
             case 'Text':
-                return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
+                return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
             default:
                 return null;
         }
