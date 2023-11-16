@@ -1,6 +1,24 @@
 import { AstNode } from "../../components/wysiwyg/interface";
 
-const splitNode = (node: AstNode, index: number): [AstNode, AstNode] => {
+const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode, AstNode] => {
+
+    if (childIndex !== undefined)
+    {
+      const [childLeftNode, childRightNode] = splitNode(node.Children[childIndex], index);
+      
+      const leftNode: AstNode = {
+        ...node,
+        Children: [...node.Children.slice(0, childIndex), childLeftNode]
+      };
+
+      const rightNode: AstNode = {
+        ...node,
+        Children: [childRightNode, ...node.Children.slice(childIndex + 1)]
+      };
+
+      return [leftNode, rightNode];
+    }
+
     if (!node.TextContent || node.TextContent.length === 0) {
       throw new Error("Node does not have text content or the content is empty.");
     }

@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { AstNode } from "./interface";
 import Paragraph from "./paragraph";
 
 interface AlertBlockProps {
-    id: string;
     type: string; // Extracted from the language attribute
-    node: AstNode; // The text content of the alert
+    children: AstNode[]; // The text content of the alert
 }
 
-const AlertBlock: React.FC<AlertBlockProps> = ({ id, type, node }) => {
+const AlertBlock: React.FC<AlertBlockProps> = ({ type, children }) => {
+
+    const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(children);
+
+    const updateContent = (nodes: AstNode[]) => {
+        const upToDateAst = nodes.map((n) => Object.assign({}, n));
+        setHigherLevelAst(upToDateAst);
+    }
+    
     const getSvg = (type: string) => {
         switch (type) {
             case 'type-alert-success':
@@ -31,7 +38,14 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, type, node }) => {
     return (
         <div className={`rich-alert alert`}>
             {getSvg(type)}
-            {<Paragraph key={`para-${id}`} id={`para-${id}`} content={[node]} render={props => <span {...props}></span>} />}
+            {higherLevelAst.map((child) => {
+                switch (child.NodeName) {
+                    case 'ParagraphBlock':
+                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} content={child.Children} higherLevelContent={{ content: children, updater: updateContent }} render={props => <p {...props}></p>} />;
+                    default:
+                        return null;
+                }
+            })}
         </div>
     );
 };

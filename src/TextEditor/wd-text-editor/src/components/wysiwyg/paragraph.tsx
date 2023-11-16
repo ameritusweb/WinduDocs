@@ -6,7 +6,7 @@ import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
-import EditorData, { EditorDataType } from "../../hooks/editor-data";
+// import EditorData, { EditorDataType } from "../../hooks/editor-data";
 
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
@@ -33,7 +33,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const { updateAst, getCursorPosition } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
     const cursorPositionRef = useRef<CursorPositionType | null>(null);
-    const editorData: EditorDataType = EditorData;
+    // const editorData: EditorDataType = EditorData;
 
     const saveCursorPosition = (updateType: string) => {
       const cursorPosition = getCursorPosition(updateType);

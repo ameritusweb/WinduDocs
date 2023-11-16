@@ -227,339 +227,6 @@
     {
       "NodeName": "ParagraphBlock",
       "Attributes": {},
-      "ChildIndex": 2,
-      "Depth": 1,
-      "Guid": "3473e791-f6cc-46d5-985f-9a9ea27ac3c6",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Strong",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "06eb3545-31f5-4cf9-8d62-b3880f1c4d4e",
-          "TextContent": null,
-          "Children": [
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "716e1ea9-ca0e-4f0a-878d-5d5a6bc58af8",
-              "TextContent": "of bold text",
-              "Children": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "NodeName": "BlankLine",
-      "Attributes": {},
-      "ChildIndex": 3,
-      "Depth": 1,
-      "Guid": "17d394cc-6e11-4c7f-b7c4-78c4411d39ce",
-      "TextContent": null,
-      "Children": []
-    },
-    {
-      "NodeName": "ParagraphBlock",
-      "Attributes": {},
-      "ChildIndex": 4,
-      "Depth": 1,
-      "Guid": "e28a443c-1bec-4a66-a4b4-c5536953db49",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "537b1c27-a7a2-4616-8394-95ff4d48888a",
-          "TextContent": "This is an inline code example: ",
-          "Children": []
-        },
-        {
-          "NodeName": "CodeInline",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "e63aa8ca-06d0-493a-bda5-f6ddf41f3ec4",
-          "TextContent": "let x = 5;",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "BlankLine",
-      "Attributes": {},
-      "ChildIndex": 5,
-      "Depth": 1,
-      "Guid": "ebece3a1-f185-489d-be82-a9aefa4d1ab1",
-      "TextContent": null,
-      "Children": []
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "1"
-      },
-      "ChildIndex": 6,
-      "Depth": 1,
-      "Guid": "c09b39f4-e5cc-4f43-af9e-50647850c692",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "c26d29de-69ee-450a-88c9-7f24ae3aa97f",
-          "TextContent": "Sample Markdown",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "1"
-      },
-      "ChildIndex": 7,
-      "Depth": 1,
-      "Guid": "25d80f76-2062-4a51-9b79-9820f6afcb2e",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "105253f7-9da7-4804-ade0-b7fa6d139257",
-          "TextContent": "Sample Markdown 2",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "2"
-      },
-      "ChildIndex": 8,
-      "Depth": 1,
-      "Guid": "f40b20ed-ca19-46df-98e7-076a088fa29b",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "95fb50d7-c6f7-4c02-b5be-68231544eff0",
-          "TextContent": "Conventional",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "3"
-      },
-      "ChildIndex": 9,
-      "Depth": 1,
-      "Guid": "80df0576-8ca9-4d69-8b2b-4e52adc5ea3f",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "cbff7429-c4cc-4d1c-a668-0513caa897e5",
-          "TextContent": "Ovational",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "4"
-      },
-      "ChildIndex": 10,
-      "Depth": 1,
-      "Guid": "768564c4-5f07-42c7-a87d-e0673f307194",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "d0af97bf-c477-4979-beea-b25eba5c0f7e",
-          "TextContent": "Boldly Explorational",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "5"
-      },
-      "ChildIndex": 11,
-      "Depth": 1,
-      "Guid": "47affc29-7f0d-46d0-99f7-ae96d918bd08",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "eb07773a-2dcd-4655-92ea-0925d2648a04",
-          "TextContent": "Crew of the Enterprise",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "6"
-      },
-      "ChildIndex": 12,
-      "Depth": 1,
-      "Guid": "b377e485-d6ca-47b7-a7de-d303ad9a671e",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "b8d35634-0050-4c6e-9b20-33d98f0bec35",
-          "TextContent": "It\u0027s continuing mission",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "BlankLine",
-      "Attributes": {},
-      "ChildIndex": 13,
-      "Depth": 1,
-      "Guid": "cedcf96e-68b3-4f52-a13f-615f5dd865ee",
-      "TextContent": null,
-      "Children": []
-    },
-    {
-      "NodeName": "ParagraphBlock",
-      "Attributes": {},
-      "ChildIndex": 14,
-      "Depth": 1,
-      "Guid": "f326d7df-4add-4656-9f37-dfd8acd0a939",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "df083e05-32e2-4d6a-b916-1dd0f2c22a89",
-          "TextContent": "This is a paragraph with both ",
-          "Children": []
-        },
-        {
-          "NodeName": "Strong",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "523f21ad-63ce-439b-b655-af54a6c33d3c",
-          "TextContent": null,
-          "Children": [
-            {
-              "NodeName": "Emphasis",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "582b4c27-a331-44dc-b743-ed0e1dc2f76d",
-              "TextContent": null,
-              "Children": [
-                {
-                  "NodeName": "Text",
-                  "Attributes": {},
-                  "ChildIndex": 0,
-                  "Depth": 4,
-                  "Guid": "0781a16b-1541-4675-823b-bac0c396a022",
-                  "TextContent": "bold and italic",
-                  "Children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "d2e7f59e-6d23-4de1-9672-c5baac7d00b8",
-          "TextContent": " text.",
-          "Children": []
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "dde6af18-1abb-4c64-9616-46e9a1138044",
-          "TextContent": "\n",
-          "Children": []
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "f31ea064-df0e-4951-89fb-3149f0d9164c",
-          "TextContent": "This is another paragraph.",
-          "Children": []
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "bf8fe760-808a-4322-9455-5b40e3fb2a9e",
-          "TextContent": "\n",
-          "Children": []
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "d8c8abeb-8cbb-49c7-a625-d1b7a34fa399",
-          "TextContent": "This is a third paragraph",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "BlankLine",
-      "Attributes": {},
-      "ChildIndex": 15,
-      "Depth": 1,
-      "Guid": "192ce25d-4259-4e85-a7aa-ed3c730393ae",
-      "TextContent": null,
-      "Children": []
-    },
-    {
-      "NodeName": "ParagraphBlock",
-      "Attributes": {},
       "ChildIndex": 16,
       "Depth": 1,
       "Guid": "7495ca97-a8e7-4d33-8256-0b23d59291da",
@@ -1763,7 +1430,7 @@
               "ChildIndex": 0,
               "Depth": 3,
               "Guid": "aa410067-0e56-46e1-945c-3fc411f8cf1a",
-              "TextContent": " OpenAI",
+              "TextContent": " MITS",
               "Children": []
             }
           ]
@@ -1844,19 +1511,83 @@
       "ChildIndex": 42,
       "Depth": 1,
       "Guid": "6fecf643-204d-465a-95cb-c5395b480635",
-      "TextContent": "console.log(\u0027Hello, world!\u0027);\nconsole.log(\u0027This is line 2!\u0027);",
-      "Children": []
-    },
-    {
-      "NodeName": "FencedCodeBlock",
-      "Attributes": {
-        "Language": "type-alert-info"
-      },
-      "ChildIndex": 41,
-      "Depth": 1,
-      "Guid": "f198423b-5632-422e-90a8-c26191b6dde7",
-      "TextContent": "console.log(\u0027Hello, world!\u0027);\nconsole.log(\u0027This is line 2!\u0027);",
-      "Children": []
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "ParagraphBlock",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "2180b125-15aa-4ebc-aaa7-2859f1417d38",
+          "TextContent": null,
+          "Children": [
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "ba466ff5-a100-46c4-8f36-1945c097e0ff",
+              "TextContent": "t",
+              "Children": []
+            },
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "fbc0b32e-c703-437d-877c-e8baf69bff9c",
+              "TextContent": "\n",
+              "Children": []
+            },
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "ffd128ad-c4f3-4036-a97e-c2f62bde7011",
+              "TextContent": "This is a blockquote.",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "NodeName": "ParagraphBlock",
+          "Attributes": {},
+          "ChildIndex": 1,
+          "Depth": 2,
+          "Guid": "a5bbfe77-5af1-4687-bd89-7b807c7f2eb6",
+          "TextContent": null,
+          "Children": [
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "4c5b9fff-a78c-4d30-af90-09f9d85f338b",
+              "TextContent": "It can span",
+              "Children": []
+            },
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "a77194a8-32b1-43c1-8628-47a048e41a0e",
+              "TextContent": "\n",
+              "Children": []
+            },
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "34e00838-1e6c-41aa-bc46-6a6f28834de9",
+              "TextContent": "multiple lines.",
+              "Children": []
+            }
+          ]
+        }
+      ]
     }
   ]
 }
