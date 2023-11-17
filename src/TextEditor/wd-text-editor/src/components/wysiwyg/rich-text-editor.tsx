@@ -70,8 +70,8 @@ const RichTextEditor = () => {
                 {
                     const selection = window.getSelection();
                     const range = new Range();
-                    range.setStart(addedNode, 1);
-                    range.setEnd(addedNode, 1);
+                    range.setStart(addedNode, addedNode.textContent?.length || 1);
+                    range.setEnd(addedNode, addedNode.textContent?.length || 1);
                     if (selection && range) {
                         selection.removeAllRanges();
                         selection.addRange(range);
