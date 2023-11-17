@@ -14,7 +14,7 @@ import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
-import { deepCopyAstNode, findFirstTextNode, generateKey } from "../../rich-text-editor/node-operations";
+import { deepCopyAstNode, findFirstTextNode, findLastTextNode, generateKey } from "../../rich-text-editor/node-operations";
 
 const RichTextEditor = () => {
 
@@ -43,7 +43,27 @@ const RichTextEditor = () => {
           // Check for the specific mutation type, if necessary
           if (mutationsList.length > 0) {
             const lastMutation = mutationsList[mutationsList.length - 1];
-            if (lastMutation.addedNodes && lastMutation.addedNodes.length > 0)
+            if (lastMutation.removedNodes && lastMutation.removedNodes.length > 0)
+            {
+                const prev = lastMutation.previousSibling;
+                if (prev)
+                {
+                    const lastTextNode = findLastTextNode(prev as Element);
+                    if (lastTextNode) {
+                        const selection = window.getSelection();
+                        const range = new Range();
+                        if (lastTextNode.textContent) {
+                            range.setStart(lastTextNode, lastTextNode.textContent?.length);
+                            range.setEnd(lastTextNode, lastTextNode.textContent?.length);
+                            if (selection && range) {
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (lastMutation.addedNodes && lastMutation.addedNodes.length > 0)
             {
                 const addedNode = lastMutation.addedNodes[0];
                 if (addedNode && addedNode instanceof Element)
