@@ -12,6 +12,7 @@ import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
   content: AstNode[];
+  version: string;
   render: (props: RenderProps<T>) => JSX.Element;
   higherLevelContent?: HigherLevelProps;
 }
@@ -20,6 +21,7 @@ interface RenderProps<T extends HTMLElement> {
   id: string;
   ref: MutableRefObject<T | null>;
   className: string;
+  version: string;
   tabIndex: number;
   contentEditable: boolean;
   suppressContentEditableWarning: boolean;
@@ -42,7 +44,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       if (props.higherLevelContent)
         setHigherLevelAst(props.higherLevelContent.content);
 
-    }, [props.content, props.higherLevelContent?.content]);
+    }, [props.content, props.higherLevelContent, props.higherLevelContent?.content]);
 
     const saveCursorPosition = (updateType: string) => {
       const cursorPosition = getCursorPosition(updateType);
@@ -123,6 +125,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       id: props.id,
       ref: paraRef,
       className: "rich-para",
+      version: props.version,
       tabIndex: 1,
       contentEditable: true,
       suppressContentEditableWarning: true,
@@ -136,7 +139,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
           case 'CodeInline':
             return <CodeInline key={item.Guid + (item.Version || '0')} id={item.Guid}>{item.TextContent}</CodeInline>;
           case 'Link':
-            return <Link key={item.Guid + (item.Version || '0')} id={item.Guid} url={item.Attributes.Url || ''}>{item.Children}</Link>
+            return <Link key={item.Guid + (item.Version || '0')} id={item.Guid} version={item.Version || 'V0'} url={item.Attributes.Url || ''}>{item.Children}</Link>
           case 'Text':
           default:
             return <React.Fragment key={item.Guid + (item.Version || '0')}>{item.TextContent}</React.Fragment>;

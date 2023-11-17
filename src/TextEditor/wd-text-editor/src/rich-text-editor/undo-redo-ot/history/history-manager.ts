@@ -21,7 +21,7 @@ class HistoryManager implements IHistoryManager {
     recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode, rootChildId?: string): void {
         const oldVersion = child.Version || 'V0';
         const trimmed = trimSpecial(oldVersion, { startString: 'R' });
-        const newVersion = incrementEnd(trimmed);
+        const newVersion = trimmed === 'New' ? 'V0' : incrementEnd(trimmed);
         this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, newVersion, nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent, rootChildId }), false);
         child.Version = newVersion;
     }

@@ -11,7 +11,7 @@ const createNewAstNode = (name: string, index: number, depth: number, text: stri
         Depth: depth,
         Children: children || [],
         TextContent: text,
-        Version: '0'
+        Version: 'V0'
     };
 
     return astNode;

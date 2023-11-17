@@ -1,6 +1,6 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
-import { createNewAstNode, findHigherlevelIndex } from "../node-operations";
+import { createNewAstNode, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
 import { removeText } from "../text-manipulation";
 
 // Handle Backspace key press
@@ -40,6 +40,25 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
         if (parent) {
             const parentId = parent.id;
             const childIndex = children.findIndex((c) => c.Guid === parentId);
+            if (childIndex === -1) {
+                const index = Array.from(parent.childNodes).findIndex((c) => c === container);
+                const text = children[index];
+                if (text)
+                {
+                    removeText(container, text, startOffset, endOffset);
+                    if (text.TextContent === '') {
+                        const newLine = createNewAstNode('BlankLine', 0, 0, null);
+                        const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                        if (higherLevelIndex !== null) {
+                            higherLevelChildren.splice(higherLevelIndex, 1, newLine);
+                            return { type: 'higherLevelRemove', nodes: higherLevelChildren };
+                        }
+                    }
+                    return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children.map((c, ind) => {
+                        return ind === index ? Object.assign({}, text) : c
+                    }) };
+                }
+            }
             let child = children[childIndex];
             if (child) {
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
@@ -58,13 +77,27 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
                     return ind === childIndex ? Object.assign({}, child) : c
                 }) };
             } else {
+                const node = findNodeByGuid(children, parent.id);
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
                 child = children[index];
-                if (child) {
+                if (child && node === child) {
                     removeText(container, child, startOffset, endOffset);
                     return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children.map((c, ind) => {
                         return ind === index ? Object.assign({}, child) : c
                     }) };
+                } else if (node) {
+                    const text = node.Children[index];
+                    removeText(container, text, startOffset, endOffset);
+                    if (text.TextContent === '') {
+                        const newLine = createNewAstNode('BlankLine', 0, 0, null);
+                        child = Object.assign({}, newLine);
+                        const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                        if (higherLevelIndex !== null) {
+                            higherLevelChildren.splice(higherLevelIndex, 1, newLine);
+                            return { type: 'higherLevelRemove', nodes: higherLevelChildren };
+                        }
+                    }
+                    return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children };
                 }
             }
         }

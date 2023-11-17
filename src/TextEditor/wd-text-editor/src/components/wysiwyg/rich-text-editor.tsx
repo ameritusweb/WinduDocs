@@ -42,7 +42,41 @@ const RichTextEditor = () => {
         const observer = new MutationObserver((mutationsList) => {
           // Check for the specific mutation type, if necessary
           if (mutationsList.length > 0) {
-
+            const lastMutation = mutationsList[mutationsList.length - 1];
+            if (lastMutation.addedNodes && lastMutation.addedNodes.length > 0)
+            {
+                const addedNode = lastMutation.addedNodes[0];
+                if (addedNode && addedNode instanceof Element)
+                {
+                    if (addedNode.className === 'blank-line')
+                    {
+                        const selection = window.getSelection();
+                        const range = new Range();
+                        range.setStart(addedNode, 1);
+                        range.setEnd(addedNode, 1);
+                        if (selection && range) {
+                            selection.removeAllRanges();
+                            selection.addRange(range);
+                        }
+                    } else if (addedNode.getAttribute('Version') === 'New') {
+                        const selection = window.getSelection();
+                        const range = new Range();
+                        if (addedNode.childNodes[0].textContent)
+                        {
+                            const length = addedNode.childNodes[0].textContent?.length;
+                            if (length === 1)
+                            {
+                                range.setStart(addedNode.childNodes[0], length);
+                                range.setEnd(addedNode.childNodes[0], length);
+                                if (selection && range) {
+                                    selection.removeAllRanges();
+                                    selection.addRange(range);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
           }
         });
     
@@ -56,7 +90,7 @@ const RichTextEditor = () => {
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph<HTMLParagraphElement> key={node.Guid + (node.Version || '0')} id={node.Guid} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
+                return <Paragraph<HTMLParagraphElement> key={node.Guid + (node.Version || '0')} id={node.Guid} version={node.Version || 'V0'} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
             case 'HeadingBlock':
                 return <Heading key={node.Guid + (node.Version || '0')} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
             case 'OrderedListBlock':
@@ -77,9 +111,9 @@ const RichTextEditor = () => {
                 return <HorizontalRule id={node.Guid} key={node.Guid + (node.Version || '0')}/>;
              case 'FencedCodeBlock':
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
-                    return <AlertBlock key={node.Guid + (node.Version || '0')} id={node.Guid} higherLevelChildren={higherLevelContent} type={node.Attributes.Language} children={node.Children} />;
+                    return <AlertBlock key={node.Guid + (node.Version || '0')} id={node.Guid} version={node.Version || 'V0'} higherLevelChildren={higherLevelContent} type={node.Attributes.Language} children={node.Children} />;
                 } else {
-                    return <CodeBlock key={node.Guid + (node.Version || '0')} id={node.Guid} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} language={node.Attributes.Language || ''} children={node.Children} />;
+                    return <CodeBlock key={node.Guid + (node.Version || '0')} id={node.Guid} version={node.Version || 'V0'} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} language={node.Attributes.Language || ''} children={node.Children} />;
                 }
             case 'BlankLine':
                 return <BlankLine key={node.Guid + (node.Version || '0')} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />

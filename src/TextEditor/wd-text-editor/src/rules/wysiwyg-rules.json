@@ -32,7 +32,7 @@
       {
         "Name": "Normal",
         "GroupName": "Text Styles",
-        "State": [ "normal" ]
+        "State": "normal"
       },
     {
       "Name": "Bold + Italic",

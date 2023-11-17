@@ -8,7 +8,7 @@ export interface TableHeaderProps {
 const TableHeaderCell: React.FC<TableHeaderProps> = ({ children }) => <th>{children.map((child) => {
     switch (child.NodeName) {
         case 'ParagraphBlock':
-            return <Paragraph key={child.Guid + (child.Version || '0')} id={child.Guid} content={child.Children} higherLevelContent={{ content: children }} render={props => <span {...props}></span>}/>;
+            return <Paragraph key={child.Guid + (child.Version || '0')} id={child.Guid} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children }} render={props => <span {...props}></span>}/>;
         default:
             return null;
     }

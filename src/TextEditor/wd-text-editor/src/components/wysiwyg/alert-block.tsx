@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { AstNode } from "./interface";
 import Paragraph from "./paragraph";
 
 interface AlertBlockProps {
     id: string;
+    version: string;
     type: string; // Extracted from the language attribute
     children: AstNode[]; // The text content of the alert
     higherLevelChildren: AstNode[];
 }
 
-const AlertBlock: React.FC<AlertBlockProps> = ({ id, type, children, higherLevelChildren }) => {
+const AlertBlock: React.FC<AlertBlockProps> = ({ id, version, type, children, higherLevelChildren }) => {
     
     const getSvg = (type: string) => {
         switch (type) {
@@ -33,7 +34,7 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, type, children, higherLevel
     return (
         <div id={`alert-${id}`} className={`rich-alert alert`}>
             {getSvg(type)}
-            {<Paragraph<HTMLParagraphElement> key={id} id={id} content={children} higherLevelContent={{ id: id, content: higherLevelChildren }} render={props => <p {...props}></p>} />}
+            {<Paragraph<HTMLParagraphElement> key={id} id={id} version={version} content={children} higherLevelContent={{ id: id, content: higherLevelChildren }} render={props => <p {...props}></p>} />}
         </div>
     );
 };
