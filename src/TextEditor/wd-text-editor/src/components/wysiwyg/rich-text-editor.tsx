@@ -111,7 +111,7 @@ const RichTextEditor = () => {
         });
     
         if (editorRef.current) {
-          observer.observe(editorRef.current, { childList: true, subtree: true, characterData: true });
+          observer.observe(editorRef.current, { childList: true, subtree: true });
         }
     
         return () => observer.disconnect();

@@ -142,7 +142,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
             return <Link key={item.Guid + (item.Version || '0')} id={item.Guid} version={item.Version || 'V0'} url={item.Attributes.Url || ''}>{item.Children}</Link>
           case 'Text':
           default:
-            return <React.Fragment key={item.Guid + (item.Version || '0')}>{item.TextContent || '\n'}</React.Fragment>;
+            return <React.Fragment key={item.Guid}>{item.TextContent || '\n'}</React.Fragment>;
         }
       })
   };
