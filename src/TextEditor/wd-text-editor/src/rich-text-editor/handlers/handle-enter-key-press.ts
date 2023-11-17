@@ -133,7 +133,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                             if (higherLevelIndex !== null) {
-                                if (gparent.nodeName === 'BLOCKQUOTE' || gparent.nodeName === 'CODE')
+                                if (gparent.nodeName === 'BLOCKQUOTE')
                                 {
                                     const higherLevelChild = higherLevelChildren[higherLevelIndex];
                                     if (lowerLevelParent) {
@@ -143,12 +143,24 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                     }
                                 }
+                                else if (gparent.nodeName === 'CODE')
+                                {
+                                    const [node1, node2, newLine] = splitNode(child, startOffset);
+                                    children.splice(childIndex, 1, node1, newLine, node2);
+                                    const higherLevelChild = higherLevelChildren[higherLevelIndex];
+                                    if (higherLevelChild)
+                                    {
+                                        higherLevelChild.Guid = generateKey();
+                                    }
+                                    return { type: 'splitOrMove', nodes: children, higherLevelNodes: higherLevelChildren };
+                                }
                                 else if (parent.nodeName === 'P')
                                 {
                                     const [node1, node2] = splitNode(child, startOffset);
                                     children.splice(childIndex, 1, node1, node2);
                                     const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
                                     moveArray(children, childIndex + 1, newPara.Children, 0);
+                                    higherLevelChildren[higherLevelIndex].Guid = generateKey();
                                     higherLevelChildren.splice(higherLevelIndex + 1, 0, newPara);
                                     return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                 } else {

@@ -1,6 +1,7 @@
+import { generateKey } from ".";
 import { AstNode } from "../../components/wysiwyg/interface";
 
-const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode, AstNode] => {
+const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode, AstNode, AstNode] => {
 
     if (childIndex !== undefined)
     {
@@ -8,15 +9,23 @@ const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode,
       
       const leftNode: AstNode = {
         ...node,
-        Children: [...node.Children.slice(0, childIndex), childLeftNode]
+        Children: [...node.Children.slice(0, childIndex), childLeftNode],
+        Guid: generateKey()
+      };
+
+      const newLine: AstNode = {
+        ...node,
+        TextContent: '\n',
+        Guid: generateKey()
       };
 
       const rightNode: AstNode = {
         ...node,
-        Children: [childRightNode, ...node.Children.slice(childIndex + 1)]
+        Children: [childRightNode, ...node.Children.slice(childIndex + 1)],
+        Guid: generateKey()
       };
 
-      return [leftNode, rightNode];
+      return [leftNode, rightNode, newLine];
     }
 
     if (!node.TextContent || node.TextContent.length === 0) {
@@ -33,14 +42,22 @@ const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode,
     const leftNode: AstNode = {
       ...node,
       TextContent: leftText,
+      Guid: generateKey()
+    };
+
+    const newLine: AstNode = {
+      ...node,
+      TextContent: '\n',
+      Guid: generateKey()
     };
   
     const rightNode: AstNode = {
       ...node,
       TextContent: rightText,
+      Guid: generateKey()
     };
   
-    return [leftNode, rightNode];
+    return [leftNode, rightNode, newLine];
   }
 
   export default splitNode;

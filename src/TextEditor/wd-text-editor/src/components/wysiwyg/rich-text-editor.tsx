@@ -52,9 +52,9 @@ const RichTextEditor = () => {
                 return <HorizontalRule id={node.Guid} key={node.Guid + (node.Version || '0')}/>;
              case 'FencedCodeBlock':
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
-                    return <AlertBlock key={node.Guid + (node.Version || '0')} type={node.Attributes.Language} children={node.Children} />;
+                    return <AlertBlock key={node.Guid + (node.Version || '0')} id={node.Guid} higherLevelChildren={higherLevelContent} type={node.Attributes.Language} children={node.Children} />;
                 } else {
-                    return <CodeBlock key={node.Guid + (node.Version || '0')} language={node.Attributes.Language || ''} children={node.Children} />;
+                    return <CodeBlock key={node.Guid + (node.Version || '0')} id={node.Guid} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} language={node.Attributes.Language || ''} children={node.Children} />;
                 }
             case 'BlankLine':
                 return <BlankLine key={node.Guid + (node.Version || '0')} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />

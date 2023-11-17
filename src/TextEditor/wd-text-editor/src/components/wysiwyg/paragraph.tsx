@@ -81,13 +81,17 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
-        const update = updateAst(event, ast, higherLevelAst, props.higherLevelContent?.id);
+        const update = updateAst(event, props.content, higherLevelAst, props.higherLevelContent?.id);
         saveCursorPosition(update.type);
         if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
           props.higherLevelContent.updater(update.nodes);
         }
         else
         {
+          if (props.higherLevelContent && props.higherLevelContent.updater && update.higherLevelNodes)
+          {
+            props.higherLevelContent?.updater(update.higherLevelNodes);
+          }
           setAst(update.nodes);
         }
 

@@ -27,6 +27,7 @@ export interface AstNode {
   export interface AstUpdate {
     nodes: AstNode[];
     type: string;
+    higherLevelNodes?: AstNode[];
 }
 
 export type AstOperationType = 'add' | 'remove' | 'update';

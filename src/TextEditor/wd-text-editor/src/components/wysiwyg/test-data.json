@@ -1513,80 +1513,33 @@
       "Guid": "6fecf643-204d-465a-95cb-c5395b480635",
       "TextContent": null,
       "Children": [
-        {
-          "NodeName": "ParagraphBlock",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "2180b125-15aa-4ebc-aaa7-2859f1417d38",
-          "TextContent": null,
-          "Children": [
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "ba466ff5-a100-46c4-8f36-1945c097e0ff",
-              "TextContent": "t",
-              "Children": []
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "fbc0b32e-c703-437d-877c-e8baf69bff9c",
-              "TextContent": "\n",
-              "Children": []
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "ffd128ad-c4f3-4036-a97e-c2f62bde7011",
-              "TextContent": "This is a blockquote.",
-              "Children": []
-            }
-          ]
-        },
-        {
-          "NodeName": "ParagraphBlock",
-          "Attributes": {},
-          "ChildIndex": 1,
-          "Depth": 2,
-          "Guid": "a5bbfe77-5af1-4687-bd89-7b807c7f2eb6",
-          "TextContent": null,
-          "Children": [
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "4c5b9fff-a78c-4d30-af90-09f9d85f338b",
-              "TextContent": "It can span",
-              "Children": []
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "a77194a8-32b1-43c1-8628-47a048e41a0e",
-              "TextContent": "\n",
-              "Children": []
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "34e00838-1e6c-41aa-bc46-6a6f28834de9",
-              "TextContent": "multiple lines.",
-              "Children": []
-            }
-          ]
-        }
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 3,
+            "Guid": "ba466ff5-a100-46c4-8f36-1945c097e0ff",
+            "TextContent": "t",
+            "Children": []
+          },
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 3,
+            "Guid": "fbc0b32e-c703-437d-877c-e8baf69bff9c",
+            "TextContent": "\n",
+            "Children": []
+          },
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 3,
+            "Guid": "ffd128ad-c4f3-4036-a97e-c2f62bde7011",
+            "TextContent": "This is a blockquote.",
+            "Children": []
+          }
       ]
     }
   ]
