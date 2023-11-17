@@ -1,6 +1,6 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
-import { createNewAstNode, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode } from "../node-operations";
+import { createNewAstNode, createNewAstNodeFromFormat, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode } from "../node-operations";
 
 const splitTree = (root: AstNode, leafNode: AstNode, offset: number) => {
 
@@ -96,8 +96,38 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
             } 
             else if (startOffset === container.textContent?.length)
             {
-                if (parent.nodeName === 'SPAN' || parent.nodeName === 'P' || parent.nodeName === 'EM' || parent.nodeName === 'STRONG') {
-                    const gparent = parent.parentElement;
+                const gparent = parent.parentElement;
+                if (gparent && gparent?.nodeName === 'LI') {
+                    const ggparent = gparent.parentElement;
+                    if (ggparent)
+                    {
+                        if (ggparent.nodeName === 'UL') {
+                            const childNodes = Array.from(parent.childNodes);
+                            const childIndex = childNodes.findIndex((c) => c === container);
+                            const child = children[childIndex];
+                            if (child && higherLevelId) {
+                                const node = findNodeByGuid(higherLevelChildren, higherLevelId);
+                                const newNode = Object.assign({}, node);
+                                newNode.Guid = generateKey();
+                                newNode.Children = [ createNewAstNodeFromFormat('p', '\n') ];
+                                const index = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
+                                higherLevelChildren.splice(index + 1, 0, newNode);
+                                return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                            }
+                        } else if (ggparent.nodeName === 'OL') {
+                            const childNodes = Array.from(parent.childNodes);
+                            const childIndex = childNodes.findIndex((c) => c === container);
+                            const child = children[childIndex];
+                            if (child && higherLevelId) {
+                                const node = findNodeByGuid(higherLevelChildren, higherLevelId);
+                                const newNode = Object.assign({}, node);
+                                const index = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
+                                higherLevelChildren.splice(index + 1, 0, newNode);
+                            }
+                        }
+                    }
+                }
+                else if (parent.nodeName === 'SPAN' || parent.nodeName === 'P' || parent.nodeName === 'EM' || parent.nodeName === 'STRONG') {
                     if (gparent) {
                         const childNodes = Array.from(parent.childNodes);
                         const childIndex = childNodes.findIndex((c) => c === container);

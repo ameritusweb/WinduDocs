@@ -5,16 +5,19 @@ import UnorderedList from "./unordered-list";
 import { AstNode } from "./interface";
 
 export interface ListItemProps {
+    id: string;
+    updater: (nodes: AstNode[]) => void;
     children: AstNode[];
+    higherLevelChildren: AstNode[];
 }
 
-const ListItem: React.FC<ListItemProps> = ({ children }) => {
+const ListItem: React.FC<ListItemProps> = ({ id, children, higherLevelChildren, updater }) => {
     return (
-        <li>
+        <li id={id}>
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
+                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: higherLevelChildren, id, updater }} render={props => <p {...props}></p>} />;
                     case 'ListBlock':
                         if (child.Attributes.IsOrdered && child.Attributes.IsOrdered === 'True')
                         {

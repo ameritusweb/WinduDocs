@@ -66,7 +66,18 @@ const RichTextEditor = () => {
             else if (lastMutation.addedNodes && lastMutation.addedNodes.length > 0)
             {
                 const addedNode = lastMutation.addedNodes[0];
-                if (addedNode && addedNode instanceof Element)
+                if (addedNode && addedNode instanceof Text)
+                {
+                    const selection = window.getSelection();
+                    const range = new Range();
+                    range.setStart(addedNode, 1);
+                    range.setEnd(addedNode, 1);
+                    if (selection && range) {
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                    }
+                }
+                else if (addedNode && addedNode instanceof Element)
                 {
                     if (addedNode.className === 'blank-line')
                     {
@@ -78,7 +89,9 @@ const RichTextEditor = () => {
                             selection.removeAllRanges();
                             selection.addRange(range);
                         }
-                    } else if (addedNode.getAttribute('Version') === 'New') {
+                    } else if (addedNode.getAttribute('Version') === 'New'
+                                ||
+                               (addedNode.firstElementChild && addedNode.firstElementChild?.getAttribute('Version') === 'New')) {
                         const selection = window.getSelection();
                         const range = new Range();
                         const firstTextNode = findFirstTextNode(addedNode);

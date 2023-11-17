@@ -3,9 +3,12 @@ import { AstNode } from "../../components/wysiwyg/interface";
 const replaceText = (container: Node, child: AstNode, start: number, key: string) => {
 
     if (container.textContent)
-        child.TextContent = container.textContent.substring(0, start) + key + container.textContent.substring(start);
+    {
+        const content = container.textContent === '\n' ? '' : container.textContent;
+        child.TextContent = content.substring(0, start) + key + content.substring(start);
+    }
     else
-        child.TextContent = container.textContent + key;
+        child.TextContent = key;
 
 }
 
