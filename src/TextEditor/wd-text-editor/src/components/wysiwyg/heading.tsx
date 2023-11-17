@@ -7,7 +7,7 @@ export interface HeadingProps {
     level: string;
     children: AstNode[];
     higherLevelChildren: AstNode[];
-    rootUpdater: (nodes: AstNode[]) => void;
+    rootUpdater: (nodes: AstNode[], guid: string) => void;
 }
 
 export const Heading: React.FC<HeadingProps> = ({ id, level, children, higherLevelChildren, rootUpdater }) => {

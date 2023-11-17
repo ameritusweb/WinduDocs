@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AstNode, IHistoryManager } from "./interface";
 import Paragraph from "./paragraph";
 import Heading from "./heading";
@@ -14,6 +14,7 @@ import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
+import { generateKey } from "../../rich-text-editor/node-operations";
 
 const RichTextEditor = () => {
 
@@ -21,9 +22,16 @@ const RichTextEditor = () => {
     const { convertToMarkdown } = useMarkdownGenerator();
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
     const historyManager: IHistoryManager = HistoryManager;
+    const editorRef = useRef<HTMLDivElement | null>(null);
 
-    const updateContent = (nodes: AstNode[]) => {
-        const upToDateAst = nodes.map((n) => Object.assign({}, n));
+    const updateContent = (nodes: AstNode[], guids: string) => {
+        const upToDateAst = nodes.map((n) => {
+            if (!guids || guids.includes(n.Guid))
+            {
+                n.Guid = generateKey();
+            }
+            return n;
+        });
         setHigherLevelAst(upToDateAst);
         astRef.current.Children = upToDateAst;
     }
@@ -64,9 +72,12 @@ const RichTextEditor = () => {
         }
     };
 
-    const editorRef = useRef<HTMLDivElement | null>(null);
-
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+
+        if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
+        {
+            return;
+        }
 
         if (event.ctrlKey)
         {
@@ -74,12 +85,12 @@ const RichTextEditor = () => {
             {
                 const updatedAst = historyManager.undo(astRef.current);
                 if (updatedAst)
-                    updateContent(updatedAst.Children);
+                    updateContent(updatedAst.Children, '');
             } else if (event.key === 'y')
             {
                 const updatedAst = historyManager.redo(astRef.current);
                 if (updatedAst)
-                    updateContent(updatedAst.Children);
+                    updateContent(updatedAst.Children, '');
             }
         }
 

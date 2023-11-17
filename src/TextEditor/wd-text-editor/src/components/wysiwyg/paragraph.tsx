@@ -75,6 +75,10 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
+      if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
+      {
+        return;
+      }
 
       if ((event.key === 'z' || event.key === 'y') && event.ctrlKey)
       {
@@ -82,15 +86,19 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       }
 
         const update = updateAst(event, props.content, higherLevelAst, props.higherLevelContent?.id);
+        if (update.type === 'none')
+        {
+          return;
+        }
         saveCursorPosition(update.type);
         if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
-          props.higherLevelContent.updater(update.nodes);
+          props.higherLevelContent.updater(update.nodes, '');
         }
         else
         {
           if (props.higherLevelContent && props.higherLevelContent.updater && update.higherLevelNodes)
           {
-            props.higherLevelContent?.updater(update.higherLevelNodes);
+            props.higherLevelContent?.updater(update.higherLevelNodes, '');
           }
           setAst(update.nodes);
         }

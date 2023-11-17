@@ -7,7 +7,7 @@ interface CodeBlockProps {
     language: string;
     children: AstNode[];
     higherLevelChildren: AstNode[];
-    rootUpdater: (nodes: AstNode[]) => void;
+    rootUpdater: (nodes: AstNode[], guid: string) => void;
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ id, language, children, higherLevelChildren, rootUpdater }) => {

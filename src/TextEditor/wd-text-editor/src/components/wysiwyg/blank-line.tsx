@@ -43,17 +43,17 @@ export const BlankLine: React.FC<BlankLineProps> = ({ format, self, higherLevelC
           const index = higherLevelContent.content.findIndex((c) => c === self);
           const newLine = createNewAstNode('BlankLine', 0, 0, null);
           higherLevelContent.content.splice(index + 1, 0, newLine);
-          higherLevelContent.updater(higherLevelContent.content);
+          higherLevelContent.updater(higherLevelContent.content, '');
         } else if (event.key === 'Backspace') {
           const index = higherLevelContent.content.findIndex((c) => c === self);
           higherLevelContent.content.splice(index, 1);
-          higherLevelContent.updater(higherLevelContent.content);
+          higherLevelContent.updater(higherLevelContent.content, '');
         } else if (event.key.length === 1) {
           const index = higherLevelContent.content.findIndex((c) => c === self);
           higherLevelContent.content.splice(index, 1);
           const newNode = createNewAstNodeFromFormat(lineFormat || '', event.key);
           higherLevelContent.content.splice(index, 0, newNode);
-          higherLevelContent.updater(higherLevelContent.content);
+          higherLevelContent.updater(higherLevelContent.content, '');
         }
 
         event.stopPropagation();
