@@ -14,7 +14,7 @@ const ListItem: React.FC<ListItemProps> = ({ children }) => {
             {children.map((child) => {
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph key={child.Guid + (child.Version || '0')} id={child.Guid} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children }} render={props => <span {...props}></span>} />;
+                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
                     case 'ListBlock':
                         if (child.Attributes.IsOrdered && child.Attributes.IsOrdered === 'True')
                         {
