@@ -14,7 +14,7 @@ import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
-import { deepCopyAstNode, generateKey } from "../../rich-text-editor/node-operations";
+import { deepCopyAstNode, findFirstTextNode, generateKey } from "../../rich-text-editor/node-operations";
 
 const RichTextEditor = () => {
 
@@ -61,17 +61,14 @@ const RichTextEditor = () => {
                     } else if (addedNode.getAttribute('Version') === 'New') {
                         const selection = window.getSelection();
                         const range = new Range();
-                        if (addedNode.childNodes[0].textContent)
+                        const firstTextNode = findFirstTextNode(addedNode);
+                        if (firstTextNode && firstTextNode.textContent && firstTextNode.textContent?.length === 1)
                         {
-                            const length = addedNode.childNodes[0].textContent?.length;
-                            if (length === 1)
-                            {
-                                range.setStart(addedNode.childNodes[0], length);
-                                range.setEnd(addedNode.childNodes[0], length);
-                                if (selection && range) {
-                                    selection.removeAllRanges();
-                                    selection.addRange(range);
-                                }
+                            range.setStart(firstTextNode, 1);
+                            range.setEnd(firstTextNode, 1);
+                            if (selection && range) {
+                                selection.removeAllRanges();
+                                selection.addRange(range);
                             }
                         }
                     }
