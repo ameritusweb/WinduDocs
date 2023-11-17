@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
 import { AstNode, HigherLevelProps } from "./interface";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
+import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
 
 export interface BlankLineProps {
     higherLevelContent: HigherLevelProps;
@@ -49,21 +50,22 @@ export const BlankLine: React.FC<BlankLineProps> = ({ format, self, higherLevelC
 
       if (higherLevelContent.updater)
       {
+        const higherLevelContentCopy = higherLevelContent.content.map((h) => deepCopyAstNode(h));
         if (event.key === 'Enter') {
-          const index = higherLevelContent.content.findIndex((c) => c === self);
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newLine = createNewAstNode('BlankLine', 0, 0, null);
-          higherLevelContent.content.splice(index + 1, 0, newLine);
-          higherLevelContent.updater(higherLevelContent.content, '');
+          higherLevelContentCopy.splice(index + 1, 0, newLine);
+          higherLevelContent.updater(higherLevelContentCopy, '');
         } else if (event.key === 'Backspace') {
-          const index = higherLevelContent.content.findIndex((c) => c === self);
-          higherLevelContent.content.splice(index, 1);
-          higherLevelContent.updater(higherLevelContent.content, '');
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          higherLevelContentCopy.splice(index, 1);
+          higherLevelContent.updater(higherLevelContentCopy, '');
         } else if (event.key.length === 1) {
-          const index = higherLevelContent.content.findIndex((c) => c === self);
-          higherLevelContent.content.splice(index, 1);
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          higherLevelContentCopy.splice(index, 1);
           const newNode = createNewAstNodeFromFormat(lineFormat || '', event.key);
-          higherLevelContent.content.splice(index, 0, newNode);
-          higherLevelContent.updater(higherLevelContent.content, '');
+          higherLevelContentCopy.splice(index, 0, newNode);
+          higherLevelContent.updater(higherLevelContentCopy, '');
         }
 
         event.stopPropagation();

@@ -17,6 +17,24 @@ const createNewAstNodeFromFormat = (format: string, content: string): AstNode =>
                 newNode.Attributes.Level = level;
                 return newNode;
             }
+        case 'strong':
+            {
+                const newNode = createNewAstNode('ParagraphBlock', 0, 0, null);
+                const newStrongNode = createNewAstNode('Strong', 0, 0, null);
+                const newTextNode = createNewAstNode('Text', 0, 0, content);
+                newStrongNode.Children.push(newTextNode);
+                newNode.Children.push(newStrongNode);
+                return newNode;
+            }
+            case 'emphasis':
+                {
+                    const newNode = createNewAstNode('ParagraphBlock', 0, 0, null);
+                    const newEmphasisNode = createNewAstNode('Emphasis', 0, 0, null);
+                    const newTextNode = createNewAstNode('Text', 0, 0, content);
+                    newEmphasisNode.Children.push(newTextNode);
+                    newNode.Children.push(newEmphasisNode);
+                    return newNode;
+                }
         default:
             {
                 const newNode = createNewAstNode('ParagraphBlock', 0, 0, null);

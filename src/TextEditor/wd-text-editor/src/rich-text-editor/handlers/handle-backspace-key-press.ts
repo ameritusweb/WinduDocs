@@ -1,9 +1,10 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
+import { createNewAstNode, findHigherlevelIndex } from "../node-operations";
 import { removeText } from "../text-manipulation";
 
 // Handle Backspace key press
-const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Node, endContainer: Node, children: AstNode[], range: Range, startOffset: number, endOffset: number): AstUpdate | null => {
+const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Node, endContainer: Node, children: AstNode[], higherLevelChildren: AstNode[], range: Range, startOffset: number, endOffset: number): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
     if (commonAncestor.nodeName !== '#text') {
         const ancestorChildNodes = processArray(Array.from(commonAncestor.childNodes) as (Node | Text)[], (i) => i === container, (j) => j === endContainer);
@@ -41,9 +42,20 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
             const childIndex = children.findIndex((c) => c.Guid === parentId);
             let child = children[childIndex];
             if (child) {
-                removeText(container, child, startOffset, endOffset);
+                const index = Array.from(parent.childNodes).findIndex((c) => c === container);
+                const text = child.Children[index];
+                removeText(container, text, startOffset, endOffset);
+                if (text.TextContent === '') {
+                    const newLine = createNewAstNode('BlankLine', 0, 0, null);
+                    child = Object.assign({}, newLine);
+                    const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                    if (higherLevelIndex !== null) {
+                        higherLevelChildren.splice(higherLevelIndex, 1, newLine);
+                        return { type: 'higherLevelRemove', nodes: higherLevelChildren };
+                    }
+                }
                 return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children.map((c, ind) => {
-                    return ind === childIndex ? Object.assign({}, c) : c
+                    return ind === childIndex ? Object.assign({}, child) : c
                 }) };
             } else {
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
@@ -51,7 +63,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
                 if (child) {
                     removeText(container, child, startOffset, endOffset);
                     return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children.map((c, ind) => {
-                        return ind === index ? Object.assign({}, c) : c
+                        return ind === index ? Object.assign({}, child) : c
                     }) };
                 }
             }

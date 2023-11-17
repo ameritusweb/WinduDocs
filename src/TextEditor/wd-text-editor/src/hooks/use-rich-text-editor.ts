@@ -27,7 +27,7 @@ export const useRichTextEditor = () => {
             }
             else if (key === 'Backspace') {
                 event.preventDefault();
-                const update = handleBackspaceKeyPress(historyManager, container, endContainer, children, range, startOffset, endOffset);
+                const update = handleBackspaceKeyPress(historyManager, container, endContainer, children, higherLevelChildren, range, startOffset, endOffset);
                 if (update)
                     return update;
             }
