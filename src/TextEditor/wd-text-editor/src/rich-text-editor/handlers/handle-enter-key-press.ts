@@ -133,6 +133,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                             if (higherLevelIndex !== null) {
+                                higherLevelChildren[higherLevelIndex].Children = children;
                                 if (gparent.nodeName === 'BLOCKQUOTE')
                                 {
                                     const higherLevelChild = higherLevelChildren[higherLevelIndex];

@@ -38,6 +38,7 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
                 },
                 oldState: (params as UpdateNodeParams).oldTextContent,
                 oldVersion: (params as UpdateNodeParams).oldVersion,
+                rootChildId: (params as UpdateNodeParams).rootChildId,
                 timestamp: Date.now()
             } as OperationReturnMap[T]; // Type assertion here
         default:

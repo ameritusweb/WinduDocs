@@ -14,7 +14,7 @@ import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
-import { generateKey } from "../../rich-text-editor/node-operations";
+import { deepCopyAstNode, generateKey } from "../../rich-text-editor/node-operations";
 
 const RichTextEditor = () => {
 
@@ -25,16 +25,33 @@ const RichTextEditor = () => {
     const editorRef = useRef<HTMLDivElement | null>(null);
 
     const updateContent = (nodes: AstNode[], guids: string) => {
+        /*
         const upToDateAst = nodes.map((n) => {
-            if (!guids || guids.includes(n.Guid))
+            if (guids && (guids === n.Guid || guids.includes(n.Guid)))
             {
                 n.Guid = generateKey();
             }
             return n;
         });
-        setHigherLevelAst(upToDateAst);
-        astRef.current.Children = upToDateAst;
+        */
+        setHigherLevelAst(nodes);
+        astRef.current.Children = nodes;
     }
+
+    useEffect(() => {
+        const observer = new MutationObserver((mutationsList) => {
+          // Check for the specific mutation type, if necessary
+          if (mutationsList.length > 0) {
+
+          }
+        });
+    
+        if (editorRef.current) {
+          observer.observe(editorRef.current, { childList: true, subtree: true, characterData: true });
+        }
+    
+        return () => observer.disconnect();
+      }, [/* dependencies */]);
 
     const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
         switch (node.NodeName) {
@@ -83,18 +100,23 @@ const RichTextEditor = () => {
         {
             if (event.key === 'z')
             {
-                const updatedAst = historyManager.undo(astRef.current);
-                if (updatedAst)
-                    updateContent(updatedAst.Children, '');
+                const res = historyManager.undo(deepCopyAstNode(astRef.current));
+                if (res) {
+                    const [updatedAst, rootChildIds] = res;
+                    updateContent(updatedAst.Children, rootChildIds);
+                }
             } else if (event.key === 'y')
             {
-                const updatedAst = historyManager.redo(astRef.current);
-                if (updatedAst)
-                    updateContent(updatedAst.Children, '');
+                const res = historyManager.redo(deepCopyAstNode(astRef.current));
+                if (res) {
+                    const [updatedAst, rootChildIds] = res;
+                    updateContent(updatedAst.Children, rootChildIds);
+                }
             }
         }
 
-        event.preventDefault();
+        if (event.key.length === 1)
+            event.preventDefault();
 
         return;
         //const markdown = convertToMarkdown(astRef.current, 0);

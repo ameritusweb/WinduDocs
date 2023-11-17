@@ -4,3 +4,5 @@ export { default as createNewAstNodeFromFormat } from './create-new-ast-node-fro
 export { default as splitNode } from './split-node';
 export { default as findNodeByGuid } from './find-node-by-guid';
 export { default as findHigherlevelIndex } from './find-higher-level-index';
+export { default as deepCopyAstNode } from './deep-copy-ast-node';
+export { default as findClosestAncestorId } from './find-closest-ancestor-id';

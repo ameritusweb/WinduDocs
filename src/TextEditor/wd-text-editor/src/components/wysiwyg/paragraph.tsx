@@ -6,6 +6,7 @@ import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
+import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
 // import EditorData, { EditorDataType } from "../../hooks/editor-data";
 
 interface ParagraphProps<T extends HTMLElement> {
@@ -29,11 +30,19 @@ interface RenderProps<T extends HTMLElement> {
 const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const [ast, setAst] = useState<AstNode[]>(props.content);
-    const [higherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
+    const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
     const { updateAst, getCursorPosition } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
     const cursorPositionRef = useRef<CursorPositionType | null>(null);
     // const editorData: EditorDataType = EditorData;
+
+    useEffect(() => {
+
+      setAst(props.content);
+      if (props.higherLevelContent)
+        setHigherLevelAst(props.higherLevelContent.content);
+
+    }, [props.content, props.higherLevelContent?.content]);
 
     const saveCursorPosition = (updateType: string) => {
       const cursorPosition = getCursorPosition(updateType);
@@ -85,20 +94,20 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
-        const update = updateAst(event, props.content, higherLevelAst, props.higherLevelContent?.id);
+        const update = updateAst(event, ast.map((p) => deepCopyAstNode(p)), higherLevelAst.map((p) => deepCopyAstNode(p)), props.higherLevelContent?.id);
         if (update.type === 'none')
         {
           return;
         }
         saveCursorPosition(update.type);
         if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
-          props.higherLevelContent.updater(update.nodes, '');
+          props.higherLevelContent.updater(update.nodes, update.rootChildId || '');
         }
         else
         {
           if (props.higherLevelContent && props.higherLevelContent.updater && update.higherLevelNodes)
           {
-            props.higherLevelContent?.updater(update.higherLevelNodes, '');
+            props.higherLevelContent?.updater(update.higherLevelNodes, update.rootChildId || '');
           }
           setAst(update.nodes);
         }

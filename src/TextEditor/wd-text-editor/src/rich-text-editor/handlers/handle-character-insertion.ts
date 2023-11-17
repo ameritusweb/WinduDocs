@@ -1,5 +1,5 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
-import { findNodeByGuid } from "../node-operations";
+import { findClosestAncestorId, findNodeByGuid } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 
 // Handle character insertion
@@ -8,6 +8,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
     {
         const parent = container.parentElement;
         if (parent) {
+            const rootChildId = findClosestAncestorId(parent, 'richTextEditor');
             const parentId = parent.id;
             let child = findNodeByGuid(children, parentId);
             if (child) {
@@ -17,8 +18,8 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 }
                 const oldText = '' + child.TextContent;
                 replaceText(container, child, startOffset, key);
-                historyManager.recordChildTextUpdate(oldText, startOffset, child);
-                return { type: 'insert', nodes: children.map((c) => {
+                historyManager.recordChildTextUpdate(oldText, startOffset, child, rootChildId);
+                return { type: 'insert', rootChildId, nodes: children.map((c) => {
                     return Object.assign({}, c)
                 }) };
             } else {
@@ -27,8 +28,8 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 if (child) {
                     const oldText = '' + child.TextContent;
                     replaceText(container, child, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child);
-                    return { type: 'insert', nodes: children.map((c, ind) => {
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, rootChildId);
+                    return { type: 'insert', rootChildId, nodes: children.map((c, ind) => {
                         return ind === index ? Object.assign({}, c) : c
                     }) };
                 }

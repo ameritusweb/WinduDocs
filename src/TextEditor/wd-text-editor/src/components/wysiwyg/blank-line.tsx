@@ -35,6 +35,16 @@ export const BlankLine: React.FC<BlankLineProps> = ({ format, self, higherLevelC
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
+      if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
+      {
+        return;
+      }
+
+      if ((event.key === 'z' || event.key === 'y') && event.ctrlKey)
+      {
+        return;
+      }
+      
       event.preventDefault();
 
       if (higherLevelContent.updater)

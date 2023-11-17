@@ -18,11 +18,11 @@ class HistoryManager implements IHistoryManager {
         this.redoStack.clear();
     }
 
-    recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode): void {
+    recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode, rootChildId?: string): void {
         const oldVersion = child.Version || 'V0';
         const trimmed = trimSpecial(oldVersion, { startString: 'R' });
         const newVersion = incrementEnd(trimmed);
-        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, newVersion, nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent }), false);
+        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, newVersion, nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent, rootChildId }), false);
         child.Version = newVersion;
     }
 
@@ -107,38 +107,42 @@ class HistoryManager implements IHistoryManager {
         }
     }    
 
-    undo(ast: AstNode): AstNode | null {
+    undo(ast: AstNode): [AstNode, string] | null {
         if (this.undoStack.isEmpty()) {
             return null;
         }
 
+        let rootChildIds = '';
         const transactionToUndo = this.undoStack.pop();
         transactionToUndo.forEach(operation => {
             const reverseOperation = this.getReverseOperation(operation);
+            reverseOperation.rootChildId && (rootChildIds += reverseOperation.rootChildId + ' ');
             ast = applyOperation(ast, reverseOperation);
         });
 
         this.redoStack.startTransaction();
         transactionToUndo.forEach(operation => this.redoStack.addToTransaction(operation));
 
-        return ast;
+        return [ast, rootChildIds.trimEnd()];
     }
 
     // Redoes the last transaction
-    redo(ast: AstNode): AstNode | null {
+    redo(ast: AstNode): [AstNode, string] | null {
         if (this.redoStack.isEmpty()) {
             return null;
         }
 
+        let rootChildIds = '';
         const transactionToRedo = this.redoStack.pop();
         transactionToRedo.forEach(operation => {
+            operation.rootChildId && (rootChildIds += operation.rootChildId + ' ');
             ast = applyOperation(ast, operation);
         });
 
         this.undoStack.startTransaction();
         transactionToRedo.forEach(operation => this.undoStack.addToTransaction(operation));
 
-        return ast;
+        return [ast, rootChildIds];
     }
 }
 
