@@ -20,7 +20,7 @@ const findLastTextNode = (node: Text): Text | null  => {
 
 // Utility to check if an element is a block-level element
 const isBlockLevelElement = (element: Element): boolean => {
-    const blockElements: Set<string> = new Set(['DIV', 'P', 'LI', 'UL', 'OL', 'BLOCKQUOTE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'TABLE']);
+    const blockElements: Set<string> = new Set(['DIV', 'P', 'LI', 'OL', 'UL', 'BLOCKQUOTE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'TABLE']);
     return blockElements.has(element.tagName);
 }
 
@@ -40,6 +40,43 @@ const findRootChild = (element: Node): Element => {
     return element as Element;
 
 }
+
+const findTextNodeBeforeNewLine = (element: Element | Text, stopId: string): Text | null => {
+    let lastTextNode: Text | null = null;
+
+    function* traverse(node: Node | null): Generator<Text | null> {
+        while (node && (node as Element).id !== stopId) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const textNode = node as Text;
+                if (textNode.nodeValue === '\n') {
+                    if (lastTextNode) 
+                        yield lastTextNode;
+                    else
+                        yield null;
+                    return; // Stop after finding the newline
+                }
+                lastTextNode = textNode; // Keep updating the last text node
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                yield* traverse(node.firstChild);
+            }
+
+            if (node.nextSibling && (node.nextSibling.parentNode as Element).id !== stopId)
+            {
+                node = node.nextSibling;
+            }
+            else
+            {
+                node = ((node.parentNode?.parentNode as Element).id !== stopId ? node.parentNode?.nextSibling : null) as Node;
+            }
+        }
+    }
+
+    for (const textNode of traverse(element)) {
+        return textNode; // Returns the tracked text node before the newline
+    }
+    return null;
+}
+
 
 const findTextNodeAfterNewLine = (element: Element | Text, stopId: string) => {
     let foundNewLine = false;
@@ -63,7 +100,7 @@ const findTextNodeAfterNewLine = (element: Element | Text, stopId: string) => {
                 // Ascend and find the next sibling
                 do {
                     node = node.parentNode as Element;
-                    if (node && (node.parentNode as Element).id === stopId) {
+                    if (node && node.parentNode && (node.parentNode as Element).id === stopId) {
                         return; // Stop the search if we reach the stopId
                     }
                 } while (node && !node.nextSibling);
@@ -150,32 +187,29 @@ const findClosestTextNodeAtLineStart = (textNode: Text): Text => {
     return textNode;
 }
 
-// Utility to check if an element is inside a table
-const isInsideTable = (element: Node | null): boolean => {
-    while (element && (element as Element).id !== 'richTextEditor') {
-        if (element.nodeType === Node.ELEMENT_NODE && (element as Element).tagName === 'TABLE') {
-            return true;
+const findLineInElementOrDescendants = (
+    element: Node, 
+    isLine: any
+): Node | null => {
+    if (element.nodeType === Node.ELEMENT_NODE && isLine(element as Element)) {
+        return element;
+    } else if (element.nodeType === Node.TEXT_NODE && element.textContent?.includes('\n')) {
+        if (element.nextSibling && element.textContent.length === 1)
+        {
+            return element.nextSibling;
         }
-        element = (element as Element).parentElement;
+        return element;
     }
-    return false;
-}
 
-// Generic utility for finding a sibling row in a table
-const findTableSiblingRow = (element: Element, direction: 'next' | 'previous'): Element | null => {
-    let currentRow: HTMLTableRowElement | null = element.closest('tr');
-    if (currentRow) {
-        let siblingRow = direction === 'next' ? currentRow.nextElementSibling : currentRow.previousElementSibling;
-        
-        // If trying to navigate beyond the first or last row, move outside the table
-        if (!siblingRow) {
-            let table = currentRow.closest('table');
-            return direction === 'next' ? (table?.nextElementSibling || null) : (table?.previousElementSibling || null);
+    if (element.hasChildNodes()) {
+        for (let child of element.childNodes) {
+            const lineElement = findLineInElementOrDescendants(child, isLine);
+            if (lineElement) return lineElement;
         }
-        return siblingRow;
     }
+
     return null;
-}
+};
 
 // Generic utility for finding a line based on sibling traversal
 const findSiblingLine = (startElement: Node, getSibling: SiblingFinder, isLine: (element: Element) => boolean): Node | null => {
@@ -184,20 +218,18 @@ const findSiblingLine = (startElement: Node, getSibling: SiblingFinder, isLine: 
     while (currentElement) {
         let siblingElement: Node | null = getSibling(currentElement);
 
-        // Traverse up through parents to find the next relevant sibling
-        while (!siblingElement && currentElement.parentElement) {
+        while (!siblingElement && currentElement.parentElement && currentElement.parentElement.id !== 'richTextEditor') {
             currentElement = currentElement.parentElement;
             siblingElement = getSibling(currentElement);
         }
 
         if (!siblingElement) return null;
 
-        if (siblingElement.nodeType === Node.ELEMENT_NODE && isLine(siblingElement as Element)) {
-            return siblingElement;
-        } else if (siblingElement.nodeType === Node.TEXT_NODE && siblingElement.textContent?.includes('\n')) {
-            return siblingElement;
-        }
-
+        const lineElement = findLineInElementOrDescendants(siblingElement, isLine);
+        if (lineElement)
+        {
+            return lineElement;
+        } 
         currentElement = siblingElement;
     }
 
@@ -206,17 +238,11 @@ const findSiblingLine = (startElement: Node, getSibling: SiblingFinder, isLine: 
 
 // Function to find the next visible line
 const findNextVisibleLine = (currentElement: Node): Node | null => {
-    if (isInsideTable(currentElement)) {
-        return findTableSiblingRow(currentElement as Element, 'next');
-    }
     return findSiblingLine(currentElement, elem => elem.nextSibling, isBlockLevelElement);
 }
 
 // Function to find the previous visible line
 const findPreviousVisibleLine = (currentElement: Node): Node | null => {
-    if (isInsideTable(currentElement)) {
-        return findTableSiblingRow(currentElement as Element, 'previous');
-    }
     return findSiblingLine(currentElement, elem => elem.previousSibling, isBlockLevelElement);
 }
 
@@ -234,12 +260,14 @@ const handleArrowKeyPress = (key: string, editorData: EditorDataType) => {
         let range = selection.getRangeAt(0);
         let currentNode: Node | null = range.startContainer;
 
-        const atEnd = currentNode.nodeType === Node.TEXT_NODE && currentNode.textContent && currentNode.textContent.length > 1 && range.startOffset === (currentNode.textContent || '').length;
+        let atEnd = currentNode.nodeType === Node.TEXT_NODE && currentNode.textContent && currentNode.textContent.length > 1 && range.startOffset === (currentNode.textContent || '').length;
 
         if (atEnd) {
             editorData.cursorPosition = 'end';
         } else if (currentNode.textContent && currentNode.textContent.length > 1) {
             editorData.cursorPosition = 'beginning';
+        } else {
+            atEnd = editorData.cursorPosition === 'end';
         }
 
        if (currentNode.nodeType === Node.TEXT_NODE) {
@@ -257,7 +285,28 @@ const handleArrowKeyPress = (key: string, editorData: EditorDataType) => {
         {
             if (atEnd)
             {
-                sibling = findNextVisibleLine(currentNode) as Element;
+                if ((currentNode as Element).className != 'blank-line' && currentNode.textContent?.includes('\n'))
+                {
+                    const beforeNewLine = findTextNodeBeforeNewLine(range.startContainer as Text, 'richTextEditor') as Text | null;
+                    if (!beforeNewLine || beforeNewLine === range.startContainer)
+                    {
+                        sibling = findTextNodeAfterNewLine(range.startContainer as Text, 'richTextEditor') as Text | null;
+                        if (sibling === null)
+                            sibling = findNextVisibleLine(range.startContainer) as Element;
+                    }
+                    else
+                    {
+                        sibling = beforeNewLine;
+                    }
+                    const aa = 1;
+                }
+                else
+                {
+                    sibling = findNextVisibleLine(currentNode) as Element;
+                    const beforeNewLine = findTextNodeBeforeNewLine(sibling, 'richTextEditor') as Text | null;
+                    if (beforeNewLine)
+                        sibling = beforeNewLine;
+                }
             } else {
                 sibling = findTextNodeAfterNewLine(range.startContainer as Text, 'richTextEditor') as Text | null;
                 if (sibling === null) {
@@ -272,7 +321,7 @@ const handleArrowKeyPress = (key: string, editorData: EditorDataType) => {
             if (editorData.cursorPosition === 'end') {
                 // If cursor is at the end, move it to the end of the sibling's last text node
                 let targetNode = sibling;
-                while (targetNode.lastChild) {
+                while (targetNode.lastChild && !isBlockLevelElement(targetNode.lastChild as Element)) {
                     targetNode = targetNode.lastChild as Element;
                 }
                 const textNode = findFirstTextNode(targetNode as Element);
