@@ -3,7 +3,7 @@
   "Attributes": {},
   "ChildIndex": 0,
   "Depth": 0,
-  "Guid": "89cd290e-2bb5-4ea1-a414-b868918e6ce3",
+  "Guid": "6b2c2182-09c4-45d5-8558-71d099fa94d8",
   "TextContent": null,
   "Children": [
     {
@@ -11,74 +11,7 @@
       "Attributes": {},
       "ChildIndex": 0,
       "Depth": 1,
-      "Guid": "11e46628-d715-44d6-a82f-6218fcba0a0b",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Emphasis",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "78b01b6a-bcb9-4f96-bcf3-e2a62e977402",
-          "TextContent": null,
-          "Children": [
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "70630e34-9437-46a6-b598-3e7de18e95d1",
-              "TextContent": "This is a paragraph with both ",
-              "Children": []
-            },
-            {
-              "NodeName": "Emphasis",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "a70841ad-12f1-43c6-aa50-11ed4c50f0b6",
-              "TextContent": null,
-              "Children": [
-                {
-                  "NodeName": "Strong",
-                  "Attributes": {},
-                  "ChildIndex": 0,
-                  "Depth": 4,
-                  "Guid": "7c91aca3-51bb-4eb0-934a-43d4af06ae26",
-                  "TextContent": null,
-                  "Children": [
-                    {
-                      "NodeName": "Text",
-                      "Attributes": {},
-                      "ChildIndex": 0,
-                      "Depth": 5,
-                      "Guid": "6f0fd004-5075-4f7c-ad27-fa2da2ef3dd7",
-                      "TextContent": "bold and italic",
-                      "Children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "a2db9f80-329d-4de6-8c5b-26ea2d85ef56",
-              "TextContent": " text",
-              "Children": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "NodeName": "ParagraphBlock",
-      "Attributes": {},
-      "ChildIndex": 0,
-      "Depth": 1,
-      "Guid": "2ad2dfcb-a3fa-4d23-b608-2db796899ca8",
+      "Guid": "2dd8d154-5529-4c97-8cad-3da0132d7eaa",
       "TextContent": null,
       "Children": [
         {
@@ -86,7 +19,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "e309aee3-a939-478f-a468-f255b7e3d84c",
+          "Guid": "38fc9f03-8bde-4b3d-bbb3-d990fd57a468",
           "TextContent": null,
           "Children": [
             {
@@ -94,7 +27,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "8dd67ab2-3c0f-434b-ac31-cb920d505bfd",
+              "Guid": "530ce1ca-13b9-42d7-8fd8-d9bf11a855dd",
               "TextContent": "This is a paragraph with both ",
               "Children": []
             },
@@ -103,7 +36,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "9282fdf0-7bbb-47e1-813c-ee85b3fecec2",
+              "Guid": "449577e8-132d-47a5-b800-5a6411680b3e",
               "TextContent": null,
               "Children": [
                 {
@@ -111,7 +44,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "38ace1b7-b00c-4eda-9b92-56140a30d259",
+                  "Guid": "7f16c610-8de7-4edd-90c1-4eae10de8b11",
                   "TextContent": null,
                   "Children": [
                     {
@@ -119,7 +52,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "d1f07841-d575-4ab7-a878-2c442170340a",
+                      "Guid": "2155759b-8da1-44ff-94fd-13a02edb0ea5",
                       "TextContent": "bold and italic",
                       "Children": []
                     }
@@ -132,8 +65,64 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "2aad215f-4600-4495-912a-174168460807",
+              "Guid": "67ee456e-f5c1-42f1-9061-0973567e805e",
               "TextContent": " text",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "5a3b2fe3-9bf8-4e74-850e-ca9b19eb6a25",
+          "TextContent": "\n",
+          "Children": []
+        },
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "93eeb83c-9e2d-4879-851f-d66451906ab0",
+          "TextContent": "This is another paragraph.",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 1,
+      "Depth": 1,
+      "Guid": "043960dd-a83d-4a47-be92-3b0bd260d089",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 2,
+      "Depth": 1,
+      "Guid": "5075f608-164b-420f-913a-e205978e2b93",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Strong",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "9e3d6f3f-386c-4d25-aa56-b43d7413ad2e",
+          "TextContent": null,
+          "Children": [
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "7171092e-9607-40b6-9fc9-b320a046e643",
+              "TextContent": "of bold text",
               "Children": []
             }
           ]
@@ -141,11 +130,20 @@
       ]
     },
     {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 3,
+      "Depth": 1,
+      "Guid": "c25ce490-bd82-4c7e-8754-df889493ae3a",
+      "TextContent": null,
+      "Children": []
+    },
+    {
       "NodeName": "ParagraphBlock",
       "Attributes": {},
-      "ChildIndex": 0,
+      "ChildIndex": 4,
       "Depth": 1,
-      "Guid": "11023bdf-1bf5-4714-af07-f001f35d3372",
+      "Guid": "5b7db9e5-9079-4a72-84cc-16f781762339",
       "TextContent": null,
       "Children": [
         {
@@ -153,7 +151,228 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "fbd271d5-d214-4f37-82a4-b739f0326691",
+          "Guid": "4ac08852-3382-46a7-9641-b14eb36ce305",
+          "TextContent": "This is a third paragraph",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 5,
+      "Depth": 1,
+      "Guid": "2a21560d-a784-4ce4-a6af-fa7b47f46fe5",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 6,
+      "Depth": 1,
+      "Guid": "744f44ff-878a-418c-871a-4c27fe679b19",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "c76b1cc0-7e36-432e-ad94-669b49cf8c06",
+          "TextContent": "This is an inline code example: ",
+          "Children": []
+        },
+        {
+          "NodeName": "CodeInline",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "91f23397-0286-4430-9875-e11190ff345b",
+          "TextContent": "let x = 5;",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 7,
+      "Depth": 1,
+      "Guid": "86312178-c325-490b-bbb4-5347ca41ba3c",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "1"
+      },
+      "ChildIndex": 8,
+      "Depth": 1,
+      "Guid": "cf1d8a89-11c9-446f-b920-1500689d60c8",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "6b1f2407-89ab-46e6-8469-5c3749686d34",
+          "TextContent": "Sample Markdown",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "1"
+      },
+      "ChildIndex": 9,
+      "Depth": 1,
+      "Guid": "4d8ef09a-5926-48c2-927f-3b20ff992a33",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "7be8b3c5-435a-439c-b301-b88b3f76a66c",
+          "TextContent": "Sample Markdown 2",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "2"
+      },
+      "ChildIndex": 10,
+      "Depth": 1,
+      "Guid": "f3db9fc6-c909-4c01-8cce-d285cd95257a",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "08d9e2a5-4d91-4887-8d0c-c40b6bc617ba",
+          "TextContent": "Conventional",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "3"
+      },
+      "ChildIndex": 11,
+      "Depth": 1,
+      "Guid": "ba30bbb1-ffca-4eb1-81b0-9a813ad9db40",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "eb010b50-213a-4c29-a244-52ea58ab37a7",
+          "TextContent": "Ovational",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "4"
+      },
+      "ChildIndex": 12,
+      "Depth": 1,
+      "Guid": "f7fb59bb-3c0a-410b-96f9-6ac78dbe8a36",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "1295e392-5a98-428d-9456-8185454e8742",
+          "TextContent": "Boldly Explorational",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "5"
+      },
+      "ChildIndex": 13,
+      "Depth": 1,
+      "Guid": "be957ec2-bf2b-43ea-b429-edb9c5b21853",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "2871bd0b-866e-4136-bab9-18ca836c95eb",
+          "TextContent": "Crew of the Enterprise",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "6"
+      },
+      "ChildIndex": 14,
+      "Depth": 1,
+      "Guid": "2ac477e5-29dd-40bf-943b-e205b2c1885d",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "7397c8b3-bdb0-4832-8b48-cbbe1170616b",
+          "TextContent": "It\u0027s continuing mission",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 15,
+      "Depth": 1,
+      "Guid": "3f3b7a4a-e9a0-49af-8d4b-9f8c378b0034",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 16,
+      "Depth": 1,
+      "Guid": "2947c4a3-bea2-46df-b923-3abe1b25ed12",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "f584f4f2-b2cf-4ec4-9a91-e3f5eba24e1a",
           "TextContent": "This is a paragraph with both ",
           "Children": []
         },
@@ -162,7 +381,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "f652b69b-6fd0-466f-8879-70d068dc1850",
+          "Guid": "05f739f8-3419-485d-aabf-1a0450f232a5",
           "TextContent": null,
           "Children": [
             {
@@ -170,7 +389,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "8c586042-b237-4c33-aad9-9066f6be4db8",
+              "Guid": "b6e5b00a-b8e3-4a28-aba3-277c2e77ac0f",
               "TextContent": null,
               "Children": [
                 {
@@ -178,7 +397,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "a59db773-cc9a-4569-b1e9-4d10261db275",
+                  "Guid": "3fadd8bb-64ca-4967-b74e-b4ba8cba40c1",
                   "TextContent": "bold and italic",
                   "Children": []
                 }
@@ -191,7 +410,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "663d9b11-43a6-4ffd-ad69-a811109f0669",
+          "Guid": "1c15963d-4366-42ff-961c-a05983bc2fed",
           "TextContent": " text.",
           "Children": []
         },
@@ -200,7 +419,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "7bc1eb6a-1569-4b06-9029-60f6c48152e4",
+          "Guid": "31d5cc22-3ef8-47a6-8c22-5c8f7c390fef",
           "TextContent": "\n",
           "Children": []
         },
@@ -209,45 +428,26 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "3faee14a-439e-4e01-8ecb-463ca541a0d8",
+          "Guid": "7c1a3b4f-e66c-4199-b210-6ba366d8721d",
           "TextContent": "This is another paragraph.",
           "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "BlankLine",
-      "Attributes": {},
-      "ChildIndex": 1,
-      "Depth": 1,
-      "Guid": "a1caede2-450d-4466-9a11-8308e0b6991a",
-      "TextContent": null,
-      "Children": []
-    },
-    {
-      "NodeName": "ParagraphBlock",
-      "Attributes": {},
-      "ChildIndex": 16,
-      "Depth": 1,
-      "Guid": "7495ca97-a8e7-4d33-8256-0b23d59291da",
-      "TextContent": null,
-      "Children": [
+        },
         {
           "NodeName": "Text",
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "5df53cdb-d6b8-4420-8af5-fd528a28fec1",
-          "TextContent": "This is an inline code example: ",
+          "Guid": "0bbd657d-808b-414f-8436-cc1e0d65ac92",
+          "TextContent": "\n",
           "Children": []
         },
         {
-          "NodeName": "CodeInline",
+          "NodeName": "Text",
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "325907f6-370a-44c8-9000-a0981642d282",
-          "TextContent": "let x = 5;",
+          "Guid": "608733dd-700e-4697-9ac9-745b34846c28",
+          "TextContent": "This is a third paragraph",
           "Children": []
         }
       ]
@@ -257,7 +457,44 @@
       "Attributes": {},
       "ChildIndex": 17,
       "Depth": 1,
-      "Guid": "21f5a9e0-93b0-4c0c-910f-9ea6144b7fa6",
+      "Guid": "934248c7-5c3e-489a-b447-e117266de2c8",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 18,
+      "Depth": 1,
+      "Guid": "f219f887-52aa-42ac-ad29-5727ceba0a06",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "63506c71-82c3-4b76-92de-935c65609003",
+          "TextContent": "This is an inline code example: ",
+          "Children": []
+        },
+        {
+          "NodeName": "CodeInline",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "d4c99c99-c2b7-4063-bde7-317567a23221",
+          "TextContent": "let x = 5;",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 19,
+      "Depth": 1,
+      "Guid": "1b8ba553-3862-4028-9b8b-e6c54c56c587",
       "TextContent": null,
       "Children": []
     },
@@ -266,9 +503,9 @@
       "Attributes": {
         "IsOrdered": "True"
       },
-      "ChildIndex": 18,
+      "ChildIndex": 20,
       "Depth": 1,
-      "Guid": "b163a744-3a85-49ec-bf3b-16a57896b278",
+      "Guid": "75a90e17-a77c-487f-8e03-8a417d9b2661",
       "TextContent": null,
       "Children": [
         {
@@ -276,7 +513,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "02df3b05-1d29-4952-b567-011b43df2ff6",
+          "Guid": "524a5093-76be-4213-b4ad-1257c3e00438",
           "TextContent": null,
           "Children": [
             {
@@ -284,7 +521,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "87cd86d9-9cbc-4398-ae57-86ba57826cc1",
+              "Guid": "a3e5609b-762a-4695-8b8e-e136f0f6d83d",
               "TextContent": null,
               "Children": [
                 {
@@ -292,7 +529,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "dd7d76a8-e187-4be2-ba2c-21c8543b49c2",
+                  "Guid": "0ab199be-30fc-42cc-8d88-1cc7ab7f4ced",
                   "TextContent": "First Level Item 1",
                   "Children": []
                 }
@@ -305,7 +542,7 @@
               },
               "ChildIndex": 1,
               "Depth": 3,
-              "Guid": "2b38a380-ce24-49e4-99f1-ce1c73949890",
+              "Guid": "7b200684-b0cb-42ea-82ec-ad94de4a76c2",
               "TextContent": null,
               "Children": [
                 {
@@ -313,7 +550,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "223c963d-80e3-4ae5-9842-7799de0eab34",
+                  "Guid": "abb8cfee-da5a-4438-b84e-bb2dac834ca9",
                   "TextContent": null,
                   "Children": [
                     {
@@ -321,7 +558,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "a1e1c744-beb4-48af-b4e0-e437311f9b1b",
+                      "Guid": "a916fcc9-524f-49f7-98c7-0093c413d11a",
                       "TextContent": null,
                       "Children": [
                         {
@@ -329,7 +566,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "884f4ffd-94cc-4d30-9cbe-f5f1b361e723",
+                          "Guid": "9087cb9f-c8ce-433b-a30c-72cd40a0b25c",
                           "TextContent": "Second Level Item 1",
                           "Children": []
                         }
@@ -342,7 +579,7 @@
                       },
                       "ChildIndex": 1,
                       "Depth": 5,
-                      "Guid": "d2994136-3c15-4a13-a24e-8fefa6438b64",
+                      "Guid": "d8159328-5867-400a-9851-ce8ffce46129",
                       "TextContent": null,
                       "Children": [
                         {
@@ -350,7 +587,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "5e6956cc-650e-44e3-93ed-5ad060f6e3b1",
+                          "Guid": "bec7ce18-82f5-462f-b5bb-6ddd15916a40",
                           "TextContent": null,
                           "Children": [
                             {
@@ -358,7 +595,7 @@
                               "Attributes": {},
                               "ChildIndex": 0,
                               "Depth": 7,
-                              "Guid": "dfa5d0c5-3e97-4e60-8d90-e52a09d9dce1",
+                              "Guid": "81620f5c-847e-4a9f-88c1-e01a76736c67",
                               "TextContent": null,
                               "Children": [
                                 {
@@ -366,7 +603,7 @@
                                   "Attributes": {},
                                   "ChildIndex": 0,
                                   "Depth": 8,
-                                  "Guid": "3aaaebce-1476-4149-856b-26cf944d0075",
+                                  "Guid": "6fb15b7a-d0c3-4b2d-b685-72e04fd96048",
                                   "TextContent": "Third Level Item 1",
                                   "Children": []
                                 }
@@ -379,7 +616,7 @@
                           "Attributes": {},
                           "ChildIndex": 1,
                           "Depth": 6,
-                          "Guid": "b333e03f-0fa7-415a-bb96-80040616aa97",
+                          "Guid": "771a66d1-2fd9-4a9e-964f-1228da13b4ea",
                           "TextContent": null,
                           "Children": [
                             {
@@ -387,7 +624,7 @@
                               "Attributes": {},
                               "ChildIndex": 0,
                               "Depth": 7,
-                              "Guid": "ffdd0e35-9988-45c7-8fa2-27eec4bb02e5",
+                              "Guid": "eabc12d9-0e64-470a-af1a-ca808ba38fea",
                               "TextContent": null,
                               "Children": [
                                 {
@@ -395,7 +632,7 @@
                                   "Attributes": {},
                                   "ChildIndex": 0,
                                   "Depth": 8,
-                                  "Guid": "0b876525-673e-4632-b9c0-75efaa495e04",
+                                  "Guid": "4f0e5620-7433-4cdc-8f2e-90ad6de185ab",
                                   "TextContent": "Third Level Item 2",
                                   "Children": []
                                 }
@@ -412,7 +649,7 @@
                   "Attributes": {},
                   "ChildIndex": 1,
                   "Depth": 4,
-                  "Guid": "3c214cd4-aed6-42c2-a7c4-8fba5a50ea1f",
+                  "Guid": "539a10a7-5ffc-4e92-8d01-665880545dfb",
                   "TextContent": null,
                   "Children": [
                     {
@@ -420,7 +657,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "b0cc9abf-00f8-4b0b-9764-e984faca11ff",
+                      "Guid": "dd8540c0-c4fe-4608-9201-42d0260c4134",
                       "TextContent": null,
                       "Children": [
                         {
@@ -428,7 +665,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "11bfbfc1-7b3b-4798-a70a-3203b21091ff",
+                          "Guid": "cec04079-2665-439a-ab25-c446e88d19d1",
                           "TextContent": "Second Level Item 2",
                           "Children": []
                         }
@@ -445,7 +682,7 @@
           "Attributes": {},
           "ChildIndex": 1,
           "Depth": 2,
-          "Guid": "a5b03e73-559a-4795-b79f-662c93697ca8",
+          "Guid": "baa2c981-d01a-417e-864b-641a39fc2b1c",
           "TextContent": null,
           "Children": [
             {
@@ -453,7 +690,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "a27fc56c-4614-4736-8d5d-0b4efe481b79",
+              "Guid": "98f41a7d-1315-421a-a265-b7e5d1e093ef",
               "TextContent": null,
               "Children": [
                 {
@@ -461,7 +698,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "0d3618de-9b7c-4bd0-b497-b43a4ad07754",
+                  "Guid": "a9a9fba7-b65d-4d63-8687-190d94fb58ec",
                   "TextContent": "First Level Item 2",
                   "Children": []
                 }
@@ -474,7 +711,7 @@
               },
               "ChildIndex": 1,
               "Depth": 3,
-              "Guid": "423449f4-8dd3-472c-911f-7499f3e59716",
+              "Guid": "7cd51926-0e9d-490b-81cb-dd8e8b2962a0",
               "TextContent": null,
               "Children": [
                 {
@@ -482,7 +719,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "3480cf42-4d6d-4ae0-87ce-ac26735b55be",
+                  "Guid": "66a8b118-72f5-4271-84ac-167661fc6194",
                   "TextContent": null,
                   "Children": [
                     {
@@ -490,7 +727,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "83b3805c-4d79-496b-bbd5-a19080c37ad6",
+                      "Guid": "3fc2a395-119a-4b79-a74e-96a527ff8e69",
                       "TextContent": null,
                       "Children": [
                         {
@@ -498,7 +735,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "cb097374-636e-423c-897f-55287ef2b163",
+                          "Guid": "9e7f101b-71ad-46ae-a4b3-7c8b72267ff0",
                           "TextContent": "Second Level Item 3",
                           "Children": []
                         }
@@ -511,7 +748,7 @@
                       },
                       "ChildIndex": 1,
                       "Depth": 5,
-                      "Guid": "9c1dd181-db0f-441d-9bcf-5994e35d8bcb",
+                      "Guid": "56a1a0d4-e79a-49b9-889d-430b0d44cb2f",
                       "TextContent": null,
                       "Children": [
                         {
@@ -519,7 +756,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "0eda3fb6-4ab5-4e64-aedc-a8855ebad590",
+                          "Guid": "2edf4793-28f8-443c-a854-e46568203f54",
                           "TextContent": null,
                           "Children": [
                             {
@@ -527,7 +764,7 @@
                               "Attributes": {},
                               "ChildIndex": 0,
                               "Depth": 7,
-                              "Guid": "2b2e199c-34a5-4a1b-8df8-4edaaff62f8b",
+                              "Guid": "609f09eb-98a2-4438-8749-f15397faba70",
                               "TextContent": null,
                               "Children": [
                                 {
@@ -535,7 +772,7 @@
                                   "Attributes": {},
                                   "ChildIndex": 0,
                                   "Depth": 8,
-                                  "Guid": "837ad65d-6442-4ade-91d7-22f3c7443d8d",
+                                  "Guid": "ea4703c1-3cbe-48ba-bd2e-b17eedfd2b70",
                                   "TextContent": "Third Level Item 3",
                                   "Children": []
                                 }
@@ -548,7 +785,7 @@
                           "Attributes": {},
                           "ChildIndex": 1,
                           "Depth": 6,
-                          "Guid": "9f3c0100-0287-4721-9184-dd33eae26d8c",
+                          "Guid": "5e8a5e09-2088-4a5c-bbfc-2bd82afe978a",
                           "TextContent": null,
                           "Children": [
                             {
@@ -556,7 +793,7 @@
                               "Attributes": {},
                               "ChildIndex": 0,
                               "Depth": 7,
-                              "Guid": "b162da29-2345-4f93-b76e-042f30bb9117",
+                              "Guid": "16dc7960-c7c2-45e2-ae8d-bc7a7f099c86",
                               "TextContent": null,
                               "Children": [
                                 {
@@ -564,7 +801,7 @@
                                   "Attributes": {},
                                   "ChildIndex": 0,
                                   "Depth": 8,
-                                  "Guid": "976ddebc-3f98-4179-ba0f-444ac68a53ac",
+                                  "Guid": "979ab863-7c11-4d55-9986-2dd865232b94",
                                   "TextContent": "Third Level Item 4",
                                   "Children": []
                                 }
@@ -581,7 +818,7 @@
                   "Attributes": {},
                   "ChildIndex": 1,
                   "Depth": 4,
-                  "Guid": "9c0597e6-7436-4b01-881a-b84f769ecf2e",
+                  "Guid": "707a0e42-de17-475f-a1b2-208b541a3c5b",
                   "TextContent": null,
                   "Children": [
                     {
@@ -589,7 +826,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "5d293cae-f9db-4649-bb94-af5d9f403041",
+                      "Guid": "b4027ea7-a0ae-43a8-bfc8-570ec2849032",
                       "TextContent": null,
                       "Children": [
                         {
@@ -597,7 +834,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "ab933ddd-32d7-4873-b814-01bb2908c1c4",
+                          "Guid": "5413f163-aa4f-4827-a132-b99b50f295a2",
                           "TextContent": "Second Level Item 4",
                           "Children": []
                         }
@@ -614,7 +851,7 @@
           "Attributes": {},
           "ChildIndex": 2,
           "Depth": 2,
-          "Guid": "9c56f934-d2a2-490d-a259-c94dfefa585d",
+          "Guid": "69923aaf-7d9e-4716-9e70-cbb6585a32e5",
           "TextContent": null,
           "Children": [
             {
@@ -622,7 +859,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "dff5bb12-a0fa-486c-b891-8d28c83092f3",
+              "Guid": "4b570c3a-6155-45d1-8c71-b1c2cf57a9c5",
               "TextContent": null,
               "Children": [
                 {
@@ -630,7 +867,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "7a804825-3584-4d14-9089-b9e597ed196c",
+                  "Guid": "f2ee0b05-c53c-4ca7-9481-226cbd294dcf",
                   "TextContent": "First Level Item 3",
                   "Children": []
                 }
@@ -643,9 +880,9 @@
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 19,
+      "ChildIndex": 21,
       "Depth": 1,
-      "Guid": "ccaf1285-d590-436b-8bda-4245e93f7470",
+      "Guid": "81696db6-37c2-49f9-a9ce-7caf9172159c",
       "TextContent": null,
       "Children": []
     },
@@ -654,9 +891,9 @@
       "Attributes": {
         "IsOrdered": "False"
       },
-      "ChildIndex": 20,
+      "ChildIndex": 22,
       "Depth": 1,
-      "Guid": "cb54006a-cd00-4902-8129-d6fa43f92fd1",
+      "Guid": "2567dfa0-2fea-4b8a-b34e-ea853ded81cc",
       "TextContent": null,
       "Children": [
         {
@@ -664,7 +901,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "e55db0f7-462d-4c2c-8a67-15138ec68f8a",
+          "Guid": "9ece6b9c-b9b8-40c0-9d92-59a4adcb70f3",
           "TextContent": null,
           "Children": [
             {
@@ -672,7 +909,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "df7231ef-39c0-42b6-ad77-8dca9e1a8a76",
+              "Guid": "7e7db62f-d8b1-463b-9e3d-063d0d5acbe0",
               "TextContent": null,
               "Children": [
                 {
@@ -680,7 +917,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "da553f45-a97d-427f-9a0e-1dfefbbbe274",
+                  "Guid": "5166b28a-1584-4a51-a556-b2d2d4b48631",
                   "TextContent": "First level ordered item",
                   "Children": []
                 }
@@ -693,7 +930,7 @@
               },
               "ChildIndex": 1,
               "Depth": 3,
-              "Guid": "dc26ac51-318a-493a-a57f-52399da92eb4",
+              "Guid": "debc769f-ba3e-49a5-b6ba-e0636b8fb644",
               "TextContent": null,
               "Children": [
                 {
@@ -701,7 +938,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "a4718ad1-c99d-49fe-ac07-3d7e0d6790d8",
+                  "Guid": "496b2269-f853-46b8-b352-fc24112aed4c",
                   "TextContent": null,
                   "Children": [
                     {
@@ -709,7 +946,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "1a333faf-cc82-4d13-89c5-28e812c4974a",
+                      "Guid": "f43609d1-c51e-4be7-ba82-921e64be2368",
                       "TextContent": null,
                       "Children": [
                         {
@@ -717,7 +954,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "6a1fe887-c95f-4c02-b00e-0bb5f28a240a",
+                          "Guid": "46bb755d-75a6-478d-8df5-7c7da5146da2",
                           "TextContent": "First level unordered item",
                           "Children": []
                         }
@@ -730,7 +967,7 @@
                   "Attributes": {},
                   "ChildIndex": 1,
                   "Depth": 4,
-                  "Guid": "6b358da7-214f-4551-a109-57381744d2bd",
+                  "Guid": "4047e45e-3b39-4518-a3da-6fdb68ee4581",
                   "TextContent": null,
                   "Children": [
                     {
@@ -738,7 +975,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "a4a3fbf6-db26-49a5-b02b-55c04bb83ea6",
+                      "Guid": "a13f79ea-8e6b-442d-9919-0b5a30ad9da5",
                       "TextContent": null,
                       "Children": [
                         {
@@ -746,7 +983,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "14b3df5f-fb7d-4234-a762-2a1ba675c7f8",
+                          "Guid": "f3086aed-4edb-46bf-b520-b053322dc8f7",
                           "TextContent": "Another first level unordered item",
                           "Children": []
                         }
@@ -763,7 +1000,7 @@
           "Attributes": {},
           "ChildIndex": 1,
           "Depth": 2,
-          "Guid": "b054c863-376a-4d29-b425-47eacb4e3dab",
+          "Guid": "eb4bd4fd-9ab5-4614-9e4a-97900ab2891f",
           "TextContent": null,
           "Children": [
             {
@@ -771,7 +1008,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "4186c790-c5f2-4e81-a4db-c9eeeb217d73",
+              "Guid": "617bf96d-635e-47d2-b600-afad11c17a3b",
               "TextContent": null,
               "Children": [
                 {
@@ -779,7 +1016,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "701c0c98-363b-46d9-a8e6-795398548e95",
+                  "Guid": "267fa0c3-41ac-4b28-a6b8-b709150b0bc4",
                   "TextContent": "Second level ordered item",
                   "Children": []
                 }
@@ -792,27 +1029,27 @@
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 21,
+      "ChildIndex": 23,
       "Depth": 1,
-      "Guid": "1eb9054e-26ed-443c-955c-879607dcdde6",
+      "Guid": "e3d0a372-29b9-4648-82b5-7b7d7c8f9e23",
       "TextContent": null,
       "Children": []
     },
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 22,
+      "ChildIndex": 24,
       "Depth": 1,
-      "Guid": "492f9de7-deb2-4def-ad42-3807ce3da815",
+      "Guid": "9226bdf6-9d31-4442-91b1-763d1e61402d",
       "TextContent": null,
       "Children": []
     },
     {
       "NodeName": "ParagraphBlock",
       "Attributes": {},
-      "ChildIndex": 23,
+      "ChildIndex": 25,
       "Depth": 1,
-      "Guid": "84094eda-7bb8-4d52-aea3-ed35ab260cb4",
+      "Guid": "91dc4cb6-d348-4556-9b28-f94a07c75b52",
       "TextContent": null,
       "Children": [
         {
@@ -820,7 +1057,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "e6348ae5-2f49-4766-a3f1-403ce940fa28",
+          "Guid": "2eb246a0-e045-4ddf-8371-98623f2ed6f6",
           "TextContent": "This is a paragraph with ",
           "Children": []
         },
@@ -829,7 +1066,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "49260ecb-d8ae-4037-ab2b-6b80d617ada1",
+          "Guid": "0486a4ad-32c1-4283-a293-0ea0370fa244",
           "TextContent": null,
           "Children": [
             {
@@ -837,7 +1074,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "be2b6b8f-ff5c-4c88-afdb-05ed49cb257c",
+              "Guid": "a8ce1a14-fb12-4ac8-89cc-9241403e23e7",
               "TextContent": "bold",
               "Children": []
             }
@@ -848,7 +1085,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "08f63266-694e-42d5-98b0-3c4f28928519",
+          "Guid": "453ec57f-8c81-4168-a658-8fc64d6e06bd",
           "TextContent": " text and ",
           "Children": []
         },
@@ -857,7 +1094,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "965b49b4-e296-4ac4-8f6a-6e57506ae3f6",
+          "Guid": "2dc6b4e0-f906-4dee-ab7c-0f4a809f95b7",
           "TextContent": null,
           "Children": [
             {
@@ -865,7 +1102,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "0cdf8b35-a560-464a-aac8-9ca41f939377",
+              "Guid": "e8a70adf-6fe7-499b-8460-08784df909b6",
               "TextContent": "italic",
               "Children": []
             }
@@ -876,38 +1113,8 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "280d1ea0-b8e6-4112-afa3-406400496172",
+          "Guid": "2a4166f7-ff87-460f-9494-ca4a91e2a4b2",
           "TextContent": " text.",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "BlankLine",
-      "Attributes": {},
-      "ChildIndex": 24,
-      "Depth": 1,
-      "Guid": "6150a2c4-7d71-4b33-ba35-72eb63001ff4",
-      "TextContent": null,
-      "Children": []
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "2"
-      },
-      "ChildIndex": 25,
-      "Depth": 1,
-      "Guid": "4c38b293-7627-47af-945c-b600e947e09c",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "6aae98f9-b7cc-4ca3-9e1f-e3a3875b7b63",
-          "TextContent": "Table",
           "Children": []
         }
       ]
@@ -917,16 +1124,46 @@
       "Attributes": {},
       "ChildIndex": 26,
       "Depth": 1,
-      "Guid": "14c5b34e-db8a-4a75-8001-659709e3649c",
+      "Guid": "14b725f7-72da-463c-a422-a54f57948dec",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "2"
+      },
+      "ChildIndex": 27,
+      "Depth": 1,
+      "Guid": "9266db4a-4b57-47a2-8d20-9955d7fd9f67",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "ac297377-f600-49e2-9c87-6b7c6a865bb4",
+          "TextContent": "Table",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 28,
+      "Depth": 1,
+      "Guid": "e020f4f8-c4f4-4c8b-944b-9557edd97a75",
       "TextContent": null,
       "Children": []
     },
     {
       "NodeName": "Table",
       "Attributes": {},
-      "ChildIndex": 27,
+      "ChildIndex": 29,
       "Depth": 1,
-      "Guid": "cf3e6c3c-ba99-4e16-b1f2-3c441726da86",
+      "Guid": "e6a11a2f-2cec-457d-9d41-51cc5ce474a5",
       "TextContent": null,
       "Children": [
         {
@@ -936,7 +1173,7 @@
           },
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "a66fa181-da22-4cd5-a928-fd4520c5fa61",
+          "Guid": "0f1cf288-8a54-42d5-8844-6aad9536442d",
           "TextContent": null,
           "Children": [
             {
@@ -944,7 +1181,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "cb9c4476-a024-4fa1-9236-bc62d6313691",
+              "Guid": "6b572e68-dd47-4598-bf07-7cd416be50a1",
               "TextContent": null,
               "Children": [
                 {
@@ -952,7 +1189,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "76ab0036-c935-478a-a19f-af703d5619e1",
+                  "Guid": "a639ba43-1b8b-4a31-a354-b8171ece8577",
                   "TextContent": null,
                   "Children": [
                     {
@@ -960,7 +1197,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "4b7e0754-df03-417c-a036-155b6102b2ed",
+                      "Guid": "067d2c32-f396-47ef-bce4-ef2d7577353f",
                       "TextContent": "Header 1",
                       "Children": []
                     }
@@ -973,7 +1210,7 @@
               "Attributes": {},
               "ChildIndex": 1,
               "Depth": 3,
-              "Guid": "d5d3acda-1224-484d-a9ee-2f58bbd1de16",
+              "Guid": "21a51949-76d9-4a31-8ff9-2859b09dd42a",
               "TextContent": null,
               "Children": [
                 {
@@ -981,7 +1218,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "e154a511-d0ca-4e74-ba04-be8c0de542b8",
+                  "Guid": "92db2249-b3a7-49e1-9f74-610955ac691e",
                   "TextContent": null,
                   "Children": [
                     {
@@ -989,7 +1226,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "958f96d7-8f42-4064-81a7-ec9373a2752e",
+                      "Guid": "92b3595f-42f0-4ff4-a187-5c9ea4367804",
                       "TextContent": "Header 2",
                       "Children": []
                     }
@@ -1006,7 +1243,7 @@
           },
           "ChildIndex": 1,
           "Depth": 2,
-          "Guid": "f0410333-0dff-422e-86c9-e6f32d087553",
+          "Guid": "9133c973-fca7-4e63-8e58-701a095fac9e",
           "TextContent": null,
           "Children": [
             {
@@ -1014,7 +1251,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "a77dd54b-0fbc-479e-86e9-b77a8e2afc99",
+              "Guid": "9aa44fd0-ecd9-4d75-84f0-a66f2f171bf2",
               "TextContent": null,
               "Children": [
                 {
@@ -1022,7 +1259,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "7df35256-ea39-434f-b2ce-120750700292",
+                  "Guid": "3fa2d960-0fca-4dee-b859-a3e4f2fb9c06",
                   "TextContent": null,
                   "Children": [
                     {
@@ -1030,7 +1267,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "cd140ca0-d1e3-4ad0-9622-95b71299d8f9",
+                      "Guid": "d9f666cf-287e-493d-9190-7bf98733b88a",
                       "TextContent": "Row 1 ",
                       "Children": []
                     },
@@ -1039,7 +1276,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "6cfb7da0-8adf-48fc-8a76-50cfa14c1af8",
+                      "Guid": "09193b02-288b-43cd-b2c7-78bd69be97b9",
                       "TextContent": null,
                       "Children": [
                         {
@@ -1047,7 +1284,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "c3f5e666-19eb-404e-867e-8a5fa3c0c826",
+                          "Guid": "ed261f2c-7aa3-4fbb-a537-a0687e317178",
                           "TextContent": "test",
                           "Children": []
                         }
@@ -1058,7 +1295,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "2702b4d2-2517-4f53-8488-be5342d471c5",
+                      "Guid": "a9326000-adaa-4c99-a146-04c78f8cf7d6",
                       "TextContent": "",
                       "Children": []
                     }
@@ -1071,7 +1308,7 @@
               "Attributes": {},
               "ChildIndex": 1,
               "Depth": 3,
-              "Guid": "d5fc4792-70f2-4482-8348-0f310b7d8f8d",
+              "Guid": "47d84dc4-90e9-4a07-b6ec-154979e7e5d7",
               "TextContent": null,
               "Children": [
                 {
@@ -1079,7 +1316,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "5a4ccb35-74fe-4610-8d9d-f2565fb5770f",
+                  "Guid": "3d60b462-08ad-4dd3-a1df-4742c74a536b",
                   "TextContent": null,
                   "Children": [
                     {
@@ -1087,7 +1324,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "fe50da5b-45f1-4e80-97e6-0e752119b5da",
+                      "Guid": "08b498a8-a64f-44ce-a0e6-9ecc3de11106",
                       "TextContent": "Data 1 ",
                       "Children": []
                     },
@@ -1096,7 +1333,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "f5e9fd47-7016-4cc7-a38d-f783bad80a36",
+                      "Guid": "dd28fe9d-7e12-4d36-bd9e-e25a10a00685",
                       "TextContent": null,
                       "Children": [
                         {
@@ -1104,7 +1341,7 @@
                           "Attributes": {},
                           "ChildIndex": 0,
                           "Depth": 6,
-                          "Guid": "e74676d0-0c97-4b9d-a248-9e62913d85e4",
+                          "Guid": "b0fb94e6-8302-422f-bd2d-439d626a717f",
                           "TextContent": "test",
                           "Children": []
                         }
@@ -1115,7 +1352,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "5b3ce4d3-91e6-4e03-8c4b-10c1fa06523c",
+                      "Guid": "006f9502-16ef-4839-9482-f91c4f0a3b7e",
                       "TextContent": "",
                       "Children": []
                     }
@@ -1132,7 +1369,7 @@
           },
           "ChildIndex": 2,
           "Depth": 2,
-          "Guid": "96f9302f-29ec-42c8-a617-012115f35e84",
+          "Guid": "1ce06132-74d7-4aa5-aa4e-217ec82a36ed",
           "TextContent": null,
           "Children": [
             {
@@ -1140,7 +1377,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "ebc7071e-6bb3-4507-80e4-192ab131b2ca",
+              "Guid": "75d6d16c-1480-4fae-9a3f-f965f09f6a45",
               "TextContent": null,
               "Children": [
                 {
@@ -1148,7 +1385,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "5b4034cf-59a0-4b20-b721-86edd86cda35",
+                  "Guid": "494634e9-cbea-4923-a44c-c211511cfafd",
                   "TextContent": null,
                   "Children": [
                     {
@@ -1156,7 +1393,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "841116ff-62ec-4a95-b3e5-0a39ac3a1691",
+                      "Guid": "8c702f13-e595-4c39-945e-79c1c33c7290",
                       "TextContent": "Row 2",
                       "Children": []
                     }
@@ -1169,7 +1406,7 @@
               "Attributes": {},
               "ChildIndex": 1,
               "Depth": 3,
-              "Guid": "af3b9dba-59f1-4a70-a74a-0876b21c6b2c",
+              "Guid": "7ec73a49-cb5a-42e2-a24a-f8715a5277f7",
               "TextContent": null,
               "Children": [
                 {
@@ -1177,7 +1414,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "7d794b28-98e4-48d1-8b6f-c08090067dfc",
+                  "Guid": "f69c99cb-18ab-4bec-8232-01c781ec16ab",
                   "TextContent": null,
                   "Children": [
                     {
@@ -1185,7 +1422,7 @@
                       "Attributes": {},
                       "ChildIndex": 0,
                       "Depth": 5,
-                      "Guid": "9bb8c68b-0635-40a6-94a1-a780c73f4831",
+                      "Guid": "56fb3d32-226d-42de-a06e-73c099d59bbb",
                       "TextContent": "Data 2",
                       "Children": []
                     }
@@ -1200,18 +1437,18 @@
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 28,
+      "ChildIndex": 30,
       "Depth": 1,
-      "Guid": "a2e85ec5-ba84-438a-befc-04e70a345df7",
+      "Guid": "08fdac65-189b-4daf-a442-108634565f07",
       "TextContent": null,
       "Children": []
     },
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 29,
+      "ChildIndex": 31,
       "Depth": 1,
-      "Guid": "b2918e37-4e7a-4e7b-95f6-ba4baa4cc1ec",
+      "Guid": "c10f281f-316d-43ca-a2dc-5716eaf9606d",
       "TextContent": null,
       "Children": []
     },
@@ -1220,9 +1457,9 @@
       "Attributes": {
         "Level": "2"
       },
-      "ChildIndex": 30,
+      "ChildIndex": 32,
       "Depth": 1,
-      "Guid": "0257c225-3d61-4a85-a387-8f8e60e14a57",
+      "Guid": "012d7133-3fb4-47f8-b36c-5b8a22482b0c",
       "TextContent": null,
       "Children": [
         {
@@ -1230,7 +1467,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "c7b1f5d8-e4c7-4c33-b1e5-5f7a9b84c69d",
+          "Guid": "ffa52004-b3fe-4a41-bfe6-4d15041a73c1",
           "TextContent": "Blockquote",
           "Children": []
         }
@@ -1239,9 +1476,9 @@
     {
       "NodeName": "QuoteBlock",
       "Attributes": {},
-      "ChildIndex": 31,
+      "ChildIndex": 33,
       "Depth": 1,
-      "Guid": "7bca707c-968d-4a1c-aeb9-ba6ad36a223f",
+      "Guid": "3ae74c19-12e6-4543-a331-21f570e28217",
       "TextContent": null,
       "Children": [
         {
@@ -1249,7 +1486,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "2180b125-15aa-4ebc-aaa7-2859f1417d38",
+          "Guid": "dcfaadb6-60b1-4e24-953e-95166c6d2aa6",
           "TextContent": null,
           "Children": [
             {
@@ -1257,7 +1494,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "ba466ff5-a100-46c4-8f36-1945c097e0ff",
+              "Guid": "2bbb41c7-ea15-4864-9a2c-f1102403dbe3",
               "TextContent": "t",
               "Children": []
             },
@@ -1266,7 +1503,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "fbc0b32e-c703-437d-877c-e8baf69bff9c",
+              "Guid": "4e7739e9-7a65-498f-948e-aa96b0cbfc2a",
               "TextContent": "\n",
               "Children": []
             },
@@ -1275,7 +1512,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "ffd128ad-c4f3-4036-a97e-c2f62bde7011",
+              "Guid": "f4996cd8-eba4-46c1-95b1-13e8d25147e3",
               "TextContent": "This is a blockquote.",
               "Children": []
             }
@@ -1286,7 +1523,7 @@
           "Attributes": {},
           "ChildIndex": 1,
           "Depth": 2,
-          "Guid": "a5bbfe77-5af1-4687-bd89-7b807c7f2eb6",
+          "Guid": "d931da23-eabf-43b5-9bbf-9cea00057697",
           "TextContent": null,
           "Children": [
             {
@@ -1294,7 +1531,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "4c5b9fff-a78c-4d30-af90-09f9d85f338b",
+              "Guid": "cd23fa4c-d012-4f77-a29b-371e2d7d0c1a",
               "TextContent": "It can span",
               "Children": []
             },
@@ -1303,7 +1540,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "a77194a8-32b1-43c1-8628-47a048e41a0e",
+              "Guid": "749b9722-2072-45b5-ae6d-90eddd8cb4a5",
               "TextContent": "\n",
               "Children": []
             },
@@ -1312,7 +1549,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "34e00838-1e6c-41aa-bc46-6a6f28834de9",
+              "Guid": "b0f6f7a1-a908-4d2f-880e-32b1f208c92c",
               "TextContent": "multiple lines.",
               "Children": []
             }
@@ -1323,18 +1560,18 @@
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 32,
+      "ChildIndex": 34,
       "Depth": 1,
-      "Guid": "ca55a35d-e0d4-46c1-ac9f-f30aa19e769e",
+      "Guid": "20f66522-818d-4351-b4d9-2c52f9fa3ed3",
       "TextContent": null,
       "Children": []
     },
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 33,
+      "ChildIndex": 35,
       "Depth": 1,
-      "Guid": "a41ac6dc-c476-45a3-b043-216515538fbc",
+      "Guid": "aa71e303-575f-4ede-8e9b-84df6ab931b4",
       "TextContent": null,
       "Children": []
     },
@@ -1343,9 +1580,9 @@
       "Attributes": {
         "Level": "2"
       },
-      "ChildIndex": 34,
+      "ChildIndex": 36,
       "Depth": 1,
-      "Guid": "d8d05c32-3b9c-41aa-a98e-e969cb038169",
+      "Guid": "c681c6ec-4d06-4f65-a068-a6a5342fb746",
       "TextContent": null,
       "Children": [
         {
@@ -1353,7 +1590,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "2cb6623c-59c7-46dc-a66a-b82c26136184",
+          "Guid": "355e43de-c14b-4d63-a535-d2b8a05a9ce2",
           "TextContent": "Links",
           "Children": []
         }
@@ -1362,18 +1599,18 @@
     {
       "NodeName": "BlankLine",
       "Attributes": {},
-      "ChildIndex": 35,
+      "ChildIndex": 37,
       "Depth": 1,
-      "Guid": "fae19462-d526-4970-a13f-8987874e2da5",
+      "Guid": "0069e377-8acc-4a4b-bf5e-a7de52333dda",
       "TextContent": null,
       "Children": []
     },
     {
       "NodeName": "ParagraphBlock",
       "Attributes": {},
-      "ChildIndex": 36,
+      "ChildIndex": 38,
       "Depth": 1,
-      "Guid": "1506c741-6d57-425e-86e7-76e5c7f36687",
+      "Guid": "f6e3062a-6e55-4f64-83c2-5fb9936583db",
       "TextContent": null,
       "Children": [
         {
@@ -1381,7 +1618,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "d82eca5f-1eb1-4181-8872-bb4ea9c98d38",
+          "Guid": "50a6f0e6-20b8-4f11-9392-c1c747e0659f",
           "TextContent": "This is a ",
           "Children": []
         },
@@ -1393,7 +1630,7 @@
           },
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "4d3475eb-92e4-462c-b229-bd6f263e0300",
+          "Guid": "190078af-38f8-4fce-b5ba-107c58e51ea6",
           "TextContent": null,
           "Children": [
             {
@@ -1401,7 +1638,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "67ca55fd-6f52-4e48-812c-a76dd765efff",
+              "Guid": "e0a0439a-3666-4453-a497-f91db1d7742c",
               "TextContent": "link ",
               "Children": []
             },
@@ -1410,7 +1647,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "eeea88bb-2883-41f1-8dcb-5bf304649285",
+              "Guid": "30c77773-d47e-4a9c-b4f4-4b370b67eab3",
               "TextContent": null,
               "Children": [
                 {
@@ -1418,7 +1655,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "094bc58f-b018-4a19-8a19-3c3238eb84da",
+                  "Guid": "4a438a27-9388-4f4e-a2e0-02708b20f6bc",
                   "TextContent": "to",
                   "Children": []
                 }
@@ -1429,8 +1666,36 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "aa410067-0e56-46e1-945c-3fc411f8cf1a",
-              "TextContent": " MITS",
+              "Guid": "9bf17f40-b8b4-467f-bb47-72dd6048c47c",
+              "TextContent": " OpenAI",
+              "Children": []
+            },
+            {
+              "NodeName": "Strong",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "776cdf63-8f7c-4f21-9c87-18e55e43048e",
+              "TextContent": null,
+              "Children": [
+                {
+                  "NodeName": "Text",
+                  "Attributes": {},
+                  "ChildIndex": 0,
+                  "Depth": 4,
+                  "Guid": "4c281039-8f26-469f-a92c-72d99b4c5bde",
+                  "TextContent": "to",
+                  "Children": []
+                }
+              ]
+            },
+            {
+              "NodeName": "Text",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 3,
+              "Guid": "dd620330-9540-47b2-9139-3a91fc0f883b",
+              "TextContent": " OpenAI",
               "Children": []
             }
           ]
@@ -1440,38 +1705,8 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "a1628c12-ae19-4eca-b5e4-282de7296b1e",
+          "Guid": "4719c872-9a8a-44f6-bee4-19f1f9df28ed",
           "TextContent": ".",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "NodeName": "BlankLine",
-      "Attributes": {},
-      "ChildIndex": 37,
-      "Depth": 1,
-      "Guid": "e5b9d241-07cf-4e06-9904-7d8c4993d8e7",
-      "TextContent": null,
-      "Children": []
-    },
-    {
-      "NodeName": "HeadingBlock",
-      "Attributes": {
-        "Level": "2"
-      },
-      "ChildIndex": 38,
-      "Depth": 1,
-      "Guid": "77d264ea-4b7e-4350-8300-115df6656701",
-      "TextContent": null,
-      "Children": [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "2d3070b0-b7a4-4c42-99d0-a1ad02031812",
-          "TextContent": "JavaScript Code Block",
           "Children": []
         }
       ]
@@ -1481,25 +1716,55 @@
       "Attributes": {},
       "ChildIndex": 39,
       "Depth": 1,
-      "Guid": "d82e9a90-5c15-4fd7-8871-79db399e91b4",
+      "Guid": "1aa16cb0-759d-427d-8f99-57ea5e9a51d3",
       "TextContent": null,
       "Children": []
     },
     {
-      "NodeName": "ThematicBreakBlock",
-      "Attributes": {},
+      "NodeName": "HeadingBlock",
+      "Attributes": {
+        "Level": "2"
+      },
       "ChildIndex": 40,
       "Depth": 1,
-      "Guid": "5f50f874-c3cb-4b69-80d1-12e80446de2a",
+      "Guid": "d91d0c33-9e2f-4cf8-897a-e3ffd08c48c1",
       "TextContent": null,
-      "Children": []
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "cba6180f-bc3a-4aaa-921c-4ef47c830f96",
+          "TextContent": "JavaScript Code Block",
+          "Children": []
+        }
+      ]
     },
     {
       "NodeName": "BlankLine",
       "Attributes": {},
       "ChildIndex": 41,
       "Depth": 1,
-      "Guid": "a59414f5-8af1-4ddf-8e72-a77fc3a711df",
+      "Guid": "44daedc1-897b-4d24-9bfc-de40828c5888",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "ThematicBreakBlock",
+      "Attributes": {},
+      "ChildIndex": 42,
+      "Depth": 1,
+      "Guid": "61ef26c3-200b-4156-8103-56b93604ae20",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 43,
+      "Depth": 1,
+      "Guid": "1cb24f27-9cf0-4939-adab-66a5f763b024",
       "TextContent": null,
       "Children": []
     },
@@ -1508,38 +1773,47 @@
       "Attributes": {
         "Language": "javascript"
       },
-      "ChildIndex": 42,
+      "ChildIndex": 44,
       "Depth": 1,
-      "Guid": "6fecf643-204d-465a-95cb-c5395b480635",
+      "Guid": "fac44eac-5a76-49a0-bf21-528858a3632d",
+      "TextContent": "console.log(\u0027Hello, world!\u0027);\nconsole.log(\u0027This is line 2!\u0027);",
+      "Children": []
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 45,
+      "Depth": 1,
+      "Guid": "0924cb39-f9fb-4af2-b349-11e6c14b3ff1",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "BlankLine",
+      "Attributes": {},
+      "ChildIndex": 46,
+      "Depth": 1,
+      "Guid": "e078b93f-6298-41e3-97dd-46c0efa677fd",
+      "TextContent": null,
+      "Children": []
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 47,
+      "Depth": 1,
+      "Guid": "e3e30263-dffb-4015-94e8-d46578bfeba2",
       "TextContent": null,
       "Children": [
-          {
-            "NodeName": "Text",
-            "Attributes": {},
-            "ChildIndex": 0,
-            "Depth": 3,
-            "Guid": "ba466ff5-a100-46c4-8f36-1945c097e0ff",
-            "TextContent": "t",
-            "Children": []
-          },
-          {
-            "NodeName": "Text",
-            "Attributes": {},
-            "ChildIndex": 0,
-            "Depth": 3,
-            "Guid": "fbc0b32e-c703-437d-877c-e8baf69bff9c",
-            "TextContent": "\n",
-            "Children": []
-          },
-          {
-            "NodeName": "Text",
-            "Attributes": {},
-            "ChildIndex": 0,
-            "Depth": 3,
-            "Guid": "ffd128ad-c4f3-4036-a97e-c2f62bde7011",
-            "TextContent": "This is a blockquote.",
-            "Children": []
-          }
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 2,
+          "Guid": "00555d29-4562-49aa-8c21-8d946665384f",
+          "TextContent": "This is another paragraph.",
+          "Children": []
+        }
       ]
     }
   ]
