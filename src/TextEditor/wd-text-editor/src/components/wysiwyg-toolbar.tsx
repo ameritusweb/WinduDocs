@@ -50,8 +50,13 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
             label={rule.Name.toUpperCase()}
             isActive={rule.State === state}
             onClick={() => {
-              setState(rule.State);
-              editorData.editorState = rule.State;
+              if (rule.Action) {
+                editorData.emitEvent(rule.Action);
+              }
+              else if (rule.State) {
+                setState(rule.State);
+                editorData.editorState = rule.State;
+              }
             }} 
           />
         ));

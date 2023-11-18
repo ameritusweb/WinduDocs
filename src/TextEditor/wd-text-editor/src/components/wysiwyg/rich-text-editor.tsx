@@ -146,7 +146,7 @@ const RichTextEditor = () => {
                     return <CodeBlock key={node.Guid + (node.Version || '0')} id={node.Guid} version={node.Version || 'V0'} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} language={node.Attributes.Language || ''} children={node.Children} />;
                 }
             case 'BlankLine':
-                return <BlankLine key={node.Guid + (node.Version || '0')} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
+                return <BlankLine key={node.Guid + (node.Version || '0')} id={node.Guid} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
             // ... handle other types as needed
             default:
                 return null;
@@ -192,7 +192,7 @@ const RichTextEditor = () => {
             <div key={ast.Guid} 
                  ref={editorRef}
                  onKeyDown={onKeyDown}
-                 className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_5rem] cursor-text text-left text-base"
+                 className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_2rem] cursor-text text-left text-base"
                  id="richTextEditor"
                  style={{
                  color: 'rgba(100, 100, 100, 1)',

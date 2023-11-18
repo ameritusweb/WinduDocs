@@ -7,6 +7,7 @@ import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
 import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
+import EditorData, { EditorDataType } from "../../hooks/editor-data";
 // import EditorData, { EditorDataType } from "../../hooks/editor-data";
 
 interface ParagraphProps<T extends HTMLElement> {
@@ -36,7 +37,28 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const { updateAst, getCursorPosition } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
     const cursorPositionRef = useRef<CursorPositionType | null>(null);
-    // const editorData: EditorDataType = EditorData;
+    const editorData: EditorDataType = EditorData;
+
+    useEffect(() => {
+      const handleIndent = (payload: any) => {
+          
+      };
+
+      // Subscribe with the provided GUID
+      editorData.events.subscribe(props.id, 'indent', handleIndent);
+
+      const handleOutdent = (payload: any) => {
+          
+      };
+
+      // Subscribe with the provided GUID
+      editorData.events.subscribe(props.id, 'outdent', handleOutdent);
+
+      return () => {
+          // Unsubscribe the GUID on component unmount
+          editorData.events.unsubscribe(props.id);
+      };
+  }, [props.id]); // Depend on the GUID prop
 
     useEffect(() => {
 

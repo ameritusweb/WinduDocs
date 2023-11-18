@@ -100,3 +100,15 @@ export interface OperationPayloads {
   'update': UpdateNodePayload;
 }
 
+type EventListener = (payload: any) => void;
+
+export interface IEventEmitter {
+    // Subscribe to an event with a specific GUID
+    subscribe(guid: string, event: string, listener: EventListener): string;
+
+    // Unsubscribe using the subscriber's GUID
+    unsubscribe(guid: string): void;
+
+    // Emit an event to only the subscribers with a specific GUID
+    emit(event: string, guid: string, payload: any): void;
+}

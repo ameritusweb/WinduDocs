@@ -57,33 +57,42 @@
     },
     {
         "Name": "Numbered",
-        "GroupName":"List"
+        "GroupName":"List",
+        "State": "numbered"
     },
     {
         "Name": "Bulleted",
-        "GroupName":"List"
+        "GroupName":"List",
+        "State": "bulleted"
     },
     {
         "Name": "<<",
-        "GroupName":"List"
+        "GroupName":"List",
+        "Action": "Outdent"
     },
     {
         "Name": ">>",
-        "GroupName":"List"
+        "GroupName":"List",
+        "Action": "Indent"
     },
     {
       "Name": "Inline",
-      "GroupName": "Code Block"
+      "GroupName": "Code Block",
+      "State": "inline"
     },
     {
         "Name": "Fenced",
-        "GroupName":"Code Block"
+        "GroupName":"Code Block",
+        "State": "fenced"
     },
     {
-        "Name": "Block Quote"
+      "Name": "Insert Quote",
+      "GroupName":"Misc",
+      "Action": "InsertQuote"
     },
     {
         "Name": "Insert Horizontal Rule",
-        "GroupName":"Misc"
+        "GroupName":"Misc",
+        "Action": "InsertHR"
     }
   ]

@@ -175,3 +175,23 @@ p > code {
 .blank-line:focus, .rich-code:focus, .rich-alert:focus, .rich-para:focus {
   outline: 1px dotted rgba(200, 200, 200, 0.5);
 }
+
+#richTextEditor p {
+  padding-left: 1.1rem;
+}
+
+#richTextEditor ol, #richTextEditor ul {
+  padding-left: 1rem;
+}
+
+#richTextEditor blockquote, #richTextEditor pre, #richTextEditor hr {
+  margin-left: 1.1rem;
+}
+
+#richTextEditor table {
+  margin-left: 1.3rem;
+}
+
+#richTextEditor ul {
+  margin-left: 1.5rem;
+}
