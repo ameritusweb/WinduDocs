@@ -118,6 +118,11 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown')
+      {
+          return;
+      }
+
         const update = updateAst(event, ast.map((p) => deepCopyAstNode(p)), higherLevelAst.map((p) => deepCopyAstNode(p)), props.higherLevelContent?.id);
         if (update.type === 'none')
         {

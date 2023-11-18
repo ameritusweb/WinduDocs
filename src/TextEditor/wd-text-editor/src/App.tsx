@@ -4,8 +4,12 @@ import './tailwind.css'
 import './App.css'
 import { WysiwygToolbar } from './components/wysiwyg-toolbar';
 import RichTextEditor from './components/wysiwyg/rich-text-editor.js';
+import useConsoleToasts from './hooks/use-console-toasts.js';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
+
+  useConsoleToasts();
 
   Prism.highlight('const a = 2;', Prism.languages.javascript, 'javascript');
   return (
@@ -20,6 +24,7 @@ function App() {
           </div>
         </div>
       </div>
+      <ToastContainer position="bottom-right" />
     </>
   )
 }

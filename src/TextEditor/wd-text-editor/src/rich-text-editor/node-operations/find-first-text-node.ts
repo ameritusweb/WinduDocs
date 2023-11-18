@@ -1,4 +1,10 @@
 const findFirstTextNode = (element: Element): Text | null => {
+
+    if (element instanceof Text)
+    {
+        return element as Text;
+    }
+
     // Iterate through all child nodes of the element
     for (const node of element.childNodes) {
         // If the node is a text node, return it

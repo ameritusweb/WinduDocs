@@ -5,6 +5,7 @@ export interface EditorDataType {
     editorState: string;
     events: IEventEmitter;
     emitEvent: (action: EventAction) => void;
+    cursorPosition: string;
 }
 
 export type EventAction = 'indent' | 'outdent' | 'insertHR' | 'copy' | 'cut' | 'paste';
@@ -14,10 +15,12 @@ export class EditorData implements EditorDataType {
     constructor(editorState: string) {
         this.editorState = editorState;
         this.events = new EventEmitter();
+        this.cursorPosition = 'beginning';
     }
 
     editorState: string;
     events: IEventEmitter;
+    cursorPosition: string;
 
     public emitEvent(action: EventAction) {
         const selection = window.getSelection();

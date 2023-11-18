@@ -15,6 +15,8 @@ import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
 import { deepCopyAstNode, findFirstTextNode, findLastTextNode, generateKey } from "../../rich-text-editor/node-operations";
+import { handleArrowKeyPress } from "../../rich-text-editor/handlers";
+import editorData from "../../hooks/editor-data";
 
 const RichTextEditor = () => {
 
@@ -158,6 +160,12 @@ const RichTextEditor = () => {
         if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
         {
             return;
+        }
+
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown')
+        {
+            event.preventDefault();
+            handleArrowKeyPress(event.key, editorData);
         }
 
         if (event.ctrlKey)

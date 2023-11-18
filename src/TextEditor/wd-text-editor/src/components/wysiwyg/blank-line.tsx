@@ -69,6 +69,11 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
         return;
       }
 
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown')
+      {
+          return;
+      }
+
       if (higherLevelContent.updater)
       {
         const higherLevelContentCopy = higherLevelContent.content.map((h) => deepCopyAstNode(h));
