@@ -12,9 +12,19 @@ class TextBlock implements ITextBlock {
     }
 }
 
-const processAst = async (markdownAst: AstNode): Promise<TextBlock[][]> => {
+const processTextContent = (textContent: string, parentId: string, index: number): ITextBlock[] => {
+    return textContent.split('\n')
+        .filter(part => part.trim() !== '')
+        .map((part) => {
+            return new TextBlock(parentId, index, part);
+        });
+};
+
+
+const processAst = async (markdownAst: AstNode): Promise<[TextBlock[][], Map<string, number[]>]> => {
     const lines: TextBlock[][] = [];
     let currentLine: TextBlock[] = [];
+    const guidMap = new Map<string, number[]>();
 
     async function processNode(node: AstNode, index: number, parentId: string): Promise<void> {
         if (!node) return;
@@ -22,21 +32,29 @@ const processAst = async (markdownAst: AstNode): Promise<TextBlock[][]> => {
         switch (node.NodeName) {
             case "CodeInline":
             case "Text":
-                if (node.TextContent?.includes("\n")) {
-                    const parts = node.TextContent.split('\n');
-                    for (const part of parts) {
-                        if (part.trim() !== '') {
-                            currentLine.push(new TextBlock(parentId, index, part));
-                        }
-
+                if (node.TextContent) {
+                    if (node.TextContent.includes("\n")) {
                         if (currentLine.length > 0) {
                             lines.push(currentLine);
                             currentLine = [];
                         }
-                        await new Promise(resolve => setTimeout(resolve, 0));
+                        // If the text content includes newlines, process each line separately.
+                        const textBlocks = processTextContent(node.TextContent, parentId, index);
+                        let pushedLine: boolean = false;
+                        textBlocks.forEach((block, i) => {
+                            currentLine.push(block);
+                            if (!pushedLine)
+                                guidMap.set(`${block.guid} ${index}`, [lines.length, currentLine.length - 1]);
+                            lines.push(currentLine);
+                            pushedLine = true;
+                            currentLine = [];
+                        });
+                    } else {
+                        // If there are no newlines, handle the text content directly.
+                        const block = new TextBlock(parentId, index, node.TextContent);
+                        currentLine.push(block);
+                        guidMap.set(`${block.guid} ${index}`, [lines.length, currentLine.length - 1]);
                     }
-                } else if (node.TextContent) {
-                    currentLine.push(new TextBlock(parentId, index, node.TextContent));
                 }
                 break;
             case "BlankLine":
@@ -45,6 +63,7 @@ const processAst = async (markdownAst: AstNode): Promise<TextBlock[][]> => {
                     currentLine = [];
                 }
                 currentLine.push(new TextBlock(node.Guid, 0, ""));
+                guidMap.set(`${node.Guid} 0`, [lines.length, currentLine.length - 1]);
                 lines.push(currentLine);
                 currentLine = [];
                 break;
@@ -121,6 +140,7 @@ const processAst = async (markdownAst: AstNode): Promise<TextBlock[][]> => {
     async function processFencedCodeBlock(codeBlockNode: AstNode): Promise<void> {
         for (const [lineIndex, line] of codeBlockNode.Children.entries()) {
             currentLine.push(new TextBlock(codeBlockNode.Guid, lineIndex, line.TextContent || '\n'));
+            guidMap.set(`${codeBlockNode.Guid} ${lineIndex}`, [lines.length, currentLine.length - 1]);
             if (currentLine.length > 0) {
                 lines.push(currentLine);
                 currentLine = [];
@@ -135,7 +155,7 @@ const processAst = async (markdownAst: AstNode): Promise<TextBlock[][]> => {
         lines.push(currentLine);
     }
 
-    return lines;
+    return [lines, guidMap];
 }
 
 export default processAst;

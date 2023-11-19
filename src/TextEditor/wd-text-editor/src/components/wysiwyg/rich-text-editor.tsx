@@ -23,6 +23,7 @@ const RichTextEditor = () => {
 
     const astRef = useRef<AstNode>(ast);
     const processedAstRef = useRef<ITextBlock[][]>([]);
+    const processedAstMap = useRef<Map<string, number[]>>(new Map<string, number[]>());
     const { convertToMarkdown } = useMarkdownGenerator();
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
     const historyManager: IHistoryManager = HistoryManager;
@@ -35,7 +36,7 @@ const RichTextEditor = () => {
 
     useEffect(() => {
         const asyncProcessAst = async () => { 
-            processedAstRef.current = await processAst(astRef.current);
+            [processedAstRef.current, processedAstMap.current] = await processAst(astRef.current);
         }
 
         asyncProcessAst();
@@ -157,6 +158,92 @@ const RichTextEditor = () => {
         }
     };
 
+    const handleArrowLeftPress = (event: React.KeyboardEvent<HTMLElement>) => {
+
+        const selection = window.getSelection();
+        if (!selection)
+        {
+            return;
+        }
+
+        if (!selection.rangeCount) return;
+
+        let range = selection.getRangeAt(0);
+        if (range.startOffset === 0)
+        {
+            let currentNode: Node | null = range.startContainer;
+            let textNodeIndex: number = 0;
+
+            if (currentNode.nodeType === Node.TEXT_NODE) {
+                textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
+                if (textNodeIndex > 0)
+                {
+                    return;
+                }
+                currentNode = currentNode.parentElement;
+            }
+
+            if (!currentNode) 
+                return;
+
+            let guid = (currentNode as Element).id;
+            const gparent = currentNode.parentElement;
+            if (gparent && (gparent.nodeName === 'CODE' || gparent.nodeName === 'H1' || gparent.nodeName === 'H2' || gparent.nodeName === 'H3' || gparent.nodeName === 'H4' || gparent.nodeName === 'H5' || gparent.nodeName === 'H6'))
+            {
+                guid = gparent.id;
+            }
+
+            if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAstRef.current.length) {
+                throw new Error('Invalid start row number');
+            }
+
+            const textBlocks = processedAstRef.current;
+            const res = processedAstMap.current.get(`${guid} ${textNodeIndex}`);
+
+            if (!res)
+                return;
+
+            const [i, j] = res;
+
+            if (j !== 0)
+                return;
+
+            const row = textBlocks[i - 1];
+            if (!row)
+                return;
+
+            const textBlock = row[row.length - 1];
+
+            const element = document.getElementById(textBlock.guid);
+
+            if (!element)
+                return;
+
+            const newRange = document.createRange();
+            let start = element.nodeName === 'CODE' || element.nodeName.startsWith('H') ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
+
+            if (!start)
+                return;
+
+            if (start.nodeName === 'CODE')
+            {
+                start = start.childNodes[0];
+            }
+
+            if (!(start instanceof Text))
+                return;
+
+            event.preventDefault();
+
+            newRange.setStart(start, start.textContent?.length || 0);
+            newRange.setEnd(start, start.textContent?.length || 0);
+
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+        }
+
+    }
+
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
         if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
@@ -168,7 +255,12 @@ const RichTextEditor = () => {
         {
             event.preventDefault();
             // processedAstRef.current = processAst(astRef.current);
-            handleArrowKeyPress(event.key, editorData, processedAstRef.current);
+            handleArrowKeyPress(event.key, editorData, processedAstRef.current, processedAstMap.current);
+        }
+
+        if (event.key === 'ArrowLeft')
+        {
+            handleArrowLeftPress(event);
         }
 
         if (event.ctrlKey)

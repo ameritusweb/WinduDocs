@@ -91,36 +91,18 @@ const findOffset = (editorData: EditorDataType, i: number, j: number, key: strin
     return null;
 }
 
-const findTextBlockByGuid = (editorData: EditorDataType, processedAst: ITextBlock[][], key: string, guid: string, textNodeIndex: number, startOffset: number): ITextBlock | null => {
+const findTextBlockByGuid = (editorData: EditorDataType, processedAst: ITextBlock[][], processedAstMap: Map<string, number[]>, key: string, guid: string, textNodeIndex: number, startOffset: number): ITextBlock | null => {
 
         // Validate the startRow
     if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAst.length) {
         throw new Error('Invalid start row number');
     }
 
-    const startRow = editorData.cursorLine;
-    const textBlocks = processedAst;
-
-    // Search from startRow to the end of the array
-    for (let i = startRow; i < textBlocks.length; i++) {
-        let index = 0;
-        for (const textBlock of textBlocks[i]) {
-            if (textBlock.guid === guid && textBlock.index === textNodeIndex) {
-                return findOffset(editorData, i, index, key, processedAst, startOffset);
-            }
-            index++;
-        }
-    }
-
-    // If not found, search from the beginning up to startRow
-    for (let i = 0; i < startRow; i++) {
-        let index = 0;
-        for (const textBlock of textBlocks[i]) {
-            if (textBlock.guid === guid) {
-                return findOffset(editorData, i, index, key, processedAst, startOffset);
-            }
-            index++;
-        }
+    const res = processedAstMap.get(`${guid} ${textNodeIndex}`);
+    if (res)
+    {
+        const [i, j] = res;
+        return findOffset(editorData, i, j, key, processedAst, startOffset);
     }
 
     // If not found in either loop, return null
@@ -128,7 +110,7 @@ const findTextBlockByGuid = (editorData: EditorDataType, processedAst: ITextBloc
 
 }
 
-const handleArrowKeyPress = (key: string, editorData: EditorDataType, processedAst: ITextBlock[][]) => {
+const handleArrowKeyPress = (key: string, editorData: EditorDataType, processedAst: ITextBlock[][], processedAstMap: Map<string, number[]>) => {
 
     const selection = window.getSelection();
     if (!selection)
@@ -167,7 +149,7 @@ const handleArrowKeyPress = (key: string, editorData: EditorDataType, processedA
     {
         guid = gparent.id;
     }
-    const textBlock = findTextBlockByGuid(editorData, processedAst, key, guid, textNodeIndex, range.startOffset);
+    const textBlock = findTextBlockByGuid(editorData, processedAst, processedAstMap, key, guid, textNodeIndex, range.startOffset);
 
     if (!textBlock)
         return;
