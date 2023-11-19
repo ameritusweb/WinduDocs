@@ -5,6 +5,8 @@ import './wysiwyg-toolbar.css'; // Import the CSS stylesheet
 import rules from '../rules/wysiwyg-rules.json';
 import { useEditorContext } from '../hooks/use-editor-context';
 import EditorData, { EditorDataType } from '../hooks/editor-data';
+import { InsertTable } from './insert-table';
+import { InsertLink } from './insert-link';
 
 interface ToolbarProps {
 
@@ -42,24 +44,41 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
     const renderTabContent = (rules: any[], groupName: string) => {
         // Filter rules based on the active group
         const filteredRules = rules.filter(rule => rule.GroupName === groupName);
+
+        const editor = document.getElementById('richTextEditor');
       
-        // Dynamically create buttons for each rule in the group
-        return filteredRules.map((rule) => (
-          <ToolbarButton 
-            key={rule.Name} 
-            label={rule.Name.toUpperCase()}
-            isActive={rule.State === state}
-            onClick={() => {
+        return filteredRules.map((rule) => {
+          if (rule.Name === 'Table') {
+            return <InsertTable key={rule.Name} onInsert={(rows: number, cols: number) => {
               if (rule.Action) {
-                editorData.emitEvent(rule.Action);
+                editorData.emitEvent(rule.Action, editor?.id || '', { rows, cols });
               }
-              else if (rule.State) {
-                setState(rule.State);
-                editorData.editorState = rule.State;
+            }} />;
+          } else if (rule.Name === 'Link') {
+            return <InsertLink key={rule.Name} onInsert={(url: string, text: string) => {
+              if (rule.Action) {
+                editorData.emitEvent(rule.Action, editor?.id || '', { url, text });
               }
-            }} 
-          />
-        ));
+            }} />;
+          } else {
+            return (
+              <ToolbarButton 
+                key={rule.Name} 
+                label={rule.Name.toUpperCase()}
+                isActive={rule.State === state}
+                onClick={() => {
+                  if (rule.Action) {
+                    editorData.emitEvent(rule.Action, editor?.id || '', null);
+                  }
+                  else if (rule.State) {
+                    setState(rule.State);
+                    editorData.editorState = rule.State;
+                  }
+                }} 
+              />
+            );
+          }
+        });
       };         
 
   const activeGroupRules = groups.find(group => group.groupName === activeGroupName)!.rules;

@@ -1,34 +1,4 @@
 [
-    {
-      "Name": "H1",
-        "GroupName":"Heading",
-        "State": "h1"
-    },
-    {
-        "Name": "H2",
-          "GroupName":"Heading",
-          "State": "h2"
-      },
-      {
-        "Name": "H3",
-          "GroupName":"Heading",
-          "State": "h3"
-      },
-      {
-        "Name": "H4",
-          "GroupName":"Heading",
-          "State": "h4"
-      },
-      {
-        "Name": "H5",
-          "GroupName":"Heading",
-          "State": "h5"
-      },
-      {
-        "Name": "H6",
-          "GroupName":"Heading",
-          "State": "h6"
-      },
       {
         "Name": "Normal",
         "GroupName": "Text Styles",
@@ -50,10 +20,42 @@
       "State": "em"
     },
     {
-      "Name": "Link"
+      "Name": "H1",
+        "GroupName":"Text Styles",
+        "State": "h1"
     },
     {
-      "Name": "Table"
+        "Name": "H2",
+          "GroupName":"Text Styles",
+          "State": "h2"
+      },
+      {
+        "Name": "H3",
+          "GroupName":"Text Styles",
+          "State": "h3"
+      },
+      {
+        "Name": "H4",
+          "GroupName":"Text Styles",
+          "State": "h4"
+      },
+      {
+        "Name": "H5",
+          "GroupName":"Text Styles",
+          "State": "h5"
+      },
+      {
+        "Name": "H6",
+          "GroupName":"Text Styles",
+          "State": "h6"
+      },
+    {
+      "Name": "Link",
+      "GroupName": "Link"
+    },
+    {
+      "Name": "Table",
+      "GroupName": "Table"
     },
     {
         "Name": "Numbered",

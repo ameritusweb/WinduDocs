@@ -4,7 +4,7 @@ import EventEmitter from "../rich-text-editor/handlers/event-emitter";
 export interface EditorDataType {
     editorState: string;
     events: IEventEmitter;
-    emitEvent: (action: EventAction) => void;
+    emitEvent: (action: EventAction, id: string, payload: any) => void;
     cursorOffset: number;
     cursorOffsetReduction: number;
     cursorLine: number;
@@ -28,20 +28,23 @@ export class EditorData implements EditorDataType {
     cursorLine: number;
     cursorOffsetReduction: number;
 
-    public emitEvent(action: EventAction) {
+    public emitEvent(action: EventAction, id: string, payload: any) {
+        this.events.emit(action, id, payload);
+        /*
         const selection = window.getSelection();
         if (selection) {
             const range = selection.getRangeAt(0);
             const container = range.startContainer;
             if (container instanceof Element)
             {
-                this.events.emit(action, container.id, null);
+                this.events.emit(action, container.id, );
             } else if (container instanceof Text)
             {
                 const parent = container.parentElement as Element;
                 this.events.emit(action, parent.id, null);
             }
         }
+        */
     }
 }
 

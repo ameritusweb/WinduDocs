@@ -102,3 +102,36 @@
 .toolbar-button.active:hover::after {
     width: 100%; /* Extend to full width on hover */
   }
+
+  .insert-table {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    outline: none;
+  }
+  
+  .input-with-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100px;
+    padding-left: 1rem;
+    outline: none;
+  }
+
+  .input-with-label:last-of-type {
+    width: 120px;
+  }
+  
+  .input-with-label input {
+    padding-right: 50px; /* Adjust as necessary */
+    outline: none;
+  }
+  
+  .input-with-label .input-label {
+    position: absolute;
+    right: 10px; /* Adjust as necessary */
+    color: gray;
+    pointer-events: none;
+  }
+  

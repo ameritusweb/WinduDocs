@@ -43,6 +43,35 @@ const RichTextEditor = () => {
 
     }, [higherLevelAst]);
 
+    const handleIndent = () => {
+
+    }
+
+    const handleOutdent = () => {
+
+    }
+
+    const handleHR = () => {
+
+    }
+
+    const handleQuote = () => {
+
+    }
+
+    useEffect(() => {
+
+        editorData.events.subscribe(astRef.current.Guid, 'Indent', handleIndent);
+        editorData.events.subscribe(astRef.current.Guid, 'Outdent', handleOutdent);
+        editorData.events.subscribe(astRef.current.Guid, 'InsertHR', handleHR);
+        editorData.events.subscribe(astRef.current.Guid, 'IndentQuote', handleQuote);
+
+        return () => {
+            editorData.events.unsubscribe(astRef.current.Guid);
+        }
+
+    }, []);
+
     useEffect(() => {
         const observer = new MutationObserver((mutationsList) => {
           // Check for the specific mutation type, if necessary
@@ -157,178 +186,6 @@ const RichTextEditor = () => {
                 return null;
         }
     };
-
-    const handleArrowLeftPress = (event: React.KeyboardEvent<HTMLElement>) => {
-
-        const selection = window.getSelection();
-        if (!selection)
-        {
-            return;
-        }
-
-        if (!selection.rangeCount) return;
-
-        let range = selection.getRangeAt(0);
-        if (range.startOffset === 0)
-        {
-            let currentNode: Node | null = range.startContainer;
-            let textNodeIndex: number = 0;
-
-            if (currentNode.nodeType === Node.TEXT_NODE) {
-                textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
-                if (textNodeIndex > 0)
-                {
-                    return;
-                }
-                currentNode = currentNode.parentElement;
-            }
-
-            if (!currentNode) 
-                return;
-
-            let guid = (currentNode as Element).id;
-            const gparent = currentNode.parentElement;
-            if (gparent && (gparent.nodeName === 'CODE' || gparent.nodeName === 'H1' || gparent.nodeName === 'H2' || gparent.nodeName === 'H3' || gparent.nodeName === 'H4' || gparent.nodeName === 'H5' || gparent.nodeName === 'H6'))
-            {
-                guid = gparent.id;
-            }
-
-            if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAstRef.current.length) {
-                throw new Error('Invalid start row number');
-            }
-
-            const textBlocks = processedAstRef.current;
-            const res = processedAstMap.current.get(`${guid} ${textNodeIndex}`);
-
-            if (!res)
-                return;
-
-            const [i, j] = res;
-
-            if (j !== 0)
-                return;
-
-            const row = textBlocks[i - 1];
-            if (!row)
-                return;
-
-            const textBlock = row[row.length - 1];
-
-            const element = document.getElementById(textBlock.guid);
-
-            if (!element)
-                return;
-
-            const newRange = document.createRange();
-            let start = element.nodeName === 'CODE' || element.nodeName.startsWith('H') ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
-
-            if (!start)
-                return;
-
-            if (start.nodeName === 'CODE')
-            {
-                start = start.childNodes[0];
-            }
-
-            if (!(start instanceof Text))
-                return;
-
-            event.preventDefault();
-
-            newRange.setStart(start, start.textContent?.length || 0);
-            newRange.setEnd(start, start.textContent?.length || 0);
-
-            selection.removeAllRanges();
-            selection.addRange(newRange);
-        }
-
-    }
-
-    const handleArrowRightPress = (event: React.KeyboardEvent<HTMLElement>) => {
-
-        const selection = window.getSelection();
-        if (!selection)
-        {
-            return;
-        }
-
-        if (!selection.rangeCount) return;
-
-        let range = selection.getRangeAt(0);
-        if (range.startContainer.textContent && range.startOffset === range.startContainer.textContent?.length)
-        {
-            let currentNode: Node | null = range.startContainer;
-            let textNodeIndex: number = 0;
-
-            if (currentNode.nodeType === Node.TEXT_NODE) {
-                textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
-                if (textNodeIndex > 0)
-                {
-                    return;
-                }
-                currentNode = currentNode.parentElement;
-            }
-
-            if (!currentNode) 
-                return;
-
-            let guid = (currentNode as Element).id;
-            const gparent = currentNode.parentElement;
-            if (gparent && (gparent.nodeName === 'CODE' || gparent.nodeName === 'H1' || gparent.nodeName === 'H2' || gparent.nodeName === 'H3' || gparent.nodeName === 'H4' || gparent.nodeName === 'H5' || gparent.nodeName === 'H6'))
-            {
-                guid = gparent.id;
-            }
-
-            if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAstRef.current.length) {
-                throw new Error('Invalid start row number');
-            }
-
-            const textBlocks = processedAstRef.current;
-            const res = processedAstMap.current.get(`${guid} ${textNodeIndex}`);
-
-            if (!res)
-                return;
-
-            const [i, j] = res;
-
-            if (j !== 0)
-                return;
-
-            const row = textBlocks[i + 1];
-            if (!row)
-                return;
-
-            const textBlock = row[0];
-
-            const element = document.getElementById(textBlock.guid);
-
-            if (!element)
-                return;
-
-            const newRange = document.createRange();
-            let start = element.nodeName === 'CODE' || element.nodeName.startsWith('H') ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
-
-            if (!start)
-                return;
-
-            if (start.nodeName === 'CODE')
-            {
-                start = start.childNodes[0];
-            }
-
-            if (!(start instanceof Text))
-                return;
-
-            event.preventDefault();
-
-            newRange.setStart(start, 0);
-            newRange.setEnd(start, 0);
-
-            selection.removeAllRanges();
-            selection.addRange(newRange);
-        }
-
-    }
 
     const onMouseDown = (event: React.MouseEvent<HTMLElement>) => {
 
