@@ -93,6 +93,10 @@ const processAst = async (markdownAst: AstNode): Promise<[TextBlock[][], Map<str
                 for (const [childIndex, child] of node.Children.entries()) {
                     await processNode(child, childIndex, 'para_' + node.Guid);
                 }
+                if (currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = [];
+                }
                 break;
             default:
                 for (const [childIndex, child] of node.Children.entries()) {

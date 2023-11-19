@@ -5,8 +5,8 @@ export interface EditorDataType {
     editorState: string;
     events: IEventEmitter;
     emitEvent: (action: EventAction) => void;
-    cursorPosition: string;
     cursorOffset: number;
+    cursorOffsetReduction: number;
     cursorLine: number;
 }
 
@@ -17,16 +17,16 @@ export class EditorData implements EditorDataType {
     constructor(editorState: string) {
         this.editorState = editorState;
         this.events = new EventEmitter();
-        this.cursorPosition = 'beginning';
         this.cursorOffset = 0;
         this.cursorLine = 0;
+        this.cursorOffsetReduction = 0;
     }
 
     editorState: string;
     events: IEventEmitter;
-    cursorPosition: string;
     cursorOffset: number;
     cursorLine: number;
+    cursorOffsetReduction: number;
 
     public emitEvent(action: EventAction) {
         const selection = window.getSelection();

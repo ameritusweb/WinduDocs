@@ -1608,9 +1608,9 @@
     {
       "NodeName": "ParagraphBlock",
       "Attributes": {},
-      "ChildIndex": 38,
+      "ChildIndex": 2,
       "Depth": 1,
-      "Guid": "3bb1d267-ca61-4c22-b327-0d1091bf86dd",
+      "Guid": "933e7e88-4f0e-450d-bb98-e1e0923775ff",
       "TextContent": null,
       "Children": [
         {
@@ -1618,7 +1618,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "9b075d8a-a791-4f62-a7f3-c0c47c79108b",
+          "Guid": "a859ffb8-bca7-44f8-9099-298a79d460eb",
           "TextContent": "This is a ",
           "Children": []
         },
@@ -1630,7 +1630,7 @@
           },
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "332ef04c-dda8-43ed-a0bc-64f61b3f7fe5",
+          "Guid": "e35c5573-c64c-4e55-bc2e-cd718b1477c6",
           "TextContent": null,
           "Children": [
             {
@@ -1638,7 +1638,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "18d72329-9f0f-41b5-85c1-bda5acc35562",
+              "Guid": "ceef33be-e178-4409-98e7-8a005d7779a8",
               "TextContent": "link ",
               "Children": []
             },
@@ -1647,7 +1647,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "9fdbcba4-ca58-4fd7-b37a-7ceae5c7427b",
+              "Guid": "8d88dd2f-9a11-42f8-a307-cae2347c4401",
               "TextContent": null,
               "Children": [
                 {
@@ -1655,7 +1655,7 @@
                   "Attributes": {},
                   "ChildIndex": 0,
                   "Depth": 4,
-                  "Guid": "73e9cca0-6d3a-403e-a37f-e38d25e3ce63",
+                  "Guid": "99fec446-d572-4188-9c30-4c4725ca44b8",
                   "TextContent": "to",
                   "Children": []
                 }
@@ -1666,35 +1666,7 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "87b0be20-0397-4512-b047-c594c248e952",
-              "TextContent": " OpenAI",
-              "Children": []
-            },
-            {
-              "NodeName": "Strong",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "e1ede08b-73b1-4dcc-bccb-a4522e4cf7ae",
-              "TextContent": null,
-              "Children": [
-                {
-                  "NodeName": "Text",
-                  "Attributes": {},
-                  "ChildIndex": 0,
-                  "Depth": 4,
-                  "Guid": "35c80dc0-ee8b-4b1e-a065-105556415880",
-                  "TextContent": "to",
-                  "Children": []
-                }
-              ]
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "bb68cf98-7757-4215-8bbb-690969758c5d",
+              "Guid": "d3d9bf5c-581a-4704-b683-f075a98f75bc",
               "TextContent": " OpenAI",
               "Children": []
             }
@@ -1705,7 +1677,7 @@
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "52eb806b-72b4-4db2-8403-3baa321a89c2",
+          "Guid": "c074017a-c58b-4110-b249-90e1caa38cd6",
           "TextContent": ".",
           "Children": []
         }

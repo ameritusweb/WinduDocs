@@ -14,10 +14,10 @@ import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
-import { deepCopyAstNode, findFirstTextNode, findLastTextNode, generateKey } from "../../rich-text-editor/node-operations";
-import { handleArrowKeyPress } from "../../rich-text-editor/handlers";
+import { deepCopyAstNode, findFirstTextNode, findLastTextNode } from "../../rich-text-editor/node-operations";
 import editorData from "../../hooks/editor-data";
 import processAst from "../../rich-text-editor/node-operations/process-ast";
+import { handleArrowKeyUpOrDownPress, handleArrowKeyLeftOrRightPress } from "../../rich-text-editor/handlers";
 
 const RichTextEditor = () => {
 
@@ -244,6 +244,100 @@ const RichTextEditor = () => {
 
     }
 
+    const handleArrowRightPress = (event: React.KeyboardEvent<HTMLElement>) => {
+
+        const selection = window.getSelection();
+        if (!selection)
+        {
+            return;
+        }
+
+        if (!selection.rangeCount) return;
+
+        let range = selection.getRangeAt(0);
+        if (range.startContainer.textContent && range.startOffset === range.startContainer.textContent?.length)
+        {
+            let currentNode: Node | null = range.startContainer;
+            let textNodeIndex: number = 0;
+
+            if (currentNode.nodeType === Node.TEXT_NODE) {
+                textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
+                if (textNodeIndex > 0)
+                {
+                    return;
+                }
+                currentNode = currentNode.parentElement;
+            }
+
+            if (!currentNode) 
+                return;
+
+            let guid = (currentNode as Element).id;
+            const gparent = currentNode.parentElement;
+            if (gparent && (gparent.nodeName === 'CODE' || gparent.nodeName === 'H1' || gparent.nodeName === 'H2' || gparent.nodeName === 'H3' || gparent.nodeName === 'H4' || gparent.nodeName === 'H5' || gparent.nodeName === 'H6'))
+            {
+                guid = gparent.id;
+            }
+
+            if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAstRef.current.length) {
+                throw new Error('Invalid start row number');
+            }
+
+            const textBlocks = processedAstRef.current;
+            const res = processedAstMap.current.get(`${guid} ${textNodeIndex}`);
+
+            if (!res)
+                return;
+
+            const [i, j] = res;
+
+            if (j !== 0)
+                return;
+
+            const row = textBlocks[i + 1];
+            if (!row)
+                return;
+
+            const textBlock = row[0];
+
+            const element = document.getElementById(textBlock.guid);
+
+            if (!element)
+                return;
+
+            const newRange = document.createRange();
+            let start = element.nodeName === 'CODE' || element.nodeName.startsWith('H') ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
+
+            if (!start)
+                return;
+
+            if (start.nodeName === 'CODE')
+            {
+                start = start.childNodes[0];
+            }
+
+            if (!(start instanceof Text))
+                return;
+
+            event.preventDefault();
+
+            newRange.setStart(start, 0);
+            newRange.setEnd(start, 0);
+
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+        }
+
+    }
+
+    const onMouseDown = (event: React.MouseEvent<HTMLElement>) => {
+
+        if (event.button === 0) {
+            editorData.cursorOffsetReduction = 0;
+        }
+
+    }
+
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
         if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
@@ -255,12 +349,19 @@ const RichTextEditor = () => {
         {
             event.preventDefault();
             // processedAstRef.current = processAst(astRef.current);
-            handleArrowKeyPress(event.key, editorData, processedAstRef.current, processedAstMap.current);
+            handleArrowKeyUpOrDownPress(event.key, editorData, processedAstRef.current, processedAstMap.current);
         }
 
         if (event.key === 'ArrowLeft')
         {
-            handleArrowLeftPress(event);
+            editorData.cursorOffsetReduction = 0;
+            handleArrowKeyLeftOrRightPress(event, editorData, processedAstRef.current, processedAstMap.current, 'left');
+        }
+
+        if (event.key === 'ArrowRight')
+        {
+            editorData.cursorOffsetReduction = 0;
+            handleArrowKeyLeftOrRightPress(event, editorData, processedAstRef.current, processedAstMap.current, 'right');
         }
 
         if (event.ctrlKey)
@@ -295,6 +396,7 @@ const RichTextEditor = () => {
             <div key={ast.Guid} 
                  ref={editorRef}
                  onKeyDown={onKeyDown}
+                 onMouseDown={onMouseDown}
                  className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_2rem] cursor-text text-left text-base"
                  id="richTextEditor"
                  style={{

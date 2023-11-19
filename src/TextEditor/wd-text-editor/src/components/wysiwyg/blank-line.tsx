@@ -69,7 +69,7 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
         return;
       }
 
-      if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft')
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight')
       {
           return;
       }

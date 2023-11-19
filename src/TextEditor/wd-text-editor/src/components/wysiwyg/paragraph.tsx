@@ -121,7 +121,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
-      if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft')
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight')
       {
           return;
       }
