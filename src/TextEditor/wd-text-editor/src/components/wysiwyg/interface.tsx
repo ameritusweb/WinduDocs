@@ -112,3 +112,8 @@ export interface IEventEmitter {
     // Emit an event to only the subscribers with a specific GUID
     emit(event: string, guid: string, payload: any): void;
 }
+
+export interface ITextBlock {
+  guid: string;
+  textContent: string;
+}

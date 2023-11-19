@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AstNode, IHistoryManager } from "./interface";
+import { AstNode, IHistoryManager, ITextBlock } from "./interface";
 import Paragraph from "./paragraph";
 import Heading from "./heading";
 import OrderedList from "./ordered-list";
@@ -17,28 +17,25 @@ import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
 import { deepCopyAstNode, findFirstTextNode, findLastTextNode, generateKey } from "../../rich-text-editor/node-operations";
 import { handleArrowKeyPress } from "../../rich-text-editor/handlers";
 import editorData from "../../hooks/editor-data";
+import processAst from "../../rich-text-editor/node-operations/process-ast";
 
 const RichTextEditor = () => {
 
     const astRef = useRef<AstNode>(ast);
+    const processedAstRef = useRef<ITextBlock[][]>([]);
     const { convertToMarkdown } = useMarkdownGenerator();
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
     const historyManager: IHistoryManager = HistoryManager;
     const editorRef = useRef<HTMLDivElement | null>(null);
 
     const updateContent = (nodes: AstNode[], guids: string) => {
-        /*
-        const upToDateAst = nodes.map((n) => {
-            if (guids && (guids === n.Guid || guids.includes(n.Guid)))
-            {
-                n.Guid = generateKey();
-            }
-            return n;
-        });
-        */
         setHigherLevelAst(nodes);
         astRef.current.Children = nodes;
     }
+
+    useEffect(() => {
+        processedAstRef.current = processAst(astRef.current);
+    }, higherLevelAst);
 
     useEffect(() => {
         const observer = new MutationObserver((mutationsList) => {
@@ -165,6 +162,7 @@ const RichTextEditor = () => {
         if (event.key === 'ArrowUp' || event.key === 'ArrowDown')
         {
             event.preventDefault();
+            // processedAstRef.current = processAst(astRef.current);
             handleArrowKeyPress(event.key, editorData);
         }
 
