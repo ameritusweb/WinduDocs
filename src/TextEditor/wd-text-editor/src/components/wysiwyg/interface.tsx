@@ -115,5 +115,7 @@ export interface IEventEmitter {
 
 export interface ITextBlock {
   guid: string;
+  index: number;
   textContent: string;
+  offset?: number;
 }

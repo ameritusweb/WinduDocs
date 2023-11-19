@@ -32,7 +32,7 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, version, type, children, hi
     };
 
     return (
-        <div id={`alert-${id}`} className={`rich-alert alert`}>
+        <div id={id} className={`rich-alert alert`}>
             {getSvg(type)}
             {<Paragraph<HTMLParagraphElement> key={id} id={id} version={version} content={children} higherLevelContent={{ id: id, content: higherLevelChildren }} render={props => <p {...props}></p>} />}
         </div>

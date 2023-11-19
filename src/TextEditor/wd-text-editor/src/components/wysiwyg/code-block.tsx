@@ -15,7 +15,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ id, version, language, children, 
 
     return (
         <pre id={`pre-${id}`}>
-            <code className={`rich-code language-${language}`}>
+            <code id={id} className={`rich-code language-${language}`}>
                 {<Paragraph<HTMLParagraphElement> key={id} id={id} version={version} content={children} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }}  render={props => <p {...props}></p>} />}
             </code>
         </pre>

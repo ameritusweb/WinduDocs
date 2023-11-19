@@ -34,8 +34,13 @@ const RichTextEditor = () => {
     }
 
     useEffect(() => {
-        processedAstRef.current = processAst(astRef.current);
-    }, higherLevelAst);
+        const asyncProcessAst = async () => { 
+            processedAstRef.current = await processAst(astRef.current);
+        }
+
+        asyncProcessAst();
+
+    }, [higherLevelAst]);
 
     useEffect(() => {
         const observer = new MutationObserver((mutationsList) => {
@@ -163,7 +168,7 @@ const RichTextEditor = () => {
         {
             event.preventDefault();
             // processedAstRef.current = processAst(astRef.current);
-            handleArrowKeyPress(event.key, editorData);
+            handleArrowKeyPress(event.key, editorData, processedAstRef.current);
         }
 
         if (event.ctrlKey)

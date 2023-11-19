@@ -2,19 +2,21 @@ import { AstNode, ITextBlock } from "../../components/wysiwyg/interface";
 
 class TextBlock implements ITextBlock {
     guid: string;
+    index: number;
     textContent: string;
 
-    constructor(guid: string, textContent: string) {
+    constructor(guid: string, index: number, textContent: string) {
         this.guid = guid;
+        this.index = index;
         this.textContent = textContent;
     }
 }
 
-const processAst = (markdownAst: AstNode): TextBlock[][] => {
+const processAst = async (markdownAst: AstNode): Promise<TextBlock[][]> => {
     const lines: TextBlock[][] = [];
     let currentLine: TextBlock[] = [];
 
-    function processNode(node: AstNode): void {
+    async function processNode(node: AstNode, index: number, parentId: string): Promise<void> {
         if (!node) return;
 
         switch (node.NodeName) {
@@ -24,100 +26,110 @@ const processAst = (markdownAst: AstNode): TextBlock[][] => {
                     const parts = node.TextContent.split('\n');
                     for (const part of parts) {
                         if (part.trim() !== '') {
-                            currentLine.push(new TextBlock(node.Guid, part));
+                            currentLine.push(new TextBlock(parentId, index, part));
                         }
 
-                        if (currentLine.length > 0)
+                        if (currentLine.length > 0) {
                             lines.push(currentLine);
-                        currentLine = [];
+                            currentLine = [];
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 0));
                     }
                 } else if (node.TextContent) {
-                    currentLine.push(new TextBlock(node.Guid, node.TextContent));
+                    currentLine.push(new TextBlock(parentId, index, node.TextContent));
                 }
-            break;
+                break;
             case "BlankLine":
                 if (currentLine.length > 0) {
                     lines.push(currentLine);
                     currentLine = [];
                 }
-                currentLine.push(new TextBlock(node.Guid, ""));
+                currentLine.push(new TextBlock(node.Guid, 0, ""));
                 lines.push(currentLine);
                 currentLine = [];
                 break;
             case "HeadingBlock":
-                if (currentLine.length > 0)
-                {
+                if (currentLine.length > 0) {
                     lines.push(currentLine);
                     currentLine = [];
                 }
-                node.Children.forEach(child => processNode(child));
-                lines.push(currentLine);
-                currentLine = [];
-                break;
-            case "ParagraphBlock":
-                node.Children.forEach(child => processNode(child));
+                for (const [childIndex, child] of node.Children.entries()) {
+                    await processNode(child, childIndex, node.Guid);
+                }
+                if (currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = [];
+                }
                 break;
             case "ListBlock":
-                processList(node);
+                await processList(node);
                 break;
             case "Table":
-                processTable(node);
+                await processTable(node);
                 break;
             case "FencedCodeBlock":
-                processFencedCodeBlock(node);
+                await processFencedCodeBlock(node);
+                break;
+            case "ParagraphBlock":
+                for (const [childIndex, child] of node.Children.entries()) {
+                    await processNode(child, childIndex, 'para_' + node.Guid);
+                }
                 break;
             default:
-                node.Children.forEach(child => processNode(child));
+                for (const [childIndex, child] of node.Children.entries()) {
+                    await processNode(child, childIndex, node.Guid);
+                }
                 break;
         }
     }
 
-    function processList(listNode: AstNode): void {
-        listNode.Children.forEach((listItem: AstNode) => {
-            // Check if there's any content in the current line before processing the list item
+    async function processList(listNode: AstNode): Promise<void> {
+        for (const listItem of listNode.Children) {
             if (currentLine.length > 0) {
                 lines.push(currentLine);
                 currentLine = [];
             }
 
-            listItem.Children.forEach((child: AstNode) => processNode(child));
+            for (const [childIndex, child] of listItem.Children.entries()) {
+                await processNode(child, childIndex, listItem.Guid);
+            }
 
-            // Add the current line to lines after processing each list item
             if (currentLine.length > 0) {
                 lines.push(currentLine);
                 currentLine = [];
             }
-        });
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
     }
 
-    function processTable(tableNode: AstNode): void {
-        tableNode.Children.forEach((row: AstNode) => {
-            row.Children.forEach((cell: AstNode) => {
-                cell.Children.forEach((paragraph: AstNode) => {
-                    // Process each paragraph in the cell but keep them on the same line
-                    processNode(paragraph);
-                });
-            });
+    async function processTable(tableNode: AstNode): Promise<void> {
+        for (const row of tableNode.Children) {
+            for (const cell of row.Children) {
+                for (const [paragraphIndex, paragraph] of cell.Children.entries()) {
+                    await processNode(paragraph, paragraphIndex, cell.Guid);
+                }
+            }
 
-            // Once all cells in a row are processed, start a new line
             if (currentLine.length > 0) {
                 lines.push(currentLine);
                 currentLine = [];
             }
-        });
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
     }
 
-    function processFencedCodeBlock(codeBlockNode: AstNode): void {
-        codeBlockNode.Children.forEach((line: AstNode) => {
-            currentLine.push(new TextBlock(line.Guid, line.TextContent || '\n'));
+    async function processFencedCodeBlock(codeBlockNode: AstNode): Promise<void> {
+        for (const [lineIndex, line] of codeBlockNode.Children.entries()) {
+            currentLine.push(new TextBlock(codeBlockNode.Guid, lineIndex, line.TextContent || '\n'));
             if (currentLine.length > 0) {
                 lines.push(currentLine);
                 currentLine = [];
             }
-        });
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
     }
 
-    processNode(markdownAst);
+    await processNode(markdownAst, -1, '');
 
     if (currentLine.length > 0) {
         lines.push(currentLine);

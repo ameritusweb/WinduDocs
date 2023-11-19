@@ -108,6 +108,9 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
+      const astCopy = ast.map((p) => deepCopyAstNode(p));
+      const higherLevelAstCopy = higherLevelAst.map((p) => deepCopyAstNode(p));
+
       if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
       {
         return;
@@ -123,7 +126,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
           return;
       }
 
-        const update = updateAst(event, ast.map((p) => deepCopyAstNode(p)), higherLevelAst.map((p) => deepCopyAstNode(p)), props.higherLevelContent?.id);
+        const update = updateAst(event, astCopy, higherLevelAstCopy, props.higherLevelContent?.id);
         if (update.type === 'none')
         {
           return;
@@ -149,7 +152,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     }
 
     const renderProps: RenderProps<T> = {
-      id: props.id,
+      id: `para_${props.id}`,
       ref: paraRef,
       className: "rich-para",
       version: props.version,

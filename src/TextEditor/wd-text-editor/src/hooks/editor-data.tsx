@@ -6,6 +6,8 @@ export interface EditorDataType {
     events: IEventEmitter;
     emitEvent: (action: EventAction) => void;
     cursorPosition: string;
+    cursorOffset: number;
+    cursorLine: number;
 }
 
 export type EventAction = 'indent' | 'outdent' | 'insertHR' | 'copy' | 'cut' | 'paste';
@@ -16,11 +18,15 @@ export class EditorData implements EditorDataType {
         this.editorState = editorState;
         this.events = new EventEmitter();
         this.cursorPosition = 'beginning';
+        this.cursorOffset = 0;
+        this.cursorLine = 0;
     }
 
     editorState: string;
     events: IEventEmitter;
     cursorPosition: string;
+    cursorOffset: number;
+    cursorLine: number;
 
     public emitEvent(action: EventAction) {
         const selection = window.getSelection();
