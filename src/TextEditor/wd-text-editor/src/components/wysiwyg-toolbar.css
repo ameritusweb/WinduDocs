@@ -120,11 +120,12 @@
   }
 
   .input-with-label:last-of-type {
-    width: 120px;
+    width: 125px;
   }
   
   .input-with-label input {
-    padding-right: 50px; /* Adjust as necessary */
+    width: 125px;
+    padding-right: 90px; /* Adjust as necessary */
     outline: none;
   }
   
