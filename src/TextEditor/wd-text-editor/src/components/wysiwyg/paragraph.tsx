@@ -80,6 +80,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       const selection = window.getSelection();
       const range = new Range();
       if (cursorPositionRef.current) {
+        let offset = cursorPositionRef.current.offset;
         if ((node as Element).id === cursorPositionRef.current.parentId && node.hasChildNodes()) {
           node = node.childNodes[cursorPositionRef.current.index];
         }
@@ -87,8 +88,14 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         {
           node = node.parentElement?.lastElementChild?.firstChild as Node;
         }
-        range.setStart(node, cursorPositionRef.current.offset + 1);
-        range.setEnd(node, cursorPositionRef.current.offset + 1);
+        if (cursorPositionRef.current.lastChild) {
+          node = node.lastChild?.firstChild as Node;
+          if (cursorPositionRef.current.offset === -1) {
+            offset = (node.textContent?.length || 0) - 1;
+          }
+        }
+        range.setStart(node, offset + 1);
+        range.setEnd(node, offset + 1);
         if (selection && range) {
           selection.removeAllRanges();
           selection.addRange(range);

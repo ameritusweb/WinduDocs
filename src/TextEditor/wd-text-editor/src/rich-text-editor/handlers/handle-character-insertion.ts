@@ -26,6 +26,18 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                         higherLevelChild.Children.splice(higherLevelChild.Children.length, 0, newText);
                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                     }
+                } else if ((parent.nodeName === 'STRONG' && editorState === 'em') || (parent.nodeName === 'EM' && editorState === 'strong') )
+                {
+                    const newContainer = createNewAstNode(editorState === 'strong' ? 'Strong' : 'Emphasis', 0, 0, null);
+                        const newText = createNewAstNode('Text', 0, 0, key);
+                        newContainer.Children.push(newText);
+                        const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                        if (higherLevelIndex !== null) {
+                            const higherLevelChild = higherLevelChildren[higherLevelIndex];
+                            higherLevelChild.Children = children.map((c) => Object.assign({}, c));
+                            higherLevelChild.Children.splice(higherLevelChild.Children.length, 0, newContainer);
+                            return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
+                        }
                 } else {
                     const oldText = '' + child.TextContent;
                     replaceText(container, child, startOffset, key);

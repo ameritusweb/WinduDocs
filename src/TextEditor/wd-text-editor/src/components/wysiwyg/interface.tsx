@@ -48,6 +48,7 @@ export interface CursorPositionType {
   offset: number;
   parentId: string;
   nextSibling: boolean;
+  lastChild: boolean;
   index: number;
 }
 
