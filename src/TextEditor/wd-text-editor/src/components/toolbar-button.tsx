@@ -1,4 +1,4 @@
-import usePopunder from '../hooks/use-popunder';
+import editorData from '../hooks/editor-data';
 
 export interface ToolbarButtonProps {
     label: string;
@@ -7,13 +7,11 @@ export interface ToolbarButtonProps {
 }
 
 export const ToolbarButton: React.FC<ToolbarButtonProps> = ({ label, onClick, isActive }) => {
-
-    const { showPopunder, hidePopunder } = usePopunder();
   
     return <button className={`toolbar-button${isActive ? ' active' : ''}`} 
       onClick={onClick}
-      onMouseEnter={() => showPopunder(label)}
-      onMouseLeave={hidePopunder}>
+      onMouseEnter={() => editorData.events.emit('open', 'toolbar', label)}
+      >
       {label}
     </button>
   };

@@ -34,7 +34,8 @@ const getUniqueGroups = (dslRules: any[]) => {
 export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
     const groups = getUniqueGroups(rules);
     const [activeGroupName, setActiveGroupName] = useState(groups[0].groupName);
-    const { popUnderData } = usePopunder();
+    const [ popUnderData, setPopUnderData ] = useState<{ content: string, style: any } | null>(null);
+    usePopunder('toolbar', setPopUnderData);
     
     const {
         state,
@@ -64,7 +65,7 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
             }} />;
           } else {
             return (
-              <div key={rule.Name}  className="inline">
+              <div key={rule.Name}  className="inline relative">
                 <ToolbarButton 
                   label={rule.Name.toUpperCase()}
                   isActive={rule.State === state}
@@ -78,7 +79,7 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
                     }
                   }} 
                 />
-                {(
+                {popUnderData && popUnderData.content && (
                   <div className="pop-under" style={popUnderData.style}>
                     {popUnderData.content || ''}
                   </div>

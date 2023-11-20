@@ -142,9 +142,16 @@
     position: absolute;
     /* Other styling as needed */
     display: none; /* Initially hidden */
+    left: 0;
+    top: 32px;
+    padding: 0.5rem;
+    left: calc(50% - 4.5px);
+    transform: translateX(-50%);
+    opacity: 0.6;
+    white-space: nowrap;
   }
   
   .toolbar button:hover + .pop-under {
-    display: block; /* Show on hover */
+    display: inline-block; /* Show on hover */
   }
   
