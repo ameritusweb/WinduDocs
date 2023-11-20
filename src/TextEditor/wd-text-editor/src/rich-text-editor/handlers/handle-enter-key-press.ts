@@ -84,10 +84,17 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                             if (higherLevelIndex !== null) {
-                                const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
-                                moveArray(children, childIndex, newPara.Children, 0);
-                                const newBlank = createNewAstNode('BlankLine', 0, 0, null);
-                                higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank, newPara);
+                                if (childIndex > 0)
+                                {
+                                    const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
+                                    moveArray(children, childIndex, newPara.Children, 0);
+                                    higherLevelChildren[higherLevelIndex].Children = children;
+                                    const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                    higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank, newPara);
+                                } else {
+                                    const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                    higherLevelChildren.splice(higherLevelIndex, 0, newBlank);
+                                }
                                 return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                             }
                         }

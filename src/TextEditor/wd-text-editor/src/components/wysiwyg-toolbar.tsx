@@ -7,6 +7,7 @@ import { useEditorContext } from '../hooks/use-editor-context';
 import EditorData, { EditorDataType } from '../hooks/editor-data';
 import { InsertTable } from './insert-table';
 import { InsertLink } from './insert-link';
+import usePopunder from '../hooks/use-popunder';
 
 interface ToolbarProps {
 
@@ -33,7 +34,8 @@ const getUniqueGroups = (dslRules: any[]) => {
 export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
     const groups = getUniqueGroups(rules);
     const [activeGroupName, setActiveGroupName] = useState(groups[0].groupName);
-
+    const { popUnderData } = usePopunder();
+    
     const {
         state,
         setState
@@ -62,20 +64,26 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
             }} />;
           } else {
             return (
-              <ToolbarButton 
-                key={rule.Name} 
-                label={rule.Name.toUpperCase()}
-                isActive={rule.State === state}
-                onClick={() => {
-                  if (rule.Action) {
-                    editorData.emitEvent(rule.Action, editor?.id || '', null);
-                  }
-                  else if (rule.State) {
-                    setState(rule.State);
-                    editorData.editorState = rule.State;
-                  }
-                }} 
-              />
+              <div key={rule.Name}  className="inline">
+                <ToolbarButton 
+                  label={rule.Name.toUpperCase()}
+                  isActive={rule.State === state}
+                  onClick={() => {
+                    if (rule.Action) {
+                      editorData.emitEvent(rule.Action, editor?.id || '', null);
+                    }
+                    else if (rule.State) {
+                      setState(rule.State);
+                      editorData.editorState = rule.State;
+                    }
+                  }} 
+                />
+                {(
+                  <div className="pop-under" style={popUnderData.style}>
+                    {popUnderData.content || ''}
+                  </div>
+                )}
+              </div>
             );
           }
         });

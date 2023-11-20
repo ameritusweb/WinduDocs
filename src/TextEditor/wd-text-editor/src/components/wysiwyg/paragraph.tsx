@@ -133,12 +133,15 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
           return;
       }
 
-        const update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.higherLevelContent?.id);
+        let update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.higherLevelContent?.id);
         if (update.type === 'none')
         {
           return;
         }
         saveCursorPosition(update.type);
+        update = { ...update, pathIndices: props.pathIndices };
+        editorData.emitEvent('update', 'richTextEditor', update);
+        /*
         if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
           props.higherLevelContent.updater(update.nodes, true);
         }
@@ -150,6 +153,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
           }
           setAst(update.nodes);
         }
+        */
 
         if (event.code === 'Space') {
           return;

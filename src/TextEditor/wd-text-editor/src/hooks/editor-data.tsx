@@ -10,7 +10,7 @@ export interface EditorDataType {
     cursorLine: number;
 }
 
-export type EventAction = 'indent' | 'outdent' | 'insertHR' | 'copy' | 'cut' | 'paste';
+export type EventAction = 'indent' | 'outdent' | 'insertHR' | 'copy' | 'cut' | 'paste' | 'update';
 
 export class EditorData implements EditorDataType {
 

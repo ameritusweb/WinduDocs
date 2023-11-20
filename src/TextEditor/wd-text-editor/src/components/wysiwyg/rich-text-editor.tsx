@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AstNode, IHistoryManager, ITextBlock } from "./interface";
+import { AstNode, AstUpdate, IHistoryManager, ITextBlock } from "./interface";
 import Paragraph from "./paragraph";
 import Heading from "./heading";
 import OrderedList from "./ordered-list";
@@ -49,31 +49,56 @@ const RichTextEditor = () => {
 
     }, []);
 
-    const handleIndent = () => {
+    const updateNodeChildren = (node: AstNode, path: number[], update: AstUpdate, currentDepth: number = 0): AstNode => {
+        if (path.length === currentDepth) {
+          // Reached the node to update
+          return { ...node, Children: update.nodes };
+        }
+      
+        // Recurse into the children
+        const childIndex = path[currentDepth];
+        if (childIndex < node.Children.length) {
+          return {
+            ...node,
+            Children: node.Children.map((child, index) => {
+              if (index === childIndex) {
+                const updatedChild = updateNodeChildren(child, path, update, currentDepth + 1);
+                return updatedChild;
+              }
+              else {
+                return child;
+              }
+            })
+          };
+        }
+      
+        // If the path is invalid, return the node as is
+        return node;
+      };
 
-    }
+      const handleUpdate = (update: AstUpdate) => {
+        if (update.pathIndices) {
 
-    const handleOutdent = () => {
+          let indices = update.pathIndices.slice(0);
+          if (update.type.startsWith('higherLevel'))
+          {
+            indices = update.pathIndices.slice(0, -1);
+          }
 
-    }
-
-    const handleHR = () => {
-
-    }
-
-    const handleQuote = () => {
-
-    }
+          // Update the tree with the new children directly using the current AST
+          const updatedAst = updateNodeChildren(astRef.current, indices, update);
+          
+          // Update the content with the new tree
+          updateContent(updatedAst.Children, update.type !== 'insert');
+        }
+      };      
 
     useEffect(() => {
 
-        editorData.events.subscribe(astRef.current.Guid, 'Indent', handleIndent);
-        editorData.events.subscribe(astRef.current.Guid, 'Outdent', handleOutdent);
-        editorData.events.subscribe(astRef.current.Guid, 'InsertHR', handleHR);
-        editorData.events.subscribe(astRef.current.Guid, 'IndentQuote', handleQuote);
+        editorData.events.subscribe('richTextEditor', 'update', handleUpdate);
 
         return () => {
-            editorData.events.unsubscribe(astRef.current.Guid);
+            editorData.events.unsubscribe('richTextEditor');
         }
 
     }, []);

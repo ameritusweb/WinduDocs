@@ -27,6 +27,7 @@ export interface AstNode {
   export interface AstUpdate {
     nodes: AstNode[];
     type: string;
+    pathIndices?: number[];
     rootChildId?: string;
     higherLevelNodes?: AstNode[];
 }
