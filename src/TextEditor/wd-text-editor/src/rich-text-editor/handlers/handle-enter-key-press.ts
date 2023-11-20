@@ -211,22 +211,6 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                     }
                                 }
-                                /*
-                                if (child.Guid === gparent.id)
-                                {
-                                    const parentIndex = Array.from(gparent.childNodes).findIndex((c) => c === parent);
-
-                                }
-                                else if (child.Guid === parent.id)
-                                {
-                                    const [node1, node2] = splitNode(child, startOffset, childIndex);
-                                    children.splice(childIndex, 1, node1, node2);
-                                    const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
-                                    moveArray(children, childIndex + 1, newPara.Children, 0);
-                                    higherLevelChildren.splice(higherLevelIndex + 1, 0, newPara);
-                                    return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
-                                }
-                                */
                             } else if (higherLevelId) {
                                 const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
                                 if (higherLevelIndex) {

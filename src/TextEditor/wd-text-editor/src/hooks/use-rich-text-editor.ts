@@ -56,7 +56,7 @@ export const useRichTextEditor = () => {
             else if (updateType === 'removeSelected') {
                 offset = range.startOffset - 1;
             }
-            else if (updateType === 'insertNew') {
+            else if (updateType === 'insertNew' || updateType === 'higherLevelSplit') {
                 offset = 0;
                 nextSibling = true;
             } else if (updateType === 'higherLevelInsertNew') {

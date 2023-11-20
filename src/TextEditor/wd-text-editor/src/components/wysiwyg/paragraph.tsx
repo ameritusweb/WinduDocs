@@ -86,7 +86,18 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         }
         if (cursorPositionRef.current.nextSibling)
         {
-          node = node.parentElement?.lastElementChild?.firstChild as Node;
+          if (node.nodeType !== Node.TEXT_NODE)
+          {
+            const child = Array.from(node.childNodes).find((c) => (c as Element).id === cursorPositionRef.current?.parentId);
+            node = (child as Element).nextSibling as Node;
+          } else {
+            if ((node as Element).nextElementSibling)
+            {
+              node = (node as Element).nextElementSibling as Node;
+            } else {
+              node = node.parentElement?.lastElementChild?.firstChild as Node;
+            }
+          }
         }
         if (cursorPositionRef.current.lastChild) {
           node = node.lastChild?.firstChild as Node;
@@ -94,8 +105,9 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
             offset = (node.textContent?.length || 0) - 1;
           }
         }
-        range.setStart(node, offset + 1);
-        range.setEnd(node, offset + 1);
+        let finalOffset = Math.min((node.textContent || '').length, offset + 1);
+        range.setStart(node, finalOffset);
+        range.setEnd(node, finalOffset);
         if (selection && range) {
           selection.removeAllRanges();
           selection.addRange(range);

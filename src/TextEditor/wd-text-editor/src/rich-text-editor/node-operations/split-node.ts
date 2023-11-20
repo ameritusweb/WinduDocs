@@ -10,7 +10,7 @@ const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode,
       const leftNode: AstNode = {
         ...node,
         Children: [...node.Children.slice(0, childIndex), childLeftNode],
-        Guid: generateKey()
+        Guid: node.Guid
       };
 
       const newLine: AstNode = {
@@ -42,7 +42,7 @@ const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode,
     const leftNode: AstNode = {
       ...node,
       TextContent: leftText,
-      Guid: generateKey()
+      Guid: node.Guid
     };
 
     const newLine: AstNode = {

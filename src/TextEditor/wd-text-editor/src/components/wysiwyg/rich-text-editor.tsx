@@ -131,6 +131,7 @@ const RichTextEditor = () => {
             else if (lastMutation.addedNodes && lastMutation.addedNodes.length > 0)
             {
                 const addedNode = lastMutation.addedNodes[0];
+                /*
                 if (addedNode && addedNode instanceof Text)
                 {
                     const selection = window.getSelection();
@@ -142,7 +143,7 @@ const RichTextEditor = () => {
                         selection.addRange(range);
                     }
                 }
-                else if (addedNode && addedNode instanceof Element)
+                else*/if (addedNode && addedNode instanceof Element)
                 {
                     if (addedNode.className === 'blank-line')
                     {
