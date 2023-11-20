@@ -8,11 +8,12 @@ import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
 import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
-// import EditorData, { EditorDataType } from "../../hooks/editor-data";
+import { domToAstMap } from "../ast-mapping";
 
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
   content: AstNode[];
+  pathIndices: number[];
   version: string;
   render: (props: RenderProps<T>) => JSX.Element;
   higherLevelContent?: HigherLevelProps;
@@ -82,6 +83,10 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         if ((node as Element).id === cursorPositionRef.current.parentId && node.hasChildNodes()) {
           node = node.childNodes[cursorPositionRef.current.index];
         }
+        if (cursorPositionRef.current.nextSibling)
+        {
+          node = node.parentElement?.lastElementChild?.firstChild as Node;
+        }
         range.setStart(node, cursorPositionRef.current.offset + 1);
         range.setEnd(node, cursorPositionRef.current.offset + 1);
         if (selection && range) {
@@ -102,7 +107,9 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       if (paraRef.current) {
         observer.observe(paraRef.current, { childList: true, subtree: true, characterData: true });
       }
-  
+
+      domToAstMap.set(paraRef.current as Element, [ast, higherLevelAst]);
+      
       return () => observer.disconnect();
     }, [/* dependencies */]);
 
@@ -126,20 +133,20 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
           return;
       }
 
-        const update = updateAst(event, astCopy, higherLevelAstCopy, props.higherLevelContent?.id);
+        const update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.higherLevelContent?.id);
         if (update.type === 'none')
         {
           return;
         }
         saveCursorPosition(update.type);
         if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
-          props.higherLevelContent.updater(update.nodes, update.rootChildId || '');
+          props.higherLevelContent.updater(update.nodes, true);
         }
         else
         {
           if (props.higherLevelContent && props.higherLevelContent.updater && update.higherLevelNodes)
           {
-            props.higherLevelContent?.updater(update.higherLevelNodes, update.rootChildId || '');
+            props.higherLevelContent?.updater(update.higherLevelNodes, true);
           }
           setAst(update.nodes);
         }
@@ -160,16 +167,17 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       contentEditable: true,
       suppressContentEditableWarning: true,
       onKeyDown,
-      children: ast.map((item) => {
+      children: ast.map((item, index) => {
+        const childPathIndices = [...props.pathIndices, index];
         switch (item.NodeName) {
           case 'Strong':
-            return <Strong key={item.Guid + (item.Version || '0')} id={item.Guid}>{item.Children}</Strong>;
+            return <Strong key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Strong>;
           case 'Emphasis':
-            return <Emphasis key={item.Guid + (item.Version || '0')} id={item.Guid}>{item.Children}</Emphasis>;
+            return <Emphasis key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Emphasis>;
           case 'CodeInline':
-            return <CodeInline key={item.Guid + (item.Version || '0')} id={item.Guid}>{item.TextContent}</CodeInline>;
+            return <CodeInline key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid}>{item.TextContent}</CodeInline>;
           case 'Link':
-            return <Link key={item.Guid + (item.Version || '0')} id={item.Guid} version={item.Version || 'V0'} url={item.Attributes.Url || ''}>{item.Children}</Link>
+            return <Link key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid} version={item.Version || 'V0'} url={item.Attributes.Url || ''}>{item.Children}</Link>
           case 'Text':
           default:
             return <React.Fragment key={item.Guid}>{item.TextContent || '\n'}</React.Fragment>;

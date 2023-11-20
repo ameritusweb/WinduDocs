@@ -21,7 +21,7 @@ export interface AstNode {
   export interface HigherLevelProps {
     id?: string;
     content: AstNode[];
-    updater?: (nodes: AstNode[], guid: string) => void;
+    updater?: (nodes: AstNode[], updateProcessed: boolean) => void;
   }
 
   export interface AstUpdate {
@@ -46,6 +46,7 @@ export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' |
 export interface CursorPositionType {
   offset: number;
   parentId: string;
+  nextSibling: boolean;
   index: number;
 }
 

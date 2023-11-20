@@ -9,7 +9,7 @@ export const useRichTextEditor = () => {
     const editorData: EditorDataType = EditorData;
     const historyManager: IHistoryManager = HistoryManager;
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], higherLevelId?: string): AstUpdate => {
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, higherLevelId?: string): AstUpdate => {
 
         const sel = window.getSelection();
         const key = event.key;
@@ -33,7 +33,7 @@ export const useRichTextEditor = () => {
             }
             else if (key.length === 1) {
                 event.preventDefault();
-                const update = handleCharacterInsertion(historyManager, container, children, event.key, startOffset);
+                const update = handleCharacterInsertion(historyManager, container, children, higherLevelChildren, event.key, editorData.editorState, startOffset);
                 if (update)
                     return update;
             }
@@ -46,6 +46,7 @@ export const useRichTextEditor = () => {
     const getCursorPosition = (updateType: string) => {
         const selection = window.getSelection();
         let offset = 0;
+        let nextSibling = false;
         if (selection && selection.rangeCount > 0) {
             const range = selection.getRangeAt(0);
             if (updateType === 'remove') {
@@ -54,13 +55,17 @@ export const useRichTextEditor = () => {
             else if (updateType === 'removeSelected') {
                 offset = range.startOffset - 1;
             }
+            else if (updateType === 'insertNew') {
+                offset = 0;
+                nextSibling = true;
+            }
             else
             {
                 offset = range.startOffset;
             }
             const parent = range.startContainer.parentElement;
             const index = Array.from(parent?.childNodes || []).findIndex((c) => c === range.startContainer);
-            return { parentId: parent?.id || '', index, offset };
+            return { parentId: parent?.id || '', index, nextSibling, offset };
         }
         return null;
     }

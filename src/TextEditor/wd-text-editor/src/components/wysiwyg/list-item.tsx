@@ -6,26 +6,28 @@ import { AstNode } from "./interface";
 
 export interface ListItemProps {
     id: string;
+    pathIndices: number[];
     updater: (nodes: AstNode[]) => void;
     children: AstNode[];
     higherLevelChildren: AstNode[];
 }
 
-const ListItem: React.FC<ListItemProps> = ({ id, children, higherLevelChildren, updater }) => {
+const ListItem: React.FC<ListItemProps> = ({ id, pathIndices, children, higherLevelChildren, updater }) => {
     return (
         <li id={id}>
-            {children.map((child) => {
+            {children.map((child, index) => {
+                const childPathIndices = [...pathIndices, index];
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: higherLevelChildren, id, updater }} render={props => <p {...props}></p>} />;
+                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: higherLevelChildren, id, updater }} render={props => <p {...props}></p>} />;
                     case 'ListBlock':
                         if (child.Attributes.IsOrdered && child.Attributes.IsOrdered === 'True')
                         {
-                            return <OrderedList key={child.Guid + (child.Version || '0')} children={child.Children} />;
+                            return <OrderedList key={child.Guid + (child.Version || '0')} pathIndices={childPathIndices} children={child.Children} />;
                         }
                         else
                         {
-                            return <UnorderedList key={child.Guid + (child.Version || '0')} children={child.Children} />;
+                            return <UnorderedList key={child.Guid + (child.Version || '0')} pathIndices={childPathIndices} children={child.Children} />;
                         }
                     default:
                         return null;

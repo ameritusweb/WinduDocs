@@ -29,19 +29,25 @@ const RichTextEditor = () => {
     const historyManager: IHistoryManager = HistoryManager;
     const editorRef = useRef<HTMLDivElement | null>(null);
 
-    const updateContent = (nodes: AstNode[], guids: string) => {
-        setHigherLevelAst(nodes);
-        astRef.current.Children = nodes;
-    }
-
-    useEffect(() => {
+    const updateProcessedAst = () => {
         const asyncProcessAst = async () => { 
             [processedAstRef.current, processedAstMap.current] = await processAst(astRef.current);
         }
 
         asyncProcessAst();
+    }
 
-    }, [higherLevelAst]);
+    const updateContent = (nodes: AstNode[], updateProcessed: boolean) => {
+        setHigherLevelAst(nodes);
+        astRef.current.Children = nodes;
+        if (updateProcessed)
+            updateProcessedAst();
+    }
+
+    useEffect(() => {
+        updateProcessedAst();
+
+    }, []);
 
     const handleIndent = () => {
 
@@ -123,9 +129,9 @@ const RichTextEditor = () => {
                             selection.removeAllRanges();
                             selection.addRange(range);
                         }
-                    } else if (addedNode.getAttribute('Version') === 'New'
+                    } else if (addedNode.getAttribute('version') === 'New'
                                 ||
-                               (addedNode.firstElementChild && addedNode.firstElementChild?.getAttribute('Version') === 'New')) {
+                               (addedNode.firstElementChild && addedNode.firstElementChild?.getAttribute('version') === 'New')) {
                         const selection = window.getSelection();
                         const range = new Range();
                         const firstTextNode = findFirstTextNode(addedNode);
@@ -151,36 +157,32 @@ const RichTextEditor = () => {
         return () => observer.disconnect();
       }, [/* dependencies */]);
 
-    const renderNode = (node: AstNode, higherLevelContent: AstNode[]) => {
+    const renderNode = (node: AstNode, higherLevelContent: AstNode[], pathIndices: number[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph<HTMLParagraphElement> key={node.Guid + (node.Version || '0')} id={node.Guid} version={node.Version || 'V0'} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
+                return <Paragraph<HTMLParagraphElement> key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} version={node.Version || 'V0'} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
             case 'HeadingBlock':
-                return <Heading key={node.Guid + (node.Version || '0')} id={node.Guid} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
-            case 'OrderedListBlock':
-                return <OrderedList key={node.Guid + (node.Version || '0')} children={node.Children} />;
-            case 'UnorderedListBlock':
-                return <UnorderedList key={node.Guid + (node.Version || '0')} children={node.Children} />;
+                return <Heading key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} version={node.Version || 'V0'} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
             case 'Table':
-                return <Table key={node.Guid + (node.Version || '0')} id={node.Guid} children={node.Children} />;
+                return <Table key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} children={node.Children} />;
             case 'ListBlock':
                 if (node.Attributes.IsOrdered && node.Attributes.IsOrdered === 'True') {
-                    return <OrderedList key={node.Guid + (node.Version || '0')} children={node.Children} />
+                    return <OrderedList key={node.Guid + (node.Version || 'V0')} pathIndices={pathIndices} children={node.Children} />
                 } else {
-                    return <UnorderedList key={node.Guid + (node.Version || '0')} children={node.Children} />
+                    return <UnorderedList key={node.Guid + (node.Version || 'V0')} pathIndices={pathIndices} children={node.Children} />
                 }
             case 'QuoteBlock':
-                return <QuoteBlock key={node.Guid + (node.Version || '0')} children={node.Children} />;
+                return <QuoteBlock key={node.Guid + (node.Version || 'V0')} pathIndices={pathIndices} children={node.Children} />;
             case 'ThematicBreakBlock':
-                return <HorizontalRule id={node.Guid} key={node.Guid + (node.Version || '0')}/>;
+                return <HorizontalRule id={node.Guid} key={node.Guid + (node.Version || 'V0')} />;
              case 'FencedCodeBlock':
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
-                    return <AlertBlock key={node.Guid + (node.Version || '0')} id={node.Guid} version={node.Version || 'V0'} higherLevelChildren={higherLevelContent} type={node.Attributes.Language} children={node.Children} />;
+                    return <AlertBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} version={node.Version || 'V0'} pathIndices={pathIndices} higherLevelChildren={higherLevelContent} type={node.Attributes.Language} children={node.Children} />;
                 } else {
-                    return <CodeBlock key={node.Guid + (node.Version || '0')} id={node.Guid} version={node.Version || 'V0'} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} language={node.Attributes.Language || ''} children={node.Children} />;
+                    return <CodeBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} version={node.Version || 'V0'} pathIndices={pathIndices} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} language={node.Attributes.Language || ''} children={node.Children} />;
                 }
             case 'BlankLine':
-                return <BlankLine key={node.Guid + (node.Version || '0')} id={node.Guid} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
+                return <BlankLine key={node.Guid + (node.Version || 'V0')} id={node.Guid} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
             // ... handle other types as needed
             default:
                 return null;
@@ -227,15 +229,15 @@ const RichTextEditor = () => {
             {
                 const res = historyManager.undo(deepCopyAstNode(astRef.current));
                 if (res) {
-                    const [updatedAst, rootChildIds] = res;
-                    updateContent(updatedAst.Children, rootChildIds);
+                    const [updatedAst] = res;
+                    updateContent(updatedAst.Children, true);
                 }
             } else if (event.key === 'y')
             {
                 const res = historyManager.redo(deepCopyAstNode(astRef.current));
                 if (res) {
-                    const [updatedAst, rootChildIds] = res;
-                    updateContent(updatedAst.Children, rootChildIds);
+                    const [updatedAst] = res;
+                    updateContent(updatedAst.Children, true);
                 }
             }
         }
@@ -260,7 +262,7 @@ const RichTextEditor = () => {
                  color: 'rgba(100, 100, 100, 1)',
                  fontFamily: 'Consolas,Monaco,\'Andale Mono\',\'Ubuntu Mono\',monospace'
                  }}>
-                 {higherLevelAst.map((c) => renderNode(c, higherLevelAst))}
+                 {higherLevelAst.map((c, pathIndex) => renderNode(c, higherLevelAst, [pathIndex]))}
             </div>
         </div>
     );

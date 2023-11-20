@@ -4,10 +4,11 @@ import { AstNode } from "./interface";
 import { handleListClick } from "../../rich-text-editor/handlers";
 
 export interface UnorderedListProps {
+    pathIndices: number[];
     children: AstNode[];
 }
 
-const UnorderedList: React.FC<UnorderedListProps> = ({ children }) => {
+const UnorderedList: React.FC<UnorderedListProps> = ({ pathIndices, children }) => {
 
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(children);
 
@@ -22,9 +23,10 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ children }) => {
     
     return (
         <ul onClick={onClick}>
-            {higherLevelAst.map((child) =>
-                child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} updater={updateContent} children={child.Children} higherLevelChildren={children} /> : null
-            )}
+            {higherLevelAst.map((child, index) => {
+                const childPathIndices = [...pathIndices, index];
+                return child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} updater={updateContent} children={child.Children} higherLevelChildren={children} /> : null
+            })}
         </ul>
     );
 };

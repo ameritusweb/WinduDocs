@@ -3,10 +3,11 @@ import Paragraph from "./paragraph";
 import { AstNode } from "./interface";
 
 interface QuoteBlockProps {
+    pathIndices: number[];
     children: AstNode[];
 }
 
-const QuoteBlock: React.FC<QuoteBlockProps> = ({ children }) => {
+const QuoteBlock: React.FC<QuoteBlockProps> = ({ pathIndices, children }) => {
 
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(children);
 
@@ -17,10 +18,11 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({ children }) => {
 
     return (
         <blockquote>
-            {higherLevelAst.map((child) => {
+            {higherLevelAst.map((child, index) => {
+                const childPathIndices = [...pathIndices, index];
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children, updater: updateContent }} render={props => <p {...props}></p>} />;
+                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children, updater: updateContent }} render={props => <p {...props}></p>} />;
                     default:
                         return null;
                 }

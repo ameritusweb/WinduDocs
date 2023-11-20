@@ -82,19 +82,19 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newLine = createNewAstNode('BlankLine', 0, 0, null);
           higherLevelContentCopy.splice(index + 1, 0, newLine);
-          higherLevelContent.updater(higherLevelContentCopy, '');
+          higherLevelContent.updater(higherLevelContentCopy, true);
         } else if (event.key === 'Backspace') {
           event.preventDefault();
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           higherLevelContentCopy.splice(index, 1);
-          higherLevelContent.updater(higherLevelContentCopy, '');
+          higherLevelContent.updater(higherLevelContentCopy, true);
         } else if (event.key.length === 1) {
           event.preventDefault();
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           higherLevelContentCopy.splice(index, 1);
           const newNode = createNewAstNodeFromFormat(lineFormat || '', event.key);
           higherLevelContentCopy.splice(index, 0, newNode);
-          higherLevelContent.updater(higherLevelContentCopy, '');
+          higherLevelContent.updater(higherLevelContentCopy, true);
         }
 
         event.stopPropagation();

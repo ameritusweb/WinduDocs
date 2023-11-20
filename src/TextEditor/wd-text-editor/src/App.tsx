@@ -6,10 +6,20 @@ import { WysiwygToolbar } from './components/wysiwyg-toolbar';
 import RichTextEditor from './components/wysiwyg/rich-text-editor.js';
 import useConsoleToasts from './hooks/use-console-toasts.js';
 import { ToastContainer } from 'react-toastify';
+import { astContext, astHigherLevelContext } from './components/ast-mapping.js';
+
+declare global {
+  interface Window { astContext: typeof astContext; astHigherLevelContext: typeof astHigherLevelContext; }
+}
 
 function App() {
 
   useConsoleToasts();
+  
+  if (import.meta.env.MODE === 'development') {
+    window.astContext = astContext;
+    window.astHigherLevelContext = astHigherLevelContext;
+  }
 
   Prism.highlight('const a = 2;', Prism.languages.javascript, 'javascript');
   return (
