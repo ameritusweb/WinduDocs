@@ -20,7 +20,7 @@ export const Heading: React.FC<HeadingProps> = ({ id, version, level, pathIndice
         const childPathIndices = [...pathIndices];
         switch (child.NodeName) {
             case 'Text':
-                return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} pathIndices={childPathIndices} id={child.Guid} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
+                return <Paragraph<HTMLParagraphElement> key={child.Guid} pathIndices={childPathIndices} id={child.Guid} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
             default:
                 return null;
         }

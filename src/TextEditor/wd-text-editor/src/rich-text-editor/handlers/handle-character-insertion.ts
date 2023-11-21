@@ -153,6 +153,13 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     return { type: 'insert', rootChildId, nodes: children.map((c) => {
                         return Object.assign({}, c)
                     }) };
+                } else if (child !== null) {
+                    const oldText = '' + child.TextContent;
+                    replaceText(container, child, startOffset, key);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, rootChildId);
+                    return { type: 'insert', rootChildId, nodes: children.map((c) => {
+                        return Object.assign({}, c)
+                    }) };
                 }
             } else {
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
