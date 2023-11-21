@@ -70,22 +70,23 @@
               "Children": []
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "NodeName": "ParagraphBlock",
+      "Attributes": {},
+      "ChildIndex": 0,
+      "Depth": 1,
+      "Guid": "a8b579d3-93c2-4837-8731-44fa04badb8f",
+      "TextContent": null,
+      "Children": [
         {
           "NodeName": "Text",
           "Attributes": {},
           "ChildIndex": 0,
           "Depth": 2,
-          "Guid": "12f9edda-59da-45e6-8dc4-84f7a82b523c",
-          "TextContent": "\n",
-          "Children": []
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Depth": 2,
-          "Guid": "d8d85efd-f787-4ad5-915e-d15f7face731",
+          "Guid": "d8d85efd-f787-4ad5-915e-d16f7face731",
           "TextContent": "This is another paragraph.",
           "Children": []
         }

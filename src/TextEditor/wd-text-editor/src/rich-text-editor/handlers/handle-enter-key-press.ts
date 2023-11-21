@@ -20,11 +20,11 @@ const splitTree = (root: AstNode, leafNode: AstNode, offset: number) => {
         left.Children = [];
         right.Children = [];
 
-        if (depth === 0)
-        {
-            left.Guid = generateKey();
+        //if (depth === 0)
+        //{
+            //left.Guid = generateKey();
             right.Guid = generateKey();
-        }
+        //}
 
         if (node === leaf)
         {
@@ -88,7 +88,13 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                             if (higherLevelIndex !== null) {
-                                if (childIndex > 0)
+                                if (child.TextContent === '\n')
+                                {
+                                    const newLine = createNewAstNode('Text', 0, 0, '\n');
+                                    children.splice(childIndex + 1, 0, newLine);
+                                    higherLevelChildren[higherLevelIndex].Children = children;
+                                }
+                                else if (childIndex > 0)
                                 {
                                     const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
                                     moveArray(children, childIndex, newPara.Children, 0);
@@ -144,23 +150,25 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         const childIndex = childNodes.findIndex((c) => c === container);
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
-                            if (rootChild && astParent !== null && higherLevelIndex !== null) {
+                            if (rootChild && higherLevelIndex !== null) {
                                 const astChild = child.Children[childIndex];
                                 if (childIndex === child.Children.length - 1 && startOffset === astChild.TextContent?.length)
                                 {
-                                    const higherLevelChild = higherLevelChildren[higherLevelIndex];
-                                    if (higherLevelChild)
-                                    {
-                                        const [leftNode, rightNode] = splitNodeAtTarget(higherLevelChild, astChild, startOffset);
-                                        if (leftNode && rightNode) {
-                                            higherLevelChildren.splice(higherLevelIndex, 1, leftNode, rightNode);
-                                            return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
-                                        }
-                                    }
-                                } else {
                                     const newBlank = createNewAstNode('BlankLine', 0, 0, null);
                                     higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
                                     return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                } else {
+                                    const nextSibling = child.Children[childIndex + 1];
+                                    if (nextSibling && nextSibling.TextContent === '\n')
+                                    {
+                                        const newLine = createNewAstNode('Text', 0, 0, '\n');
+                                        child.Children.splice(childIndex + 1, 0, newLine);
+                                        return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                    } else {
+                                        const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                        higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
+                                        return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                    }
                                 }
                             }
                             else if (higherLevelId) {

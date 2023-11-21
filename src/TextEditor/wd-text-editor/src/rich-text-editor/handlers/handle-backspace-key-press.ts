@@ -1,6 +1,6 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
-import { createNewAstNode, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
+import { createNewAstNode, findClosestAncestor, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
 import { removeText } from "../text-manipulation";
 
 // Handle Backspace key press
@@ -38,6 +38,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
     } else {
         const parent = container.parentElement;
         if (parent) {
+            const rootChild = findClosestAncestor(parent, 'richTextEditor');
             const parentId = parent.id;
             const childIndex = children.findIndex((c) => c.Guid === parentId);
             if (childIndex === -1) {
@@ -50,8 +51,14 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
                         const newLine = createNewAstNode('BlankLine', 0, 0, null);
                         const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                         if (higherLevelIndex !== null) {
-                            higherLevelChildren.splice(higherLevelIndex, 1, newLine);
-                            return { type: 'higherLevelRemove', nodes: higherLevelChildren };
+                            const higherLevelChild = higherLevelChildren[higherLevelIndex];
+                            if (rootChild && higherLevelChild.Guid === rootChild.id) {
+                                higherLevelChildren.splice(higherLevelIndex, 1, newLine);
+                                return { type: 'higherLevelRemove', nodes: higherLevelChildren };
+                            } else {
+                                higherLevelChildren.splice(higherLevelIndex, 1, newLine);
+                                return { type: 'higherLevelRemove', nodes: higherLevelChildren };
+                            }
                         }
                     }
                     return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children.map((c, ind) => {

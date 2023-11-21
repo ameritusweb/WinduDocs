@@ -176,7 +176,31 @@ p > code {
   outline: 1px dotted rgba(200, 200, 200, 0.5);
 }
 
-#richTextEditor p {
+#richTextEditor > p {
+  padding-left: 1.1rem;
+}
+
+#richTextEditor h1 {
+  padding-left: 1.1rem;
+}
+
+#richTextEditor h2 {
+  padding-left: 1.1rem;
+}
+
+#richTextEditor h3 {
+  padding-left: 1.1rem;
+}
+
+#richTextEditor h4 {
+  padding-left: 1.1rem;
+}
+
+#richTextEditor h5 {
+  padding-left: 1.1rem;
+}
+
+#richTextEditor h6 {
   padding-left: 1.1rem;
 }
 

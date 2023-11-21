@@ -85,11 +85,11 @@ const RichTextEditor = () => {
             indices = update.pathIndices.slice(0, -1);
           }
 
-          // Update the tree with the new children directly using the current AST
-          const updatedAst = updateNodeChildren(astRef.current, indices, update);
-          
-          // Update the content with the new tree
-          updateContent(updatedAst.Children, update.type !== 'insert');
+            // Update the tree with the new children directly using the current AST
+            const updatedAst = updateNodeChildren(astRef.current, indices, update);
+            
+            // Update the content with the new tree
+            updateContent(updatedAst.Children, update.type !== 'insert');
         }
       };      
 
@@ -231,6 +231,8 @@ const RichTextEditor = () => {
         if (event.button === 0) {
             editorData.cursorOffsetReduction = 0;
         }
+
+        (event.target as HTMLElement).focus();
 
     }
 

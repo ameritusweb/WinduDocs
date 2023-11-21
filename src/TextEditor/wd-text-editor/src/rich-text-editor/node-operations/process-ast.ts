@@ -14,17 +14,50 @@ class TextBlock implements ITextBlock {
 
 const processTextContent = (textContent: string, parentId: string, index: number): ITextBlock[] => {
     return textContent.split('\n')
-        .filter(part => part.trim() !== '')
         .map((part) => {
             return new TextBlock(parentId, index, part);
         });
 };
 
-
 const processAst = async (markdownAst: AstNode): Promise<[TextBlock[][], Map<string, number[]>]> => {
     const lines: TextBlock[][] = [];
     let currentLine: TextBlock[] = [];
     const guidMap = new Map<string, number[]>();
+
+    function processTextNode(node: AstNode, parentId: string, index: number) {
+        if (node.TextContent) {
+            if (node.TextContent.includes("\n")) {
+                if (currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = [];
+                }
+                if (node.TextContent === '\n')
+                {
+                    const newBlock = new TextBlock(parentId, index, '');
+                    currentLine.push(newBlock);
+                    guidMap.set(`${newBlock.guid} ${index}`, [lines.length, currentLine.length - 1]);
+                    lines.push(currentLine);
+                    currentLine = [];
+                } else {
+                    const textBlocks = processTextContent(node.TextContent, parentId, index);
+                    let pushedLine: boolean = false;
+                    textBlocks.forEach((block, i) => {
+                        currentLine.push(block);
+                        if (!pushedLine)
+                            guidMap.set(`${block.guid} ${index}`, [lines.length, currentLine.length - 1]);
+                        lines.push(currentLine);
+                        pushedLine = true;
+                        currentLine = [];
+                    });
+                }
+            } else {
+                // If there are no newlines, handle the text content directly.
+                const block = new TextBlock(parentId, index, node.TextContent);
+                currentLine.push(block);
+                guidMap.set(`${block.guid} ${index}`, [lines.length, currentLine.length - 1]);
+            }
+        }
+    }
 
     async function processNode(node: AstNode, index: number, parentId: string): Promise<void> {
         if (!node) return;
@@ -32,30 +65,7 @@ const processAst = async (markdownAst: AstNode): Promise<[TextBlock[][], Map<str
         switch (node.NodeName) {
             case "CodeInline":
             case "Text":
-                if (node.TextContent) {
-                    if (node.TextContent.includes("\n")) {
-                        if (currentLine.length > 0) {
-                            lines.push(currentLine);
-                            currentLine = [];
-                        }
-                        // If the text content includes newlines, process each line separately.
-                        const textBlocks = processTextContent(node.TextContent, parentId, index);
-                        let pushedLine: boolean = false;
-                        textBlocks.forEach((block, i) => {
-                            currentLine.push(block);
-                            if (!pushedLine)
-                                guidMap.set(`${block.guid} ${index}`, [lines.length, currentLine.length - 1]);
-                            lines.push(currentLine);
-                            pushedLine = true;
-                            currentLine = [];
-                        });
-                    } else {
-                        // If there are no newlines, handle the text content directly.
-                        const block = new TextBlock(parentId, index, node.TextContent);
-                        currentLine.push(block);
-                        guidMap.set(`${block.guid} ${index}`, [lines.length, currentLine.length - 1]);
-                    }
-                }
+                processTextNode(node, parentId, index);
                 break;
             case "BlankLine":
                 if (currentLine.length > 0) {

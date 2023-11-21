@@ -40,7 +40,7 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
   }, [id]); // Depend on the GUID prop
 
     // Determine the tag based on the format. Default to 'p' for plain text.
-    const Tag = lineFormat && lineFormat !== 'unselected' && !Array.isArray(lineFormat) ? lineFormat : 'p';
+    const Tag = lineFormat && lineFormat !== 'unselected' && typeof lineFormat === 'string' && lineFormat.startsWith('h') && !Array.isArray(lineFormat) ? lineFormat : 'p';
   
     const onFocus = () => {
       const editorData: EditorDataType = EditorData;
@@ -54,7 +54,7 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
     }
 
     const onBlur = () => {
-      setLineFormat(null);
+      //setLineFormat(null);
     }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
