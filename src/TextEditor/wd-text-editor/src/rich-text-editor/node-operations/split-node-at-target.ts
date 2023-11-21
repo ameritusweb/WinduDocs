@@ -7,94 +7,52 @@ import { AstNode } from "../../components/wysiwyg/interface";
  * then splits the target node into two nodes at the given local offset,
  * and reconstructs the tree to include the split nodes.
  * 
- * @param {AstNode} rootNode - The root node of the AST.
+ * @param {AstNode} root - The root node of the AST.
  * @param {AstNode} target - The target node where the split will occur.
- * @param {number} localOffset - The local offset within the target node to perform the split.
+ * @param {number} offset - The local offset within the target node to perform the split.
  * @returns {[AstNode, AstNode, AstNode]} - An array containing the left node, right node, and a new line node created by the split.
  */
-const splitNodeAtTarget = (rootNode: AstNode, targetNode: AstNode, localOffset: number): [AstNode | null, AstNode | null, AstNode] => {
-    const performSplit = (node: AstNode, offset: number, depth: number): [AstNode | null, AstNode | null, AstNode, boolean] => {
-      if (node.Guid === targetNode.Guid) {
-        if (!node.TextContent || offset > node.TextContent.length) {
-          throw new Error("Local offset is out of bounds.");
+const splitNodeAtTarget = (root: AstNode, target: AstNode, offset: number): [AstNode, AstNode] => {
+    let targetFound = false;
+
+    const generateNewTree = (node: AstNode, generateNewGuid: boolean): AstNode => {
+        return {
+            ...node,
+            Children: node.Children.map(child => generateNewTree(child, generateNewGuid)),
+            Guid: generateNewGuid ? generateKey() : node.Guid
+        };
+    };
+
+    const traverseAndSplit = (node: AstNode, depth: number): [AstNode, AstNode | null] => {
+        if (node.Guid === target.Guid) {
+            targetFound = true;
+            const leftNode = { ...node, TextContent: node.TextContent!.substring(0, offset), Children: node.Children };
+            const rightNode = { ...node, TextContent: node.TextContent!.substring(offset), Children: [], Guid: generateKey() };
+            return [leftNode, rightNode];
         }
-  
-        // Splitting the target node
-        const leftNode: AstNode = {
-          ...node,
-          TextContent: node.TextContent.substring(0, offset),
-          Children: [],
-          Guid: node.Guid  // Keep the original Guid for the left node
-        };
-  
-        const rightNode: AstNode = {
-          ...node,
-          TextContent: node.TextContent.substring(offset),
-          Children: [],
-          Guid: generateKey()  // Generate new Guid for the right node
-        };
-  
-        const newLine: AstNode = {
-          ...node,
-          TextContent: '\n',
-          Children: [],
-          Guid: generateKey()
-        };
-  
-        // Check if nodes need to be removed after split
-        const leftNodeEmpty = isNodeEmpty(leftNode);
-        const rightNodeEmpty = isNodeEmpty(rightNode);
-  
-        return [leftNodeEmpty ? null : leftNode, rightNodeEmpty ? null : rightNode, newLine, leftNodeEmpty || rightNodeEmpty];
-      }
-  
-      for (let i = 0; i < node.Children.length; i++) {
-        if (findNodeInTree(node.Children[i], targetNode.Guid)) {
-          const [leftChild, rightChild, newLine, childNeedsRemoval] = performSplit(node.Children[i], offset, depth + 1);
-  
-          let updatedChildren = [...node.Children];
-          if (leftChild) {
-            updatedChildren[i] = leftChild;
-          } else {
-            updatedChildren.splice(i, 1);  // Remove the child if it's empty
-          }
-  
-          if (rightChild) {
-            updatedChildren.splice(i + 1, 0, rightChild, newLine);
-          }
-  
-          const parentNodeEmpty = isNodeEmpty(node);
-        return [parentNodeEmpty ? null : {
-          ...node,
-          Children: updatedChildren,
-          Guid: node.Guid
-        }, null, newLine, parentNodeEmpty || childNeedsRemoval];
+
+        let leftChildren = [];
+        let rightChildren = [];
+        for (let i = 0; i < node.Children.length; i++) {
+            if (targetFound) {
+                rightChildren.push(generateNewTree(node.Children[i], true));
+            } else {
+                const [leftChild, rightChild] = traverseAndSplit(node.Children[i], depth + 1);
+                leftChildren.push(leftChild);
+                if (rightChild) {
+                    rightChildren.push(rightChild);
+                }
+            }
         }
-      }
-  
-      throw new Error("Target node not found in the tree.");
+
+        const leftPart = { ...node, Children: leftChildren, Guid: node.Guid };
+        const rightPart = targetFound ? { ...node, Children: rightChildren, Guid: generateKey() } : null;
+        return [leftPart, rightPart];
     };
-  
-    const isNodeEmpty = (node: AstNode): boolean => {
-      return (!node.TextContent || node.TextContent.trim() === '') && (!node.Children || node.Children.length === 0);
-    };
-  
-    const findNodeInTree = (node: AstNode, guid: string): boolean => {
-      if (node.Guid === guid) {
-        return true;
-      }
-      return node.Children.some(child => findNodeInTree(child, guid));
-    };
-  
-    // Start the split process
-    const [newRoot, , newLine, rootNeedsRemoval] = performSplit(rootNode, localOffset, 0);
-  
-    if (rootNeedsRemoval) {
-      // Handle the case where the root node itself needs to be removed
-      return [null, null, newLine];
-    }
-  
-    return [newRoot, null, newLine];
-  };
+
+    const [leftTree, rightTree] = traverseAndSplit(root, 0);
+    return [leftTree, rightTree ? rightTree : generateNewTree(root, true)];
+};
+
 
 export default splitNodeAtTarget;
