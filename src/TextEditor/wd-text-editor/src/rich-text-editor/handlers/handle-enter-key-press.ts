@@ -1,6 +1,7 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
-import { createNewAstNode, createNewAstNodeFromFormat, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode } from "../node-operations";
+import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode, splitNodeAtTarget } from "../node-operations";
+import { trimSpecial } from "../undo-redo-ot";
 
 const splitTree = (root: AstNode, leafNode: AstNode, offset: number) => {
 
@@ -73,6 +74,9 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
     {
         const parent = container.parentElement;
         if (parent) {
+            const parentId = parent.id;
+            const rootChild = findClosestAncestor(parent, 'richTextEditor');
+            let [child, astParent] = findNodeByGuid(higherLevelChildren, parentId, null);
             if (startOffset === 0)
             {
                 if (parent.nodeName === 'SPAN' || parent.nodeName === 'P' || parent.nodeName === 'EM' || parent.nodeName === 'STRONG') {
@@ -113,7 +117,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                             const childIndex = childNodes.findIndex((c) => c === container);
                             const child = children[childIndex];
                             if (child && higherLevelId) {
-                                const node = findNodeByGuid(higherLevelChildren, higherLevelId);
+                                const [node] = findNodeByGuid(higherLevelChildren, higherLevelId, null);
                                 const newNode = Object.assign({}, node);
                                 newNode.Guid = generateKey();
                                 newNode.Children = [ createNewAstNodeFromFormat('p', '\n') ];
@@ -126,7 +130,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                             const childIndex = childNodes.findIndex((c) => c === container);
                             const child = children[childIndex];
                             if (child && higherLevelId) {
-                                const node = findNodeByGuid(higherLevelChildren, higherLevelId);
+                                const [node] = findNodeByGuid(higherLevelChildren, higherLevelId, null);
                                 const newNode = Object.assign({}, node);
                                 const index = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
                                 higherLevelChildren.splice(index + 1, 0, newNode);
@@ -138,13 +142,26 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                     if (gparent) {
                         const childNodes = Array.from(parent.childNodes);
                         const childIndex = childNodes.findIndex((c) => c === container);
-                        const child = children[childIndex];
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
-                            if (higherLevelIndex !== null) {
-                                const newBlank = createNewAstNode('BlankLine', 0, 0, null);
-                                higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
-                                return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                            if (rootChild && astParent !== null && higherLevelIndex !== null) {
+                                const astChild = child.Children[childIndex];
+                                if (childIndex === child.Children.length - 1 && startOffset === astChild.TextContent?.length)
+                                {
+                                    const higherLevelChild = higherLevelChildren[higherLevelIndex];
+                                    if (higherLevelChild)
+                                    {
+                                        const [leftNode, rightNode] = splitNodeAtTarget(higherLevelChild, astChild, startOffset);
+                                        if (leftNode && rightNode) {
+                                            higherLevelChildren.splice(higherLevelIndex, 1, leftNode, rightNode);
+                                            return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                        }
+                                    }
+                                } else {
+                                    const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                    higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
+                                    return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                }
                             }
                             else if (higherLevelId) {
                                 const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
@@ -165,7 +182,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                     if (gparent) {
                         const childNodes = Array.from(parent.childNodes);
                         const childIndex = childNodes.findIndex((c) => c === container);
-                        const lowerLevelParent = findNodeByGuid(higherLevelChildren, parent.id);
+                        const [lowerLevelParent] = findNodeByGuid(higherLevelChildren, parent.id, null);
                         const child = lowerLevelParent?.Children[childIndex];
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
@@ -203,7 +220,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                     return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                 } else {
                                     const higherLevelChild = higherLevelChildren[higherLevelIndex];
-                                    const lowerLevelParent = findNodeByGuid(children, parent.id);
+                                    const [lowerLevelParent] = findNodeByGuid(children, parent.id, null);
                                     if (lowerLevelParent) {
                                         const lowerLevelChild = lowerLevelParent.Children[childIndex];
                                         const split = splitTree(higherLevelChild, lowerLevelChild, startOffset);

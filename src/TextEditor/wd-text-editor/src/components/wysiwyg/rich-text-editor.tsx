@@ -148,12 +148,23 @@ const RichTextEditor = () => {
                     if (addedNode.className === 'blank-line')
                     {
                         const selection = window.getSelection();
-                        const range = new Range();
-                        range.setStart(addedNode, 1);
-                        range.setEnd(addedNode, 1);
-                        if (selection && range) {
-                            selection.removeAllRanges();
-                            selection.addRange(range);
+                        if (selection?.anchorNode && selection?.anchorNode instanceof Text)
+                        {
+                            const range = new Range();
+                            range.setStart(selection.anchorNode, 0);
+                            range.setEnd(selection.anchorNode, 0);
+                            if (selection && range) {
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }
+                        } else {
+                            const range = new Range();
+                            range.setStart(addedNode, 1);
+                            range.setEnd(addedNode, 1);
+                            if (selection && range) {
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }
                         }
                     } else if (addedNode.getAttribute('version') === 'New'
                                 ||

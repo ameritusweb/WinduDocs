@@ -76,17 +76,31 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       }
     };
   
-    const restoreCursorPosition = (node: Node) => {
+    const restoreCursorPosition = (mutationRecord: MutationRecord | null) => {
+      if (!mutationRecord)
+        return;
+      let node = mutationRecord.target as Node;
       const selection = window.getSelection();
       const range = new Range();
       if (cursorPositionRef.current) {
         let offset = cursorPositionRef.current.offset;
+        if (mutationRecord.removedNodes.length)
+        {
+          node = mutationRecord.removedNodes[0];
+        }
         if ((node as Element).id === cursorPositionRef.current.parentId && node.hasChildNodes()) {
           node = node.childNodes[cursorPositionRef.current.index];
         }
         if (cursorPositionRef.current.nextSibling)
         {
-          if (node.nodeType !== Node.TEXT_NODE)
+          if (mutationRecord.type === 'characterData')
+          {
+            while (!node.nextSibling) {
+              node = node.parentElement as Node;
+            }
+            node = node.nextSibling;
+          }
+          else if (node.nodeType !== Node.TEXT_NODE)
           {
             const child = Array.from(node.childNodes).find((c) => (c as Element).id === cursorPositionRef.current?.parentId);
             node = (child as Element).nextSibling as Node;
@@ -99,7 +113,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
             }
           }
         }
-        if (cursorPositionRef.current.lastChild) {
+        else if (cursorPositionRef.current.lastChild) {
           node = node.lastChild?.firstChild as Node;
           if (cursorPositionRef.current.offset === -1) {
             offset = (node.textContent?.length || 0) - 1;
@@ -119,7 +133,8 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       const observer = new MutationObserver((mutationsList) => {
         // Check for the specific mutation type, if necessary
         if (mutationsList.length > 0) {
-          restoreCursorPosition(mutationsList[mutationsList.length - 1].target);
+          const mutation = mutationsList.find((m) => m.type === 'characterData');
+          restoreCursorPosition(mutation || mutationsList[mutationsList.length - 1] || null);
         }
       });
   

@@ -1,5 +1,5 @@
 import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
-import { createNewAstNode, findClosestAncestorId, findHigherlevelIndex, findNodeByGuid, splitNode } from "../node-operations";
+import { createNewAstNode, findClosestAncestorId, findHigherlevelIndex, findNodeByGuid, nestedSplitNode, splitNode } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 
 const createNodeWithTypeAndKey = (type: string, key: string) => {
@@ -59,9 +59,9 @@ const updateHigherLevelNodes = (higherLevelChildren: AstNode[], children: AstNod
     return higherLevelChildren;
 };
 
-const splitAndUpdateHigherLevelNodes = (child: AstNode, startOffset: number, indexToSplit: number, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[]) => {
+const splitAndUpdateHigherLevelNodes = (child: AstNode, startOffset: number, indexToSplit: number, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], useNestedSplit: boolean) => {
 
-    const [node1, node2] = splitNode(child, startOffset, indexToSplit);
+    const [node1, node2] = useNestedSplit ? nestedSplitNode(child, startOffset) : splitNode(child, startOffset, indexToSplit);
     const newContainer = createNodeWithTypeAndKey(type, key);
     const childIndex = findHigherlevelIndex(children, higherLevelChildren);
     if (childIndex !== null) {
@@ -88,21 +88,38 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
         if (parent) {
             const rootChildId = findClosestAncestorId(parent, 'richTextEditor');
             const parentId = parent.id;
-            let child = findNodeByGuid(children, parentId);
+            let [child, astParent] = findNodeByGuid(children, parentId, null);
             if (child) {
                 let grandChild = null;
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
                 if (child.Children.length) {
                     grandChild = child.Children[index];
                 }
-                if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && editorState === 'normal')
+                if (astParent && parent.parentElement?.nodeName === 'STRONG' && parent.nodeName === 'EM' && editorState === 'normal')
                 {
                     if (startOffset === 0) {
                         // TODO
                     }
                     else if (startOffset < (container.textContent || '').length)
                     {
-                        const nodes = splitAndUpdateHigherLevelNodes(child, startOffset, index, children.indexOf(child), 'Text', key, children, higherLevelChildren);
+                        const nodes = splitAndUpdateHigherLevelNodes(astParent, startOffset, index, children.indexOf(astParent), 'Text', key, children, higherLevelChildren, true);
+                        if (nodes !== null)
+                            return { type: 'higherLevelSplit', nodes };
+                    } else {
+                        const newText = createNodeWithTypeAndKey('Text', key);
+                        const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newText], 'end');
+                        if (nodes !== null)
+                            return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                    }
+                }
+                else if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && editorState === 'normal')
+                {
+                    if (startOffset === 0) {
+                        // TODO
+                    }
+                    else if (startOffset < (container.textContent || '').length)
+                    {
+                        const nodes = splitAndUpdateHigherLevelNodes(child, startOffset, index, children.indexOf(child), 'Text', key, children, higherLevelChildren, false);
                         if (nodes !== null)
                             return { type: 'higherLevelSplit', nodes };
                     } else {
@@ -113,10 +130,17 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     }
                 } else if ((parent.nodeName === 'STRONG' && editorState === 'em') || (parent.nodeName === 'EM' && editorState === 'strong') )
                 {
-                    const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);
-                    const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newContainer], 'end');
-                    if (nodes !== null) 
-                        return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
+                    if (astParent && parent.parentElement?.nodeName === 'STRONG')
+                    {
+                        const nodes = splitAndUpdateHigherLevelNodes(astParent, startOffset, index, children.indexOf(astParent), 'Strong', key, children, higherLevelChildren, true);
+                        if (nodes !== null)
+                            return { type: 'higherLevelSplit', nodes };
+                    } else {
+                        const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);
+                        const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newContainer], 'end');
+                        if (nodes !== null) 
+                            return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
+                    }
                 } else if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && parent.parentElement?.nodeName !== 'STRONG' && Array.isArray(editorState)) {
                     const newContainer = createNodeWithTypeAndKey('Strong + Emphasis', key);
                     const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newContainer], 'end');

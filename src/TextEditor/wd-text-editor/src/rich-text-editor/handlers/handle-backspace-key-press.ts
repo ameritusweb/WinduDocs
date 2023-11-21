@@ -77,7 +77,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
                     return ind === childIndex ? Object.assign({}, child) : c
                 }) };
             } else {
-                const node = findNodeByGuid(children, parent.id);
+                const [node] = findNodeByGuid(children, parent.id, null);
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
                 child = children[index];
                 if (child && node === child) {
