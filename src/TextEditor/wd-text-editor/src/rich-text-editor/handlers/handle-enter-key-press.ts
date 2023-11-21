@@ -65,6 +65,16 @@ const splitTree = (root: AstNode, leafNode: AstNode, offset: number) => {
   
   }
 
+  const replaceKeys = (node: AstNode): AstNode => {
+
+    return {
+      ...node, 
+      Guid: generateKey(),
+      Children: node.Children.map(child => replaceKeys(child))
+    };
+  
+  }
+
 const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
     if (commonAncestor.nodeName !== '#text') {
@@ -124,7 +134,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                             const child = children[childIndex];
                             if (child && higherLevelId) {
                                 const [node] = findNodeByGuid(higherLevelChildren, higherLevelId, null);
-                                const newNode = Object.assign({}, node);
+                                const newNode = replaceKeys(node!);
                                 newNode.Guid = generateKey();
                                 newNode.Children = [ createNewAstNodeFromFormat('p', '\n') ];
                                 const index = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
@@ -137,9 +147,10 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                             const child = children[childIndex];
                             if (child && higherLevelId) {
                                 const [node] = findNodeByGuid(higherLevelChildren, higherLevelId, null);
-                                const newNode = Object.assign({}, node);
+                                const newNode = replaceKeys(node!);
                                 const index = higherLevelChildren.findIndex((c) => c.Guid === higherLevelId);
                                 higherLevelChildren.splice(index + 1, 0, newNode);
+                                return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                             }
                         }
                     }

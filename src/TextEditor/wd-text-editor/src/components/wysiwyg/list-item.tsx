@@ -7,19 +7,18 @@ import { AstNode } from "./interface";
 export interface ListItemProps {
     id: string;
     pathIndices: number[];
-    updater: (nodes: AstNode[]) => void;
     children: AstNode[];
     higherLevelChildren: AstNode[];
 }
 
-const ListItem: React.FC<ListItemProps> = ({ id, pathIndices, children, higherLevelChildren, updater }) => {
+const ListItem: React.FC<ListItemProps> = ({ id, pathIndices, children, higherLevelChildren }) => {
     return (
         <li id={id}>
-            {children.map((child, index) => {
-                const childPathIndices = [...pathIndices, index];
+            {children.map((child) => {
+                const childPathIndices = [...pathIndices];
                 switch (child.NodeName) {
                     case 'ParagraphBlock':
-                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: higherLevelChildren, id, updater }} render={props => <p {...props}></p>} />;
+                        return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: higherLevelChildren, id }} render={props => <p {...props}></p>} />;
                     case 'ListBlock':
                         if (child.Attributes.IsOrdered && child.Attributes.IsOrdered === 'True')
                         {
