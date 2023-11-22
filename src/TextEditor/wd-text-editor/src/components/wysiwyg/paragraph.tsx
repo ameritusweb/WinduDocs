@@ -205,7 +205,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       contentEditable: true,
       suppressContentEditableWarning: true,
       onKeyDown,
-      children: ast.map((item, index) => {
+      children: props.content.map((item, index) => {
         const childPathIndices = [...props.pathIndices, index];
         switch (item.NodeName) {
           case 'Strong':

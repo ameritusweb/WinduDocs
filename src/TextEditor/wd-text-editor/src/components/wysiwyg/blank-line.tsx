@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
 import { AstNode, HigherLevelProps } from "./interface";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
@@ -15,31 +15,53 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
     
     const [lineFormat, setLineFormat] = useState<string | null | undefined>(format);
     const blankLineRef = useRef<HTMLElement | null>(null);
+    const higherLevelContentRef = useRef<AstNode[]>(higherLevelContent.content);
     const { createNewAstNode, createNewAstNodeFromFormat } = useRichTextEditor();
     const editorData: EditorDataType = EditorData;
-    
+
     useEffect(() => {
-      const handleInsertHR = (payload: any) => {
+
+      higherLevelContentRef.current = higherLevelContent.content;
+
+    }, [higherLevelContent]);
+    
+    const handleInsertQuote = (payload: any) => {
+      if (higherLevelContent && higherLevelContent.updater) {
+        const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          const newText = createNewAstNode('Text', 0, 0, '\n');
+          const newParagraph = createNewAstNode('ParagraphBlock', 0, 0, null, [newText]);
+          const newLine = createNewAstNode('QuoteBlock', 0, 0, null, [newParagraph]);
+          higherLevelContentCopy.splice(index, 1, newLine);
+          higherLevelContent.updater(higherLevelContentCopy, true);
+      }
+    };
+
+    const handleInsertFenced = (payload: any) => {
+      if (higherLevelContent && higherLevelContent.updater) {
+        const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          const newText = createNewAstNode('Text', 0, 0, '\n');
+          const newCodeBlock = createNewAstNode('FencedCodeBlock', 0, 0, null, [newText]);
+          higherLevelContentCopy.splice(index, 1, newCodeBlock);
+          higherLevelContent.updater(higherLevelContentCopy, true);
+      }
+    };
+
+    const handleInsertHR = (payload: any) => {
           
-      };
+    };
+
+    useEffect(() => {
 
       // Subscribe with the provided GUID
       editorData.events.subscribe(id, 'InsertHR', handleInsertHR);
 
-      const handleInsertQuote = (payload: any) => {
-        if (higherLevelContent && higherLevelContent.updater) {
-          const higherLevelContentCopy = higherLevelContent.content.map((h) => deepCopyAstNode(h));
-            const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
-            const newText = createNewAstNode('Text', 0, 0, '\n');
-            const newParagraph = createNewAstNode('ParagraphBlock', 0, 0, null, [newText]);
-            const newLine = createNewAstNode('QuoteBlock', 0, 0, null, [newParagraph]);
-            higherLevelContentCopy.splice(index, 1, newLine);
-            higherLevelContent.updater(higherLevelContentCopy, true);
-        }
-      };
-
       // Subscribe with the provided GUID
       editorData.events.subscribe(id, 'InsertQuote', handleInsertQuote);
+
+      // Subscribe with the provided GUID
+      editorData.events.subscribe(id, 'InsertFenced', handleInsertFenced);
 
       return () => {
           // Unsubscribe the GUID on component unmount

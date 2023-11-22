@@ -38,7 +38,7 @@ const RichTextEditor = () => {
     }
 
     const updateContent = (nodes: AstNode[], updateProcessed: boolean) => {
-        setHigherLevelAst(nodes);
+        setHigherLevelAst(prev => nodes.map(n => Object.assign({}, n)));
         astRef.current.Children = nodes;
         if (updateProcessed)
             updateProcessedAst();
@@ -131,19 +131,8 @@ const RichTextEditor = () => {
             else if (lastMutation.addedNodes && lastMutation.addedNodes.length > 0)
             {
                 const addedNode = lastMutation.addedNodes[0];
-                /*
-                if (addedNode && addedNode instanceof Text)
-                {
-                    const selection = window.getSelection();
-                    const range = new Range();
-                    range.setStart(addedNode, addedNode.textContent?.length || 1);
-                    range.setEnd(addedNode, addedNode.textContent?.length || 1);
-                    if (selection && range) {
-                        selection.removeAllRanges();
-                        selection.addRange(range);
-                    }
-                }
-                else*/if (addedNode && addedNode instanceof Element)
+                
+                if (addedNode && addedNode instanceof Element)
                 {
                     if (addedNode.className === 'blank-line')
                     {
@@ -246,7 +235,6 @@ const RichTextEditor = () => {
         if (event.key === 'ArrowUp' || event.key === 'ArrowDown')
         {
             event.preventDefault();
-            // processedAstRef.current = processAst(astRef.current);
             handleArrowKeyUpOrDownPress(event.key, editorData, processedAstRef.current, processedAstMap.current);
         }
 
