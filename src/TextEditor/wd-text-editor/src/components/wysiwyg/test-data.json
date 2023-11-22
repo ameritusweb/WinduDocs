@@ -1476,15 +1476,6 @@
               "Attributes": {},
               "ChildIndex": 0,
               "Depth": 3,
-              "Guid": "d8015432-0934-423e-b6d3-681bd459b8bf",
-              "TextContent": "\n",
-              "Children": []
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
               "Guid": "291b296b-99b1-4702-a119-0c062a3a5500",
               "TextContent": "This is a blockquote.",
               "Children": []
@@ -1506,15 +1497,6 @@
               "Depth": 3,
               "Guid": "0aef21a1-5e28-4074-afc7-086140b0f28d",
               "TextContent": "It can span",
-              "Children": []
-            },
-            {
-              "NodeName": "Text",
-              "Attributes": {},
-              "ChildIndex": 0,
-              "Depth": 3,
-              "Guid": "8d5df371-fc48-477e-b73a-bc4365f166dc",
-              "TextContent": "\n",
               "Children": []
             },
             {

@@ -97,7 +97,7 @@ const handleArrowKeyUpOrDownPress = (key: string, editorData: EditorDataType, pr
     if (currentNode.nodeType === Node.TEXT_NODE) {
         textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
         currentNode = currentNode.parentElement;
-        if (currentNode?.nodeName === 'CODE')
+        if (currentNode && currentNode.parentElement?.nodeName === 'CODE')
         {
             textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
             currentNode = currentNode.parentElement;
@@ -124,12 +124,12 @@ const handleArrowKeyUpOrDownPress = (key: string, editorData: EditorDataType, pr
         return;
 
     const newRange = document.createRange();
-    let start =(element.nodeName === 'CODE' || element.nodeName.startsWith('H') || element.nodeName.startsWith('A')) ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
+    let start =(element.nodeName.startsWith('H') || element.nodeName.startsWith('A')) ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
 
     if (!start)
         return;
 
-    if (start.nodeName === 'CODE')
+    if (element && element.nodeName === 'CODE' && start.nodeName !== '#text')
     {
         start = start.childNodes[0];
     }

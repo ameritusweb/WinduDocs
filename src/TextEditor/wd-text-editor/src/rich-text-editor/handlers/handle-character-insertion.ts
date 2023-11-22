@@ -86,6 +86,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
     {
         const parent = container.parentElement;
         if (parent) {
+            const grandParent = parent.parentElement;
             const rootChildId = findClosestAncestorId(parent, 'richTextEditor');
             const parentId = parent.id;
             let [child, astParent] = findNodeByGuid(children, parentId, null);
@@ -146,6 +147,19 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newContainer], 'end');
                     if (nodes !== null) 
                         return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
+                } else if (grandParent && grandParent.nodeName === 'CODE') {
+                    
+                    const oldText = '' + child.TextContent;
+                    if (child.TextContent === '\n')
+                    {
+                        child.TextContent = '';
+                    }
+                    replaceText(container, child, startOffset, key);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, rootChildId);
+                    const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === children[0].Guid);
+                    higherLevelChildren[higherLevelIndex] = child;
+                    return { type: 'higherLevelInsert', rootChildId, nodes: higherLevelChildren };
+                
                 } else if (grandChild !== null) {
                     const oldText = '' + grandChild.TextContent;
                     replaceText(container, grandChild, startOffset, key);

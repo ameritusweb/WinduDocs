@@ -96,7 +96,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         const childIndex = childNodes.findIndex((c) => c === container);
                         const child = children[childIndex];
                         if (child) {
-                            const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+                            let higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                             if (higherLevelIndex !== null) {
                                 if (child.TextContent === '\n')
                                 {
@@ -116,6 +116,13 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                     higherLevelChildren.splice(higherLevelIndex, 0, newBlank);
                                 }
                                 return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                            } else if (container.textContent === '\n') {
+                                higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === children[0].Guid);
+                                if (higherLevelIndex) {
+                                    const newLine = createNewAstNode('Text', 0, 0, '\n');
+                                    higherLevelChildren.splice(higherLevelIndex + 1, 0, newLine);
+                                    return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                                }
                             }
                         }
                     }
@@ -132,6 +139,18 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                     const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === trimSpecial(parentId, { startString: 'para_' }));
                     if (child && higherLevelIndex !== -1) {
                         const newNode = createNewAstNodeFromFormat('p', '\n');
+                        higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
+                        return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                    }
+                }
+                else if (gparent && gparent.nodeName === 'CODE')
+                {
+                    const childNodes = Array.from(parent.childNodes);
+                    const childIndex = childNodes.findIndex((c) => c === container);
+                    const child = children[childIndex];
+                    const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === trimSpecial(parentId, { startString: 'para_' }));
+                    if (child && higherLevelIndex !== -1) {
+                        const newNode = createNewAstNode('Text', 0, 0, '\n');
                         higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                     }

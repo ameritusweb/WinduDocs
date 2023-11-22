@@ -78,14 +78,14 @@
         "Action": "Indent"
     },
     {
-      "Name": "Inline",
+      "Name": "Insert Inline",
       "GroupName": "Code Block",
-      "State": "inline"
+      "Action": "InsertInline"
     },
     {
-        "Name": "Fenced",
+        "Name": "Insert Fenced",
         "GroupName":"Code Block",
-        "State": "fenced"
+        "Action": "InsertFenced"
     },
     {
       "Name": "Insert Quote",
@@ -96,5 +96,10 @@
         "Name": "Insert Horizontal Rule",
         "GroupName":"Misc",
         "Action": "InsertHR"
+    },
+    {
+      "Name": "Insert Info Block",
+      "GroupName":"Misc",
+      "Action": "InsertInfoBlock"
     }
   ]

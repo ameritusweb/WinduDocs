@@ -39,7 +39,7 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type,
                     const childPathIndices = [...pathIndices, index];
                     switch (child.NodeName) {
                         case 'Text':
-                            return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
+                            return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
                         default:
                             return null;
                     }
