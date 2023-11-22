@@ -29,22 +29,23 @@ export class EditorData implements EditorDataType {
     cursorOffsetReduction: number;
 
     public emitEvent(action: EventAction, id: string, payload: any) {
-        this.events.emit(action, id, payload);
-        /*
-        const selection = window.getSelection();
-        if (selection) {
-            const range = selection.getRangeAt(0);
-            const container = range.startContainer;
-            if (container instanceof Element)
-            {
-                this.events.emit(action, container.id, );
-            } else if (container instanceof Text)
-            {
-                const parent = container.parentElement as Element;
-                this.events.emit(action, parent.id, null);
+        if (id === 'broadcast') {
+            const selection = window.getSelection();
+            if (selection) {
+                const range = selection.getRangeAt(0);
+                const container = range.startContainer;
+                if (container instanceof Element)
+                {
+                    this.events.emit(action, container.id, null);
+                } else if (container instanceof Text)
+                {
+                    const parent = container.parentElement as Element;
+                    this.events.emit(action, parent.id, null);
+                }
             }
+        } else {
+            this.events.emit(action, id, payload);
         }
-        */
     }
 }
 

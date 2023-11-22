@@ -27,7 +27,15 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
       editorData.events.subscribe(id, 'InsertHR', handleInsertHR);
 
       const handleInsertQuote = (payload: any) => {
-          
+        if (higherLevelContent && higherLevelContent.updater) {
+          const higherLevelContentCopy = higherLevelContent.content.map((h) => deepCopyAstNode(h));
+            const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+            const newText = createNewAstNode('Text', 0, 0, '\n');
+            const newParagraph = createNewAstNode('ParagraphBlock', 0, 0, null, [newText]);
+            const newLine = createNewAstNode('QuoteBlock', 0, 0, null, [newParagraph]);
+            higherLevelContentCopy.splice(index, 1, newLine);
+            higherLevelContent.updater(higherLevelContentCopy, true);
+        }
       };
 
       // Subscribe with the provided GUID

@@ -124,7 +124,19 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
             else if (startOffset === container.textContent?.length)
             {
                 const gparent = parent.parentElement;
-                if (gparent && gparent?.nodeName === 'LI') {
+                if (gparent && gparent.nodeName === 'BLOCKQUOTE')
+                {
+                    const childNodes = Array.from(parent.childNodes);
+                    const childIndex = childNodes.findIndex((c) => c === container);
+                    const child = children[childIndex];
+                    const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === trimSpecial(parentId, { startString: 'para_' }));
+                    if (child && higherLevelIndex !== -1) {
+                        const newNode = createNewAstNodeFromFormat('p', '\n');
+                        higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
+                        return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
+                    }
+                }
+                else if (gparent && gparent?.nodeName === 'LI') {
                     const ggparent = gparent.parentElement;
                     if (ggparent)
                     {

@@ -47,20 +47,18 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
     const renderTabContent = (rules: any[], groupName: string) => {
         // Filter rules based on the active group
         const filteredRules = rules.filter(rule => rule.GroupName === groupName);
-
-        const editor = document.getElementById('richTextEditor');
       
         return filteredRules.map((rule) => {
           if (rule.Name === 'Table') {
             return <InsertTable key={rule.Name} onInsert={(rows: number, cols: number) => {
               if (rule.Action) {
-                editorData.emitEvent(rule.Action, editor?.id || '', { rows, cols });
+                editorData.emitEvent(rule.Action, 'broadcast', { rows, cols });
               }
             }} />;
           } else if (rule.Name === 'Link') {
             return <InsertLink key={rule.Name} onInsert={(url: string, text: string) => {
               if (rule.Action) {
-                editorData.emitEvent(rule.Action, editor?.id || '', { url, text });
+                editorData.emitEvent(rule.Action, 'broadcast', { url, text });
               }
             }} />;
           } else {
@@ -71,7 +69,7 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
                   isActive={rule.State === state}
                   onClick={() => {
                     if (rule.Action) {
-                      editorData.emitEvent(rule.Action, editor?.id || '', null);
+                      editorData.emitEvent(rule.Action, 'broadcast', null);
                     }
                     else if (rule.State) {
                       setState(rule.State);

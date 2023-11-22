@@ -17,7 +17,15 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ id, pathIndices, version, languag
     return (
         <pre id={`pre-${id}`}>
             <code id={id} className={`rich-code language-${language}`}>
-                {<Paragraph<HTMLParagraphElement> key={id} id={id} pathIndices={pathIndices} version={version} content={children} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }}  render={props => <p {...props}></p>} />}
+                {children.map((child, index) => {
+                    const childPathIndices = [...pathIndices, index];
+                    switch (child.NodeName) {
+                        case 'Text':
+                            return <Paragraph<HTMLParagraphElement> key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
+                        default:
+                            return null;
+                    }
+                })}
             </code>
         </pre>
     );
