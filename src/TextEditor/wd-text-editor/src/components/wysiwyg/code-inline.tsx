@@ -7,7 +7,7 @@ interface CodeInlineProps {
 }
 
 const CodeInline: React.FC<CodeInlineProps> = ({ id, pathIndices, children }) => {
-    return <code id={id}>{children}</code>;
+    return <code id={`code_${id}`}><span id={id}>{children}</span></code>;
 };
 
 export default CodeInline;

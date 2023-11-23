@@ -211,10 +211,6 @@ p > code {
   margin-left: 2rem;
 }
 
-#richTextEditor ul {
-  margin-left: 1.5rem;
-}
-
 #richTextEditor section:focus {
   outline: dotted rgba(200, 200, 200, 0.5) 1px;
 }

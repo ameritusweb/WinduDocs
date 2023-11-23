@@ -68,8 +68,12 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
             }
             let child = children[childIndex];
             if (child) {
+
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
-                const text = child.Children[index];
+                let text = child.Children[index];
+                if (!text) {
+                    text = child;
+                }
                 removeText(container, text, startOffset, endOffset);
                 if (text.TextContent === '') {
                     const newLine = createNewAstNode('BlankLine', 0, 0, null);

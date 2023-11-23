@@ -74,6 +74,28 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       // Subscribe with the provided GUID
       editorData.events.subscribe(`para_${props.id}`, 'InsertLink', handleInsertLink);
 
+      const handleInsertInline = (payload: any) => {
+        const higherLevelAstCopy = (higherLevelPropsRef.current?.content || []).map((p) => deepCopyAstNode(p));
+        const inlineNode = createNewAstNode('CodeInline', 0, 0, '\n');
+        const selection = window.getSelection();
+        if (selection)
+        {
+          const range = selection.getRangeAt(0);
+          const container = range.startContainer;
+          const parent = container.parentElement;
+          if (parent) {
+            const [foundNode, foundParent] = findNodeByGuid(higherLevelAstCopy, parent.id, null);
+            if (foundNode) {
+              const childIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
+              foundNode.Children.splice(childIndex + 1, 0, inlineNode);
+              editorData.emitEvent('update', 'richTextEditor', { type: 'insertInline', nodes: foundNode.Children, pathIndices: props.pathIndices });
+            }
+          }
+        }
+    };
+
+      editorData.events.subscribe(`para_${props.id}`, 'InsertInline', handleInsertInline);
+
       const handleIndent = (payload: any) => {
           
       };
