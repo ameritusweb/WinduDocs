@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Paragraph from "./paragraph";
 import { AstNode } from "./interface";
+import UtilityContainer from "./utility-container";
 
 interface QuoteBlockProps {
     pathIndices: number[];
@@ -9,7 +10,27 @@ interface QuoteBlockProps {
 
 const QuoteBlock: React.FC<QuoteBlockProps> = ({ pathIndices, children }) => {
 
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
+    const handleDelete = () => {/* Implement deletion logic */};
+    const handleCut = () => {/* Implement cut logic */};
+    const handleCopy = () => {/* Implement copy logic */};
+    const handlePaste = () => {/* Implement paste logic */};
+
     return (
+        <section className="relative"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            tabIndex={1} // Make it focusable if needed
+        >
         <blockquote>
             {children.map((child, index) => {
                 const childPathIndices = [...pathIndices, index];
@@ -21,6 +42,16 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({ pathIndices, children }) => {
                 }
             })}
         </blockquote>
+        {(
+                    <UtilityContainer 
+                        show={isFocused}
+                        onCopy={handleCopy} 
+                        onCut={handleCut} 
+                        onDelete={handleDelete} 
+                        onPaste={handlePaste}
+                    />
+                )}
+        </section>
     );
 };
 

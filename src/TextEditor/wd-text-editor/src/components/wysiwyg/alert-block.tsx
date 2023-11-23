@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { AstNode } from "./interface";
 import Paragraph from "./paragraph";
+import UtilityContainer from "./utility-container";
 
 interface AlertBlockProps {
     id: string;
@@ -13,6 +14,19 @@ interface AlertBlockProps {
 
 const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type, children, higherLevelChildren }) => {
     
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
+    const handleDelete = () => {/* Implement deletion logic */};
+    const handleCut = () => {/* Implement cut logic */};
+    const handleCopy = () => {/* Implement copy logic */};
+    const handlePaste = () => {/* Implement paste logic */};
+
     const getSvg = (type: string) => {
         
         switch (type) {
@@ -39,6 +53,13 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type,
     };
 
     return (
+        <section className="relative"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            tabIndex={1} // Make it focusable if needed
+        >
         <div id={id} className="rich-alert flex">
             <div className="alert">
             {getSvg(type)}
@@ -53,6 +74,16 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type,
                 })}
             </div>
         </div>
+        {(
+                    <UtilityContainer 
+                        show={isFocused}
+                        onCopy={handleCopy} 
+                        onCut={handleCut} 
+                        onDelete={handleDelete} 
+                        onPaste={handlePaste}
+                    />
+                )}
+        </section>
     );
 };
 

@@ -49,7 +49,13 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
     };
 
     const handleInsertHR = (payload: any) => {
-          
+      if (higherLevelContent && higherLevelContent.updater) {
+        const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          const newHR = createNewAstNode('ThematicBreakBlock', 0, 0, null);
+          higherLevelContentCopy.splice(index, 1, newHR);
+          higherLevelContent.updater(higherLevelContentCopy, true);
+      }
     };
 
     const handleInsertLink = (payload: { url: string, text: string }) => {

@@ -214,9 +214,9 @@ const RichTextEditor = () => {
                 return <Table key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} children={node.Children} />;
             case 'ListBlock':
                 if (node.Attributes.IsOrdered && node.Attributes.IsOrdered === 'True') {
-                    return <OrderedList key={node.Guid + (node.Version || 'V0')} pathIndices={pathIndices} children={node.Children} />
+                    return <OrderedList key={node.Guid + (node.Version || 'V0')} isTopLevel={true} pathIndices={pathIndices} children={node.Children} />
                 } else {
-                    return <UnorderedList key={node.Guid + (node.Version || 'V0')} pathIndices={pathIndices} children={node.Children} />
+                    return <UnorderedList key={node.Guid + (node.Version || 'V0')} isTopLevel={true} pathIndices={pathIndices} children={node.Children} />
                 }
             case 'QuoteBlock':
                 return <QuoteBlock key={node.Guid + (node.Version || 'V0')} pathIndices={pathIndices} children={node.Children} />;

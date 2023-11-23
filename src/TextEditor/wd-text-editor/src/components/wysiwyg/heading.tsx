@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { AstNode } from "./interface";
 import Paragraph from "./paragraph";
+import UtilityContainer from "./utility-container";
 
 export interface HeadingProps {
     id: string;
@@ -13,6 +14,20 @@ export interface HeadingProps {
 }
 
 export const Heading: React.FC<HeadingProps> = ({ id, version, level, pathIndices, children, higherLevelChildren, rootUpdater }) => {
+
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
+    const handleDelete = () => {/* Implement deletion logic */};
+    const handleCut = () => {/* Implement cut logic */};
+    const handleCopy = () => {/* Implement copy logic */};
+    const handlePaste = () => {/* Implement paste logic */};
+    
     // Determine the tag based on the format. Default to 'p' for plain text.
     const Tag = level ? `h${level}` : 'p';
   
@@ -27,10 +42,29 @@ export const Heading: React.FC<HeadingProps> = ({ id, version, level, pathIndice
     });
 
     // Use React.createElement to dynamically create the element
-    return React.createElement(
+    return (
+        <section className="relative"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            tabIndex={1} // Make it focusable if needed
+        >
+        {React.createElement(
       Tag,
       { 'id': `${id}`, 'version': `${version}` },
         elementChildren      
+    )}
+                {(
+                <UtilityContainer 
+                    show={isFocused}
+                    onCopy={handleCopy} 
+                    onCut={handleCut} 
+                    onDelete={handleDelete} 
+                    onPaste={handlePaste}
+                />
+            )}
+    </section>
     );
   };
 
