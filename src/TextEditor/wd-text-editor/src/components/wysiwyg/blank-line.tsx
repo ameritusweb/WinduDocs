@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useRef, useState } from "react";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
 import { AstNode, HigherLevelProps } from "./interface";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
-import { createTable, deepCopyAstNode } from "../../rich-text-editor/node-operations";
+import { createListBlock, createTable, deepCopyAstNode } from "../../rich-text-editor/node-operations";
 
 export interface BlankLineProps {
     id: string;
@@ -58,12 +58,6 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
       }
     };
 
-    const handleInsertLink = (payload: { url: string, text: string }) => {
-
-
-
-    }
-
     const handleInsertTable = (payload: { rows: number, cols: number }) => {
       
       if (higherLevelContent && higherLevelContent.updater) {
@@ -90,6 +84,30 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
 
     }
 
+    const handleNumberedList = () => {
+
+      if (higherLevelContent && higherLevelContent.updater) {
+        const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          const newListBlock = createListBlock(1, true);
+          higherLevelContentCopy.splice(index, 1, newListBlock);
+          higherLevelContent.updater(higherLevelContentCopy, true);
+      }
+
+    }
+
+    const handleBulletedList = () => {
+
+      if (higherLevelContent && higherLevelContent.updater) {
+        const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          const newListBlock = createListBlock(1, false);
+          higherLevelContentCopy.splice(index, 1, newListBlock);
+          higherLevelContent.updater(higherLevelContentCopy, true);
+      }
+
+    }
+
     useEffect(() => {
 
       // Subscribe with the provided GUID
@@ -100,7 +118,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
 
       editorData.events.subscribe(id, 'InsertTable', handleInsertTable);
 
-      editorData.events.subscribe(id, 'InsertLink', handleInsertLink);
+      editorData.events.subscribe(id, 'InsertNumbered', handleNumberedList);
+
+      editorData.events.subscribe(id, 'InsertBulleted', handleBulletedList);
 
       // Subscribe with the provided GUID
       editorData.events.subscribe(id, 'InsertFenced', handleInsertFenced);

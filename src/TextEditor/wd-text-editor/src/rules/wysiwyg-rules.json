@@ -60,14 +60,14 @@
       "Action": "InsertTable"
     },
     {
-        "Name": "Numbered",
+        "Name": "Insert Numbered",
         "GroupName":"List",
-        "State": "numbered"
+        "Action": "InsertNumbered"
     },
     {
-        "Name": "Bulleted",
+        "Name": "Insert Bulleted",
         "GroupName":"List",
-        "State": "bulleted"
+        "Action": "InsertBulleted"
     },
     {
         "Name": "<<",

@@ -13,3 +13,5 @@ export { default as findFirstTextNode } from './find-first-text-node';
 export { default as findLastTextNode } from './find-last-text-node';
 export { default as createTableCell } from './create-table-cell';
 export { default as createTable } from './create-table';
+export { default as createListItem } from './create-list-item';
+export { default as createListBlock } from './create-list-block';
