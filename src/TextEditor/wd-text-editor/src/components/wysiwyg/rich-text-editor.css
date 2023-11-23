@@ -55,6 +55,11 @@ h1 {
     padding: 6px 13px;
     border: 1px solid #d0d7de;
   }
+
+  table th span,
+  table td span {
+    display: block;
+  }
   
   table td>:last-child {
     margin-bottom: 0;
