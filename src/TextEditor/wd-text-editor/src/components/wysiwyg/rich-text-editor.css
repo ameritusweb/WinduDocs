@@ -176,6 +176,10 @@ p > code {
   outline: 1px dotted rgba(200, 200, 200, 0.5);
 }
 
+#richTextEditor > section {
+  padding-left: 1.1rem;
+}
+
 #richTextEditor > p {
   padding-left: 1.1rem;
 }
@@ -212,10 +216,29 @@ p > code {
   margin-left: 1.1rem;
 }
 
-#richTextEditor table {
-  margin-left: 1.3rem;
+#richTextEditor .alert {
+  margin-left: 1.1rem;
+  margin-right: 1.1rem;
+  display: block;
+  position: relative;
+}
+
+#richTextEditor .alert svg {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 1.5rem;
+}
+
+#richTextEditor .alert p {
+  min-width: 100%;
+  margin-left: 2rem;
 }
 
 #richTextEditor ul {
   margin-left: 1.5rem;
+}
+
+#richTextEditor section:focus {
+  outline: dotted rgba(200, 200, 200, 0.5) 1px;
 }

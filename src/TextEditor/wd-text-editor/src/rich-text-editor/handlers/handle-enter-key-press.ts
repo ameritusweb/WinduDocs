@@ -143,7 +143,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                     }
                 }
-                else if (gparent && gparent.nodeName === 'CODE')
+                else if (gparent && (gparent.nodeName === 'CODE' || gparent.nodeName === 'DIV'))
                 {
                     const childNodes = Array.from(parent.childNodes);
                     const childIndex = childNodes.findIndex((c) => c === container);

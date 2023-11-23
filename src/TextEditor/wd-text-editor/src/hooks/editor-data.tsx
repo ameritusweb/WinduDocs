@@ -36,11 +36,11 @@ export class EditorData implements EditorDataType {
                 const container = range.startContainer;
                 if (container instanceof Element)
                 {
-                    this.events.emit(action, container.id, null);
+                    this.events.emit(action, container.id, payload || null);
                 } else if (container instanceof Text)
                 {
                     const parent = container.parentElement as Element;
-                    this.events.emit(action, parent.id, null);
+                    this.events.emit(action, parent.id, payload || null);
                 }
             }
         } else {

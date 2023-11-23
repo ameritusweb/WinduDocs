@@ -51,11 +51,13 @@
       },
     {
       "Name": "Link",
-      "GroupName": "Link"
+      "GroupName": "Link",
+      "Action": "InsertLink"
     },
     {
       "Name": "Table",
-      "GroupName": "Table"
+      "GroupName": "Table",
+      "Action": "InsertTable"
     },
     {
         "Name": "Numbered",
@@ -88,6 +90,26 @@
         "Action": "InsertFenced"
     },
     {
+      "Name": "Insert Success Alert",
+      "GroupName":"Alerts",
+      "Action": "InsertSuccessAlert"
+    },
+    {
+      "Name": "Insert Warning Alert",
+      "GroupName":"Alerts",
+      "Action": "InsertWarningAlert"
+    },
+    {
+      "Name": "Insert Info Alert",
+      "GroupName":"Alerts",
+      "Action": "InsertInfoAlert"
+    },
+    {
+      "Name": "Insert Error Alert",
+      "GroupName":"Alerts",
+      "Action": "InsertErrorAlert"
+    },
+    {
       "Name": "Insert Quote",
       "GroupName":"Misc",
       "Action": "InsertQuote"
@@ -96,10 +118,5 @@
         "Name": "Insert Horizontal Rule",
         "GroupName":"Misc",
         "Action": "InsertHR"
-    },
-    {
-      "Name": "Insert Info Block",
-      "GroupName":"Misc",
-      "Action": "InsertInfoBlock"
     }
   ]

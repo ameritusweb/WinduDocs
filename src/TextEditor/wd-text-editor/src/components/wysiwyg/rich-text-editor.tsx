@@ -18,6 +18,7 @@ import { deepCopyAstNode, findFirstTextNode, findLastTextNode } from "../../rich
 import editorData from "../../hooks/editor-data";
 import processAst from "../../rich-text-editor/node-operations/process-ast";
 import { handleArrowKeyUpOrDownPress, handleArrowKeyLeftOrRightPress } from "../../rich-text-editor/handlers";
+import ParagraphContainer from "./paragraph-container";
 
 const RichTextEditor = () => {
 
@@ -186,7 +187,27 @@ const RichTextEditor = () => {
     const renderNode = (node: AstNode, higherLevelContent: AstNode[], pathIndices: number[]) => {
         switch (node.NodeName) {
             case 'ParagraphBlock':
-                return <Paragraph<HTMLParagraphElement> key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} version={node.Version || 'V0'} content={node.Children} higherLevelContent={{ id: node.Guid, content: higherLevelContent, updater: updateContent }} render={props => <p {...props}></p>}/>;
+                return (
+                    <ParagraphContainer
+                        key={node.Guid + (node.Version || 'V0')}
+                        paragraphId={node.Guid}
+                        renderParagraph={(paragraphProps) => (
+                            <Paragraph<HTMLParagraphElement>
+                                {...paragraphProps}
+                                id={node.Guid}
+                                pathIndices={pathIndices}
+                                version={node.Version || 'V0'}
+                                content={node.Children}
+                                higherLevelContent={{
+                                    id: node.Guid, 
+                                    content: higherLevelContent, 
+                                    updater: updateContent
+                                }}
+                                render={(props) => <p {...props}></p>}
+                            />
+                        )}
+                    />
+                );
             case 'HeadingBlock':
                 return <Heading key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} version={node.Version || 'V0'} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
             case 'Table':
@@ -283,7 +304,7 @@ const RichTextEditor = () => {
                  ref={editorRef}
                  onKeyDown={onKeyDown}
                  onMouseDown={onMouseDown}
-                 className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-auto outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_2rem] cursor-text text-left text-base"
+                 className="bg-white absolute top-0 left-0 w-full min-h-[100px] overflow-visible outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_2rem] cursor-text text-left text-base"
                  id="richTextEditor"
                  style={{
                  color: 'rgba(100, 100, 100, 1)',

@@ -11,3 +11,5 @@ export { default as findClosestAncestorId } from './find-closest-ancestor-id';
 export { default as findClosestAncestor } from './find-closest-ancestor';
 export { default as findFirstTextNode } from './find-first-text-node';
 export { default as findLastTextNode } from './find-last-text-node';
+export { default as createTableCell } from './create-table-cell';
+export { default as createTable } from './create-table';

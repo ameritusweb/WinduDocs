@@ -147,7 +147,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newContainer], 'end');
                     if (nodes !== null) 
                         return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
-                } else if (grandParent && grandParent.nodeName === 'CODE') {
+                } else if (grandParent && (grandParent.nodeName === 'CODE' || grandParent.nodeName === 'DIV')) {
                     
                     const oldText = '' + child.TextContent;
                     if (child.TextContent === '\n')
@@ -162,6 +162,10 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 
                 } else if (grandChild !== null) {
                     const oldText = '' + grandChild.TextContent;
+                    if (child.TextContent === '\n')
+                    {
+                        child.TextContent = '';
+                    }
                     replaceText(container, grandChild, startOffset, key);
                     historyManager.recordChildTextUpdate(oldText, startOffset, grandChild, rootChildId);
                     return { type: 'insert', rootChildId, nodes: children.map((c) => {

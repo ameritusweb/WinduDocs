@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useRef, useState } from "react";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
 import { AstNode, HigherLevelProps } from "./interface";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
-import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
+import { createTable, deepCopyAstNode } from "../../rich-text-editor/node-operations";
 
 export interface BlankLineProps {
     id: string;
@@ -52,6 +52,38 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
           
     };
 
+    const handleInsertLink = (payload: { url: string, text: string }) => {
+
+
+
+    }
+
+    const handleInsertTable = (payload: { rows: number, cols: number }) => {
+      
+      if (higherLevelContent && higherLevelContent.updater) {
+        const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          const newTable = createTable(payload.rows, payload.cols);
+          higherLevelContentCopy.splice(index, 1, newTable);
+          higherLevelContent.updater(higherLevelContentCopy, true);
+      }
+
+    };
+
+    const handleInsertAlert = (type: string) => {
+
+      if (higherLevelContent && higherLevelContent.updater) {
+        const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
+          const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
+          const newText = createNewAstNode('Text', 0, 0, '\n');
+          const newCodeBlock = createNewAstNode('FencedCodeBlock', 0, 0, null, [newText]);
+          newCodeBlock.Attributes.Language = type;
+          higherLevelContentCopy.splice(index, 1, newCodeBlock);
+          higherLevelContent.updater(higherLevelContentCopy, true);
+      }
+
+    }
+
     useEffect(() => {
 
       // Subscribe with the provided GUID
@@ -60,8 +92,20 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
       // Subscribe with the provided GUID
       editorData.events.subscribe(id, 'InsertQuote', handleInsertQuote);
 
+      editorData.events.subscribe(id, 'InsertTable', handleInsertTable);
+
+      editorData.events.subscribe(id, 'InsertLink', handleInsertLink);
+
       // Subscribe with the provided GUID
       editorData.events.subscribe(id, 'InsertFenced', handleInsertFenced);
+
+      editorData.events.subscribe(id, 'InsertWarningAlert', () => handleInsertAlert('type-alert-warning'));
+
+      editorData.events.subscribe(id, 'InsertSuccessAlert', () => handleInsertAlert('type-alert-success'));
+
+      editorData.events.subscribe(id, 'InsertInfoAlert', () => handleInsertAlert('type-alert-info'));
+
+      editorData.events.subscribe(id, 'InsertErrorAlert', () => handleInsertAlert('type-alert-error'));
 
       return () => {
           // Unsubscribe the GUID on component unmount
