@@ -326,7 +326,7 @@ useEffect(() => {
                  ref={editorRef}
                  onKeyDown={onKeyDown}
                  onMouseDown={onMouseDown}
-                 className="bg-white dark:bg-zinc-950 text-[rgba(100, 100, 100, 0.9)] dark:text-zinc-400 absolute top-0 left-0 w-full min-h-[100px] overflow-visible outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_2rem] cursor-text text-left text-base"
+                 className="bg-white dark:bg-zinc-950 text-gray-600/90 dark:text-zinc-400 absolute top-0 left-0 w-full min-h-[100px] overflow-visible outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_2rem] cursor-text text-left text-base"
                  id="richTextEditor"
                  style={{
                  fontFamily: 'Consolas,Monaco,\'Andale Mono\',\'Ubuntu Mono\',monospace'

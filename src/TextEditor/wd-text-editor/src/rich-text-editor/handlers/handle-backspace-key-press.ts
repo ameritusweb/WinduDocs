@@ -2,6 +2,7 @@ import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../component
 import { processArray, reverse } from "../array-processing";
 import { createNewAstNode, findClosestAncestor, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
 import { removeText } from "../text-manipulation";
+import { trimSpecial } from "../undo-redo-ot";
 
 // Handle Backspace key press
 const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Node, endContainer: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, range: Range, startOffset: number, endOffset: number): AstUpdate | null => {
@@ -36,23 +37,41 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
             };
         }
     } else {
-        const parent = container.parentElement;
+        let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex} = updateData;
         if (parent) {
-            const rootChild = findClosestAncestor(parent, 'richTextEditor');
+            // const rootChild = findClosestAncestor(parent, 'richTextEditor');
             const parentId = parent.id;
             const childIndex = children.findIndex((c) => c.Guid === parentId);
             if (childIndex === -1) {
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
-                const text = children[index];
-                if (text)
+                if (child && child.Guid === trimSpecial(parent.id, { startString: 'para_' }))
                 {
+                    const text = child.Children[index];
+                    const oldText = '' + text.TextContent;
+                    if (text.TextContent === '\n')
+                    {
+                        text.TextContent = '';
+                    }
                     removeText(container, text, startOffset, endOffset);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, text, rootChildId);
+                    return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children };
+                }
+                const text = children[index];
+                if (text && astParent)
+                {
+                    const oldText = '' + text.TextContent;
+                    if (text.TextContent === '\n')
+                    {
+                        text.TextContent = '';
+                    }
+                    removeText(container, text, startOffset, endOffset);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, astParent, text, rootChildId);
                     if (text.TextContent === '') {
                         const newLine = createNewAstNode('BlankLine', 0, 0, null);
                         const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                         if (higherLevelIndex !== null) {
                             const higherLevelChild = higherLevelChildren[higherLevelIndex];
-                            if (rootChild && higherLevelChild.Guid === rootChild.id) {
+                            if (rootChildId && higherLevelChild.Guid === rootChildId) {
                                 higherLevelChildren.splice(higherLevelIndex, 1, newLine);
                                 return { type: 'higherLevelRemove', nodes: higherLevelChildren };
                             } else {
@@ -66,18 +85,18 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
                     }) };
                 }
             }
-            let child = children[childIndex];
-            if (child) {
+            let bchild = children[childIndex];
+            if (bchild) {
 
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
-                let text = child.Children[index];
+                let text = bchild.Children[index];
                 if (!text) {
-                    text = child;
+                    text = bchild;
                 }
                 removeText(container, text, startOffset, endOffset);
                 if (text.TextContent === '') {
                     const newLine = createNewAstNode('BlankLine', 0, 0, null);
-                    child = Object.assign({}, newLine);
+                    bchild = Object.assign({}, newLine);
                     const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                     if (higherLevelIndex !== null) {
                         higherLevelChildren.splice(higherLevelIndex, 1, newLine);
@@ -88,20 +107,30 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
                     return ind === childIndex ? Object.assign({}, child) : c
                 }) };
             } else {
-                const [node] = findNodeByGuid(children, parent.id, null);
+                const [node] = findNodeByGuid(higherLevelChildren, parent.id, null);
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
-                child = children[index];
-                if (child && node === child) {
-                    removeText(container, child, startOffset, endOffset);
-                    return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children.map((c, ind) => {
-                        return ind === index ? Object.assign({}, child) : c
-                    }) };
-                } else if (node) {
+                bchild = children[index];
+                if (bchild && node === bchild) {
+                    const oldText = '' + bchild.TextContent;
+                    if (bchild.TextContent === '\n')
+                    {
+                        bchild.TextContent = '';
+                    }
+                    removeText(container, bchild, startOffset, endOffset);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, bchild, null, rootChildId);
+                    return { type: endOffset > startOffset ? 'higherLevelRemoveSelected' : 'higherLevelRemove', nodes: higherLevelChildren };
+                } else if (node && child) {
                     const text = node.Children[index];
+                    const oldText = '' + text.TextContent;
+                    if (text.TextContent === '\n')
+                    {
+                        text.TextContent = '';
+                    }
                     removeText(container, text, startOffset, endOffset);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, text, rootChildId);
                     if (text.TextContent === '') {
                         const newLine = createNewAstNode('BlankLine', 0, 0, null);
-                        child = Object.assign({}, newLine);
+                        bchild = Object.assign({}, newLine);
                         const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
                         if (higherLevelIndex !== null) {
                             higherLevelChildren.splice(higherLevelIndex, 1, newLine);

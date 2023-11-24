@@ -68,7 +68,7 @@ export interface RemoveNodeParams {
 export interface UpdateNodeParams {
   parentNode: AstNode;
   offset: number;
-  node: AstNode;
+  node: AstNode | null;
   newTextContent: string | null;
   oldTextContent: string | null;
   newVersion: string | undefined;
@@ -82,7 +82,7 @@ export type Transaction = AstOperation[];
 export interface IHistoryManager {
   clear(): void;
   restoreCursorPosition(): void;
-  recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode, rootChildId?: string): void;
+  recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string): void;
   recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
   performOperationsAsTransaction(ast: AstNode, operations: AstOperation[], historyManager: IHistoryManager): AstNode;
@@ -133,8 +133,11 @@ export interface ITextBlock {
 }
 
 export interface UpdateData {
+  parent: HTMLElement;
   higherLevelIndex: number;
   child: AstNode | null;
   astParent: AstNode | null;
   immediateChild: AstNode | null;
+  rootChildId: string;
+  containerIndex: number;
 }

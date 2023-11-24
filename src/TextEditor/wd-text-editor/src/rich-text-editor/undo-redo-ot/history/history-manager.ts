@@ -27,10 +27,18 @@ class HistoryManager implements IHistoryManager {
             if (lastMove) {
                 const op: AstOperation<'update'> = lastMove as AstOperation<'update'>;
                 if (op.type === 'update') {
-                    const node = document.getElementById(lastMove.parentNodeId);
+                    let node = document.getElementById(lastMove.parentNodeId);
                     if (node) {
-                    const textNode = node?.childNodes[lastMove.nodeIndex];
+                        if (node.nodeName === 'A')
+                        {
+                            node = node.firstElementChild as HTMLElement;
+                        }
+                        let textNode: ChildNode | null = node?.childNodes[lastMove.nodeIndex];
+                        if (textNode && textNode.nodeType !== Node.TEXT_NODE) {
+                            textNode = textNode.firstChild;
+                        }
                         if (textNode && op.payload) {
+                        
                             const selection = window.getSelection();
                             if (selection) {
                                 const range = new Range();
@@ -47,12 +55,14 @@ class HistoryManager implements IHistoryManager {
 
     }
 
-    recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode, rootChildId?: string): void {
-        const oldVersion = child.Version || 'V0';
+    recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string): void {
+        const target = child || parent;
+        const oldVersion = target.Version || 'V0';
         const trimmed = trimSpecial(oldVersion, { startString: 'R' });
         const newVersion = trimmed === 'New' ? 'V0' : incrementEnd(trimmed);
-        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, oldOffset: offset, newVersion, parentNode: parent, offset: offset + 1, node: child, newTextContent: child.TextContent, oldTextContent, rootChildId }), false);
-        child.Version = newVersion;
+        const contentDiff = (target.TextContent?.length || 0) - oldTextContent.length;
+        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, oldOffset: offset, newVersion, parentNode: parent, offset: offset + contentDiff, node: child, newTextContent: target.TextContent, oldTextContent, rootChildId }), false);
+        target.Version = newVersion;
     }
 
     recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction = false): void {

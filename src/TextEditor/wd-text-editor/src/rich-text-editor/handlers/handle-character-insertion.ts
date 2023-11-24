@@ -30,9 +30,7 @@ const createNodeWithTypeAndKey = (type: string, key: string) => {
     return newNode;
 };
 
-const updateHigherLevelNodes = (higherLevelChildren: AstNode[], children: AstNode[], newNodes: AstNode[] | null, insertAt?: string) => {
-    
-    const childIndex = findHigherlevelIndex(children, higherLevelChildren);
+const updateHigherLevelNodes = (childIndex: number, higherLevelChildren: AstNode[], children: AstNode[], newNodes: AstNode[] | null, insertAt?: string) => {
 
     // If no valid index is found, you might want to handle this case differently
     if (childIndex === -1 || childIndex === null) {
@@ -59,11 +57,10 @@ const updateHigherLevelNodes = (higherLevelChildren: AstNode[], children: AstNod
     return higherLevelChildren;
 };
 
-const splitAndUpdateHigherLevelNodes = (child: AstNode, startOffset: number, indexToSplit: number, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], useNestedSplit: boolean) => {
+const splitAndUpdateHigherLevelNodes = (childIndex: number, child: AstNode, startOffset: number, indexToSplit: number, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], useNestedSplit: boolean) => {
 
     const [node1, node2] = useNestedSplit ? nestedSplitNode(child, startOffset) : splitNode(child, startOffset, indexToSplit);
     const newContainer = createNodeWithTypeAndKey(type, key);
-    const childIndex = findHigherlevelIndex(children, higherLevelChildren);
     if (childIndex !== null) {
         children.splice(indexToRemoveAndAdd, 1, node1, newContainer, node2);
         const higherLevelChild = higherLevelChildren[childIndex];
@@ -74,27 +71,15 @@ const splitAndUpdateHigherLevelNodes = (child: AstNode, startOffset: number, ind
 
 // Handle character insertion
 const handleCharacterInsertion = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, key: string, editorState: string, startOffset: number): AstUpdate | null => {
-    if (container.nodeName !== '#text')
-    {
-        container = container.firstChild!;
-    }
-    if (container.nodeName !== '#text')
-    {
-        container = container.firstChild!;
-    }
     if (container && container.nodeName === '#text')
     {
-        const parent = container.parentElement;
+        let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex} = updateData;
         if (parent) {
             const grandParent = parent.parentElement;
-            const rootChildId = findClosestAncestorId(parent, 'richTextEditor');
-            const parentId = parent.id;
-            let [child, astParent] = findNodeByGuid(higherLevelChildren, parentId, null);
             if (child) {
                 let grandChild = null;
-                const index = Array.from(parent.childNodes).findIndex((c) => c === container);
                 if (child.Children.length) {
-                    grandChild = child.Children[index];
+                    grandChild = child.Children[containerIndex];
                 }
                 if (astParent && parent.parentElement?.nodeName === 'STRONG' && parent.nodeName === 'EM' && editorState === 'normal')
                 {
@@ -103,12 +88,12 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     }
                     else if (startOffset < (container.textContent || '').length)
                     {
-                        const nodes = splitAndUpdateHigherLevelNodes(astParent, startOffset, index, children.indexOf(astParent), 'Text', key, children, higherLevelChildren, true);
+                        const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, astParent, startOffset, containerIndex, children.indexOf(astParent), 'Text', key, children, higherLevelChildren, true);
                         if (nodes !== null)
                             return { type: 'higherLevelSplit', nodes };
                     } else {
                         const newText = createNodeWithTypeAndKey('Text', key);
-                        const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newText], 'end');
+                        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, [newText], 'end');
                         if (nodes !== null)
                             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                     }
@@ -120,12 +105,12 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     }
                     else if (startOffset < (container.textContent || '').length)
                     {
-                        const nodes = splitAndUpdateHigherLevelNodes(child, startOffset, index, children.indexOf(child), 'Text', key, children, higherLevelChildren, false);
+                        const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, child, startOffset, containerIndex, children.indexOf(child), 'Text', key, children, higherLevelChildren, false);
                         if (nodes !== null)
                             return { type: 'higherLevelSplit', nodes };
                     } else {
                         const newText = createNodeWithTypeAndKey('Text', key);
-                        const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newText], 'end');
+                        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, [newText], 'end');
                         if (nodes !== null)
                             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                     }
@@ -133,18 +118,18 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 {
                     if (astParent && parent.parentElement?.nodeName === 'STRONG')
                     {
-                        const nodes = splitAndUpdateHigherLevelNodes(astParent, startOffset, index, children.indexOf(astParent), 'Strong', key, children, higherLevelChildren, true);
+                        const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, astParent, startOffset, containerIndex, children.indexOf(astParent), 'Strong', key, children, higherLevelChildren, true);
                         if (nodes !== null)
                             return { type: 'higherLevelSplit', nodes };
                     } else {
                         const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);
-                        const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newContainer], 'end');
+                        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, [newContainer], 'end');
                         if (nodes !== null) 
                             return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
                     }
                 } else if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && parent.parentElement?.nodeName !== 'STRONG' && Array.isArray(editorState)) {
                     const newContainer = createNodeWithTypeAndKey('Strong + Emphasis', key);
-                    const nodes = updateHigherLevelNodes(higherLevelChildren, children, [newContainer], 'end');
+                    const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, [newContainer], 'end');
                     if (nodes !== null) 
                         return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
                 } else if (grandParent && (grandParent.nodeName === 'CODE' || grandParent.nodeName === 'DIV')) {
@@ -155,7 +140,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                         child.TextContent = '';
                     }
                     replaceText(container, child, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, null, rootChildId);
                     let higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === children[0].Guid);
                     if (higherLevelIndex === -1) {
                         higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren) || 0;
@@ -165,6 +150,17 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                         higherLevelChildren[higherLevelIndex] = child;
                     }
                     return { type: 'higherLevelInsert', rootChildId, nodes: higherLevelChildren };
+                
+                } else if (grandParent && grandChild && astParent && grandParent.nodeName === 'LI') {
+                    
+                    const oldText = '' + grandChild.TextContent;
+                    if (grandChild.TextContent === '\n')
+                    {
+                        grandChild.TextContent = '';
+                    }
+                    replaceText(container, grandChild, startOffset, key);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, grandChild, rootChildId);
+                    return { type: 'insert', rootChildId, nodes: astParent?.Children };
                 
                 } else if (grandChild !== null) {
                     const oldText = '' + grandChild.TextContent;
@@ -177,10 +173,10 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     return { type: 'insert', rootChildId, nodes: children.map((c) => {
                         return Object.assign({}, c)
                     }) };
-                } else if (child !== null) {
+                } else if (astParent !== null && child !== null) {
                     const oldText = '' + child.TextContent;
                     replaceText(container, child, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, astParent, child, rootChildId);
                     return { type: 'insert', rootChildId, nodes: children.map((c) => {
                         return Object.assign({}, c)
                     }) };
