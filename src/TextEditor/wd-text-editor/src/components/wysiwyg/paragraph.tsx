@@ -8,7 +8,6 @@ import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
 import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem } from "../../rich-text-editor/node-operations";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
-import { domToAstMap } from "../ast-mapping";
 
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
@@ -36,7 +35,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const [ast, setAst] = useState<AstNode[]>(props.content);
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
     const higherLevelPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
-    const { updateAst, getCursorPosition } = useRichTextEditor();
+    const { updateAst } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
     const cursorPositionRef = useRef<CursorPositionType | null>(null);
     const editorData: EditorDataType = EditorData;
@@ -146,13 +145,16 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     }, [props.content, props.higherLevelContent, props.higherLevelContent?.content]);
 
+    /*
     const saveCursorPosition = (updateType: string) => {
       const cursorPosition = getCursorPosition(updateType);
       if (cursorPosition) {
         cursorPositionRef.current = cursorPosition;
       }
     };
+    */
   
+    /*
     const restoreCursorPosition = (mutationRecord: MutationRecord | null) => {
       if (!mutationRecord)
         return;
@@ -205,7 +207,8 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         }
       }
     };
-  
+  */
+ /*
     useEffect(() => {
       const observer = new MutationObserver((mutationsList) => {
         // Check for the specific mutation type, if necessary
@@ -222,8 +225,8 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       domToAstMap.set(paraRef.current as Element, [ast, higherLevelAst]);
       
       return () => observer.disconnect();
-    }, [/* dependencies */]);
-
+    }, []);
+*/
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 
       const astCopy = ast.map((p) => deepCopyAstNode(p));
@@ -250,27 +253,11 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
-        let update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.higherLevelContent?.id);
+        let update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.pathIndices, props.higherLevelContent?.id);
         if (update.type === 'none')
         {
           return;
         }
-        saveCursorPosition(update.type);
-        update = { ...update, pathIndices: props.pathIndices };
-        editorData.emitEvent('update', 'richTextEditor', update);
-        /*
-        if (props.higherLevelContent && props.higherLevelContent.updater && update.type.startsWith('higherLevel')) {
-          props.higherLevelContent.updater(update.nodes, true);
-        }
-        else
-        {
-          if (props.higherLevelContent && props.higherLevelContent.updater && update.higherLevelNodes)
-          {
-            props.higherLevelContent?.updater(update.higherLevelNodes, true);
-          }
-          setAst(update.nodes);
-        }
-        */
 
         if (event.code === 'Space') {
           return;

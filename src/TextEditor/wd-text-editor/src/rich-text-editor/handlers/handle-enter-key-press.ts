@@ -1,4 +1,4 @@
-import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
 import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode, splitNodeAtTarget } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
@@ -75,7 +75,7 @@ const splitTree = (root: AstNode, leafNode: AstNode, offset: number) => {
   
   }
 
-const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
+const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
     if (commonAncestor.nodeName !== '#text') {
 

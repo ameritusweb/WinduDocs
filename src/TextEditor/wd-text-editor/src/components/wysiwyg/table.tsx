@@ -25,10 +25,11 @@ const Table: React.FC<TableProps> = ({ id, pathIndices, children }) => {
     const handleAddColumn = () => {/* Implement paste logic */};
 
     return (
-        <section className="relative"
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        tabIndex={1}>
+        <section id={`section_${id}`}
+            className="relative"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            tabIndex={1}>
              {isFocused && (
                 <UtilityContainer 
                     show={true}

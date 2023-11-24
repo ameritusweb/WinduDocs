@@ -53,7 +53,8 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type,
     };
 
     return (
-        <section className="relative"
+        <section id={`section_${id}`}
+            className="relative"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}

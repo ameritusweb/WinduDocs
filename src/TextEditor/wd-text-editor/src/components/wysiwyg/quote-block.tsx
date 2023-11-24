@@ -4,11 +4,12 @@ import { AstNode } from "./interface";
 import UtilityContainer from "./utility-container";
 
 interface QuoteBlockProps {
+    id: string;
     pathIndices: number[];
     children: AstNode[];
 }
 
-const QuoteBlock: React.FC<QuoteBlockProps> = ({ pathIndices, children }) => {
+const QuoteBlock: React.FC<QuoteBlockProps> = ({ id, pathIndices, children }) => {
 
     const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
@@ -24,7 +25,8 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({ pathIndices, children }) => {
     const handlePaste = () => {/* Implement paste logic */};
 
     return (
-        <section className="relative"
+        <section id={`section_${id}`}
+            className="relative"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}

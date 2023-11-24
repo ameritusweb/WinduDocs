@@ -1,5 +1,5 @@
 import { incrementEnd, trimSpecial } from "..";
-import { AstNode, AstOperation, IHistoryManager } from "../../../components/wysiwyg/interface";
+import { AstNode, AstOperation, IHistoryManager, UpdateNodePayload } from "../../../components/wysiwyg/interface";
 import createNodeOperation from "../operations/create-node-operation";
 import { applyOperation } from "../operations/operation-handlers";
 import OperationStack from "./operation-stack";
@@ -18,11 +18,40 @@ class HistoryManager implements IHistoryManager {
         this.redoStack.clear();
     }
 
-    recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode, rootChildId?: string): void {
+    restoreCursorPosition(): void {
+
+        const lastTransaction = this.undoStack.peek();
+        if (lastTransaction)
+        {
+            const lastMove = lastTransaction[lastTransaction.length - 1];
+            if (lastMove) {
+                const op: AstOperation<'update'> = lastMove as AstOperation<'update'>;
+                if (op.type === 'update') {
+                    const node = document.getElementById(lastMove.parentNodeId);
+                    if (node) {
+                    const textNode = node?.childNodes[lastMove.nodeIndex];
+                        if (textNode && op.payload) {
+                            const selection = window.getSelection();
+                            if (selection) {
+                                const range = new Range();
+                                range.setStart(textNode, op.payload?.offset);
+                                range.setEnd(textNode, op.payload?.offset);
+                                selection?.removeAllRanges();
+                                selection?.addRange(range);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode, rootChildId?: string): void {
         const oldVersion = child.Version || 'V0';
         const trimmed = trimSpecial(oldVersion, { startString: 'R' });
         const newVersion = trimmed === 'New' ? 'V0' : incrementEnd(trimmed);
-        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, newVersion, nodeId: child.Guid, newTextContent: child.TextContent, oldTextContent, rootChildId }), false);
+        this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, oldOffset: offset, newVersion, parentNode: parent, offset: offset + 1, node: child, newTextContent: child.TextContent, oldTextContent, rootChildId }), false);
         child.Version = newVersion;
     }
 
@@ -101,7 +130,7 @@ class HistoryManager implements IHistoryManager {
             case 'remove':
                 return { ...operation, type: 'add', payload: { newNode: operation.oldState as AstNode } };
             case 'update':
-                return { ...operation, payload: { newVersion: 'R' + operation.oldVersion as string, newTextContent: operation.oldState as string | null } };
+                return { ...operation, payload: { offset: operation.oldOffset || 0, newVersion: 'R' + operation.oldVersion as string, newTextContent: operation.oldState as string | null } };
             default:
                 throw new Error('Invalid operation type');
         }

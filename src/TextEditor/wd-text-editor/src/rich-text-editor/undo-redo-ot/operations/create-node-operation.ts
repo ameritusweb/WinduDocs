@@ -31,13 +31,17 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
         case 'update':
             return {
                 type: 'update',
-                targetNodeId: (params as UpdateNodeParams).nodeId,
+                targetNodeId: (params as UpdateNodeParams).node.Guid,
                 payload: { 
                     newVersion: (params as UpdateNodeParams).newVersion, 
-                    newTextContent: (params as UpdateNodeParams).newTextContent
+                    newTextContent: (params as UpdateNodeParams).newTextContent,
+                    offset: (params as UpdateNodeParams).offset
                 },
+                parentNodeId: (params as UpdateNodeParams).parentNode.Guid,
+                nodeIndex: (params as UpdateNodeParams).parentNode.Children.findIndex(c => c.Guid === (params as UpdateNodeParams).node.Guid),
                 oldState: (params as UpdateNodeParams).oldTextContent,
                 oldVersion: (params as UpdateNodeParams).oldVersion,
+                oldOffset: (params as UpdateNodeParams).oldOffset,
                 rootChildId: (params as UpdateNodeParams).rootChildId,
                 timestamp: Date.now()
             } as OperationReturnMap[T]; // Type assertion here

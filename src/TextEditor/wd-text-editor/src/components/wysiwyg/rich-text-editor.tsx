@@ -19,6 +19,7 @@ import editorData from "../../hooks/editor-data";
 import processAst from "../../rich-text-editor/node-operations/process-ast";
 import { handleArrowKeyUpOrDownPress, handleArrowKeyLeftOrRightPress } from "../../rich-text-editor/handlers";
 import ParagraphContainer from "./paragraph-container";
+import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 
 const RichTextEditor = () => {
 
@@ -29,6 +30,7 @@ const RichTextEditor = () => {
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
     const historyManager: IHistoryManager = HistoryManager;
     const editorRef = useRef<HTMLDivElement | null>(null);
+    const { restoreCursorPosition } = useRichTextEditor();
 
     const updateProcessedAst = () => {
         const asyncProcessAst = async () => { 
@@ -104,6 +106,7 @@ const RichTextEditor = () => {
 
     }, []);
 
+    /*
     useEffect(() => {
         const observer = new MutationObserver((mutationsList) => {
           // Check for the specific mutation type, if necessary
@@ -182,7 +185,26 @@ const RichTextEditor = () => {
         }
     
         return () => observer.disconnect();
-      }, [/* dependencies */]);
+      }, []);
+*/
+
+useEffect(() => {
+    const observer = new MutationObserver((mutationsList) => {
+      // Check for the specific mutation type, if necessary
+      if (mutationsList.length > 0) {
+        const lastMutation = mutationsList[mutationsList.length - 1];
+
+        restoreCursorPosition();
+
+      }
+    });
+
+    if (editorRef.current) {
+      observer.observe(editorRef.current, { childList: true, subtree: true, characterData: true });
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
     const renderNode = (node: AstNode, higherLevelContent: AstNode[], pathIndices: number[]) => {
         switch (node.NodeName) {
@@ -214,12 +236,12 @@ const RichTextEditor = () => {
                 return <Table key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} children={node.Children} />;
             case 'ListBlock':
                 if (node.Attributes.IsOrdered && node.Attributes.IsOrdered === 'True') {
-                    return <OrderedList key={node.Guid + (node.Version || 'V0')} isTopLevel={true} pathIndices={pathIndices} higherLevelChild={node} children={node.Children} />
+                    return <OrderedList key={node.Guid + (node.Version || 'V0')} id={node.Guid} isTopLevel={true} pathIndices={pathIndices} higherLevelChild={node} children={node.Children} />
                 } else {
-                    return <UnorderedList key={node.Guid + (node.Version || 'V0')} isTopLevel={true} pathIndices={pathIndices} higherLevelChild={node} children={node.Children} />
+                    return <UnorderedList key={node.Guid + (node.Version || 'V0')} id={node.Guid} isTopLevel={true} pathIndices={pathIndices} higherLevelChild={node} children={node.Children} />
                 }
             case 'QuoteBlock':
-                return <QuoteBlock key={node.Guid + (node.Version || 'V0')} pathIndices={pathIndices} children={node.Children} />;
+                return <QuoteBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} children={node.Children} />;
             case 'ThematicBreakBlock':
                 return <HorizontalRule id={node.Guid} key={node.Guid + (node.Version || 'V0')} />;
              case 'FencedCodeBlock':

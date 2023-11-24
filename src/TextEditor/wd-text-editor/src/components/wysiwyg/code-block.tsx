@@ -29,14 +29,15 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ id, pathIndices, version, languag
     const handlePaste = () => {/* Implement paste logic */};
     
     return (
-        <section className="relative"
+        <section id={`section_${id}`}
+            className="relative"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}
             onBlur={handleBlur}
             tabIndex={1} // Make it focusable if needed
         >
-        <pre id={`pre-${id}`}>
+        <pre id={`pre_${id}`}>
             <code id={id} className={`rich-code language-${language}`}>
                 {children.map((child, index) => {
                     const childPathIndices = [...pathIndices, index];

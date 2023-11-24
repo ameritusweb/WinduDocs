@@ -23,11 +23,11 @@ const ListItem: React.FC<ListItemProps> = ({ id, pathIndices, children, higherLe
                     case 'ListBlock':
                         if (child.Attributes.IsOrdered && child.Attributes.IsOrdered === 'True')
                         {
-                            return <OrderedList key={child.Guid + (child.Version || '0')} pathIndices={childPathIndices} higherLevelChild={child} children={child.Children} />;
+                            return <OrderedList key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} higherLevelChild={child} children={child.Children} />;
                         }
                         else
                         {
-                            return <UnorderedList key={child.Guid + (child.Version || '0')} pathIndices={childPathIndices} higherLevelChild={child} children={child.Children} />;
+                            return <UnorderedList key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} higherLevelChild={child} children={child.Children} />;
                         }
                     default:
                         return null;

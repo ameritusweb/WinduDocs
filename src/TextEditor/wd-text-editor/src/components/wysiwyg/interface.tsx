@@ -37,11 +37,14 @@ export type AstOperationType = 'add' | 'remove' | 'update';
 
 export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' | 'update'> {
   type: Type;
+  parentNodeId: string;
+  nodeIndex: number;
   targetNodeId: string;
   payload?: OperationPayloads[Type];
   timestamp: number;
   oldState?: AstNode | string; // Adjust this based on what oldState represents
   oldVersion?: string;
+  oldOffset?: number;
   rootChildId?: string;
 }
 
@@ -63,11 +66,14 @@ export interface RemoveNodeParams {
 }
 
 export interface UpdateNodeParams {
-  nodeId: string;
+  parentNode: AstNode;
+  offset: number;
+  node: AstNode;
   newTextContent: string | null;
   oldTextContent: string | null;
   newVersion: string | undefined;
   oldVersion: string | undefined;
+  oldOffset: number;
   rootChildId: string | undefined;
 }
 
@@ -75,7 +81,8 @@ export type Transaction = AstOperation[];
 
 export interface IHistoryManager {
   clear(): void;
-  recordChildTextUpdate(oldTextContent: string, offset: number, child: AstNode, rootChildId?: string): void;
+  restoreCursorPosition(): void;
+  recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode, rootChildId?: string): void;
   recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
   performOperationsAsTransaction(ast: AstNode, operations: AstOperation[], historyManager: IHistoryManager): AstNode;
@@ -96,6 +103,7 @@ export interface RemoveNodePayload {
 export interface UpdateNodePayload {
   newTextContent: string | null;
   newVersion: string | undefined;
+  offset: number;
 }
 
 export interface OperationPayloads {
@@ -122,4 +130,11 @@ export interface ITextBlock {
   index: number;
   textContent: string;
   offset?: number;
+}
+
+export interface UpdateData {
+  higherLevelIndex: number;
+  child: AstNode | null;
+  astParent: AstNode | null;
+  immediateChild: AstNode | null;
 }

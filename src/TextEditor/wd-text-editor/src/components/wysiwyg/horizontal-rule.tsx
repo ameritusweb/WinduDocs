@@ -21,7 +21,8 @@ const HorizontalRule: React.FC<HorizontalRuleProps> = ({id}) => {
     const handlePaste = () => {/* Implement paste logic */};
 
     return (
-    <section className="relative"
+    <section id={`section_${id}`}
+        className="relative"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}

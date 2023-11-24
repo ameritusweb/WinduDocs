@@ -6,12 +6,13 @@ import UtilityContainer from "./utility-container";
 
 export interface UnorderedListProps {
     isTopLevel?: boolean;
+    id: string;
     pathIndices: number[];
     children: AstNode[];
     higherLevelChild: AstNode;
 }
 
-const UnorderedList: React.FC<UnorderedListProps> = ({ isTopLevel, pathIndices, children, higherLevelChild }) => {
+const UnorderedList: React.FC<UnorderedListProps> = ({ id, isTopLevel, pathIndices, children, higherLevelChild }) => {
 
     const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
@@ -31,7 +32,8 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ isTopLevel, pathIndices, 
     }
     
     return isTopLevel ? (
-        <section className="relative"
+        <section id={`section_${id}`}
+            className="relative"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}

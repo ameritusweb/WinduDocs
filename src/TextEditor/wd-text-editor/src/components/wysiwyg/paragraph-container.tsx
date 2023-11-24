@@ -27,6 +27,7 @@ const ParagraphContainer: React.FC<ParagraphContainerProps> = ({ renderParagraph
 
     return (
         <section 
+            id={`section_${paragraphId}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}

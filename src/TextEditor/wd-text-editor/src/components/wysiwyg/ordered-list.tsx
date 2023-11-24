@@ -6,12 +6,13 @@ import UtilityContainer from "./utility-container";
 
 interface OrderedListProps {
     isTopLevel?: boolean;
+    id: string;
     pathIndices: number[];
     higherLevelChild: AstNode;
     children: AstNode[];
 }
 
-const OrderedList: React.FC<OrderedListProps> = ({ isTopLevel, pathIndices, higherLevelChild, children }) => {
+const OrderedList: React.FC<OrderedListProps> = ({ id, isTopLevel, pathIndices, higherLevelChild, children }) => {
 
     const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
@@ -32,7 +33,8 @@ const OrderedList: React.FC<OrderedListProps> = ({ isTopLevel, pathIndices, high
     
     return (
         isTopLevel ? (
-            <section className="relative"
+            <section id={`section_${id}`}
+                className="relative"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onFocus={handleFocus}

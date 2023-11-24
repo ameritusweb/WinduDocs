@@ -1,6 +1,6 @@
-import { AstNode, AstUpdate, IHistoryManager } from "../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../components/wysiwyg/interface";
 import { handleBackspaceKeyPress, handleCharacterInsertion, handleEnterKeyPress } from "../rich-text-editor/handlers";
-import { createNewAstNode, createNewAstNodeFromFormat } from "../rich-text-editor/node-operations";
+import { createNewAstNode, createNewAstNodeFromFormat, findHigherlevelIndex, findNodeByGuid } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import EditorData, { EditorDataType } from "./editor-data";
 
@@ -9,33 +9,48 @@ export const useRichTextEditor = () => {
     const editorData: EditorDataType = EditorData;
     const historyManager: IHistoryManager = HistoryManager;
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, higherLevelId?: string): AstUpdate => {
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, pathIndices: number[], higherLevelId?: string): AstUpdate => {
 
         const sel = window.getSelection();
         const key = event.key;
+        const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
+        if (higherLevelIndex === null)
+            return {type: 'none', nodes: children };
+        higherLevelChildren[higherLevelIndex].Children = children;
         if (sel) {
             const range = sel.getRangeAt(0);
             const container = range.startContainer;
             const endContainer = range.endContainer;
             const startOffset = range.startOffset;
             const endOffset = range.endOffset;
+            const parent = container.parentElement;
+            if (!parent)
+                return {type: 'none', nodes: children };
+            const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
+            const updateData: UpdateData = { higherLevelIndex, child, astParent, immediateChild }
             if (key === 'Enter') {
                 event.preventDefault();
-                const update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, range, startOffset, higherLevelId);
-                if (update)
-                    return update;
+                let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, range, startOffset, higherLevelId);
+                if (update) {
+                    update = { ...update, pathIndices };
+                    editorData.emitEvent('update', 'richTextEditor', update);
+                }
             }
             else if (key === 'Backspace') {
                 event.preventDefault();
-                const update = handleBackspaceKeyPress(historyManager, container, endContainer, children, higherLevelChildren, range, startOffset, endOffset);
-                if (update)
-                    return update;
+                let update = handleBackspaceKeyPress(historyManager, container, endContainer, children, higherLevelChildren, updateData, range, startOffset, endOffset);
+                if (update) {
+                    update = { ...update, pathIndices };
+                    editorData.emitEvent('update', 'richTextEditor', update);
+                }
             }
             else if (key.length === 1) {
                 event.preventDefault();
-                const update = handleCharacterInsertion(historyManager, container, children, higherLevelChildren, event.key, editorData.editorState, startOffset);
-                if (update)
-                    return update;
+                let update = handleCharacterInsertion(historyManager, container, children, higherLevelChildren, updateData, event.key, editorData.editorState, startOffset);
+                if (update) {
+                    update = { ...update, pathIndices };
+                    editorData.emitEvent('update', 'richTextEditor', update);
+                }
             }
         }
 
@@ -43,6 +58,13 @@ export const useRichTextEditor = () => {
 
     }
 
+    const restoreCursorPosition = () => {
+
+        historyManager.restoreCursorPosition();
+
+    }
+
+    /*
     const getCursorPosition = (updateType: string) => {
         const selection = window.getSelection();
         let offset = 0;
@@ -73,12 +95,12 @@ export const useRichTextEditor = () => {
         }
         return null;
     }
-
+*/
     return {
         editorData,
         updateAst,
-        getCursorPosition,
         createNewAstNode,
-        createNewAstNodeFromFormat
+        createNewAstNodeFromFormat,
+        restoreCursorPosition
       };
 }

@@ -1,4 +1,4 @@
-import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNode, findClosestAncestorId, findHigherlevelIndex, findNodeByGuid, nestedSplitNode, splitNode } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 
@@ -73,7 +73,7 @@ const splitAndUpdateHigherLevelNodes = (child: AstNode, startOffset: number, ind
 }
 
 // Handle character insertion
-const handleCharacterInsertion = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], key: string, editorState: string, startOffset: number): AstUpdate | null => {
+const handleCharacterInsertion = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, key: string, editorState: string, startOffset: number): AstUpdate | null => {
     if (container.nodeName !== '#text')
     {
         container = container.firstChild!;
@@ -89,7 +89,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
             const grandParent = parent.parentElement;
             const rootChildId = findClosestAncestorId(parent, 'richTextEditor');
             const parentId = parent.id;
-            let [child, astParent] = findNodeByGuid(children, parentId, null);
+            let [child, astParent] = findNodeByGuid(higherLevelChildren, parentId, null);
             if (child) {
                 let grandChild = null;
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
@@ -168,12 +168,12 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 
                 } else if (grandChild !== null) {
                     const oldText = '' + grandChild.TextContent;
-                    if (child.TextContent === '\n')
+                    if (grandChild.TextContent === '\n')
                     {
-                        child.TextContent = '';
+                        grandChild.TextContent = '';
                     }
                     replaceText(container, grandChild, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, grandChild, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, startOffset, child, grandChild, rootChildId);
                     return { type: 'insert', rootChildId, nodes: children.map((c) => {
                         return Object.assign({}, c)
                     }) };
@@ -239,7 +239,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                             child.TextContent = '';
                         }
                         replaceText(container, child, startOffset, key);
-                        historyManager.recordChildTextUpdate(oldText, startOffset, child, rootChildId);
+                        historyManager.recordChildTextUpdate(oldText, startOffset, parent, child, rootChildId);
                         return { type: 'insert', rootChildId, nodes: children.map((c, ind) => {
                             return ind === index ? Object.assign({}, c) : c
                         }) };

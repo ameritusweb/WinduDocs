@@ -43,7 +43,8 @@ export const Heading: React.FC<HeadingProps> = ({ id, version, level, pathIndice
 
     // Use React.createElement to dynamically create the element
     return (
-        <section className="relative"
+        <section id={`section_${id}`}
+            className="relative"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}
