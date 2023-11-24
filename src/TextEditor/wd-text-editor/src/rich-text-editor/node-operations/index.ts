@@ -15,3 +15,4 @@ export { default as createTableCell } from './create-table-cell';
 export { default as createTable } from './create-table';
 export { default as createListItem } from './create-list-item';
 export { default as createListBlock } from './create-list-block';
+export { default as indentListItem } from './indent-list-item';

@@ -91,7 +91,7 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
   const activeGroupRules = groups.find(group => group.groupName === activeGroupName)!.rules;
 
   return (
-    <div className="toolbar shadow-md">
+    <div className="toolbar shadow-md dark:text-sky-950">
       <div className="tabs">
         {groups.map(({ groupName }) => (
           <ToolbarTab

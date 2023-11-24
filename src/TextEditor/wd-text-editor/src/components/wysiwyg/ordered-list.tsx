@@ -7,10 +7,11 @@ import UtilityContainer from "./utility-container";
 interface OrderedListProps {
     isTopLevel?: boolean;
     pathIndices: number[];
+    higherLevelChild: AstNode;
     children: AstNode[];
 }
 
-const OrderedList: React.FC<OrderedListProps> = ({ isTopLevel, pathIndices, children }) => {
+const OrderedList: React.FC<OrderedListProps> = ({ isTopLevel, pathIndices, higherLevelChild, children }) => {
 
     const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
@@ -48,6 +49,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ isTopLevel, pathIndices, chil
                                 pathIndices={childPathIndices} 
                                 children={child.Children} 
                                 higherLevelChildren={children} 
+                                higherLevelChild={higherLevelChild}
                             />
                         ) : null;
                     })}
@@ -71,6 +73,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ isTopLevel, pathIndices, chil
                             pathIndices={childPathIndices} 
                             children={child.Children} 
                             higherLevelChildren={children} 
+                            higherLevelChild={higherLevelChild}
                         />
                     ) : null;
                 })}

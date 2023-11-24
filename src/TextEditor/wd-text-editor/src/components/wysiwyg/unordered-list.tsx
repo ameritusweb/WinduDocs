@@ -8,9 +8,10 @@ export interface UnorderedListProps {
     isTopLevel?: boolean;
     pathIndices: number[];
     children: AstNode[];
+    higherLevelChild: AstNode;
 }
 
-const UnorderedList: React.FC<UnorderedListProps> = ({ isTopLevel, pathIndices, children }) => {
+const UnorderedList: React.FC<UnorderedListProps> = ({ isTopLevel, pathIndices, children, higherLevelChild }) => {
 
     const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
@@ -40,7 +41,7 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ isTopLevel, pathIndices, 
         <ul onClick={onClick}>
             {children.map((child, index) => {
                 const childPathIndices = [...pathIndices, index];
-                return child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} children={child.Children} higherLevelChildren={children} /> : null
+                return child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} higherLevelChild={higherLevelChild} children={child.Children} higherLevelChildren={children} /> : null
             })}
         </ul>
         {(
@@ -57,7 +58,7 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ isTopLevel, pathIndices, 
         <ul onClick={onClick}>
             {children.map((child, index) => {
                 const childPathIndices = [...pathIndices, index];
-                return child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} children={child.Children} higherLevelChildren={children} /> : null
+                return child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} higherLevelChild={higherLevelChild} children={child.Children} higherLevelChildren={children} /> : null
             })}
         </ul>
     );

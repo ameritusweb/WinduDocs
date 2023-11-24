@@ -21,6 +21,7 @@ export interface AstNode {
   export interface HigherLevelProps {
     id?: string;
     content: AstNode[];
+    contentParent?: AstNode;
     updater?: (nodes: AstNode[], updateProcessed: boolean) => void;
   }
 

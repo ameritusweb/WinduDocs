@@ -6,7 +6,7 @@ import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
-import { createNewAstNode, deepCopyAstNode, findNodeByGuid } from "../../rich-text-editor/node-operations";
+import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem } from "../../rich-text-editor/node-operations";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
 import { domToAstMap } from "../ast-mapping";
 
@@ -97,18 +97,40 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       editorData.events.subscribe(`para_${props.id}`, 'InsertInline', handleInsertInline);
 
       const handleIndent = (payload: any) => {
-          
+        const higherLevelAst = higherLevelPropsRef.current?.content || [];
+        const higherLevelChild = higherLevelPropsRef.current?.contentParent;
+        if (higherLevelChild)
+        {
+          const newListBlock = createListBlock(1, higherLevelChild.Attributes.IsOrdered === 'True');
+          const selection = window.getSelection();
+          if (selection)
+          {
+            const range = selection.getRangeAt(0);
+            const container = range.startContainer;
+            const parent = container.parentElement;
+            if (parent) {
+              const [foundNode, foundParent, immediateChild] = findNodeByGuid(higherLevelAst, parent.id, null);
+              if (foundNode && immediateChild) {
+                const index = higherLevelAst.findIndex(h => h === immediateChild);
+                const res = indentListItem(deepCopyAstNode(higherLevelChild), index);
+                if (res) {
+                  editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: props.pathIndices });
+                }
+              }
+            }
+          }
+        }
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'indent', handleIndent);
+      editorData.events.subscribe(`para_${props.id}`, 'Indent', handleIndent);
 
       const handleOutdent = (payload: any) => {
           
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'outdent', handleOutdent);
+      editorData.events.subscribe(`para_${props.id}`, 'Outdent', handleOutdent);
 
       return () => {
           // Unsubscribe the GUID on component unmount
