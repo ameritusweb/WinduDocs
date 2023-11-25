@@ -162,14 +162,7 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
       if (editorData.editorState)
       {
         setLineFormat(editorData.editorState);
-        //setTimeout(function(this: React.RefObject<HTMLElement | null>) {
-        //  this.current?.focus();
-        //}.bind(blankLineRef), 1);
       }
-    }
-
-    const onBlur = () => {
-      //setLineFormat(null);
     }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -223,7 +216,7 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
     // Use React.createElement to dynamically create the element
     return React.createElement(
       Tag,
-      { ref: blankLineRef, id, className: "blank-line", onFocus: onFocus, onBlur: onBlur, onKeyDown: onKeyDown, contentEditable: true, suppressContentEditableWarning: true },
+      { ref: blankLineRef, id, className: "blank-line", onFocus: onFocus, onKeyDown: onKeyDown, contentEditable: true, suppressContentEditableWarning: true },
       '\n'
     );
   };

@@ -82,38 +82,6 @@ export const useRichTextEditor = () => {
 
     }
 
-    /*
-    const getCursorPosition = (updateType: string) => {
-        const selection = window.getSelection();
-        let offset = 0;
-        let nextSibling = false;
-        let lastChild = false;
-        if (selection && selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            if (updateType === 'remove') {
-                offset = range.startOffset - 2;
-            }
-            else if (updateType === 'removeSelected') {
-                offset = range.startOffset - 1;
-            }
-            else if (updateType === 'insertNew' || updateType === 'higherLevelSplit') {
-                offset = 0;
-                nextSibling = true;
-            } else if (updateType === 'higherLevelInsertNew') {
-                offset = -1;
-                lastChild = true;
-            }
-            else
-            {
-                offset = range.startOffset;
-            }
-            const parent = range.startContainer.parentElement;
-            const index = Array.from(parent?.childNodes || []).findIndex((c) => c === range.startContainer);
-            return { parentId: parent?.id || '', index, nextSibling, lastChild, offset };
-        }
-        return null;
-    }
-*/
     return {
         editorData,
         historyManager,
