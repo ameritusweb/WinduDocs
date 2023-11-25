@@ -14,7 +14,7 @@ import './rich-text-editor.css';
 import { BlankLine } from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
-import { deepCopyAstNode, findFirstTextNode, findLastTextNode } from "../../rich-text-editor/node-operations";
+import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
 import editorData from "../../hooks/editor-data";
 import processAst from "../../rich-text-editor/node-operations/process-ast";
 import { handleArrowKeyUpOrDownPress, handleArrowKeyLeftOrRightPress } from "../../rich-text-editor/handlers";
@@ -105,88 +105,6 @@ const RichTextEditor = () => {
         }
 
     }, []);
-
-    /*
-    useEffect(() => {
-        const observer = new MutationObserver((mutationsList) => {
-          // Check for the specific mutation type, if necessary
-          if (mutationsList.length > 0) {
-            const lastMutation = mutationsList[mutationsList.length - 1];
-            if (lastMutation.removedNodes && lastMutation.removedNodes.length > 0)
-            {
-                const prev = lastMutation.previousSibling;
-                if (prev)
-                {
-                    const lastTextNode = findLastTextNode(prev as Element);
-                    if (lastTextNode) {
-                        const selection = window.getSelection();
-                        const range = new Range();
-                        if (lastTextNode.textContent) {
-                            range.setStart(lastTextNode, lastTextNode.textContent?.length);
-                            range.setEnd(lastTextNode, lastTextNode.textContent?.length);
-                            if (selection && range) {
-                                selection.removeAllRanges();
-                                selection.addRange(range);
-                            }
-                        }
-                    }
-                }
-            }
-            else if (lastMutation.addedNodes && lastMutation.addedNodes.length > 0)
-            {
-                const addedNode = lastMutation.addedNodes[0];
-                
-                if (addedNode && addedNode instanceof Element)
-                {
-                    if (addedNode.className === 'blank-line')
-                    {
-                        const selection = window.getSelection();
-                        if (selection?.anchorNode && selection?.anchorNode instanceof Text)
-                        {
-                            const range = new Range();
-                            range.setStart(selection.anchorNode, 0);
-                            range.setEnd(selection.anchorNode, 0);
-                            if (selection && range) {
-                                selection.removeAllRanges();
-                                selection.addRange(range);
-                            }
-                        } else {
-                            const range = new Range();
-                            range.setStart(addedNode, 1);
-                            range.setEnd(addedNode, 1);
-                            if (selection && range) {
-                                selection.removeAllRanges();
-                                selection.addRange(range);
-                            }
-                        }
-                    } else if (addedNode.getAttribute('version') === 'New'
-                                ||
-                               (addedNode.firstElementChild && addedNode.firstElementChild?.getAttribute('version') === 'New')) {
-                        const selection = window.getSelection();
-                        const range = new Range();
-                        const firstTextNode = findFirstTextNode(addedNode);
-                        if (firstTextNode && firstTextNode.textContent && firstTextNode.textContent?.length === 1)
-                        {
-                            range.setStart(firstTextNode, 1);
-                            range.setEnd(firstTextNode, 1);
-                            if (selection && range) {
-                                selection.removeAllRanges();
-                                selection.addRange(range);
-                            }
-                        }
-                    }
-                }
-            }
-          }
-        });
-    
-        if (editorRef.current) {
-          observer.observe(editorRef.current, { childList: true, subtree: true });
-        }
-    
-        return () => observer.disconnect();
-      }, []);
-*/
 
 useEffect(() => {
     const observer = new MutationObserver((mutationsList) => {

@@ -33,7 +33,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
           const newText = createNewAstNode('Text', 0, 0, '\n');
           const newParagraph = createNewAstNode('ParagraphBlock', 0, 0, null, [newText]);
           const newLine = createNewAstNode('QuoteBlock', 0, 0, null, [newParagraph]);
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newLine);
+          historyManager.recordChildReplace(null, oldNode, newLine, newParagraph, 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
@@ -44,7 +46,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newText = createNewAstNode('Text', 0, 0, '\n');
           const newCodeBlock = createNewAstNode('FencedCodeBlock', 0, 0, null, [newText]);
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newCodeBlock);
+          historyManager.recordChildReplace(null, oldNode, newCodeBlock, { ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
@@ -54,7 +58,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newHR = createNewAstNode('ThematicBreakBlock', 0, 0, null);
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newHR);
+          historyManager.recordChildReplace(null, oldNode, newHR, newHR, 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
@@ -65,7 +71,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newTable = createTable(payload.rows, payload.cols);
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newTable);
+          historyManager.recordChildReplace(null, oldNode, newTable, newTable, 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -79,7 +87,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
           const newText = createNewAstNode('Text', 0, 0, '\n');
           const newCodeBlock = createNewAstNode('FencedCodeBlock', 0, 0, null, [newText]);
           newCodeBlock.Attributes.Language = type;
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newCodeBlock);
+          historyManager.recordChildReplace(null, oldNode, newCodeBlock, { ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -91,7 +101,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newListBlock = createListBlock(1, true);
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newListBlock);
+          historyManager.recordChildReplace(null, oldNode, newListBlock, newListBlock.Children[0].Children[0], 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -103,7 +115,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newListBlock = createListBlock(1, false);
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newListBlock);
+          historyManager.recordChildReplace(null, oldNode, newListBlock, newListBlock.Children[0].Children[0], 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -148,9 +162,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
       if (editorData.editorState)
       {
         setLineFormat(editorData.editorState);
-        setTimeout(function(this: React.RefObject<HTMLElement | null>) {
-          this.current?.focus();
-        }.bind(blankLineRef), 1);
+        //setTimeout(function(this: React.RefObject<HTMLElement | null>) {
+        //  this.current?.focus();
+        //}.bind(blankLineRef), 1);
       }
     }
 
@@ -195,7 +209,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           higherLevelContentCopy.splice(index, 1);
           const newNode = createNewAstNodeFromFormat(lineFormat || '', event.key);
+          const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 0, newNode);
+          historyManager.recordChildReplace(null, oldNode, newNode, newNode, 0, 1);
           higherLevelContent.updater(higherLevelContentCopy, true);
         }
 

@@ -135,12 +135,14 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 } else if (grandParent && (grandParent.nodeName === 'CODE' || grandParent.nodeName === 'DIV')) {
                     
                     const oldText = '' + child.TextContent;
+                    let additionalOffset = 0;
                     if (child.TextContent === '\n')
                     {
                         child.TextContent = '';
+                        additionalOffset = 1;
                     }
                     replaceText(container, child, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child, null, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, null, rootChildId);
                     let higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === children[0].Guid);
                     if (higherLevelIndex === -1) {
                         higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren) || 0;
@@ -154,22 +156,26 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 } else if (grandParent && grandChild && astParent && grandParent.nodeName === 'LI') {
                     
                     const oldText = '' + grandChild.TextContent;
+                    let additionalOffset = 0;
                     if (grandChild.TextContent === '\n')
                     {
                         grandChild.TextContent = '';
+                        additionalOffset = 1;
                     }
                     replaceText(container, grandChild, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child, grandChild, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, grandChild, rootChildId);
                     return { type: 'insert', rootChildId, nodes: astParent?.Children };
                 
                 } else if (grandChild !== null) {
                     const oldText = '' + grandChild.TextContent;
+                    let additionalOffset = 0;
                     if (grandChild.TextContent === '\n')
                     {
                         grandChild.TextContent = '';
+                        additionalOffset = 1;
                     }
                     replaceText(container, grandChild, startOffset, key);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child, grandChild, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, grandChild, rootChildId);
                     return { type: 'insert', rootChildId, nodes: children.map((c) => {
                         return Object.assign({}, c)
                     }) };

@@ -3,7 +3,7 @@ import { AstNode } from "../../components/wysiwyg/interface";
 
 const createListBlock = (numberOfItems: number, isOrdered: boolean): AstNode => {
     const listItems = Array.from({ length: numberOfItems }, (_, index) =>
-        createListItem(index, 3, `First Level Item ${index + 1}`)
+        createListItem(index, 3, '\n')
     );
     const listBlock = createNewAstNode('ListBlock', 20, 1, null, listItems);
     if (isOrdered)

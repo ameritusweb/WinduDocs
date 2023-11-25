@@ -21,11 +21,7 @@ const splitTree = (root: AstNode, leafNode: AstNode, offset: number, rightNodeGu
         left.Children = [];
         right.Children = [];
 
-        //if (depth === 0)
-        //{
-            //left.Guid = generateKey();
-            right.Guid = generateKey();
-        //}
+        right.Guid = generateKey();
 
         if (node === leaf)
         {
@@ -83,11 +79,9 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
     } 
     else
     {
-        const parent = container.parentElement;
+        let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex} = updateData;
         if (parent) {
             const parentId = parent.id;
-            const rootChild = findClosestAncestor(parent, 'richTextEditor');
-            let [child, astParent] = findNodeByGuid(higherLevelChildren, parentId, null);
             if (startOffset === 0)
             {
                 if (parent.nodeName === 'SPAN' || parent.nodeName === 'P' || parent.nodeName === 'EM' || parent.nodeName === 'STRONG') {
@@ -197,7 +191,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                         const childIndex = childNodes.findIndex((c) => c === container);
                         if (child) {
                             const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
-                            if (rootChild && higherLevelIndex !== null) {
+                            if (rootChildId && higherLevelIndex !== null) {
                                 const astChild = child.Children[childIndex];
                                 if (childIndex === child.Children.length - 1 && startOffset === astChild.TextContent?.length)
                                 {
@@ -215,6 +209,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                     } else {
                                         const newBlank = createNewAstNode('BlankLine', 0, 0, null);
                                         higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
+                                        historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], newBlank, higherLevelChildren[higherLevelIndex + 1], 0, 0, true);
                                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                     }
                                 }

@@ -26,7 +26,7 @@ class HistoryManager implements IHistoryManager {
             const lastMove = lastTransaction[lastTransaction.length - 1];
             if (lastMove) {
                 const op: AstOperation = lastMove as AstOperation;
-                if (op.type === 'add') {
+                if (op.type === 'add' || op.type === 'replace') {
                     let node = document.getElementById(lastMove.parentNodeId);
                     if (node) {
                         if (node.nodeName === 'A')
