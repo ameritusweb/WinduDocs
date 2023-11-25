@@ -116,6 +116,7 @@ export const useRichTextEditor = () => {
 */
     return {
         editorData,
+        historyManager,
         updateAst,
         createNewAstNode,
         createNewAstNodeFromFormat,

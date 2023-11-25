@@ -93,7 +93,13 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
                 if (!text) {
                     text = bchild;
                 }
+                const oldText = '' + text.TextContent;
+                if (text.TextContent === '\n')
+                {
+                    text.TextContent = '';
+                }
                 removeText(container, text, startOffset, endOffset);
+                historyManager.recordChildTextUpdate(oldText, startOffset, bchild, text, rootChildId);
                 if (text.TextContent === '') {
                     const newLine = createNewAstNode('BlankLine', 0, 0, null);
                     bchild = Object.assign({}, newLine);

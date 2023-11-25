@@ -1,5 +1,5 @@
 import { incrementEnd, trimSpecial } from "..";
-import { AstNode, AstOperation, IHistoryManager, UpdateNodePayload } from "../../../components/wysiwyg/interface";
+import { AddNodePayload, AstNode, AstOperation, IHistoryManager, UpdateNodePayload } from "../../../components/wysiwyg/interface";
 import createNodeOperation from "../operations/create-node-operation";
 import { applyOperation } from "../operations/operation-handlers";
 import OperationStack from "./operation-stack";
@@ -25,8 +25,8 @@ class HistoryManager implements IHistoryManager {
         {
             const lastMove = lastTransaction[lastTransaction.length - 1];
             if (lastMove) {
-                const op: AstOperation<'update'> = lastMove as AstOperation<'update'>;
-                if (op.type === 'update') {
+                const op: AstOperation = lastMove as AstOperation;
+                if (op.type === 'add') {
                     let node = document.getElementById(lastMove.parentNodeId);
                     if (node) {
                         if (node.nodeName === 'A')
@@ -42,8 +42,34 @@ class HistoryManager implements IHistoryManager {
                             const selection = window.getSelection();
                             if (selection) {
                                 const range = new Range();
-                                range.setStart(textNode, op.payload?.offset);
-                                range.setEnd(textNode, op.payload?.offset);
+                                const payload = op.payload as AddNodePayload;
+                                range.setStart(textNode, payload.offset);
+                                range.setEnd(textNode, payload.offset);
+                                selection?.removeAllRanges();
+                                selection?.addRange(range);
+                            }
+                        }
+                    }
+                }
+                else if (op.type === 'update') {
+                    let node = document.getElementById(lastMove.parentNodeId);
+                    if (node) {
+                        if (node.nodeName === 'A')
+                        {
+                            node = node.firstElementChild as HTMLElement;
+                        }
+                        let textNode: ChildNode | null = node?.childNodes[lastMove.nodeIndex];
+                        if (textNode && textNode.nodeType !== Node.TEXT_NODE) {
+                            textNode = textNode.firstChild;
+                        }
+                        if (textNode && op.payload) {
+                        
+                            const selection = window.getSelection();
+                            if (selection) {
+                                const range = new Range();
+                                const payload = op.payload as UpdateNodePayload;
+                                range.setStart(textNode, payload.offset);
+                                range.setEnd(textNode, payload.offset);
                                 selection?.removeAllRanges();
                                 selection?.addRange(range);
                             }
@@ -65,7 +91,15 @@ class HistoryManager implements IHistoryManager {
         target.Version = newVersion;
     }
 
-    recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction = false): void {
+    recordChildReplace(parent: AstNode | null, oldNode: AstNode, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number): void {
+        this.recordOperation<'replace'>(createNodeOperation('replace', { parentNode: parent || null, oldNode, cursorTargetParent: cursorTargetParent, nodeIndex: nodeIndex == null ? -1 : nodeIndex, offset, newNode  }));
+    }
+
+    recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void {
+        this.recordOperation<'add'>(createNodeOperation('add', { parentNode: parent || null, previousSiblingId: previousSibling?.Guid || null, cursorTargetParent, nodeIndex: nodeIndex == null ? -1 : nodeIndex, offset, newNode  }), partOfTransaction);
+    }
+
+    recordOperation<Type extends 'add' | 'remove' | 'update' | 'replace'>(operation: AstOperation<Type>, partOfTransaction = false): void {
         if (!partOfTransaction) {
             this.undoStack.startTransaction();
         }
@@ -138,7 +172,7 @@ class HistoryManager implements IHistoryManager {
             case 'add':
                 return { ...operation, type: 'remove' };
             case 'remove':
-                return { ...operation, type: 'add', payload: { newNode: operation.oldState as AstNode } };
+                return { ...operation, type: 'add', payload: { previousSiblingId: null, offset: 0, newNode: operation.oldState as AstNode } };
             case 'update':
                 return { ...operation, payload: { offset: operation.oldOffset || 0, newVersion: 'R' + operation.oldVersion as string, newTextContent: operation.oldState as string | null } };
             default:

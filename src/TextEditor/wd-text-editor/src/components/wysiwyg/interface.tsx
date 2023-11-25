@@ -33,9 +33,9 @@ export interface AstNode {
     higherLevelNodes?: AstNode[];
 }
 
-export type AstOperationType = 'add' | 'remove' | 'update';
+export type AstOperationType = 'add' | 'remove' | 'update' | 'replace';
 
-export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' | 'update'> {
+export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' | 'update' | 'replace'> {
   type: Type;
   parentNodeId: string;
   nodeIndex: number;
@@ -57,7 +57,20 @@ export interface CursorPositionType {
 }
 
 export interface AddNodeParams {
-  parentNodeId: string;
+  parentNode: AstNode | null;
+  previousSiblingId: string | null;
+  cursorTargetParent: AstNode;
+  nodeIndex: number;
+  offset: number;
+  newNode: AstNode;
+}
+
+export interface ReplaceNodeParams {
+  parentNode: AstNode | null;
+  oldNode: AstNode;
+  cursorTargetParent: AstNode;
+  nodeIndex: number;
+  offset: number;
   newNode: AstNode;
 }
 
@@ -82,6 +95,8 @@ export type Transaction = AstOperation[];
 export interface IHistoryManager {
   clear(): void;
   restoreCursorPosition(): void;
+  recordChildReplace(parent: AstNode | null, oldNode: AstNode, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number): void;
+  recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void;
   recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string): void;
   recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
@@ -93,6 +108,8 @@ export interface IHistoryManager {
 }
 
 export interface AddNodePayload {
+  previousSiblingId: string | null;
+  offset: number;
   newNode: AstNode;
 }
 
@@ -106,10 +123,18 @@ export interface UpdateNodePayload {
   offset: number;
 }
 
+export interface ReplaceNodePayload {
+  oldNode: AstNode;
+  offset: number;
+  newNode: AstNode;
+}
+
+
 export interface OperationPayloads {
   'add': AddNodePayload;
   'remove': RemoveNodePayload;
   'update': UpdateNodePayload;
+  'replace': ReplaceNodePayload;
 }
 
 type EventListener = (payload: any) => void;

@@ -1,11 +1,11 @@
 import { generateKey } from ".";
 import { AstNode } from "../../components/wysiwyg/interface";
 
-const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode, AstNode, AstNode] => {
+const splitNode = (node: AstNode, index: number, childIndex?: number, rightNodeGuid?: string): [AstNode, AstNode, AstNode] => {
 
     if (childIndex !== undefined)
     {
-      const [childLeftNode, childRightNode] = splitNode(node.Children[childIndex], index);
+      const [childLeftNode, childRightNode] = splitNode(node.Children[childIndex], index, undefined, rightNodeGuid);
       
       const leftNode: AstNode = {
         ...node,
@@ -54,7 +54,7 @@ const splitNode = (node: AstNode, index: number, childIndex?: number): [AstNode,
     const rightNode: AstNode = {
       ...node,
       TextContent: rightText,
-      Guid: generateKey()
+      Guid: rightNodeGuid || generateKey()
     };
   
     return [leftNode, rightNode, newLine];

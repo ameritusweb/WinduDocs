@@ -16,8 +16,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
     const [lineFormat, setLineFormat] = useState<string | null | undefined>(format);
     const blankLineRef = useRef<HTMLElement | null>(null);
     const higherLevelContentRef = useRef<AstNode[]>(higherLevelContent.content);
-    const { createNewAstNode, createNewAstNodeFromFormat } = useRichTextEditor();
+    const { createNewAstNode, createNewAstNodeFromFormat, historyManager } = useRichTextEditor();
     const editorData: EditorDataType = EditorData;
+
 
     useEffect(() => {
 
@@ -182,6 +183,7 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newLine = createNewAstNode('BlankLine', 0, 0, null);
           higherLevelContentCopy.splice(index + 1, 0, newLine);
+          historyManager.recordChildAdd(null, higherLevelContentCopy[index], newLine, newLine, 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
         } else if (event.key === 'Backspace') {
           event.preventDefault();

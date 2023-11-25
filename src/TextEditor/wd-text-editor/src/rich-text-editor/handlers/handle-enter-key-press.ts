@@ -1,15 +1,16 @@
 import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
-import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode, splitNodeAtTarget } from "../node-operations";
+import { createNewAstNode, createNewAstNodeFromFormat, deepCopyAstNode, findClosestAncestor, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode, splitNodeAtTarget } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
 
-const splitTree = (root: AstNode, leafNode: AstNode, offset: number) => {
+const splitTree = (root: AstNode, leafNode: AstNode, offset: number, rightNodeGuid?: string) => {
 
     const leftTree = {} as AstNode;
     const rightTree = {} as AstNode;
     const path: number[] = [];
     let foundPath: number[] = [];
     let splitFound = false;
+    const guid = rightNodeGuid || generateKey();
 
     function traverse(node: AstNode, left: AstNode, right: AstNode, leaf: AstNode, offset: number, index: number, depth: number) {
 
@@ -30,7 +31,7 @@ const splitTree = (root: AstNode, leafNode: AstNode, offset: number) => {
         {
             splitFound = true;
             foundPath = path.slice(0);
-            return splitNode(node, offset);
+            return splitNode(node, offset, undefined, guid);
         }
 
         index = 0;
@@ -103,6 +104,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                     const newLine = createNewAstNode('Text', 0, 0, '\n');
                                     children.splice(childIndex + 1, 0, newLine);
                                     higherLevelChildren[higherLevelIndex].Children = children;
+                                    historyManager.recordChildAdd(null, children[childIndex], newLine, higherLevelChildren[higherLevelIndex], childIndex + 1, 0);
                                 }
                                 else if (childIndex > 0)
                                 {
@@ -121,6 +123,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                 if (higherLevelIndex) {
                                     const newLine = createNewAstNode('Text', 0, 0, '\n');
                                     higherLevelChildren.splice(higherLevelIndex + 1, 0, newLine);
+                                    historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], newLine, { ...newLine, NodeName: 'ParagraphBlock' }, 0, 0);
                                     return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                 }
                             }
@@ -140,6 +143,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                     if (child && higherLevelIndex !== -1) {
                         const newNode = createNewAstNodeFromFormat('p', '\n');
                         higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
+                        historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], newNode, newNode, 0, 0);
                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                     }
                 }
@@ -152,6 +156,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                     if (child && higherLevelIndex !== -1) {
                         const newNode = createNewAstNode('Text', 0, 0, '\n');
                         higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
+                        historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], newNode, { ...newNode, NodeName: 'ParagraphBlock' }, 0, 0);
                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                     }
                 }
@@ -198,6 +203,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                 {
                                     const newBlank = createNewAstNode('BlankLine', 0, 0, null);
                                     higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
+                                    historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], newBlank, newBlank, 0, 0);
                                     return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                 } else {
                                     const nextSibling = child.Children[childIndex + 1];
@@ -262,19 +268,31 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                 else if (parent.nodeName === 'P')
                                 {
                                     const [node1, node2] = splitNode(child, startOffset);
+                                    const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
                                     children.splice(childIndex, 1, node1, node2);
                                     const newPara = createNewAstNode('ParagraphBlock', 0, 0, null);
                                     moveArray(children, childIndex + 1, newPara.Children, 0);
                                     higherLevelChildren[higherLevelIndex].Guid = generateKey();
+                                    const newNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
+                                    historyManager.recordChildReplace(null, oldNode, newNode, newNode, 0, 0);
                                     higherLevelChildren.splice(higherLevelIndex + 1, 0, newPara);
+                                    historyManager.recordChildAdd(null, newNode, higherLevelChildren[higherLevelIndex + 1], higherLevelChildren[higherLevelIndex + 1], 0, 0, true);
                                     return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                 } else {
                                     const higherLevelChild = higherLevelChildren[higherLevelIndex];
                                     const [lowerLevelParent] = findNodeByGuid(children, parent.id, null);
                                     if (lowerLevelParent) {
                                         const lowerLevelChild = lowerLevelParent.Children[childIndex];
-                                        const split = splitTree(higherLevelChild, lowerLevelChild, startOffset);
-                                        higherLevelChildren.splice(higherLevelIndex, 1, ...split);
+                                        const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
+                                        const guid = generateKey();
+                                        const split = splitTree(higherLevelChild, lowerLevelChild, startOffset, guid);
+                                        higherLevelChildren.splice(higherLevelIndex, 1, split[0]);
+                                        historyManager.recordChildReplace(null, oldNode, split[0], split[0], 0, 0);
+                                        higherLevelChildren.splice(higherLevelIndex + 1, 0, split[1]);
+                                        const [newChild, newParent] = findNodeByGuid(higherLevelChildren, guid, null);
+                                        const newChildIndex = newParent?.Children.findIndex(c => c.Guid === newChild?.Guid);
+                                        if (newParent && newChildIndex !== undefined && newChildIndex !== null)
+                                            historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], higherLevelChildren[higherLevelIndex + 1], newParent, newChildIndex, 0, true);
                                         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                     }
                                 }

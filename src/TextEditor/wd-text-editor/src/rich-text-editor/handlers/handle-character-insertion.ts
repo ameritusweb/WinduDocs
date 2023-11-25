@@ -228,14 +228,14 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                         return { type, rootChildId, nodes: children.map((c) => {
                             return Object.assign({}, c)
                         }) };
-                    } else {
+                    } else if (astParent) {
                         const oldText = '' + child.TextContent;
                         if (child.TextContent === '\n')
                         {
                             child.TextContent = '';
                         }
                         replaceText(container, child, startOffset, key);
-                        historyManager.recordChildTextUpdate(oldText, startOffset, parent, child, rootChildId);
+                        historyManager.recordChildTextUpdate(oldText, startOffset, astParent, child, rootChildId);
                         return { type: 'insert', rootChildId, nodes: children.map((c, ind) => {
                             return ind === index ? Object.assign({}, c) : c
                         }) };
