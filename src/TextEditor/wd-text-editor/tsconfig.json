@@ -23,6 +23,7 @@
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "types": [
-    "prismjs"
+    "prismjs",
+    "vitest/globals"
   ],
 }
