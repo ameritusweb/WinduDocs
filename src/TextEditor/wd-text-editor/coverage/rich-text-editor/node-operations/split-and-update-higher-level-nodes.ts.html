@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for rich-text-editor/undo-redo-ot/index.ts</title>
+    <title>Code coverage report for rich-text-editor/node-operations/split-and-update-higher-level-nodes.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">rich-text-editor/undo-redo-ot</a> index.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">rich-text-editor/node-operations</a> split-and-update-higher-level-nodes.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -69,19 +69,46 @@
 <a name='L4'></a><a href='#L4'>4</a>
 <a name='L5'></a><a href='#L5'>5</a>
 <a name='L6'></a><a href='#L6'>6</a>
-<a name='L7'></a><a href='#L7'>7</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">export { default as HistoryManager } from './history/history-manager';
-export { default as operationStack } from './history/operation-stack';
-export { default as findNodeById } from './utils/find-node-by-id';
-export { default as findParentNode } from './utils/find-parent-node';
-export { default as incrementEnd } from './utils/increment-end';
-export { default as trimSpecial } from './utils/trim-special';
-export { default as createNodeOperations } from './operations/create-node-operation';</pre></td></tr></table></pre>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { createNodeWithTypeAndKey, nestedSplitNode, splitNode } from ".";
+import { AstNode } from "../../components/wysiwyg/interface";
+&nbsp;
+const splitAndUpdateHigherLevelNodes = (childIndex: number, child: AstNode, startOffset: number, indexToSplit: number | undefined, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], useNestedSplit: boolean) =&gt; {
+&nbsp;
+    const [node1, node2] = <span class="branch-0 cbranch-no" title="branch not covered" >useNestedSplit ? nestedSplitNode(child, startOffset) : s</span>plitNode(child, startOffset, indexToSplit);
+    const newContainer = createNodeWithTypeAndKey(type, key);
+    if (childIndex !== null) {
+        children.splice(indexToRemoveAndAdd, 1, node1, newContainer, node2);
+        const higherLevelChild = higherLevelChildren[childIndex];
+        higherLevelChild.Children = [... children];
+    }
+    return higherLevelChildren;
+}
+&nbsp;
+export default splitAndUpdateHigherLevelNodes;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

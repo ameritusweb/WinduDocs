@@ -15,7 +15,7 @@ const findClosestAncestor = (element: Element, targetParentId: string) => {
             return element;
         }
     }
-    // Return null if the target parent ID is not found in the ancestor hierarchy.
+    // Return undefined if the target parent ID is not found in the ancestor hierarchy.
     return undefined;
 }
 

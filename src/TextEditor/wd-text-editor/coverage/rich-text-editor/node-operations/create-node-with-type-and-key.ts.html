@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/wysiwyg/strong.tsx</title>
+    <title>Code coverage report for rich-text-editor/node-operations/create-node-with-type-and-key.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/wysiwyg</a> strong.tsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">rich-text-editor/node-operations</a> create-node-with-type-and-key.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.93% </span>
+                <span class="strong">65.62% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>31/33</span>
+                <span class='fraction'>21/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/7</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.93% </span>
+                <span class="strong">65.62% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/33</span>
+                <span class='fraction'>21/32</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -94,9 +94,7 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -107,62 +105,58 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">96x</span>
-<span class="cline-any cline-yes">96x</span>
-<span class="cline-any cline-yes">96x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">96x</span>
-<span class="cline-any cline-yes">80x</span>
-<span class="cline-any cline-yes">96x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">96x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">96x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
-<span class="cline-any cline-yes">64x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import Emphasis from "./emphasis";
-import { AstNode } from "./interface";
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { createNewAstNode } from ".";
+import { AstNode } from "../../components/wysiwyg/interface";
 &nbsp;
-export interface StrongProps {
-    id: string;
-    pathIndices: number[];
-    children: AstNode[];
-}
+const createNodeWithTypeAndKey = (type: string, key: string) =&gt; {
+    let newNode: AstNode = {} as AstNode;
 &nbsp;
-const Strong: React.FC&lt;StrongProps&gt; = ({ id, pathIndices, children }) =&gt; {
-    return (
-        &lt;strong id={id}&gt;
-            {children.map((child, index) =&gt; {
-                const childPathIndices = [...pathIndices, index];
-                switch (child.NodeName) {
-<span class="branch-0 cbranch-no" title="branch not covered" >                    case 'Emphasis':</span>
-<span class="cstat-no" title="statement not covered" >                        return &lt;Emphasis key={child.Guid} id={child.Guid} pathIndices={childPathIndices} children={child.Children} /&gt;;</span>
-                    case 'Text':
-                        return &lt;React.Fragment key={child.Guid}&gt;{child.TextContent}&lt;/React.Fragment&gt;;
-                    case 'Strong':
-                        return child.Children.map((child) =&gt; {
-                            return &lt;Emphasis key={child.Guid} id={child.Guid} pathIndices={childPathIndices} children={child.Children} /&gt;;
-                        });
-<span class="branch-0 cbranch-no" title="branch not covered" >                    default:</span>
-<span class="cstat-no" title="statement not covered" >                        return null;</span>
-                }
-            })}
-        &lt;/strong&gt;
-    );
+    switch (type) {
+        case 'Text':
+            newNode = createNewAstNode('Text', 0, 0, key);
+            break;
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'Strong':</span>
+<span class="cstat-no" title="statement not covered" >            newNode = createNewAstNode('Strong', 0, 0, null);</span>
+<span class="cstat-no" title="statement not covered" >            newNode.Children = key ? [createNodeWithTypeAndKey('Text', key)] : [];</span>
+<span class="cstat-no" title="statement not covered" >            break;</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'Emphasis':</span>
+<span class="cstat-no" title="statement not covered" >            newNode = createNewAstNode('Emphasis', 0, 0, null);</span>
+<span class="cstat-no" title="statement not covered" >            newNode.Children = key ? [createNodeWithTypeAndKey('Text', key)] : [];</span>
+<span class="cstat-no" title="statement not covered" >            break;</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'Strong + Emphasis':</span>
+<span class="cstat-no" title="statement not covered" >            newNode = createNewAstNode('Strong', 0, 0, null);</span>
+<span class="cstat-no" title="statement not covered" >            newNode.Children = [createNodeWithTypeAndKey('Emphasis', key)];</span>
+<span class="cstat-no" title="statement not covered" >            break;</span>
+        // Add cases for other types as needed
+<span class="branch-0 cbranch-no" title="branch not covered" >        default:</span>
+<span class="cstat-no" title="statement not covered" >            // Optionally handle unknown types or throw an error</span>
+<span class="cstat-no" title="statement not covered" >            break;</span>
+    }
+&nbsp;
+    return newNode;
 };
 &nbsp;
-export default Strong;
-&nbsp;</pre></td></tr></table></pre>
+export default createNodeWithTypeAndKey;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
