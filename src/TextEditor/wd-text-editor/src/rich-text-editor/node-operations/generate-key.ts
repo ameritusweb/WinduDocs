@@ -1,6 +1,12 @@
 const generateKey = (): string => {
-    const randomValues = () => ((Math.random() * 0x100000000) + 0x100000000).toString(16).substring(1);
-    const guid = `${randomValues().substring(0, 8)}-${randomValues().substring(0, 4)}-${randomValues().substring(0, 4)}-${randomValues().substring(0, 4)}-${randomValues().substring(0, 12)}`;
+    const randomValues = (length: number) => {
+        let result = '';
+        while (result.length < length) {
+            result += (Math.random().toString(16).substring(2));
+        }
+        return result.substring(0, length);
+    };
+    const guid = `${randomValues(8)}-${randomValues(4)}-${randomValues(4)}-${randomValues(4)}-${randomValues(12)}`;
     return guid;
 }
 

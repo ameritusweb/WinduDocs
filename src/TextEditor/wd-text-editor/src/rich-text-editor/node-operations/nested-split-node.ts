@@ -25,7 +25,7 @@ const nestedSplitNode = (node: AstNode, offset: number, depth: number = 0): [Ast
     }
 
     // No child to split found at this level
-    return [currentOffset, currentDepth, -1];
+    return [currentOffset, currentDepth - 1, -1];
   };
 
   const [newOffset, newDepth, childIndexToSplit] = findChildToSplit(node, offset, depth);
