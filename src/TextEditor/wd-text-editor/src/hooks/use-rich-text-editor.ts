@@ -1,6 +1,6 @@
 import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../components/wysiwyg/interface";
 import { handleBackspaceKeyPress, handleCharacterInsertion, handleEnterKeyPress } from "../rich-text-editor/handlers";
-import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestorId, findHigherlevelIndex, findNodeByGuid } from "../rich-text-editor/node-operations";
+import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import EditorData, { EditorDataType } from "./editor-data";
 
@@ -40,7 +40,7 @@ export const useRichTextEditor = () => {
             const parent = container.parentElement;
             if (!parent)
                 return {type: 'none', nodes: children };
-            const rootChildId = findClosestAncestorId(parent, 'richTextEditor');
+            const rootChildId = findClosestAncestor(parent, 'richTextEditor')?.id;
             if (!rootChildId)
                 return {type: 'none', nodes: children };
 

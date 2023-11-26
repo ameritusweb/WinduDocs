@@ -1,5 +1,5 @@
 import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
-import { createNewAstNode, findClosestAncestorId, findHigherlevelIndex, findNodeByGuid, nestedSplitNode, splitNode } from "../node-operations";
+import { createNewAstNode, findHigherlevelIndex, findNodeByGuid, nestedSplitNode, splitNode } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 
 const createNodeWithTypeAndKey = (type: string, key: string) => {

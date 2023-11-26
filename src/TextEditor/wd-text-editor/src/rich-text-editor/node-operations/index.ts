@@ -9,7 +9,6 @@ export { default as nestedSplitNode } from './nested-split-node';
 export { default as findNodeByGuid } from './find-node-by-guid';
 export { default as findHigherlevelIndex } from './find-higher-level-index';
 export { default as deepCopyAstNode } from './deep-copy-ast-node';
-export { default as findClosestAncestorId } from './find-closest-ancestor-id';
 export { default as findClosestAncestor } from './find-closest-ancestor';
 export { default as findFirstTextNode } from './find-first-text-node';
 export { default as findLastTextNode } from './find-last-text-node';
