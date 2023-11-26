@@ -1,76 +1,8 @@
 import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
-import { createNewAstNode, createNewAstNodeFromFormat, deepCopyAstNode, findClosestAncestor, findHigherlevelIndex, findNodeByGuid, generateKey, splitNode, splitNodeAtTarget } from "../node-operations";
+import { createNewAstNode, createNewAstNodeFromFormat, deepCopyAstNode, findHigherlevelIndex, 
+    findNodeByGuid, generateKey, replaceKeys, splitNode, splitTree } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
-
-const splitTree = (root: AstNode, leafNode: AstNode, offset: number, rightNodeGuid?: string) => {
-
-    const leftTree = {} as AstNode;
-    const rightTree = {} as AstNode;
-    const path: number[] = [];
-    let foundPath: number[] = [];
-    let splitFound = false;
-    const guid = rightNodeGuid || generateKey();
-
-    function traverse(node: AstNode, left: AstNode, right: AstNode, leaf: AstNode, offset: number, index: number, depth: number) {
-
-        path[depth] = index;
-        Object.assign(left, node);
-        Object.assign(right, node);
-
-        left.Children = [];
-        right.Children = [];
-
-        right.Guid = generateKey();
-
-        if (node === leaf)
-        {
-            splitFound = true;
-            foundPath = path.slice(0);
-            return splitNode(node, offset, undefined, guid);
-        }
-
-        index = 0;
-        for (const child of node.Children)
-        {
-            const leftTreeNode = Object.assign({}, child);
-            leftTreeNode.Children = [];
-            const rightTreeNode = Object.assign({}, child);
-            rightTreeNode.Children = [];
-            const innerNode = traverse(child, leftTreeNode, rightTreeNode, leaf, offset, index, depth + 1);
-            if (Array.isArray(innerNode)) {
-                left.Children.push(innerNode[0]);
-                right.Children.push(innerNode[1]);
-            }
-            else if (splitFound) {
-                if (path[depth + 1] === foundPath[depth + 1])
-                {
-                    left.Children.push(leftTreeNode);
-                }
-                right.Children.push(rightTreeNode);
-            } else {
-                left.Children.push(leftTreeNode);
-            }
-            index++;
-        }
-
-    }
-
-    traverse(root, leftTree, rightTree, leafNode, offset, 0, 0);
-  
-    return [leftTree, rightTree];  
-  
-  }
-
-  const replaceKeys = (node: AstNode): AstNode => {
-
-    return {
-      ...node, 
-      Guid: generateKey(),
-      Children: node.Children.map(child => replaceKeys(child))
-    };
-  
-  }
 
 const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;

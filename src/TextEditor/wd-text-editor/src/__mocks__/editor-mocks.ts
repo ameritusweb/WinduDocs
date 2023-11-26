@@ -1,5 +1,82 @@
 import { AstNode } from "../components/wysiwyg/interface";
 
+export const mockSplitTreeData: AstNode = {
+  "NodeName": "ParagraphBlock",
+  "Attributes": {},
+  "ChildIndex": 0,
+  "Depth": 1,
+  "Guid": "a8b579d3-93c2-4837-8731-34fa04badb8f",
+  "TextContent": null,
+  "Children": [
+    {
+      "NodeName": "Strong",
+      "Attributes": {},
+      "ChildIndex": 0,
+      "Depth": 2,
+      "Guid": "c069fb1b-83fc-4bd9-b1fb-f385f4150da1",
+      "TextContent": null,
+      "Children": [
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 3,
+          "Guid": "ffcf0896-aa89-4a97-989c-ce4001943443",
+          "TextContent": "This is a paragraph with both ",
+          "Children": []
+        },
+        {
+          "NodeName": "Strong",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 3,
+          "Guid": "87c121eb-c1dd-4311-b0b7-31ff22564cc9",
+          "TextContent": null,
+          "Children": [
+            {
+              "NodeName": "Emphasis",
+              "Attributes": {},
+              "ChildIndex": 0,
+              "Depth": 4,
+              "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
+              "TextContent": null,
+              "Children": [
+                {
+                  "NodeName": "Text",
+                  "Attributes": {},
+                  "ChildIndex": 0,
+                  "Depth": 5,
+                  "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+                  "TextContent": "bold and italic",
+                  "Children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "NodeName": "Text",
+          "Attributes": {},
+          "ChildIndex": 0,
+          "Depth": 3,
+          "Guid": "616cd0ab-ad17-4914-93ff-fb9b699d83bb",
+          "TextContent": " text",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "NodeName": "Text",
+      "Attributes": {},
+      "ChildIndex": 0,
+      "Depth": 2,
+      "Guid": "d8d85efd-f787-4ad5-915e-d15f7face731",
+      "TextContent": "This is another paragraph.",
+      "Children": []
+    }
+  ]
+};
+
 export const mockTableRowData: AstNode[] = [
   {
     "NodeName": "TableCell",
