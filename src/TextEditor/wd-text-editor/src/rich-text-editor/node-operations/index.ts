@@ -18,3 +18,6 @@ export { default as createListItem } from './create-list-item';
 export { default as createListBlock } from './create-list-block';
 export { default as indentListItem } from './indent-list-item';
 export { default as isNodeEmpty } from './is-node-empty';
+export { default as createNodeWithTypeAndKey } from './create-node-with-type-and-key';
+export { default as updateHigherLevelNodes } from './update-higher-level-nodes';
+export { default as splitAndUpdateHigherLevelNodes } from './split-and-update-higher-level-nodes';
