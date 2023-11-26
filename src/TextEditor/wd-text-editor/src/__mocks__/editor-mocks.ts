@@ -1,5 +1,116 @@
 import { AstNode } from "../components/wysiwyg/interface";
 
+export const mockTableRowData: AstNode[] = [
+  {
+    "NodeName": "TableCell",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 3,
+    "Guid": "c97f7054-5e6d-4f66-8ad5-5ce8cc5f98f8",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "ParagraphBlock",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 4,
+        "Guid": "fb55ae40-d380-4e1f-b9a7-3ecfeb9e5877",
+        "TextContent": null,
+        "Children": [
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 5,
+            "Guid": "b108689a-e778-4ff0-90fd-e6b26ced337b",
+            "TextContent": "Header 1",
+            "Children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "NodeName": "TableCell",
+    "Attributes": {},
+    "ChildIndex": 1,
+    "Depth": 3,
+    "Guid": "b45b5ac2-2b35-4cc1-9a10-835d450dd500",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "ParagraphBlock",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 4,
+        "Guid": "aeafe6b1-1a05-4999-9fa4-569063c5b2ef",
+        "TextContent": null,
+        "Children": [
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 5,
+            "Guid": "1d2c1b2d-dcd9-425f-9399-15e975a578b0",
+            "TextContent": "Header 2",
+            "Children": []
+          }
+        ]
+      }
+    ]
+  }
+];
+
+export const mockStrongData: AstNode[] = [
+  {
+    "NodeName": "Text",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 3,
+    "Guid": "ffcf0896-aa89-4a97-989c-ce4001943443",
+    "TextContent": "This is a paragraph with both ",
+    "Children": []
+  },
+  {
+    "NodeName": "Strong",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 3,
+    "Guid": "87c121eb-c1dd-4311-b0b7-31ff22564cc9",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Emphasis",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 4,
+        "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
+        "TextContent": null,
+        "Children": [
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 5,
+            "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+            "TextContent": "bold and italic",
+            "Children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "NodeName": "Text",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 3,
+    "Guid": "616cd0ab-ad17-4914-93ff-fb9b699d83bb",
+    "TextContent": " text",
+    "Children": []
+  }
+];
+
 export const mockAstData: AstNode = {
   "NodeName": "MarkdownDocument",
   "Attributes": {},
@@ -579,6 +690,28 @@ export const mockParagraphData: AstNode[] = [
     "Guid": "d8d85efd-f787-4ad5-915e-d15f7face731",
     "TextContent": "This is another paragraph.",
     "Children": []
+  }
+];
+
+export const mockTableCellData: AstNode[] = [
+  {
+    "NodeName": "ParagraphBlock",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 4,
+    "Guid": "fb55ae40-d380-4e1f-b9a7-3ecfeb9e5877",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 5,
+        "Guid": "b108689a-e778-4ff0-90fd-e6b26ced337b",
+        "TextContent": "Header 1",
+        "Children": []
+      }
+    ]
   }
 ];
 
