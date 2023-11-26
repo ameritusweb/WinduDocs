@@ -41,7 +41,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, isTopLevel, pathIndices, 
                 onBlur={handleBlur}
                 tabIndex={1} // Make it focusable if needed
             >
-                <ol onClick={onClick}>
+                <ol id={id} onClick={onClick}>
                     {children.map((child, index) => {
                         const childPathIndices = [...pathIndices, index];
                         return child.NodeName === 'ListItemBlock' ? (
@@ -65,7 +65,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, isTopLevel, pathIndices, 
                 />
             </section>
         ) : (
-            <ol onClick={onClick}>
+            <ol id={id} onClick={onClick}>
                 {children.map((child, index) => {
                     const childPathIndices = [...pathIndices, index];
                     return child.NodeName === 'ListItemBlock' ? (

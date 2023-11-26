@@ -7,6 +7,7 @@ import RichTextEditor from './components/wysiwyg/rich-text-editor.js';
 import useConsoleToasts from './hooks/use-console-toasts.js';
 import { ToastContainer } from 'react-toastify';
 import { astContext, astHigherLevelContext } from './components/ast-mapping.js';
+import ast from './test/ast.json';
 
 declare global {
   interface Window { astContext: typeof astContext; astHigherLevelContext: typeof astHigherLevelContext; }
@@ -29,7 +30,7 @@ function App() {
         <div className="card inline-flex m-12 w-[60rem] h-[90rem] bg-base-100 shadow-xl">
           <div className="card-body items-center text-center">
             <div className="w-full">
-              <RichTextEditor />
+              <RichTextEditor ast={ast} />
             </div>
           </div>
         </div>

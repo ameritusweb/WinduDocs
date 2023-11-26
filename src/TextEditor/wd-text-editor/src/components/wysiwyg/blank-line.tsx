@@ -11,7 +11,7 @@ export interface BlankLineProps {
     format?: string | null;
 }
 
-export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelContent }) => {
+const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelContent }) => {
     
     const [lineFormat, setLineFormat] = useState<string | null | undefined>(format);
     const blankLineRef = useRef<HTMLElement | null>(null);
@@ -154,9 +154,6 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
       };
   }, [id]); // Depend on the GUID prop
 
-    // Determine the tag based on the format. Default to 'p' for plain text.
-    const Tag = lineFormat && lineFormat !== 'unselected' && typeof lineFormat === 'string' && lineFormat.startsWith('h') && !Array.isArray(lineFormat) ? lineFormat : 'p';
-  
     const onFocus = () => {
       const editorData: EditorDataType = EditorData;
       if (editorData.editorState)
@@ -213,6 +210,9 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
 
     }
 
+    // Determine the tag based on the format. Default to 'p' for plain text.
+    const Tag = lineFormat && lineFormat !== 'unselected' && typeof lineFormat === 'string' && lineFormat.startsWith('h') && !Array.isArray(lineFormat) ? lineFormat : 'p';
+
     // Use React.createElement to dynamically create the element
     return React.createElement(
       Tag,
@@ -221,3 +221,4 @@ export const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLe
     );
   };
   
+  export default BlankLine;

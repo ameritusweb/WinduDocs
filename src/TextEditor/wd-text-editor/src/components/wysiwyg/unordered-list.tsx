@@ -40,7 +40,7 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ id, isTopLevel, pathIndic
             onBlur={handleBlur}
             tabIndex={1} // Make it focusable if needed
         >
-        <ul onClick={onClick}>
+        <ul id={id} onClick={onClick}>
             {children.map((child, index) => {
                 const childPathIndices = [...pathIndices, index];
                 return child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} higherLevelChild={higherLevelChild} children={child.Children} higherLevelChildren={children} /> : null
@@ -57,7 +57,7 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ id, isTopLevel, pathIndic
         )}
         </section>
     ) : (
-        <ul onClick={onClick}>
+        <ul id={id} onClick={onClick}>
             {children.map((child, index) => {
                 const childPathIndices = [...pathIndices, index];
                 return child.NodeName === 'ListItemBlock' ? <ListItem key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} higherLevelChild={higherLevelChild} children={child.Children} higherLevelChildren={children} /> : null

@@ -43,6 +43,7 @@ export const useRichTextEditor = () => {
             const rootChildId = findClosestAncestorId(parent, 'richTextEditor');
             if (!rootChildId)
                 return {type: 'none', nodes: children };
+
             const containerIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
             const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex }
@@ -76,7 +77,7 @@ export const useRichTextEditor = () => {
 
     }
 
-    const restoreCursorPosition = () => {
+    const restoreCursorPosition = (mutationsList: MutationRecord[]) => {
 
         historyManager.restoreCursorPosition();
 

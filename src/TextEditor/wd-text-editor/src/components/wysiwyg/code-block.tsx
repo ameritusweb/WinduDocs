@@ -6,14 +6,11 @@ import UtilityContainer from "./utility-container";
 interface CodeBlockProps {
     id: string;
     pathIndices: number[];
-    version: string;
     language: string;
     children: AstNode[];
-    higherLevelChildren: AstNode[];
-    rootUpdater: (nodes: AstNode[], updateProcessed: boolean) => void;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ id, pathIndices, version, language, children, higherLevelChildren, rootUpdater }) => {
+const CodeBlock: React.FC<CodeBlockProps> = ({ id, pathIndices, language, children }) => {
 
     const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);

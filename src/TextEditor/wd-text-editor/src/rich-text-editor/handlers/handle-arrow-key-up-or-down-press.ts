@@ -65,7 +65,8 @@ const findTextBlockByGuid = (editorData: EditorDataType, processedAst: ITextBloc
 
         // Validate the startRow
     if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAst.length) {
-        throw new Error('Invalid start row number');
+        console.warn(`Invalid start row number: ${editorData.cursorLine} < 0 or >= ${processedAst.length} `);
+        return null;
     }
 
     const res = processedAstMap.get(`${guid} ${textNodeIndex}`);

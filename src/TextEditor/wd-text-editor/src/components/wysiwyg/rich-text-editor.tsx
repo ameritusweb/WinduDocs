@@ -9,9 +9,8 @@ import QuoteBlock from "./quote-block";
 import HorizontalRule from "./horizontal-rule";
 import CodeBlock from "./code-block";
 import AlertBlock from "./alert-block";
-import ast from './test-data.json';
 import './rich-text-editor.css';
-import { BlankLine } from "./blank-line";
+import BlankLine from "./blank-line";
 import { useMarkdownGenerator } from "../../hooks/use-markdown-generator";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
 import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
@@ -21,7 +20,11 @@ import { handleArrowKeyUpOrDownPress, handleArrowKeyLeftOrRightPress } from "../
 import ParagraphContainer from "./paragraph-container";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 
-const RichTextEditor = () => {
+export interface RichTextEditorProps {
+    ast: AstNode;
+}
+
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ ast }) => {
 
     const astRef = useRef<AstNode>(ast);
     const processedAstRef = useRef<ITextBlock[][]>([]);
@@ -110,9 +113,8 @@ useEffect(() => {
     const observer = new MutationObserver((mutationsList) => {
       // Check for the specific mutation type, if necessary
       if (mutationsList.length > 0) {
-        const lastMutation = mutationsList[mutationsList.length - 1];
-
-        restoreCursorPosition();
+        console.log('mutations');
+        restoreCursorPosition(mutationsList);
 
       }
     });
@@ -166,7 +168,7 @@ useEffect(() => {
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
                     return <AlertBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} version={node.Version || 'V0'} pathIndices={pathIndices} higherLevelChildren={higherLevelContent} type={node.Attributes.Language} children={node.Children} />;
                 } else {
-                    return <CodeBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} version={node.Version || 'V0'} pathIndices={pathIndices} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} language={node.Attributes.Language || ''} children={node.Children} />;
+                    return <CodeBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} language={node.Attributes.Language || ''} children={node.Children} />;
                 }
             case 'BlankLine':
                 return <BlankLine key={node.Guid + (node.Version || 'V0')} id={node.Guid} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
