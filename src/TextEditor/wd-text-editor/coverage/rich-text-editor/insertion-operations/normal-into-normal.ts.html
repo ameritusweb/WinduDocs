@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.21% </span>
+                <span class="strong">31.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/19</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>6/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.21% </span>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">31.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/19</span>
+                <span class='fraction'>6/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -85,37 +85,37 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { AstNode, AstUpdate, IHistoryManager } from "../../components/wysiwyg/interface";
 import { replaceText } from "../text-manipulation";
 &nbsp;
-const insertNormalTextIntoOtherNormalText = (grandChild: AstNode, container: Text, startOffset: number, historyManager: IHistoryManager, child: AstNode, rootChildId: string, children: AstNode[], key: string): AstUpdate =&gt; {
-    const oldText = '' + grandChild.TextContent;
-    let additionalOffset = 0;
-    if (grandChild.TextContent === '\n')
-<span class="branch-0 cbranch-no" title="branch not covered" >    {</span>
+const insertNormalTextIntoOtherNormalText = <span class="fstat-no" title="function not covered" >(grandChild: AstNode, container: Text, startOffset: number, historyManager: IHistoryManager, child: AstNode, rootChildId: string, children: AstNode[], key: string): AstUpdate =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const oldText = '' + grandChild.TextContent;</span>
+<span class="cstat-no" title="statement not covered" >    let additionalOffset = 0;</span>
+<span class="cstat-no" title="statement not covered" >    if (grandChild.TextContent === '\n')</span>
+<span class="cstat-no" title="statement not covered" >    {</span>
 <span class="cstat-no" title="statement not covered" >        grandChild.TextContent = '';</span>
 <span class="cstat-no" title="statement not covered" >        additionalOffset = 1;</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-    replaceText(container, grandChild, startOffset, key);
-    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, grandChild, rootChildId);
-    return { type: 'insert', rootChildId, nodes: children.map((c) =&gt; {
-        return Object.assign({}, c)
-    }) };
-}
+<span class="cstat-no" title="statement not covered" >    replaceText(container, grandChild, startOffset, key);</span>
+<span class="cstat-no" title="statement not covered" >    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, grandChild, rootChildId);</span>
+<span class="cstat-no" title="statement not covered" >    return { type: 'insert', rootChildId, nodes: children.map((c) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        return Object.assign({}, c)</span>
+<span class="cstat-no" title="statement not covered" >    }) };</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 export default insertNormalTextIntoOtherNormalText;</pre></td></tr></table></pre>
 
@@ -124,7 +124,7 @@ export default insertNormalTextIntoOtherNormalText;</pre></td></tr></table></pre
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T14:34:52.054Z
+                at 2023-11-27T18:29:45.369Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

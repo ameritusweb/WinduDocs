@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60.46% </span>
+                <span class="strong">23.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>26/43</span>
+                <span class='fraction'>10/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/5</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60.46% </span>
+                <span class="strong">23.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/43</span>
+                <span class='fraction'>10/43</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -128,27 +128,27 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { findNodeById, findParentNode } from "..";
 import { AstNode, AstOperation } from "../../../components/wysiwyg/interface";
 &nbsp;
@@ -170,28 +170,28 @@ export const applyRemoveOperation = <span class="fstat-no" title="function not c
 <span class="cstat-no" title="statement not covered" >    return ast;</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-export const applyUpdateOperation = (ast: AstNode, operation: AstOperation&lt;'update'&gt;): AstNode =&gt; {
-    // Update the node with the new attributes
-    const node = findNodeById(ast, operation.targetNodeId);
-    if (node) {
-        node.Version = operation.payload!.newVersion;
-        node.TextContent = '' + operation.payload!.newTextContent;
-    }
-    return ast;
-}
+export const applyUpdateOperation = <span class="fstat-no" title="function not covered" >(ast: AstNode, operation: AstOperation&lt;'update'&gt;): AstNode =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    // Update the node with the new attributes</span>
+<span class="cstat-no" title="statement not covered" >    const node = findNodeById(ast, operation.targetNodeId);</span>
+<span class="cstat-no" title="statement not covered" >    if (node) {</span>
+<span class="cstat-no" title="statement not covered" >        node.Version = operation.payload!.newVersion;</span>
+<span class="cstat-no" title="statement not covered" >        node.TextContent = '' + operation.payload!.newTextContent;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    return ast;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-export const applyOperation = (ast: AstNode, operation: AstOperation): AstNode =&gt; {
-    switch (operation.type) {
-<span class="branch-0 cbranch-no" title="branch not covered" >        case 'add':</span>
+export const applyOperation = <span class="fstat-no" title="function not covered" >(ast: AstNode, operation: AstOperation): AstNode =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    switch (operation.type) {</span>
+<span class="cstat-no" title="statement not covered" >        case 'add':</span>
 <span class="cstat-no" title="statement not covered" >            return applyAddOperation(ast, operation as AstOperation&lt;'add'&gt;);</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >        case 'remove':</span>
+<span class="cstat-no" title="statement not covered" >        case 'remove':</span>
 <span class="cstat-no" title="statement not covered" >            return applyRemoveOperation(ast, operation);</span>
-        case 'update':
-            return applyUpdateOperation(ast, operation as AstOperation&lt;'update'&gt;);
-<span class="branch-0 cbranch-no" title="branch not covered" >        default:</span>
+<span class="cstat-no" title="statement not covered" >        case 'update':</span>
+<span class="cstat-no" title="statement not covered" >            return applyUpdateOperation(ast, operation as AstOperation&lt;'update'&gt;);</span>
+<span class="cstat-no" title="statement not covered" >        default:</span>
 <span class="cstat-no" title="statement not covered" >            throw new Error('Unsupported operation type');</span>
-    }
-}
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -199,7 +199,7 @@ export const applyOperation = (ast: AstNode, operation: AstOperation): AstNode =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T14:34:52.054Z
+                at 2023-11-27T18:29:45.369Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

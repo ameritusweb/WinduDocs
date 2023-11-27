@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.26% </span>
+                <span class="strong">21.73% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/23</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>1/3</span>
+                <span class='fraction'>5/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.26% </span>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">21.73% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/23</span>
+                <span class='fraction'>5/23</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -88,46 +88,46 @@
 <a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { ITextBlock } from "../../components/wysiwyg/interface";
 &nbsp;
-const findTextBlockWithOffset = (blocks: ITextBlock[], totalOffset: number): { block: ITextBlock, blockOffset: number, reduction: number } =&gt; {
-    let cumulativeLength = 0;
-&nbsp;
-    for (const block of blocks) {
-      const textLength = block.textContent.length;
-      if (cumulativeLength + textLength &gt;= totalOffset) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+const findTextBlockWithOffset = <span class="fstat-no" title="function not covered" >(blocks: ITextBlock[], totalOffset: number): { block: ITextBlock, blockOffset: number, reduction: number } =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    let cumulativeLength = 0;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    for (const block of blocks) {</span>
+<span class="cstat-no" title="statement not covered" >      const textLength = block.textContent.length;</span>
+<span class="cstat-no" title="statement not covered" >      if (cumulativeLength + textLength &gt;= totalOffset) {</span>
 <span class="cstat-no" title="statement not covered" >        const blockOffset = totalOffset - cumulativeLength;</span>
 <span class="cstat-no" title="statement not covered" >        return { block, blockOffset, reduction: 0 };</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
-      cumulativeLength += textLength;
-    }
-  
-    const lastBlock = blocks[blocks.length - 1];
-    if (lastBlock.textContent === '\n')
-<span class="branch-0 cbranch-no" title="branch not covered" >    {</span>
+<span class="cstat-no" title="statement not covered" >      cumulativeLength += textLength;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >  </span>
+<span class="cstat-no" title="statement not covered" >    const lastBlock = blocks[blocks.length - 1];</span>
+<span class="cstat-no" title="statement not covered" >    if (lastBlock.textContent === '\n')</span>
+<span class="cstat-no" title="statement not covered" >    {</span>
 <span class="cstat-no" title="statement not covered" >        return { block: lastBlock, blockOffset: 0, reduction: totalOffset - 0 };</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-    return { block: lastBlock, blockOffset: lastBlock.textContent.length, reduction: totalOffset - cumulativeLength };
-  }
+<span class="cstat-no" title="statement not covered" >    return { block: lastBlock, blockOffset: lastBlock.textContent.length, reduction: totalOffset - cumulativeLength };</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   export default findTextBlockWithOffset;</pre></td></tr></table></pre>
 
@@ -136,7 +136,7 @@ const findTextBlockWithOffset = (blocks: ITextBlock[], totalOffset: number): { b
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T14:34:52.054Z
+                at 2023-11-27T18:29:45.369Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/30</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>10/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70% </span>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/30</span>
+                <span class='fraction'>10/30</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -100,26 +100,26 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">export type TrimOptions = {
     startString?: string;
@@ -128,27 +128,27 @@
     extraction?: string;
 };
 &nbsp;
-const trimSpecial = (input: string, options: TrimOptions): string =&gt; {
-    // Extract using regex
-    if (options.extractRegex) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+const trimSpecial = <span class="fstat-no" title="function not covered" >(input: string, options: TrimOptions): string =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    // Extract using regex</span>
+<span class="cstat-no" title="statement not covered" >    if (options.extractRegex) {</span>
 <span class="cstat-no" title="statement not covered" >        const match = input.match(options.extractRegex);</span>
 <span class="cstat-no" title="statement not covered" >        if (match &amp;&amp; match[0]) {</span>
 <span class="cstat-no" title="statement not covered" >            options.extraction = match[0];</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    // Trim start
-    if (options.startString &amp;&amp; input.startsWith(options.startString)) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Trim start</span>
+<span class="cstat-no" title="statement not covered" >    if (options.startString &amp;&amp; input.startsWith(options.startString)) {</span>
 <span class="cstat-no" title="statement not covered" >        input = input.substring(options.startString.length);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    // Trim end
-    if (options.<span class="branch-0 cbranch-no" title="branch not covered" >endString &amp;&amp; input.endsWith(options.endString)) <span class="branch-0 cbranch-no" title="branch not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Trim end</span>
+<span class="cstat-no" title="statement not covered" >    if (options.endString &amp;&amp; input.endsWith(options.endString)) {</span>
 <span class="cstat-no" title="statement not covered" >        input = input.substring(0, input.length - options.endString.length);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    return input;
-}
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    return input;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 export default trimSpecial;</pre></td></tr></table></pre>
 
@@ -157,7 +157,7 @@ export default trimSpecial;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T14:34:52.054Z
+                at 2023-11-27T18:29:45.369Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

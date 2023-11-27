@@ -61,13 +61,14 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newHR);
           historyManager.recordChildReplace(null, oldNode, newHR, newHR, 0, 0);
+          
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
 
-    const handleInsertTable = (payload: { rows: number, cols: number }) => {
+    const handleInsertTable = (payload: { rows: number, cols: number } | null) => {
       
-      if (higherLevelContent && higherLevelContent.updater) {
+      if (higherLevelContent && higherLevelContent.updater && payload) {
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newTable = createTable(payload.rows, payload.cols);
@@ -155,6 +156,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
   }, [id]); // Depend on the GUID prop
 
     const onFocus = () => {
+      console.log('onfocus');
       const editorData: EditorDataType = EditorData;
       if (editorData.editorState)
       {
@@ -163,7 +165,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
     }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-
+      console.log('keydown ' + event.key + ' ' + event.ctrlKey);
       if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
       {
         return;
@@ -197,9 +199,9 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
         } else if (event.key.length === 1) {
           event.preventDefault();
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
-          higherLevelContentCopy.splice(index, 1);
-          const newNode = createNewAstNodeFromFormat(lineFormat || '', event.key);
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
+          higherLevelContentCopy.splice(index, 1);
+          const newNode = createNewAstNodeFromFormat(lineFormat!, event.key);
           higherLevelContentCopy.splice(index, 0, newNode);
           historyManager.recordChildReplace(null, oldNode, newNode, newNode, 0, 1);
           higherLevelContent.updater(higherLevelContentCopy, true);

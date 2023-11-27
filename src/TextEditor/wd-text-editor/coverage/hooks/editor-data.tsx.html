@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>39/52</span>
+                <span class='fraction'>55/55</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/52</span>
+                <span class='fraction'>55/55</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -115,7 +115,10 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -146,24 +149,27 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -179,7 +185,7 @@ export interface EditorDataType {
     cursorLine: number;
 }
 &nbsp;
-export type EventAction = 'indent' | 'outdent' | 'insertHR' | 'copy' | 'cut' | 'paste' | 'update';
+export type EventAction = 'Indent' | 'Iutdent' | 'Copy' | 'Cut' | 'Paste' | 'update' | 'InsertHR' | 'InsertQuote' | 'InsertTable' | 'InsertNumbered' | 'InsertBulleted' | 'InsertFenced' | 'InsertWarningAlert' | 'InsertSuccessAlert' | 'InsertErrorAlert' | 'InsertInfoAlert';
 &nbsp;
 export class EditorData implements EditorDataType {
 &nbsp;
@@ -198,20 +204,23 @@ export class EditorData implements EditorDataType {
     cursorOffsetReduction: number;
 &nbsp;
     public emitEvent(action: EventAction, id: string, payload: any) {
-        if (id === 'broadcast') <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >            const selection = window.getSelection();</span>
-<span class="cstat-no" title="statement not covered" >            if (selection) {</span>
-<span class="cstat-no" title="statement not covered" >                const range = selection.getRangeAt(0);</span>
-<span class="cstat-no" title="statement not covered" >                const container = range.startContainer;</span>
-<span class="cstat-no" title="statement not covered" >                if (container instanceof Element)</span>
-<span class="cstat-no" title="statement not covered" >                {</span>
-<span class="cstat-no" title="statement not covered" >                    this.events.emit(action, container.id, payload || null);</span>
-<span class="cstat-no" title="statement not covered" >                } else if (container instanceof Text)</span>
-<span class="cstat-no" title="statement not covered" >                {</span>
-<span class="cstat-no" title="statement not covered" >                    const parent = container.parentElement as Element;</span>
-<span class="cstat-no" title="statement not covered" >                    this.events.emit(action, parent.id, payload || null);</span>
-<span class="cstat-no" title="statement not covered" >                }</span>
-<span class="cstat-no" title="statement not covered" >            }</span>
+        if (id === 'broadcast') {
+            const selection = window.getSelection();
+            if (selection) {
+                const range = selection.getRangeAt(0);
+                const container = range.startContainer;
+                console.log('broadcast');
+                if (container instanceof Element)
+                {
+                    console.log(container.id);
+                    this.events.emit(action, container.id, payload || null);
+                } else if (container instanceof Text)
+                {
+                    const parent = container.parentElement as Element;
+                    console.log(parent.id);
+                    this.events.emit(action, parent.id, payload || null);
+                }
+            }
         } else {
             this.events.emit(action, id, payload);
         }
@@ -226,7 +235,7 @@ export default new EditorData('unselected');
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T14:34:52.054Z
+                at 2023-11-27T18:29:45.369Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -113,7 +113,6 @@ useEffect(() => {
     const observer = new MutationObserver((mutationsList) => {
       // Check for the specific mutation type, if necessary
       if (mutationsList.length > 0) {
-        console.log('mutations');
         restoreCursorPosition(mutationsList);
 
       }

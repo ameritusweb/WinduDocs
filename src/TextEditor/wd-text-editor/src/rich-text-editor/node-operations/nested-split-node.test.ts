@@ -19,7 +19,6 @@ afterEach(() => {
           
         const offset = 2; // Splitting after 'He'
         const [leftNode, rightNode, newLine] = nestedSplitNode(mockNodeWithChildren, offset);
-          console.log(leftNode);
         expect(leftNode.Children).toHaveLength(1);
         expect(leftNode.Children[0].TextContent).toBe('He');
         expect(rightNode.Children).toHaveLength(1);
@@ -39,7 +38,6 @@ afterEach(() => {
           
         const offset = 7; // Splitting after 'Hello'
         const [leftNode, rightNode, newLine] = nestedSplitNode(mockNodeWithChildren, offset);
-          console.log(leftNode);
         expect(leftNode.Children).toHaveLength(2);
         expect(leftNode.Children[0].TextContent).toBe('Hello');
         expect(leftNode.Children[1].TextContent).toBe('Wo');

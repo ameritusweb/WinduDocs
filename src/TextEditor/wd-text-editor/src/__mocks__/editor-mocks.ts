@@ -1,5 +1,17 @@
 import { AstNode } from "../components/wysiwyg/interface";
 
+export const mockBlankLineData: AstNode[] = [
+  {
+    "NodeName": "BlankLine",
+    "Attributes": {},
+    "ChildIndex": 41,
+    "Depth": 1,
+    "Guid": "e6b4cd51-3bf0-4eb9-94cf-7d56565de739",
+    "TextContent": null,
+    "Children": []
+  }
+];
+
 export const mockSplitTreeData: AstNode = {
   "NodeName": "ParagraphBlock",
   "Attributes": {},
