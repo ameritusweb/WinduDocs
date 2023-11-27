@@ -1215,6 +1215,88 @@ export const mockEmphasisData: AstNode[] = [
     }
   ];
 
+export const mockHigherLevelCodeBlockData: AstNode[] = [
+  {
+    "NodeName": "FencedCodeBlock",
+    "Attributes": {
+      "Language": "javascript"
+    },
+    "ChildIndex": 44,
+    "Depth": 1,
+    "Guid": "ca3e3b0b-be05-4a6d-b7c8-b29e8d64f34d",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 2,
+        "Guid": "fc245cd8-38b5-45fb-ab93-8c4de8cd8116",
+        "TextContent": "console.log(\u0027Hello, world!\u0027);",
+        "Children": []
+      },
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 1,
+        "Depth": 2,
+        "Guid": "b7ea8d0a-fa75-4c41-b503-52be791878f1",
+        "TextContent": "\n",
+        "Children": []
+      },
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 2,
+        "Depth": 2,
+        "Guid": "744a50aa-4fef-40cc-8bff-707e24c719fd",
+        "TextContent": "console.log(\u0027This is line 2!\u0027);",
+        "Children": []
+      }
+    ]
+  },
+  {
+    "NodeName": "BlankLine",
+    "Attributes": {},
+    "ChildIndex": 45,
+    "Depth": 1,
+    "Guid": "d5bd73bc-b3d9-4b4f-8353-f4e29580630c",
+    "TextContent": null,
+    "Children": []
+  },
+  {
+    "NodeName": "ParagraphBlock",
+    "Attributes": {},
+    "ChildIndex": 46,
+    "Depth": 1,
+    "Guid": "23afa210-4f5f-488a-80b4-9125f7709aeb",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 2,
+        "Guid": "df07b30e-9fa6-49ed-9ddf-cbb9df145f2b",
+        "TextContent": "This is another paragraph.",
+        "Children": []
+      }
+    ]
+  }
+];
+
+export const mockInvalidData: AstNode[] = [
+  {
+    "NodeName": "InvalidNodeName",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 2,
+    "Guid": "fc245cd8-38b5-45fb-ab93-8c4de8cd8116",
+    "TextContent": "console.log(\u0027Hello, world!\u0027);",
+    "Children": []
+  }
+];
+
 export const mockCodeBlockData: AstNode[] = [
       {
         "NodeName": "Text",

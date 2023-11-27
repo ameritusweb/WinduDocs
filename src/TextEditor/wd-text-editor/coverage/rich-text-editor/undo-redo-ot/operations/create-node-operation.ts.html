@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.53% </span>
+                <span class="strong">27.27% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/13</span>
+                <span class='fraction'>3/11</span>
             </div>
         
             
@@ -175,9 +175,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -190,7 +190,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -203,33 +203,33 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { AddNodeParams, AstNode, AstOperation, AstOperationType, RemoveNodeParams, ReplaceNodeParams, UpdateNodeParams } from "../../../components/wysiwyg/interface";
 &nbsp;
@@ -296,14 +296,14 @@ const createNodeOperation = &lt;T extends AstOperationType&gt;(type: T, params: 
         case 'update':
             return {
                 type: 'update',
-                targetNodeId: ((params as UpdateNodeParams).node || (params as UpdateNodeParams).parentNode).Guid,
+                targetNodeId: ((params as UpdateNodeParams).<span class="branch-0 cbranch-no" title="branch not covered" >node || (params as UpdateNodeParams).parentNode).G</span>uid,
                 payload: { 
                     newVersion: (params as UpdateNodeParams).newVersion, 
                     newTextContent: (params as UpdateNodeParams).newTextContent,
                     offset: (params as UpdateNodeParams).offset
                 },
-                parentNodeId: !(params as UpdateNodeParams).node ? `para_${(params as UpdateNodeParams).parentNode.Guid}` : getParentId((params as UpdateNodeParams).parentNode),
-                nodeIndex: !(params as UpdateNodeParams).node ? 0 : (params as UpdateNodeParams).parentNode.Children.findIndex(c =&gt; c.Guid === (params as UpdateNodeParams).node!.Guid),
+                parentNodeId: !(params as UpdateNodeParams).<span class="branch-0 cbranch-no" title="branch not covered" >node ? `para_${(params as UpdateNodeParams).parentNode.Guid}` : g</span>etParentId((params as UpdateNodeParams).parentNode),
+                nodeIndex: !(params as UpdateNodeParams).<span class="branch-0 cbranch-no" title="branch not covered" >node ? 0 : (p</span>arams as UpdateNodeParams).parentNode.Children.findIndex(c =&gt; c.Guid === (params as UpdateNodeParams).node!.Guid),
                 oldState: (params as UpdateNodeParams).oldTextContent,
                 oldVersion: (params as UpdateNodeParams).oldVersion,
                 oldOffset: (params as UpdateNodeParams).oldOffset,
@@ -322,7 +322,7 @@ export default createNodeOperation;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T04:40:40.390Z
+                at 2023-11-27T14:34:52.054Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

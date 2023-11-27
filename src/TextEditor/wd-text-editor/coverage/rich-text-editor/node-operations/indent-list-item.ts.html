@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.16% </span>
+                <span class="strong">16.21% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/37</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>6/37</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.16% </span>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">16.21% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/37</span>
+                <span class='fraction'>6/37</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -103,20 +103,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -128,31 +114,45 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { generateKey } from ".";
 import { AstNode } from "../../components/wysiwyg/interface";
 &nbsp;
-const indentListItem = (ast: AstNode, itemIndex: number): AstNode | null =&gt; {
-    if (ast.NodeName !== "ListBlock" || ast.Children.length &lt;= itemIndex || itemIndex === 0) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+const indentListItem = <span class="fstat-no" title="function not covered" >(ast: AstNode, itemIndex: number): AstNode | null =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (ast.NodeName !== "ListBlock" || ast.Children.length &lt;= itemIndex || itemIndex === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error("Invalid operation");</span>
 <span class="cstat-no" title="statement not covered" >      return null;</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-  
-    const targetListItem = ast.Children[itemIndex];
-    const previousListItem = ast.Children[itemIndex - 1];
-  
-    // Remove the target ListItemBlock from its current position
-    ast.Children.splice(itemIndex, 1);
-  
-    // Find or create a ListBlock inside the previous ListItemBlock
-    let innerListBlock = previousListItem.Children.find(child =&gt; child.NodeName === "ListBlock");
-    if (!innerListBlock) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >  </span>
+<span class="cstat-no" title="statement not covered" >    const targetListItem = ast.Children[itemIndex];</span>
+<span class="cstat-no" title="statement not covered" >    const previousListItem = ast.Children[itemIndex - 1];</span>
+<span class="cstat-no" title="statement not covered" >  </span>
+<span class="cstat-no" title="statement not covered" >    // Remove the target ListItemBlock from its current position</span>
+<span class="cstat-no" title="statement not covered" >    ast.Children.splice(itemIndex, 1);</span>
+<span class="cstat-no" title="statement not covered" >  </span>
+<span class="cstat-no" title="statement not covered" >    // Find or create a ListBlock inside the previous ListItemBlock</span>
+<span class="cstat-no" title="statement not covered" >    let innerListBlock = previousListItem.Children.find(child =&gt; child.NodeName === "ListBlock");</span>
+<span class="cstat-no" title="statement not covered" >    if (!innerListBlock) {</span>
 <span class="cstat-no" title="statement not covered" >      innerListBlock = {</span>
 <span class="cstat-no" title="statement not covered" >        NodeName: "ListBlock",</span>
 <span class="cstat-no" title="statement not covered" >        Attributes: { IsOrdered: ast.Attributes.IsOrdered },</span>
@@ -164,12 +164,12 @@ const indentListItem = (ast: AstNode, itemIndex: number): AstNode | null =&gt; {
 <span class="cstat-no" title="statement not covered" >      };</span>
 <span class="cstat-no" title="statement not covered" >      previousListItem.Children.push(innerListBlock);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-  
-    // Add the target ListItemBlock to the found or created ListBlock
-    innerListBlock.Children.push(targetListItem);
-&nbsp;
-    return ast;
-  }
+<span class="cstat-no" title="statement not covered" >  </span>
+<span class="cstat-no" title="statement not covered" >    // Add the target ListItemBlock to the found or created ListBlock</span>
+<span class="cstat-no" title="statement not covered" >    innerListBlock.Children.push(targetListItem);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    return ast;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   export default indentListItem;</pre></td></tr></table></pre>
 
@@ -178,7 +178,7 @@ const indentListItem = (ast: AstNode, itemIndex: number): AstNode | null =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T04:40:40.390Z
+                at 2023-11-27T14:34:52.054Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

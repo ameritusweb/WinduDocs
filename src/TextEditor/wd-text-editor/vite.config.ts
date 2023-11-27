@@ -16,6 +16,10 @@ export default defineConfig({
     environmentOptions: {
       pretendToBeVisual: true
     },
+    coverage: {
+      provider: 'v8',
+      enabled: true
+    },
     setupFiles: './src/test/setup.ts',
     css: true,
   }

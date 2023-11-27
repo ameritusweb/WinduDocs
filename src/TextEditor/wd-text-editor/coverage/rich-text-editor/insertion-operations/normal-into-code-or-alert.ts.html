@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.76% </span>
+                <span class="strong">26.92% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/26</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>3/5</span>
+                <span class='fraction'>7/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.76% </span>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">26.92% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/26</span>
+                <span class='fraction'>7/26</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -93,50 +93,50 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { AstNode, IHistoryManager } from "../../components/wysiwyg/interface";
 import { findHigherlevelIndex } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 &nbsp;
-const insertTextIntoEitherACodeBlockOrAlertBlock = (child: AstNode, container: Text, startOffset: number, rootChildId: string, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], key: string) =&gt; {
-    const oldText = '' + child.TextContent;
-    let additionalOffset = 0;
-    if (child.TextContent === '\n')
-<span class="branch-0 cbranch-no" title="branch not covered" >    {</span>
+const insertTextIntoEitherACodeBlockOrAlertBlock = <span class="fstat-no" title="function not covered" >(child: AstNode, container: Text, startOffset: number, rootChildId: string, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], key: string) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const oldText = '' + child.TextContent;</span>
+<span class="cstat-no" title="statement not covered" >    let additionalOffset = 0;</span>
+<span class="cstat-no" title="statement not covered" >    if (child.TextContent === '\n')</span>
+<span class="cstat-no" title="statement not covered" >    {</span>
 <span class="cstat-no" title="statement not covered" >        child.TextContent = '';</span>
 <span class="cstat-no" title="statement not covered" >        additionalOffset = 1;</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-    replaceText(container, child, startOffset, key);
-    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, null, rootChildId);
-    let higherLevelIndex = higherLevelChildren.findIndex((c) =&gt; c.Guid === children[0].Guid);
-    if (higherLevelIndex === -1) {
-        higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren) || 0;
-        const childIndex = children.findIndex(c =&gt; c === child);
-        higherLevelChildren[higherLevelIndex].Children[childIndex] = child;
-<span class="branch-0 cbranch-no" title="branch not covered" >    } else {</span>
+<span class="cstat-no" title="statement not covered" >    replaceText(container, child, startOffset, key);</span>
+<span class="cstat-no" title="statement not covered" >    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, null, rootChildId);</span>
+<span class="cstat-no" title="statement not covered" >    let higherLevelIndex = higherLevelChildren.findIndex((c) =&gt; c.Guid === children[0].Guid);</span>
+<span class="cstat-no" title="statement not covered" >    if (higherLevelIndex === -1) {</span>
+<span class="cstat-no" title="statement not covered" >        higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren) || 0;</span>
+<span class="cstat-no" title="statement not covered" >        const childIndex = children.findIndex(c =&gt; c === child);</span>
+<span class="cstat-no" title="statement not covered" >        higherLevelChildren[higherLevelIndex].Children[childIndex] = child;</span>
+<span class="cstat-no" title="statement not covered" >    } else {</span>
 <span class="cstat-no" title="statement not covered" >        higherLevelChildren[higherLevelIndex] = child;</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-    return { type: 'higherLevelInsert', rootChildId, nodes: higherLevelChildren };
-}
+<span class="cstat-no" title="statement not covered" >    return { type: 'higherLevelInsert', rootChildId, nodes: higherLevelChildren };</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 export default insertTextIntoEitherACodeBlockOrAlertBlock;</pre></td></tr></table></pre>
 
@@ -145,7 +145,7 @@ export default insertTextIntoEitherACodeBlockOrAlertBlock;</pre></td></tr></tabl
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T04:40:40.390Z
+                at 2023-11-27T14:34:52.054Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

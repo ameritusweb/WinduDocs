@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>6/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>6/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -82,31 +82,31 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { createNodeWithTypeAndKey, nestedSplitNode, splitNode } from ".";
 import { AstNode } from "../../components/wysiwyg/interface";
 &nbsp;
-const splitAndUpdateHigherLevelNodes = (childIndex: number, child: AstNode, startOffset: number, indexToSplit: number | undefined, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], useNestedSplit: boolean) =&gt; {
-&nbsp;
-    const [node1, node2] = <span class="branch-0 cbranch-no" title="branch not covered" >useNestedSplit ? nestedSplitNode(child, startOffset) : s</span>plitNode(child, startOffset, indexToSplit);
-    const newContainer = createNodeWithTypeAndKey(type, key);
-    if (childIndex !== null) {
-        children.splice(indexToRemoveAndAdd, 1, node1, newContainer, node2);
-        const higherLevelChild = higherLevelChildren[childIndex];
-        higherLevelChild.Children = [... children];
-    }
-    return higherLevelChildren;
-}
+const splitAndUpdateHigherLevelNodes = <span class="fstat-no" title="function not covered" >(childIndex: number, child: AstNode, startOffset: number, indexToSplit: number | undefined, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], useNestedSplit: boolean) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const [node1, node2] = useNestedSplit ? nestedSplitNode(child, startOffset) : splitNode(child, startOffset, indexToSplit);</span>
+<span class="cstat-no" title="statement not covered" >    const newContainer = createNodeWithTypeAndKey(type, key);</span>
+<span class="cstat-no" title="statement not covered" >    if (childIndex !== null) {</span>
+<span class="cstat-no" title="statement not covered" >        children.splice(indexToRemoveAndAdd, 1, node1, newContainer, node2);</span>
+<span class="cstat-no" title="statement not covered" >        const higherLevelChild = higherLevelChildren[childIndex];</span>
+<span class="cstat-no" title="statement not covered" >        higherLevelChild.Children = [... children];</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    return higherLevelChildren;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 export default splitAndUpdateHigherLevelNodes;</pre></td></tr></table></pre>
 
@@ -115,7 +115,7 @@ export default splitAndUpdateHigherLevelNodes;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T04:40:40.390Z
+                at 2023-11-27T14:34:52.054Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,4 +1,5 @@
-import { cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { mockCodeBlockData, mockHigherLevelCodeBlockData, mockInvalidData } from '../../__mocks__/editor-mocks';
+import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
 import AlertBlock from './alert-block'
 
 afterEach(() => {
@@ -6,6 +7,90 @@ afterEach(() => {
   });
   
 describe('AlertBlock', async () => {
+
+    it('should handle invalid data', () => {
+        render(
+            <AlertBlock 
+            id={'123456-123456-123456-123456'} 
+            pathIndices={[]} 
+            version={'V0'} 
+            type={'type-alert-invalid'} 
+            children={mockInvalidData} 
+            higherLevelChildren={mockHigherLevelCodeBlockData}        
+            />,
+        )
+        const svgElement = screen.queryByTestId('invalid-icon');
+        expect(svgElement).toBeNull();
+        const matches = screen.queryAllByText((content, nodes) => content.includes('console'));
+        expect(matches.length).toBe(0);
+    })
+
+    it('should display utilities', async () => {
+        render(
+            <AlertBlock 
+            id={'123456-123456-123456-123456'} 
+            pathIndices={[]} 
+            version={'V0'} 
+            type={'type-alert-success'} 
+            children={mockCodeBlockData} 
+            higherLevelChildren={mockHigherLevelCodeBlockData}        
+            />,
+        )
+        const matches = screen.getAllByText((content, nodes) => content.includes('console'));
+        expect(matches.length).toBe(2);
+        await act(async () => {
+            await userEvent.click(matches[0]);
+        });
+
+        const deleteIcon = screen.getByTitle('Delete');
+        expect(deleteIcon).not.toBeNull();
+
+        await act(async () => {
+            await userEvent.click(deleteIcon);
+        });
+
+        const cutIcon = screen.getByTitle('Cut');
+        expect(cutIcon).not.toBeNull();
+
+        await act(async () => {
+            await userEvent.click(cutIcon);
+        });
+
+        const copyIcon = screen.getByTitle('Copy');
+        expect(copyIcon).not.toBeNull();
+
+        await act(async () => {
+            await userEvent.click(copyIcon);
+        });
+
+        const pasteIcon = screen.getByTitle('Paste');
+        expect(pasteIcon).not.toBeNull();
+
+        await act(async () => {
+            await userEvent.click(pasteIcon);
+        });
+
+    })
+
+    it('should render multiple text blocks', () => {
+        render(
+            <AlertBlock 
+            id={'123456-123456-123456-123456'} 
+            pathIndices={[]} 
+            version={'V0'} 
+            type={'type-alert-success'} 
+            children={mockCodeBlockData} 
+            higherLevelChildren={mockHigherLevelCodeBlockData}        
+            />,
+        )
+        const matches = screen.getAllByText((content, nodes) => content.includes('console'));
+        expect(matches.length).toBe(2);
+        expect(matches[0]).toBeInstanceOf(HTMLParagraphElement);
+        expect(matches[1]).toBeInstanceOf(HTMLParagraphElement);
+        expect(matches[0]).toBeVisible()
+        expect(matches[1]).toBeVisible()
+    })
+
   it('should render the AlertBlock success icon', () => {
     render(
       <AlertBlock 

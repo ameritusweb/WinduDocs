@@ -14,11 +14,8 @@ interface AlertBlockProps {
 
 const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type, children, higherLevelChildren }) => {
     
-    const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
@@ -55,8 +52,6 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type,
     return (
         <section id={`section_${id}`}
             className="relative"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}
             onBlur={handleBlur}
             tabIndex={1} // Make it focusable if needed

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.73% </span>
+                <span class="strong">57.89% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/19</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>11/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.73% </span>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">57.89% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/19</span>
+                <span class='fraction'>11/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -90,14 +90,14 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { AstNode } from "./interface";
 import Paragraph from "./paragraph";
@@ -107,15 +107,15 @@ export interface TableHeaderProps {
     children: AstNode[];
 }
 &nbsp;
-const TableHeaderCell: React.FC&lt;TableHeaderProps&gt; = ({ pathIndices, children }) =&gt; &lt;th&gt;{children.map((child, index) =&gt; {
-    const childPathIndices = [...pathIndices, index];
-    switch (child.NodeName) {
-        case 'ParagraphBlock':
-            return &lt;Paragraph key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children }} render={props =&gt; &lt;span {...props}&gt;&lt;/span&gt;}/&gt;;
-<span class="branch-0 cbranch-no" title="branch not covered" >        default:</span>
+const TableHeaderCell: React.FC&lt;TableHeaderProps&gt; = <span class="fstat-no" title="function not covered" >({ pathIndices, children }) =&gt; &lt;th&gt;{children.map((child, index) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const childPathIndices = [...pathIndices, index];</span>
+<span class="cstat-no" title="statement not covered" >    switch (child.NodeName) {</span>
+<span class="cstat-no" title="statement not covered" >        case 'ParagraphBlock':</span>
+<span class="cstat-no" title="statement not covered" >            return &lt;Paragraph key={child.Guid + (child.Version || '0')} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={child.Children} higherLevelContent={{ content: children }} render={props =&gt; &lt;span {...props}&gt;&lt;/span&gt;}/&gt;;</span>
+<span class="cstat-no" title="statement not covered" >        default:</span>
 <span class="cstat-no" title="statement not covered" >            return null;</span>
-    }
-})}&lt;/th&gt;;
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >})}&lt;/th&gt;;</span>
 &nbsp;
 export default TableHeaderCell;</pre></td></tr></table></pre>
 
@@ -124,7 +124,7 @@ export default TableHeaderCell;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T04:40:40.390Z
+                at 2023-11-27T14:34:52.054Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

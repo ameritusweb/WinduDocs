@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>27/27</span>
+                <span class='fraction'>9/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>27/27</span>
+                <span class='fraction'>9/27</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,24 +96,24 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">export interface TableUtilityContainerProps {
     show: boolean;
@@ -121,25 +121,25 @@
     onAddColumn: () =&gt; void;
 }
 &nbsp;
-const TableUtilityContainer: React.FC&lt;TableUtilityContainerProps&gt; = ({ show, onAddRow, onAddColumn }) =&gt; {
-    return (
-        &lt;div className={`${show ? 'opacity-100 pointer-events-auto z-[100]' : 'overflow-hidden h-2 opacity-0 pointer-events-none'} table-utility-container absolute top-[0rem] right-[-1rem] p-0 flex flex-col gap-2.5`}&gt;
-            &lt;div title="Add Row" className="text-gray-500 cursor-pointer opacity-[0.75] hover:opacity-100" onClick={onAddRow}&gt;
-            &lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4"&gt;
-  &lt;path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /&gt;
-&lt;/svg&gt;
-&nbsp;
-&lt;/div&gt;
-            &lt;div title="Add Column" className="text-gray-500 cursor-pointer opacity-[0.75] hover:opacity-100" onClick={onAddColumn}&gt;
-                &lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4"&gt;
-                &lt;g transform="rotate(90 12 12)"&gt;
-        &lt;path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /&gt;
-    &lt;/g&gt;
-&lt;/svg&gt;
-&lt;/div&gt;
-        &lt;/div&gt;
-    );
-};
+const TableUtilityContainer: React.FC&lt;TableUtilityContainerProps&gt; = <span class="fstat-no" title="function not covered" >({ show, onAddRow, onAddColumn }) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return (</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className={`${show ? 'opacity-100 pointer-events-auto z-[100]' : 'overflow-hidden h-2 opacity-0 pointer-events-none'} table-utility-container absolute top-[0rem] right-[-1rem] p-0 flex flex-col gap-2.5`}&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;div title="Add Row" className="text-gray-500 cursor-pointer opacity-[0.75] hover:opacity-100" onClick={onAddRow}&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4"&gt;</span>
+<span class="cstat-no" title="statement not covered" >  &lt;path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /&gt;</span>
+<span class="cstat-no" title="statement not covered" >&lt;/svg&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >&lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;div title="Add Column" className="text-gray-500 cursor-pointer opacity-[0.75] hover:opacity-100" onClick={onAddColumn}&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;g transform="rotate(90 12 12)"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;/g&gt;</span>
+<span class="cstat-no" title="statement not covered" >&lt;/svg&gt;</span>
+<span class="cstat-no" title="statement not covered" >&lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
 export default TableUtilityContainer;</pre></td></tr></table></pre>
 
@@ -148,7 +148,7 @@ export default TableUtilityContainer;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-27T04:40:40.390Z
+                at 2023-11-27T14:34:52.054Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
