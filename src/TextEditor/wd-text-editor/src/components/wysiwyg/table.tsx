@@ -30,9 +30,9 @@ const Table: React.FC<TableProps> = ({ id, pathIndices, children }) => {
             onFocus={handleFocus}
             onBlur={handleBlur}
             tabIndex={1}>
-             {isFocused && (
+             {(
                 <UtilityContainer 
-                    show={true}
+                    show={isFocused}
                     onCopy={handleCopy} 
                     onCut={handleCut} 
                     onDelete={handleDelete} 
