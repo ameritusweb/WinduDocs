@@ -171,3 +171,18 @@ export interface UpdateData {
   rootChildId: string;
   containerIndex: number;
 }
+
+export interface AstContext {
+  isQuoteBlock: boolean;
+  isLink: boolean;
+  isCodeBlock: boolean;
+  isInlineCode: boolean;
+  isHeading: boolean;
+  isAlertBlock: boolean;
+  isStrong: boolean;
+  isEmphasis: boolean;
+  isTable: boolean;
+  isOrderedList: boolean;
+  isUnorderedList: boolean;
+  types: string[];
+}

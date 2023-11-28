@@ -189,7 +189,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newLine = createNewAstNode('BlankLine', 0, 0, null);
           higherLevelContentCopy.splice(index + 1, 0, newLine);
-          historyManager.recordChildAdd(null, higherLevelContentCopy[index], newLine, newLine, 0, 0);
+          historyManager.recordChildAdd(null, higherLevelContentCopy[index], 0, newLine, newLine, 0, 0);
           higherLevelContent.updater(higherLevelContentCopy, true);
         } else if (event.key === 'Backspace') {
           event.preventDefault();

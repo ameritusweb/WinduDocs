@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import Paragraph from "./paragraph";
-import { AstNode } from "./interface";
+import { AstContext, AstNode } from "./interface";
 import UtilityContainer from "./utility-container";
 
 interface CodeBlockProps {
     id: string;
+    context: AstContext;
     pathIndices: number[];
     language: string;
     children: AstNode[];
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ id, pathIndices, language, children }) => {
+const CodeBlock: React.FC<CodeBlockProps> = ({ id, context, pathIndices, language, children }) => {
 
-    const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
@@ -28,8 +26,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ id, pathIndices, language, childr
     return (
         <section id={`section_${id}`}
             className="relative"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}
             onBlur={handleBlur}
             tabIndex={1} // Make it focusable if needed
@@ -40,7 +36,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ id, pathIndices, language, childr
                     const childPathIndices = [...pathIndices, index];
                     switch (child.NodeName) {
                         case 'Text':
-                            return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
+                            return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} context={{ ...context, isCodeBlock: true, types: [ ...context.types, 'code' ] }} pathIndices={childPathIndices} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
                         default:
                             return null;
                     }

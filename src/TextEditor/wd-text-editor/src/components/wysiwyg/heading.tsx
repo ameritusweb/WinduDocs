@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { AstNode } from "./interface";
+import { AstContext, AstNode } from "./interface";
 import Paragraph from "./paragraph";
 import UtilityContainer from "./utility-container";
 
 export interface HeadingProps {
     id: string;
+    context: AstContext;
     version: string;
     level: string;
     pathIndices: number[];
@@ -13,13 +14,10 @@ export interface HeadingProps {
     rootUpdater: (nodes: AstNode[], updateProcessed: boolean) => void;
 }
 
-export const Heading: React.FC<HeadingProps> = ({ id, version, level, pathIndices, children, higherLevelChildren, rootUpdater }) => {
+export const Heading: React.FC<HeadingProps> = ({ id, context, version, level, pathIndices, children, higherLevelChildren, rootUpdater }) => {
 
-    const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
@@ -35,7 +33,7 @@ export const Heading: React.FC<HeadingProps> = ({ id, version, level, pathIndice
         const childPathIndices = [...pathIndices];
         switch (child.NodeName) {
             case 'Text':
-                return <Paragraph<HTMLParagraphElement> key={child.Guid} pathIndices={childPathIndices} id={child.Guid} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
+                return <Paragraph<HTMLParagraphElement> key={child.Guid} pathIndices={childPathIndices} context={{ ...context, isHeading: true, types: [ ...context.types, 'h' ] }} id={child.Guid} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
             default:
                 return null;
         }
@@ -45,8 +43,6 @@ export const Heading: React.FC<HeadingProps> = ({ id, version, level, pathIndice
     return (
         <section id={`section_${id}`}
             className="relative"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}
             onBlur={handleBlur}
             tabIndex={1} // Make it focusable if needed

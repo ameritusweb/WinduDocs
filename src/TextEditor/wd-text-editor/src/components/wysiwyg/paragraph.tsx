@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import { AstNode, CursorPositionType } from "./interface";
+import { AstContext, AstNode, CursorPositionType } from "./interface";
 import Strong from "./strong";
 import Emphasis from "./emphasis";
 import CodeInline from "./code-inline";
@@ -12,6 +12,7 @@ import EditorData, { EditorDataType } from "../../hooks/editor-data";
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
   content: AstNode[];
+  context: AstContext;
   pathIndices: number[];
   version: string;
   render: (props: RenderProps<T>) => JSX.Element;
@@ -197,13 +198,13 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         const childPathIndices = [...props.pathIndices, index];
         switch (item.NodeName) {
           case 'Strong':
-            return <Strong key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Strong>;
+            return <Strong key={item.Guid + (item.Version || '0')} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Strong>;
           case 'Emphasis':
-            return <Emphasis key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Emphasis>;
+            return <Emphasis key={item.Guid + (item.Version || '0')} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Emphasis>;
           case 'CodeInline':
-            return <CodeInline key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid}>{item.TextContent}</CodeInline>;
+            return <CodeInline key={item.Guid + (item.Version || '0')} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.TextContent}</CodeInline>;
           case 'Link':
-            return <Link key={item.Guid + (item.Version || '0')} pathIndices={childPathIndices} id={item.Guid} version={item.Version || 'V0'} url={item.Attributes.Url || ''}>{item.Children}</Link>
+            return <Link key={item.Guid + (item.Version || '0')} context={props.context} pathIndices={childPathIndices} id={item.Guid} version={item.Version || 'V0'} url={item.Attributes.Url || ''}>{item.Children}</Link>
           case 'Text':
           default:
             return <React.Fragment key={item.Guid}>{item.TextContent || '\n'}</React.Fragment>;

@@ -1,24 +1,22 @@
 import React, { useState } from "react";
 import ListItem from "./list-item";
-import { AstNode } from "./interface";
+import { AstContext, AstNode } from "./interface";
 import { handleListClick } from "../../rich-text-editor/handlers";
 import UtilityContainer from "./utility-container";
 
 interface OrderedListProps {
     isTopLevel?: boolean;
     id: string;
+    context: AstContext;
     pathIndices: number[];
     higherLevelChild: AstNode;
     children: AstNode[];
 }
 
-const OrderedList: React.FC<OrderedListProps> = ({ id, isTopLevel, pathIndices, higherLevelChild, children }) => {
+const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, pathIndices, higherLevelChild, children }) => {
 
-    const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
@@ -35,8 +33,6 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, isTopLevel, pathIndices, 
         isTopLevel ? (
             <section id={`section_${id}`}
                 className="relative"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 tabIndex={1} // Make it focusable if needed
@@ -48,6 +44,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, isTopLevel, pathIndices, 
                             <ListItem 
                                 key={child.Guid + (child.Version || '0')} 
                                 id={child.Guid} 
+                                context={{ ...context, isOrderedList: true, types: [ ...context.types, 'ordered-list' ] }}
                                 pathIndices={childPathIndices} 
                                 children={child.Children} 
                                 higherLevelChildren={children} 
@@ -72,6 +69,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, isTopLevel, pathIndices, 
                         <ListItem 
                             key={child.Guid + (child.Version || '0')} 
                             id={child.Guid} 
+                            context={{ ...context, isOrderedList: true, types: [ ...context.types, 'ol' ] }}
                             pathIndices={childPathIndices} 
                             children={child.Children} 
                             higherLevelChildren={children} 

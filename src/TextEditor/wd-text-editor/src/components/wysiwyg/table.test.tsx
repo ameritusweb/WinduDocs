@@ -1,6 +1,6 @@
 import { mockTableData } from '../../__mocks__/editor-mocks';
 import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { AstNode } from './interface';
+import { AstContext, AstNode } from './interface';
 import Table from './table'
 
 afterEach(() => {
@@ -14,6 +14,7 @@ describe('Table', async () => {
             id={"B123456-123456-123456-123456"} 
             pathIndices={[]}
             children={mockTableData}
+            context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
         />,
     )
 

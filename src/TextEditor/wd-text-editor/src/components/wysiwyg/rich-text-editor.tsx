@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AstNode, AstUpdate, IHistoryManager, ITextBlock } from "./interface";
+import { AstContext, AstNode, AstUpdate, IHistoryManager, ITextBlock } from "./interface";
 import Paragraph from "./paragraph";
 import Heading from "./heading";
 import OrderedList from "./ordered-list";
@@ -33,6 +33,20 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ ast }) => {
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(ast.Children);
     const historyManager: IHistoryManager = HistoryManager;
     const editorRef = useRef<HTMLDivElement | null>(null);
+    const initialContext = useRef<AstContext>({
+        isAlertBlock: false,
+        isQuoteBlock: false,
+        isCodeBlock: false,
+        isEmphasis: false,
+        isHeading: false,
+        isInlineCode: false,
+        isLink: false,
+        isOrderedList: false,
+        isStrong: false,
+        isTable: false,
+        isUnorderedList: false,
+        types: []
+    });
     const { restoreCursorPosition } = useRichTextEditor();
 
     const updateProcessedAst = () => {
@@ -136,6 +150,7 @@ useEffect(() => {
                             <Paragraph<HTMLParagraphElement>
                                 {...paragraphProps}
                                 id={node.Guid}
+                                context={initialContext.current}
                                 pathIndices={pathIndices}
                                 version={node.Version || 'V0'}
                                 content={node.Children}
@@ -150,27 +165,85 @@ useEffect(() => {
                     />
                 );
             case 'HeadingBlock':
-                return <Heading key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} version={node.Version || 'V0'} level={node.Attributes.Level || ''} children={node.Children} higherLevelChildren={higherLevelContent} rootUpdater={updateContent} />;
+                return <Heading 
+                            key={node.Guid + (node.Version || 'V0')} 
+                            id={node.Guid} 
+                            context={ initialContext.current }
+                            pathIndices={pathIndices} 
+                            version={node.Version || 'V0'} 
+                            level={node.Attributes.Level || ''} 
+                            children={node.Children} 
+                            higherLevelChildren={higherLevelContent} 
+                            rootUpdater={updateContent}
+                        />;
             case 'Table':
-                return <Table key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} children={node.Children} />;
+                return <Table 
+                            key={node.Guid + (node.Version || 'V0')} 
+                            id={node.Guid} 
+                            context={ initialContext.current }
+                            pathIndices={pathIndices} 
+                            children={node.Children} 
+                        />;
             case 'ListBlock':
                 if (node.Attributes.IsOrdered && node.Attributes.IsOrdered === 'True') {
-                    return <OrderedList key={node.Guid + (node.Version || 'V0')} id={node.Guid} isTopLevel={true} pathIndices={pathIndices} higherLevelChild={node} children={node.Children} />
+                    return <OrderedList 
+                                key={node.Guid + (node.Version || 'V0')} 
+                                id={node.Guid} 
+                                isTopLevel={true} 
+                                context={ initialContext.current }
+                                pathIndices={pathIndices} 
+                                higherLevelChild={node} 
+                                children={node.Children} 
+                            />
                 } else {
-                    return <UnorderedList key={node.Guid + (node.Version || 'V0')} id={node.Guid} isTopLevel={true} pathIndices={pathIndices} higherLevelChild={node} children={node.Children} />
+                    return <UnorderedList 
+                                key={node.Guid + (node.Version || 'V0')} 
+                                id={node.Guid} 
+                                isTopLevel={true} 
+                                context={ initialContext.current }
+                                pathIndices={pathIndices} 
+                                higherLevelChild={node} 
+                                children={node.Children} 
+                            />
                 }
             case 'QuoteBlock':
-                return <QuoteBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} children={node.Children} />;
+                return <QuoteBlock 
+                            key={node.Guid + (node.Version || 'V0')} 
+                            id={node.Guid} 
+                            context={ initialContext.current }
+                            pathIndices={pathIndices} 
+                            children={node.Children} />;
             case 'ThematicBreakBlock':
-                return <HorizontalRule id={node.Guid} key={node.Guid + (node.Version || 'V0')} />;
+                return <HorizontalRule 
+                            id={node.Guid} 
+                            key={node.Guid + (node.Version || 'V0')} />;
              case 'FencedCodeBlock':
                 if (node.Attributes.Language && node.Attributes.Language.startsWith('type-alert-')) {
-                    return <AlertBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} version={node.Version || 'V0'} pathIndices={pathIndices} higherLevelChildren={higherLevelContent} type={node.Attributes.Language} children={node.Children} />;
+                    return <AlertBlock 
+                                key={node.Guid + (node.Version || 'V0')} 
+                                id={node.Guid}
+                                context={ initialContext.current } 
+                                version={node.Version || 'V0'} 
+                                pathIndices={pathIndices} 
+                                higherLevelChildren={higherLevelContent} 
+                                type={node.Attributes.Language} 
+                                children={node.Children} />;
                 } else {
-                    return <CodeBlock key={node.Guid + (node.Version || 'V0')} id={node.Guid} pathIndices={pathIndices} language={node.Attributes.Language || ''} children={node.Children} />;
+                    return <CodeBlock 
+                                key={node.Guid + (node.Version || 'V0')} 
+                                id={node.Guid} 
+                                context={ initialContext.current }
+                                pathIndices={pathIndices} 
+                                language={node.Attributes.Language || ''} 
+                                children={node.Children} />;
                 }
             case 'BlankLine':
-                return <BlankLine key={node.Guid + (node.Version || 'V0')} id={node.Guid} format={null} self={node} higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
+                return <BlankLine 
+                            key={node.Guid + (node.Version || 'V0')} 
+                            id={node.Guid} 
+                            format={null} 
+                            self={node} 
+                            higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
             // ... handle other types as needed
             default:
                 return null;

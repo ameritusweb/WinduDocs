@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { AstNode } from "./interface";
+import { AstContext, AstNode } from "./interface";
 import Paragraph from "./paragraph";
 import UtilityContainer from "./utility-container";
 
 interface AlertBlockProps {
     id: string;
+    context: AstContext;
     pathIndices: number[];
     version: string;
     type: string; // Extracted from the language attribute
@@ -12,7 +13,7 @@ interface AlertBlockProps {
     higherLevelChildren: AstNode[];
 }
 
-const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type, children, higherLevelChildren }) => {
+const AlertBlock: React.FC<AlertBlockProps> = ({ id, context, pathIndices, version, type, children, higherLevelChildren }) => {
     
     const [isFocused, setIsFocused] = useState(false);
 
@@ -63,7 +64,7 @@ const AlertBlock: React.FC<AlertBlockProps> = ({ id, pathIndices, version, type,
                     const childPathIndices = [...pathIndices, index];
                     switch (child.NodeName) {
                         case 'Text':
-                            return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} pathIndices={childPathIndices} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
+                            return <Paragraph<HTMLParagraphElement> key={child.Guid} id={child.Guid} context={{ ...context, isAlertBlock: true, types: [ ...context.types, 'alert' ] }} pathIndices={childPathIndices} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ content: children }} render={props => <p {...props}></p>} />;
                         default:
                             return null;
                     }

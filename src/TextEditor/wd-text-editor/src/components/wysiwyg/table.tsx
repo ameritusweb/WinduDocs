@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import TableRow from "./table-row";
-import { AstNode } from "./interface";
+import { AstContext, AstNode } from "./interface";
 import UtilityContainer from "./utility-container";
 import TableUtilityContainer from "./table-utility-container";
 
 export interface TableProps {
     id: string;
+    context: AstContext;
     pathIndices: number[];
     children: AstNode[];
 }
 
-const Table: React.FC<TableProps> = ({ id, pathIndices, children }) => {
+const Table: React.FC<TableProps> = ({ id, context, pathIndices, children }) => {
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -47,7 +48,7 @@ const Table: React.FC<TableProps> = ({ id, pathIndices, children }) => {
                             const childPathIndices = [...pathIndices, index];
                             if (child.NodeName === 'TableRow') {
                                 const isHeader = child.Attributes && child.Attributes.IsHeader === "True";
-                                return <TableRow key={child.Guid + (child.Version || '0')} pathIndices={childPathIndices} children={child.Children} isHeader={isHeader} />;
+                                return <TableRow key={child.Guid + (child.Version || '0')} context={{ ...context, isTable: true, types: [ ...context.types, 'table' ] }} pathIndices={childPathIndices} children={child.Children} isHeader={isHeader} />;
                             }
                             return null;
                         })}

@@ -1,6 +1,7 @@
 import { mockCodeBlockData } from '../../__mocks__/editor-mocks'
 import { cleanup, render, screen, userEvent } from '../../utils/test-utils'
 import CodeBlock from './code-block'
+import { AstContext } from './interface';
 
 afterEach(() => {
     cleanup();
@@ -13,7 +14,8 @@ describe('CodeBlock', async () => {
         id={'123456-123456-123456-123456'} 
         pathIndices={[]} 
         language={'javascript'} 
-        children={mockCodeBlockData}     
+        children={mockCodeBlockData}    
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)} 
       />,
     )
     const matchingElements = screen.getAllByText((content, nodes) => content.startsWith('console.log'));

@@ -3,6 +3,7 @@ import { act, cleanup, fireEvent, render, screen, userEvent } from '../../utils/
 import Paragraph from './paragraph'
 import { mockHigherLevelParagraphData, mockParagraphData } from '../../__mocks__/editor-mocks';
 import EditorData from '../../hooks/editor-data';
+import { AstContext } from './interface';
 
 const mockHandlers = await vi.hoisted(async () => {
     const actualHandlers = await vi.importActual("../../rich-text-editor/handlers") as typeof import("../../rich-text-editor/handlers");
@@ -58,6 +59,7 @@ describe('Paragraph', async () => {
             <Paragraph<HTMLParagraphElement>
               id="#B123456-123456" 
               content={mockParagraphData} 
+              context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
               pathIndices={[0]} 
               version="V1" 
               render={props => <p {...props}></p>} 
@@ -72,6 +74,7 @@ describe('Paragraph', async () => {
             <Paragraph<HTMLParagraphElement>
               id="#B123456-123456" 
               content={mockParagraphData} 
+              context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
               pathIndices={[0]} 
               version="V1" 
               render={props => <span {...props}></span>} 
@@ -92,6 +95,7 @@ describe('Paragraph', async () => {
                 <Paragraph<HTMLParagraphElement>
                 id="B123456-123456" 
                 content={mockParagraphData} 
+                context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
                 pathIndices={[0]} 
                 version="V1" 
                 higherLevelContent={{ content: mockHigherLevelParagraphData, id: 'A123456-123456' }}

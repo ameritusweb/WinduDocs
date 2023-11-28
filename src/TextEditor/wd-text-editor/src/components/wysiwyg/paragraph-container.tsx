@@ -12,11 +12,8 @@ interface RenderParagraphProps {
 }
 
 const ParagraphContainer: React.FC<ParagraphContainerProps> = ({ renderParagraph, paragraphId }) => {
-    const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
@@ -28,8 +25,6 @@ const ParagraphContainer: React.FC<ParagraphContainerProps> = ({ renderParagraph
     return (
         <section 
             id={`section_${paragraphId}`}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}
             onBlur={handleBlur}
             className="relative"

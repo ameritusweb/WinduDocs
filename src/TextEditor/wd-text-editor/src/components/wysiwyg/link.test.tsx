@@ -1,4 +1,5 @@
 import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { AstContext } from './interface';
 import Link from './link'
 
 afterEach(() => {
@@ -15,6 +16,7 @@ describe('Link', async () => {
         id={'B123456-123456-123456-123456'}
         pathIndices={[]}      
         version={'V0'}
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
         url={testUrl}
         children={[]}
       />,

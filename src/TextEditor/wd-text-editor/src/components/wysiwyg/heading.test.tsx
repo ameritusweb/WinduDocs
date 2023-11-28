@@ -1,6 +1,7 @@
 import { mockHeadingData } from '../../__mocks__/editor-mocks';
 import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
 import Heading from './heading'
+import { AstContext } from './interface';
 
 afterEach(() => {
     cleanup();
@@ -14,7 +15,8 @@ describe('Heading', async () => {
         pathIndices={[]} 
         level={'1'}
         version={'V0'} 
-        children={mockHeadingData} 
+        children={mockHeadingData}
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)} 
         higherLevelChildren={[]}
         rootUpdater={() => {  }}        
       />,
@@ -39,6 +41,7 @@ describe('Heading', async () => {
         version={'V0'} 
         children={mockHeadingData} 
         higherLevelChildren={[]}
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
         rootUpdater={() => {  }}        
       />,
     )

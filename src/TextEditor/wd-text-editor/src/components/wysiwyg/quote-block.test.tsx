@@ -1,5 +1,6 @@
 import { mockQuoteBlockData } from '../../__mocks__/editor-mocks'
 import { cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { AstContext } from './interface';
 import QuoteBlock from './quote-block'
 
 afterEach(() => {
@@ -11,6 +12,7 @@ describe('QuoteBlock', async () => {
     render(
     <QuoteBlock 
         id={'B123456-123456-123456-123456'} 
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
         pathIndices={[]}  
         children={mockQuoteBlockData}     
       />,
@@ -18,7 +20,7 @@ describe('QuoteBlock', async () => {
     const firstMatchingElements = screen.getAllByText((content, nodes) => content.includes('blockquote'));
     expect(firstMatchingElements.length).toBe(1);
 
-    const secondMatchingElements = screen.getAllByText((content, nodes) => content.includes('multiple lines'));
+    const secondMatchingElements = screen.getAllByText((content, nodes) => content.includes('can span'));
     expect(secondMatchingElements.length).toBe(1);
   })
 })

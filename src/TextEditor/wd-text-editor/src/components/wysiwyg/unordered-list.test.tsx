@@ -1,6 +1,6 @@
 import { mockListData } from '../../__mocks__/editor-mocks';
 import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { AstNode } from './interface';
+import { AstContext, AstNode } from './interface';
 import UnorderedList from './unordered-list'
 
 afterEach(() => {
@@ -16,6 +16,7 @@ describe('UnorderedList', async () => {
             pathIndices={[]}
             children={mockListData}
             higherLevelChild={{} as AstNode}
+            context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
         />,
     )
 

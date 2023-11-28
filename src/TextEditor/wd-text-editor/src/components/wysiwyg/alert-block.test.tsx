@@ -1,6 +1,7 @@
 import { mockCodeBlockData, mockHigherLevelCodeBlockData, mockInvalidData } from '../../__mocks__/editor-mocks';
 import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
 import AlertBlock from './alert-block'
+import { AstContext } from './interface';
 
 afterEach(() => {
     cleanup();
@@ -16,7 +17,8 @@ describe('AlertBlock', async () => {
             version={'V0'} 
             type={'type-alert-invalid'} 
             children={mockInvalidData} 
-            higherLevelChildren={mockHigherLevelCodeBlockData}        
+            higherLevelChildren={mockHigherLevelCodeBlockData}     
+            context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}   
             />,
         )
         const svgElement = screen.queryByTestId('invalid-icon');
@@ -33,7 +35,8 @@ describe('AlertBlock', async () => {
             version={'V0'} 
             type={'type-alert-success'} 
             children={mockCodeBlockData} 
-            higherLevelChildren={mockHigherLevelCodeBlockData}        
+            higherLevelChildren={mockHigherLevelCodeBlockData}     
+            context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}   
             />,
         )
         const matches = screen.getAllByText((content, nodes) => content.includes('console'));
@@ -80,7 +83,8 @@ describe('AlertBlock', async () => {
             version={'V0'} 
             type={'type-alert-success'} 
             children={mockCodeBlockData} 
-            higherLevelChildren={mockHigherLevelCodeBlockData}        
+            higherLevelChildren={mockHigherLevelCodeBlockData}  
+            context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}      
             />,
         )
         const matches = screen.getAllByText((content, nodes) => content.includes('console'));
@@ -96,6 +100,7 @@ describe('AlertBlock', async () => {
       <AlertBlock 
         id={'123456-123456-123456-123456'} 
         pathIndices={[]} 
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
         version={'V0'} 
         type={'type-alert-success'} 
         children={[]} 
@@ -116,6 +121,7 @@ describe('AlertBlock', async () => {
         type={'type-alert-warning'} 
         children={[]} 
         higherLevelChildren={[]}        
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
       />,
     )
     const svgElement = screen.getByTestId('warning-icon');
@@ -131,7 +137,8 @@ describe('AlertBlock', async () => {
         version={'V0'} 
         type={'type-alert-info'} 
         children={[]} 
-        higherLevelChildren={[]}        
+        higherLevelChildren={[]}   
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}     
       />,
     )
     const svgElement = screen.getByTestId('info-icon');
@@ -147,7 +154,8 @@ describe('AlertBlock', async () => {
         version={'V0'} 
         type={'type-alert-error'} 
         children={[]} 
-        higherLevelChildren={[]}        
+        higherLevelChildren={[]}
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}        
       />,
     )
     const svgElement = screen.getByTestId('error-icon');

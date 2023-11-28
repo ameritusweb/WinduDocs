@@ -1,6 +1,6 @@
 import { mockListData } from '../../__mocks__/editor-mocks';
 import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { AstNode } from './interface';
+import { AstContext, AstNode } from './interface';
 import OrderedList from './ordered-list'
 
 afterEach(() => {
@@ -14,6 +14,7 @@ describe('OrderedList', async () => {
             isTopLevel={true} 
             id={"B123456-123456-123456-123456"} 
             pathIndices={[]}
+            context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
             children={mockListData}
             higherLevelChild={{} as AstNode}
         />,

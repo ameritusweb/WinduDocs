@@ -1,5 +1,6 @@
 import { mockTableRowData } from '../../__mocks__/editor-mocks';
 import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { AstContext } from './interface';
 import TableRow from './table-row'
 
 afterEach(() => {
@@ -14,7 +15,8 @@ describe('TableRow', async () => {
                     <TableRow  
                         pathIndices={[]}
                         children={mockTableRowData} 
-                        isHeader={false}        
+                        isHeader={false} 
+                        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}       
                      />
             </tbody>
         </table>,
