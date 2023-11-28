@@ -41,7 +41,9 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                     higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank, newPara);
                                 } else {
                                     const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+                                    const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
                                     higherLevelChildren.splice(higherLevelIndex, 0, newBlank);
+                                    historyManager.recordChildAdd(null, oldNode, startOffset, newBlank, oldNode, 0, 0);
                                 }
                                 return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                             } else if (container.textContent === '\n') {
