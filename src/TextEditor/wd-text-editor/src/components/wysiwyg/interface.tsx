@@ -75,7 +75,7 @@ export interface ReplaceNodeParams {
 }
 
 export interface RemoveNodeParams {
-  nodeId: string;
+  targetNode: AstNode;
 }
 
 export interface UpdateNodeParams {
@@ -96,7 +96,7 @@ export interface IHistoryManager {
   clear(): void;
   restoreCursorPosition(): void;
   recordChildReplace(parent: AstNode | null, oldNode: AstNode, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number): void;
-  recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void;
+  recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, startOffset: number | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void;
   recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string): void;
   recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
@@ -114,7 +114,9 @@ export interface AddNodePayload {
 }
 
 export interface RemoveNodePayload {
-  id: string;
+  previousSiblingId: string | null;
+  offset: number;
+  targetNode: AstNode;
 }
 
 export interface UpdateNodePayload {

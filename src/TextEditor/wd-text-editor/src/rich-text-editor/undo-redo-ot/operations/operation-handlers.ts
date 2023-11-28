@@ -3,18 +3,27 @@ import { AstNode, AstOperation } from "../../../components/wysiwyg/interface";
 
 export const applyAddOperation = (ast: AstNode, operation: AstOperation<'add'>): AstNode => {
     // Assuming `ast` is the root node and we have a method to find a node by ID
-    const parentNode = findNodeById(ast, operation.targetNodeId);
+    const parentNode = findParentNode(ast, operation.targetNodeId);
     if (parentNode) {
         parentNode.Children.push(operation.payload!.newNode);
     }
     return ast; // Return the modified AST
 }
 
-export const applyRemoveOperation = (ast: AstNode, operation: AstOperation): AstNode => {
+export const applyRemoveOperation = (ast: AstNode, operation: AstOperation<'remove'>): AstNode => {
     // Remove the node with the given ID from its parent's children
     const parentNode = findParentNode(ast, operation.targetNodeId);
     if (parentNode) {
         parentNode.Children = parentNode.Children.filter(child => child.Guid !== operation.targetNodeId);
+    }
+    return ast;
+}
+
+export const applyReplaceOperation = (ast: AstNode, operation: AstOperation<'replace'>): AstNode => {
+    // Replace the node with the given ID from among its parent's children
+    const parentNode = findParentNode(ast, operation.targetNodeId);
+    if (parentNode) {
+        parentNode.Children = parentNode.Children.map(child => child.Guid === operation.targetNodeId ? operation.payload!.newNode : child);
     }
     return ast;
 }
@@ -34,9 +43,11 @@ export const applyOperation = (ast: AstNode, operation: AstOperation): AstNode =
         case 'add':
             return applyAddOperation(ast, operation as AstOperation<'add'>);
         case 'remove':
-            return applyRemoveOperation(ast, operation);
+            return applyRemoveOperation(ast, operation as AstOperation<'remove'>);
         case 'update':
             return applyUpdateOperation(ast, operation as AstOperation<'update'>);
+        case 'replace':
+            return applyReplaceOperation(ast, operation as AstOperation<'replace'>);
         default:
             throw new Error('Unsupported operation type');
     }

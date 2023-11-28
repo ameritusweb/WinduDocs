@@ -580,15 +580,6 @@ export const mockQuoteBlockData: AstNode[] = [
         "Attributes": {},
         "ChildIndex": 0,
         "Depth": 3,
-        "Guid": "09a8b8e2-4727-43ca-9434-ade66fefd690",
-        "TextContent": "t",
-        "Children": []
-      },
-      {
-        "NodeName": "Text",
-        "Attributes": {},
-        "ChildIndex": 0,
-        "Depth": 3,
         "Guid": "291b296b-99b1-4702-a119-0c062a3a5500",
         "TextContent": "This is a blockquote.",
         "Children": []
@@ -610,15 +601,6 @@ export const mockQuoteBlockData: AstNode[] = [
         "Depth": 3,
         "Guid": "0aef21a1-5e28-4074-afc7-086140b0f28d",
         "TextContent": "It can span",
-        "Children": []
-      },
-      {
-        "NodeName": "Text",
-        "Attributes": {},
-        "ChildIndex": 0,
-        "Depth": 3,
-        "Guid": "b88341e5-287c-4d19-a635-ac87ce732dfc",
-        "TextContent": "multiple lines.",
         "Children": []
       }
     ]

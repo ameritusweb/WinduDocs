@@ -1,5 +1,5 @@
 import { incrementEnd, trimSpecial } from "..";
-import { AddNodePayload, AstNode, AstOperation, IHistoryManager, UpdateNodePayload } from "../../../components/wysiwyg/interface";
+import { AddNodePayload, AstNode, AstOperation, IHistoryManager, RemoveNodePayload, ReplaceNodePayload, UpdateNodePayload } from "../../../components/wysiwyg/interface";
 import createNodeOperation from "../operations/create-node-operation";
 import { applyOperation } from "../operations/operation-handlers";
 import OperationStack from "./operation-stack";
@@ -20,10 +20,21 @@ class HistoryManager implements IHistoryManager {
 
     restoreCursorPosition(): void {
 
-        const lastTransaction = this.undoStack.peek();
+        let payload = null;
+        let lastTransaction = this.redoStack.peek();
+        let transactionIndex = 0;
+        if (!lastTransaction) {
+            lastTransaction = this.undoStack.peek();
+            if (lastTransaction) {
+                transactionIndex = lastTransaction.length - 1;
+                payload = lastTransaction[transactionIndex].payload;
+            }
+        } else {
+            payload = { offset: lastTransaction[transactionIndex].payload!.offset };
+        }
         if (lastTransaction)
         {
-            const lastMove = lastTransaction[lastTransaction.length - 1];
+            const lastMove = lastTransaction[transactionIndex];
             if (lastMove) {
                 const op: AstOperation = lastMove as AstOperation;
                 if (op.type === 'add' || op.type === 'replace') {
@@ -42,9 +53,9 @@ class HistoryManager implements IHistoryManager {
                             const selection = window.getSelection();
                             if (selection) {
                                 const range = new Range();
-                                const payload = op.payload as AddNodePayload;
-                                range.setStart(textNode, payload.offset);
-                                range.setEnd(textNode, payload.offset);
+                                const addNodePayload = payload as AddNodePayload;
+                                range.setStart(textNode, addNodePayload.offset);
+                                range.setEnd(textNode, addNodePayload.offset);
                                 selection?.removeAllRanges();
                                 selection?.addRange(range);
                             }
@@ -67,9 +78,9 @@ class HistoryManager implements IHistoryManager {
                             const selection = window.getSelection();
                             if (selection) {
                                 const range = new Range();
-                                const payload = op.payload as UpdateNodePayload;
-                                range.setStart(textNode, payload.offset);
-                                range.setEnd(textNode, payload.offset);
+                                const updateNodePayload = payload as UpdateNodePayload;
+                                range.setStart(textNode, updateNodePayload.offset);
+                                range.setEnd(textNode, updateNodePayload.offset);
                                 selection?.removeAllRanges();
                                 selection?.addRange(range);
                             }
@@ -95,7 +106,7 @@ class HistoryManager implements IHistoryManager {
         this.recordOperation<'replace'>(createNodeOperation('replace', { parentNode: parent || null, oldNode, cursorTargetParent: cursorTargetParent, nodeIndex: nodeIndex == null ? -1 : nodeIndex, offset, newNode  }));
     }
 
-    recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void {
+    recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, startOffset: number | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void {
         this.recordOperation<'add'>(createNodeOperation('add', { parentNode: parent || null, previousSiblingId: previousSibling?.Guid || null, cursorTargetParent, nodeIndex: nodeIndex == null ? -1 : nodeIndex, offset, newNode  }), partOfTransaction);
     }
 
@@ -170,11 +181,47 @@ class HistoryManager implements IHistoryManager {
     getReverseOperation(operation: AstOperation): AstOperation {
         switch (operation.type) {
             case 'add':
-                return { ...operation, type: 'remove' };
+                return { 
+                    ...operation, 
+                    type: 'remove', 
+                    targetNodeId: (operation.payload as AddNodePayload).newNode.Guid,
+                    payload: {
+                        ...(operation as AstOperation<'add'>).payload!,
+                        targetNode: (operation as AstOperation<'add'>).payload!.newNode,
+                        newNode: null
+                    } as RemoveNodePayload
+                };
+            case 'replace':
+                return { 
+                    ...operation, 
+                    type: 'replace', 
+                    targetNodeId: (operation.payload as ReplaceNodePayload).newNode.Guid,
+                    payload: {
+                        ...(operation as AstOperation<'replace'>).payload!,
+                        oldNode: (operation as AstOperation<'replace'>).payload!.newNode,
+                        newNode: (operation as AstOperation<'replace'>).payload!.oldNode
+                    }
+                };
             case 'remove':
-                return { ...operation, type: 'add', payload: { previousSiblingId: null, offset: 0, newNode: operation.oldState as AstNode } };
+                return { 
+                    ...operation, 
+                    type: 'add', 
+                    targetNodeId: (operation.payload as RemoveNodePayload).targetNode.Guid,
+                    payload: {
+                        ...(operation as AstOperation<'remove'>).payload!,
+                        newNode: (operation as AstOperation<'remove'>).payload!.targetNode,
+                        targetNode: null
+                    } as AddNodePayload
+                };
             case 'update':
-                return { ...operation, payload: { offset: operation.oldOffset || 0, newVersion: 'R' + operation.oldVersion as string, newTextContent: operation.oldState as string | null } };
+                return { 
+                    ...operation, 
+                    payload: { 
+                        offset: operation.oldOffset || 0, 
+                        newVersion: 'R' + operation.oldVersion as string, 
+                        newTextContent: operation.oldState as string | null 
+                    } as UpdateNodePayload 
+                };
             default:
                 throw new Error('Invalid operation type');
         }
@@ -187,11 +234,12 @@ class HistoryManager implements IHistoryManager {
 
         let rootChildIds = '';
         const transactionToUndo = this.undoStack.pop();
-        transactionToUndo.forEach(operation => {
+        for (let i = transactionToUndo.length - 1; i >= 0; i--) {
+            const operation = transactionToUndo[i];
             const reverseOperation = this.getReverseOperation(operation);
             reverseOperation.rootChildId && (rootChildIds += reverseOperation.rootChildId + ' ');
             ast = applyOperation(ast, reverseOperation);
-        });
+        };
 
         this.redoStack.startTransaction();
         transactionToUndo.forEach(operation => this.redoStack.addToTransaction(operation));

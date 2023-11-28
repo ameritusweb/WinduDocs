@@ -14,7 +14,7 @@ type OperationReturnMap = {
     'replace': AstOperation<'replace'>;
 }
 
-const getParentId = (node: AstNode) => {
+const toId = (node: AstNode) => {
 
     if (node.NodeName === 'ParagraphBlock')
     {
@@ -31,8 +31,8 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
         case 'add':
             return {
                 type: 'add',
-                targetNodeId: !(params as AddNodeParams).parentNode ? null : getParentId((params as AddNodeParams).parentNode!),
-                parentNodeId: getParentId((params as AddNodeParams).cursorTargetParent),
+                targetNodeId: !(params as AddNodeParams).parentNode ? null : toId((params as AddNodeParams).parentNode!),
+                parentNodeId: toId((params as ReplaceNodeParams).cursorTargetParent),
                 nodeIndex: (params as AddNodeParams).nodeIndex,
                 payload: { 
                     newNode: (params as AddNodeParams).newNode,
@@ -44,8 +44,8 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
         case 'replace':
             return {
                 type: 'replace',
-                targetNodeId: !(params as ReplaceNodeParams).parentNode ? null : getParentId((params as ReplaceNodeParams).parentNode!),
-                parentNodeId: getParentId((params as ReplaceNodeParams).cursorTargetParent),
+                targetNodeId: !(params as ReplaceNodeParams).parentNode ? null : toId((params as ReplaceNodeParams).parentNode!),
+                parentNodeId: toId((params as ReplaceNodeParams).cursorTargetParent),
                 nodeIndex: (params as ReplaceNodeParams).nodeIndex,
                 payload: { 
                     newNode: (params as ReplaceNodeParams).newNode,
@@ -57,7 +57,11 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
         case 'remove':
             return {
                 type: 'remove',
-                targetNodeId: (params as RemoveNodeParams).nodeId,
+                targetNodeId: (params as RemoveNodeParams).targetNode.Guid,
+                parentNodeId: toId((params as ReplaceNodeParams).cursorTargetParent),
+                payload: {
+                    targetNode: (params as RemoveNodeParams).targetNode, 
+                },
                 timestamp: Date.now()
             } as OperationReturnMap[T]; // Type assertion here
         case 'update':
@@ -69,7 +73,7 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
                     newTextContent: (params as UpdateNodeParams).newTextContent,
                     offset: (params as UpdateNodeParams).offset
                 },
-                parentNodeId: !(params as UpdateNodeParams).node ? `para_${(params as UpdateNodeParams).parentNode.Guid}` : getParentId((params as UpdateNodeParams).parentNode),
+                parentNodeId: !(params as UpdateNodeParams).node ? `para_${(params as UpdateNodeParams).parentNode.Guid}` : toId((params as UpdateNodeParams).parentNode),
                 nodeIndex: !(params as UpdateNodeParams).node ? 0 : (params as UpdateNodeParams).parentNode.Children.findIndex(c => c.Guid === (params as UpdateNodeParams).node!.Guid),
                 oldState: (params as UpdateNodeParams).oldTextContent,
                 oldVersion: (params as UpdateNodeParams).oldVersion,
