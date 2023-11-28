@@ -40,13 +40,15 @@ export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' |
   parentNodeId: string;
   nodeIndex: number;
   targetNodeId: string;
-  payload?: OperationPayloads[Type];
+  payload: OperationPayloads[Type];
   timestamp: number;
   oldState?: AstNode | string; // Adjust this based on what oldState represents
   oldVersion?: string;
   oldOffset?: number;
   rootChildId?: string;
 }
+
+export type Transaction = AstOperation[];
 
 export interface CursorPositionType {
   offset: number;
@@ -58,7 +60,8 @@ export interface CursorPositionType {
 
 export interface AddNodeParams {
   parentNode: AstNode | null;
-  previousSiblingId: string | null;
+  previousSibling: AstNode | null;
+  startOffset: number | null;
   cursorTargetParent: AstNode;
   nodeIndex: number;
   offset: number;
@@ -90,8 +93,6 @@ export interface UpdateNodeParams {
   rootChildId: string | undefined;
 }
 
-export type Transaction = AstOperation[];
-
 export interface IHistoryManager {
   clear(): void;
   restoreCursorPosition(): void;
@@ -109,12 +110,14 @@ export interface IHistoryManager {
 
 export interface AddNodePayload {
   previousSiblingId: string | null;
+  startOffset: number | null;
   offset: number;
   newNode: AstNode;
 }
 
 export interface RemoveNodePayload {
   previousSiblingId: string | null;
+  startOffset: number | null;
   offset: number;
   targetNode: AstNode;
 }

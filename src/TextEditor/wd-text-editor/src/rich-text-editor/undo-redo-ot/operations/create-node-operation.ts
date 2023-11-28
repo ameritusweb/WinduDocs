@@ -14,8 +14,10 @@ type OperationReturnMap = {
     'replace': AstOperation<'replace'>;
 }
 
-const toId = (node: AstNode) => {
+const toId = (node: AstNode | null) => {
 
+    if (!node)
+        return null;
     if (node.NodeName === 'ParagraphBlock')
     {
         return `para_${node.Guid}`;
@@ -36,8 +38,9 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
                 nodeIndex: (params as AddNodeParams).nodeIndex,
                 payload: { 
                     newNode: (params as AddNodeParams).newNode,
-                    previousSiblingId: (params as AddNodeParams).previousSiblingId,
-                    offset: (params as AddNodeParams).offset
+                    previousSiblingId: toId((params as AddNodeParams).previousSibling),
+                    offset: (params as AddNodeParams).offset,
+                    startOffset: (params as AddNodeParams).startOffset
                 },
                 timestamp: Date.now()
             } as OperationReturnMap[T]; // Type assertion here

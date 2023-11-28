@@ -49,7 +49,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                                 if (higherLevelIndex) {
                                     const newLine = createNewAstNode('Text', 0, 0, '\n');
                                     higherLevelChildren.splice(higherLevelIndex + 1, 0, newLine);
-                                    historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], startOffset, newLine, { ...newLine, NodeName: 'ParagraphBlock' }, 0, 0);
+                                    historyManager.recordChildAdd(null, { ...higherLevelChildren[higherLevelIndex], NodeName: 'ParagraphBlock' }, startOffset, newLine, { ...newLine, NodeName: 'ParagraphBlock' }, 0, 0);
                                     return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
                                 }
                             }

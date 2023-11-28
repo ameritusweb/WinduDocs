@@ -30,7 +30,13 @@ class HistoryManager implements IHistoryManager {
                 payload = lastTransaction[transactionIndex].payload;
             }
         } else {
-            payload = { offset: lastTransaction[transactionIndex].payload!.offset };
+            const transactionToUndo = lastTransaction[transactionIndex];
+            if (transactionToUndo.type === 'add') {
+                payload = { offset: (transactionToUndo.payload! as AddNodePayload).startOffset };
+                transactionToUndo.parentNodeId = (transactionToUndo.payload! as AddNodePayload).previousSiblingId!;
+            } else {
+                payload = { offset: (transactionToUndo.payload! as AddNodePayload).offset };
+            }
         }
         if (lastTransaction)
         {
@@ -107,7 +113,7 @@ class HistoryManager implements IHistoryManager {
     }
 
     recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, startOffset: number | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void {
-        this.recordOperation<'add'>(createNodeOperation('add', { parentNode: parent || null, previousSiblingId: previousSibling?.Guid || null, cursorTargetParent, nodeIndex: nodeIndex == null ? -1 : nodeIndex, offset, newNode  }), partOfTransaction);
+        this.recordOperation<'add'>(createNodeOperation('add', { parentNode: parent || null, previousSibling, startOffset, cursorTargetParent, nodeIndex: nodeIndex == null ? -1 : nodeIndex, offset, newNode  }), partOfTransaction);
     }
 
     recordOperation<Type extends 'add' | 'remove' | 'update' | 'replace'>(operation: AstOperation<Type>, partOfTransaction = false): void {
@@ -188,7 +194,9 @@ class HistoryManager implements IHistoryManager {
                     payload: {
                         ...(operation as AstOperation<'add'>).payload!,
                         targetNode: (operation as AstOperation<'add'>).payload!.newNode,
-                        newNode: null
+                        newNode: null,
+                        offset: (operation as AstOperation<'add'>).payload!.startOffset,
+                        startOffset: (operation as AstOperation<'add'>).payload!.offset
                     } as RemoveNodePayload
                 };
             case 'replace':
@@ -210,7 +218,9 @@ class HistoryManager implements IHistoryManager {
                     payload: {
                         ...(operation as AstOperation<'remove'>).payload!,
                         newNode: (operation as AstOperation<'remove'>).payload!.targetNode,
-                        targetNode: null
+                        targetNode: null,
+                        startOffset: (operation as AstOperation<'remove'>).payload!.offset,
+                        offset: (operation as AstOperation<'remove'>).payload!.startOffset
                     } as AddNodePayload
                 };
             case 'update':

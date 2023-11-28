@@ -45,8 +45,21 @@ class OperationStack {
 
     // Peeks at the last transaction without removing it
     peek(): Transaction | null {
-        const entry = this.stack[this.stack.length - 1];
-        return entry || null;
+        if (this.isEmpty()) {
+            return null;
+        }
+
+        const lastTransaction = this.stack[this.stack.length - 1];
+
+        // Deep copy the last transaction
+        return this.deepCopyTransaction(lastTransaction);
+    }
+
+    private deepCopyTransaction(transaction: Transaction): Transaction {
+        return transaction.map(operation => {
+            // Assuming AstOperation is a simple object without methods
+            return {...operation, payload: { ...operation.payload }};
+        });
     }
 }
 
