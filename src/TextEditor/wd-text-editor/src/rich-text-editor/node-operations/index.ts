@@ -21,3 +21,4 @@ export { default as isNodeEmpty } from './is-node-empty';
 export { default as createNodeWithTypeAndKey } from './create-node-with-type-and-key';
 export { default as updateHigherLevelNodes } from './update-higher-level-nodes';
 export { default as splitAndUpdateHigherLevelNodes } from './split-and-update-higher-level-nodes';
+export { default as serializeContext } from './serialize-context';

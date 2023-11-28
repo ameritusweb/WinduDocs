@@ -1,6 +1,7 @@
 import React from "react";
 import Emphasis from "./emphasis";
 import { AstContext, AstNode } from "./interface";
+import { serializeContext } from "../../rich-text-editor/node-operations";
 
 export interface StrongProps {
     id: string;
@@ -11,7 +12,7 @@ export interface StrongProps {
 
 const Strong: React.FC<StrongProps> = ({ id, context, pathIndices, children }) => {
     return (
-        <strong id={id}>
+        <strong data-testid={serializeContext(context)} id={id}>
             {children.map((child, index) => {
                 const childPathIndices = [...pathIndices, index];
                 switch (child.NodeName) {
