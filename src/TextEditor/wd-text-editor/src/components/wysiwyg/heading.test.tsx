@@ -1,5 +1,5 @@
 import { mockHeadingData } from '../../__mocks__/editor-mocks';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup, render, screen } from '../../utils/test-utils'
 import Heading from './heading'
 import { AstContext } from './interface';
 
@@ -21,7 +21,7 @@ describe('Heading', async () => {
         rootUpdater={() => {  }}        
       />,
     )
-    const matchingElements = screen.getAllByText((content, nodes) => content.includes('Markdown'));
+    const matchingElements = screen.getAllByText((content) => content.includes('Markdown'));
     expect(matchingElements.length).toBe(1);
   })
 

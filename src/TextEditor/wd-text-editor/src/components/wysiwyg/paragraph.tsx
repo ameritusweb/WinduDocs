@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import { AstContext, AstNode, CursorPositionType } from "./interface";
+import { AstContext, AstNode } from "./interface";
 import Strong from "./strong";
 import Emphasis from "./emphasis";
 import CodeInline from "./code-inline";
@@ -38,7 +38,6 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const higherLevelPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
     const { updateAst } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
-    const cursorPositionRef = useRef<CursorPositionType | null>(null);
     const editorData: EditorDataType = EditorData;
 
     useEffect(() => {
@@ -61,7 +60,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
             const container = range.startContainer;
             const parent = container.parentElement;
             if (parent) {
-              const [foundNode, foundParent] = findNodeByGuid(higherLevelAstCopy, parent.id, null);
+              const [foundNode] = findNodeByGuid(higherLevelAstCopy, parent.id, null);
               if (foundNode) {
                 const childIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
                 foundNode.Children.splice(childIndex + 1, 0, linkNode);
@@ -84,7 +83,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
           const container = range.startContainer;
           const parent = container.parentElement;
           if (parent) {
-            const [foundNode, foundParent] = findNodeByGuid(higherLevelAstCopy, parent.id, null);
+            const [foundNode] = findNodeByGuid(higherLevelAstCopy, parent.id, null);
             if (foundNode) {
               const childIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
               foundNode.Children.splice(childIndex + 1, 0, inlineNode);
@@ -96,7 +95,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       editorData.events.subscribe(`para_${props.id}`, 'InsertInline', handleInsertInline);
 
-      const handleIndent = (payload: any) => {
+      const handleIndent = () => {
         const higherLevelAst = higherLevelPropsRef.current?.content || [];
         const higherLevelChild = higherLevelPropsRef.current?.contentParent;
         if (higherLevelChild)
@@ -109,7 +108,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
             const container = range.startContainer;
             const parent = container.parentElement;
             if (parent) {
-              const [foundNode, foundParent, immediateChild] = findNodeByGuid(higherLevelAst, parent.id, null);
+              const [foundNode, immediateChild] = findNodeByGuid(higherLevelAst, parent.id, null);
               if (foundNode && immediateChild) {
                 const index = higherLevelAst.findIndex(h => h === immediateChild);
                 const res = indentListItem(deepCopyAstNode(higherLevelChild), index);
@@ -125,7 +124,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       // Subscribe with the provided GUID
       editorData.events.subscribe(`para_${props.id}`, 'Indent', handleIndent);
 
-      const handleOutdent = (payload: any) => {
+      const handleOutdent = () => {
           
       };
 
@@ -172,7 +171,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
-        let update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.pathIndices, props.higherLevelContent?.id);
+        const update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.pathIndices, props.higherLevelContent?.id);
         if (update.type === 'none')
         {
           return;

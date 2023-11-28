@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
 import { AstNode, HigherLevelProps } from "./interface";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
@@ -26,7 +26,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
 
     }, [higherLevelContent]);
     
-    const handleInsertQuote = (payload: any) => {
+    const handleInsertQuote = () => {
       if (higherLevelContent && higherLevelContent.updater) {
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
@@ -40,7 +40,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
       }
     };
 
-    const handleInsertFenced = (payload: any) => {
+    const handleInsertFenced = () => {
       if (higherLevelContent && higherLevelContent.updater) {
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
@@ -53,7 +53,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
       }
     };
 
-    const handleInsertHR = (payload: any) => {
+    const handleInsertHR = () => {
       if (higherLevelContent && higherLevelContent.updater) {
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);

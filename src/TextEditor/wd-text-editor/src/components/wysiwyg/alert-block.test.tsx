@@ -23,7 +23,7 @@ describe('AlertBlock', async () => {
         )
         const svgElement = screen.queryByTestId('invalid-icon');
         expect(svgElement).toBeNull();
-        const matches = screen.queryAllByText((content, nodes) => content.includes('console'));
+        const matches = screen.queryAllByText((content) => content.includes('console'));
         expect(matches.length).toBe(0);
     })
 
@@ -39,7 +39,7 @@ describe('AlertBlock', async () => {
             context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}   
             />,
         )
-        const matches = screen.getAllByText((content, nodes) => content.includes('console'));
+        const matches = screen.getAllByText((content) => content.includes('console'));
         expect(matches.length).toBe(2);
         await act(async () => {
             await userEvent.click(matches[0]);
@@ -87,7 +87,7 @@ describe('AlertBlock', async () => {
             context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}      
             />,
         )
-        const matches = screen.getAllByText((content, nodes) => content.includes('console'));
+        const matches = screen.getAllByText((content) => content.includes('console'));
         expect(matches.length).toBe(2);
         expect(matches[0]).toBeInstanceOf(HTMLParagraphElement);
         expect(matches[1]).toBeInstanceOf(HTMLParagraphElement);

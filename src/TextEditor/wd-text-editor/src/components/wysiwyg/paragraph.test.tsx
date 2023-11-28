@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { act, cleanup, fireEvent, render, screen, userEvent } from '../../utils/test-utils'
+import { act, cleanup, fireEvent, render, userEvent } from '../../utils/test-utils'
 import Paragraph from './paragraph'
 import { mockHigherLevelParagraphData, mockParagraphData } from '../../__mocks__/editor-mocks';
 import EditorData from '../../hooks/editor-data';
@@ -7,7 +7,7 @@ import { AstContext } from './interface';
 
 const mockHandlers = await vi.hoisted(async () => {
     const actualHandlers = await vi.importActual("../../rich-text-editor/handlers") as typeof import("../../rich-text-editor/handlers");
-    let myMock = vi.fn(actualHandlers.handleCharacterInsertion);
+    const myMock = vi.fn(actualHandlers.handleCharacterInsertion);
 
     vi.mock('../../rich-text-editor/handlers', async () => {
         
@@ -22,7 +22,7 @@ const mockHandlers = await vi.hoisted(async () => {
 
 const mockRichTextEditor = await vi.hoisted(async () => {
     const actualRichTextEditor = await vi.importActual("../../hooks/use-rich-text-editor") as typeof import("../../hooks/use-rich-text-editor");
-    let myMock = vi.fn(actualRichTextEditor.useRichTextEditor().updateAst);
+    const myMock = vi.fn(actualRichTextEditor.useRichTextEditor().updateAst);
 
     vi.mock('../../hooks/use-rich-text-editor', async () => {
         

@@ -8,7 +8,7 @@ interface CodeInlineProps {
     children: string | null;
 }
 
-const CodeInline: React.FC<CodeInlineProps> = ({ id, context, pathIndices, children }) => {
+const CodeInline: React.FC<CodeInlineProps> = ({ id, children }) => {
     return <code id={`code_${id}`}><span id={`para_${id}`}>{children}</span></code>;
 };
 

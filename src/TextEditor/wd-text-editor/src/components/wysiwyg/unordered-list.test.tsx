@@ -1,5 +1,5 @@
 import { mockListData } from '../../__mocks__/editor-mocks';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup, render, screen } from '../../utils/test-utils'
 import { AstContext, AstNode } from './interface';
 import UnorderedList from './unordered-list'
 
@@ -23,10 +23,10 @@ describe('UnorderedList', async () => {
     const list = container.querySelector('#B123456-123456-123456-123456');
     expect(list).not.toBe(null);
 
-    const firstMatchingElements = screen.getAllByText((content, nodes) => content.includes('First level'));
+    const firstMatchingElements = screen.getAllByText((content) => content.includes('First level'));
     expect(firstMatchingElements.length).toBe(2);
 
-    const secondMatchingElements = screen.getAllByText((content, nodes) => content.includes('Second level'));
+    const secondMatchingElements = screen.getAllByText((content) => content.includes('Second level'));
     expect(secondMatchingElements.length).toBe(1);
   })
 })

@@ -1,5 +1,5 @@
 import { mockTableRowData } from '../../__mocks__/editor-mocks';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup, render, screen } from '../../utils/test-utils'
 import { AstContext } from './interface';
 import TableRow from './table-row'
 
@@ -9,7 +9,7 @@ afterEach(() => {
   
 describe('TableRow', async () => {
   it('should be visible', () => {
-    const { container } = render(
+    render(
         <table>
             <tbody>
                     <TableRow  
@@ -22,7 +22,7 @@ describe('TableRow', async () => {
         </table>,
     )
 
-    const matchingElements = screen.getAllByText((content, nodes) => content.includes('Header'));
+    const matchingElements = screen.getAllByText((content) => content.includes('Header'));
     expect(matchingElements.length).toBe(2);
   })
 })

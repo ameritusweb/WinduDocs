@@ -28,7 +28,7 @@ describe('ParagraphContainer', async () => {
         const sectionElement = container.querySelector('#section_B123456-123456');
         expect(sectionElement).not.toBe(null);
         
-        const matchingElements = screen.getAllByText((content, nodes) => content.includes('Test Paragraph'));
+        const matchingElements = screen.getAllByText((content) => content.includes('Test Paragraph'));
         expect(matchingElements.length).toBe(1);
       });
 })

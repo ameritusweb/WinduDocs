@@ -1,4 +1,4 @@
-import { cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup, render, screen } from '../../utils/test-utils'
 import Emphasis from './emphasis'
 import { mockEmphasisData } from '../../__mocks__/editor-mocks'
 import { AstContext } from './interface';
@@ -17,7 +17,7 @@ describe('Emphasis', async () => {
         context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
       />,
     )
-    const matchingElements = screen.getAllByText((content, nodes) => content.startsWith('bold and italic'));
+    const matchingElements = screen.getAllByText((content) => content.startsWith('bold and italic'));
     expect(matchingElements.length).toBe(1);
   })
 })

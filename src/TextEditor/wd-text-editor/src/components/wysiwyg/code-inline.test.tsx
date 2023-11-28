@@ -1,4 +1,4 @@
-import { cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup, render, screen} from '../../utils/test-utils'
 import CodeInline from './code-inline'
 import { AstContext } from './interface';
 
@@ -16,7 +16,7 @@ describe('CodeInline', async () => {
         context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
       />,
     )
-    const matchingElements = screen.getAllByText((content, nodes) => content.startsWith('x'));
+    const matchingElements = screen.getAllByText((content) => content.startsWith('x'));
     expect(matchingElements.length).toBe(1);
   })
 })

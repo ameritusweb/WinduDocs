@@ -1,6 +1,6 @@
 import { mockTableData } from '../../__mocks__/editor-mocks';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { AstContext, AstNode } from './interface';
+import { cleanup, render, screen } from '../../utils/test-utils'
+import { AstContext } from './interface';
 import Table from './table'
 
 afterEach(() => {
@@ -27,13 +27,13 @@ describe('Table', async () => {
     const matchingTdElements = list!.querySelectorAll('td');
     expect(matchingTdElements.length).toBe(4);
 
-    const firstMatchingElements = screen.getAllByText((content, nodes) => content.includes('Header'));
+    const firstMatchingElements = screen.getAllByText((content) => content.includes('Header'));
     expect(firstMatchingElements.length).toBe(2);
 
-    const secondMatchingElements = screen.getAllByText((content, nodes) => content.includes('Data'));
+    const secondMatchingElements = screen.getAllByText((content) => content.includes('Data'));
     expect(secondMatchingElements.length).toBe(2);
 
-    const thirdMatchingElements = screen.getAllByText((content, nodes) => content.includes('Row'));
+    const thirdMatchingElements = screen.getAllByText((content) => content.includes('Row'));
     expect(thirdMatchingElements.length).toBe(2);
   })
 })

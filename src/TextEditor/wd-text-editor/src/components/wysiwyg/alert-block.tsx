@@ -13,7 +13,7 @@ interface AlertBlockProps {
     higherLevelChildren: AstNode[];
 }
 
-const AlertBlock: React.FC<AlertBlockProps> = ({ id, context, pathIndices, version, type, children, higherLevelChildren }) => {
+const AlertBlock: React.FC<AlertBlockProps> = ({ id, context, pathIndices, type, children }) => {
     
     const [isFocused, setIsFocused] = useState(false);
 

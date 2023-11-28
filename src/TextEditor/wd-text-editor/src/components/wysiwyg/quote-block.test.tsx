@@ -1,5 +1,5 @@
 import { mockQuoteBlockData } from '../../__mocks__/editor-mocks'
-import { cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup, render, screen } from '../../utils/test-utils'
 import { AstContext } from './interface';
 import QuoteBlock from './quote-block'
 
@@ -17,10 +17,10 @@ describe('QuoteBlock', async () => {
         children={mockQuoteBlockData}     
       />,
     )
-    const firstMatchingElements = screen.getAllByText((content, nodes) => content.includes('blockquote'));
+    const firstMatchingElements = screen.getAllByText((content) => content.includes('blockquote'));
     expect(firstMatchingElements.length).toBe(1);
 
-    const secondMatchingElements = screen.getAllByText((content, nodes) => content.includes('can span'));
+    const secondMatchingElements = screen.getAllByText((content) => content.includes('can span'));
     expect(secondMatchingElements.length).toBe(1);
   })
 })

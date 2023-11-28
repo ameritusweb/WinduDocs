@@ -1,4 +1,4 @@
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup, render } from '../../utils/test-utils'
 import { AstContext } from './interface';
 import Link from './link'
 

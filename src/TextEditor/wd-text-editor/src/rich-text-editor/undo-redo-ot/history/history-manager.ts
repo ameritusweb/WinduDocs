@@ -34,6 +34,8 @@ class HistoryManager implements IHistoryManager {
             if (transactionToUndo.type === 'add') {
                 payload = { offset: (transactionToUndo.payload! as AddNodePayload).startOffset };
                 transactionToUndo.parentNodeId = (transactionToUndo.payload! as AddNodePayload).previousSiblingId!;
+            } else if (transactionToUndo.type === 'update') {
+                payload = { offset: transactionToUndo.oldOffset };
             } else {
                 payload = { offset: (transactionToUndo.payload! as AddNodePayload).offset };
             }
@@ -249,7 +251,7 @@ class HistoryManager implements IHistoryManager {
             const reverseOperation = this.getReverseOperation(operation);
             reverseOperation.rootChildId && (rootChildIds += reverseOperation.rootChildId + ' ');
             ast = applyOperation(ast, reverseOperation);
-        };
+        }
 
         this.redoStack.startTransaction();
         transactionToUndo.forEach(operation => this.redoStack.addToTransaction(operation));
