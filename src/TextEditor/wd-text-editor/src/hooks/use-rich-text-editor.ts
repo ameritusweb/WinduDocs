@@ -1,4 +1,4 @@
-import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../components/wysiwyg/interface";
+import { AstContext, AstNode, AstUpdate, IHistoryManager, UpdateData } from "../components/wysiwyg/interface";
 import { handleBackspaceKeyPress, handleCharacterInsertion, handleEnterKeyPress } from "../rich-text-editor/handlers";
 import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
@@ -9,7 +9,7 @@ export const useRichTextEditor = () => {
     const editorData: EditorDataType = EditorData;
     const historyManager: IHistoryManager = HistoryManager;
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, pathIndices: number[], higherLevelId?: string): AstUpdate => {
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelId?: string): AstUpdate => {
 
         const sel = window.getSelection();
         const key = event.key;
@@ -46,10 +46,11 @@ export const useRichTextEditor = () => {
 
             const containerIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
-            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex }
+            const grandChild = child?.Children[containerIndex] || null;
+            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex, grandChild }
             if (key === 'Enter') {
                 event.preventDefault();
-                let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, range, startOffset, higherLevelId);
+                let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, context, range, startOffset, higherLevelId);
                 if (update) {
                     update = { ...update, pathIndices };
                     editorData.emitEvent('update', 'richTextEditor', update);

@@ -166,6 +166,7 @@ export interface UpdateData {
   parent: HTMLElement;
   higherLevelIndex: number;
   child: AstNode | null;
+  grandChild: AstNode | null;
   astParent: AstNode | null;
   immediateChild: AstNode | null;
   rootChildId: string;

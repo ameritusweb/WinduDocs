@@ -73,7 +73,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       // Subscribe with the provided GUID
       editorData.events.subscribe(`para_${props.id}`, 'InsertLink', handleInsertLink);
 
-      const handleInsertInline = (payload: any) => {
+      const handleInsertInline = () => {
         const higherLevelAstCopy = (higherLevelPropsRef.current?.content || []).map((p) => deepCopyAstNode(p));
         const inlineNode = createNewAstNode('CodeInline', 0, 0, '\n');
         const selection = window.getSelection();
@@ -171,7 +171,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
-        const update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.pathIndices, props.higherLevelContent?.id);
+        const update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.context, props.pathIndices, props.higherLevelContent?.id);
         if (update.type === 'none')
         {
           return;
