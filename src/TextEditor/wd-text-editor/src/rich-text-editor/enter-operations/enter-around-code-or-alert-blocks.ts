@@ -1,8 +1,8 @@
-import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
+import { AstNode, IHistoryManagerRecorder, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNode, deepCopyAstNode, splitNode } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
 
-const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
+const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManagerRecorder, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
 
     const { higherLevelIndex, child, containerIndex } = updateData;
 

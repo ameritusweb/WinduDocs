@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "coverage": "vitest run --coverage",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "devtest": "concurrently -p none \"vite\" \"vitest\""
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.0.5",
@@ -32,6 +33,7 @@
     "@vitest/coverage-v8": "latest",
     "@vitest/ui": "latest",
     "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
     "daisyui": "^3.9.4",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",

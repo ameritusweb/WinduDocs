@@ -93,14 +93,17 @@ export interface UpdateNodeParams {
   rootChildId: string | undefined;
 }
 
-export interface IHistoryManager {
-  clear(): void;
-  restoreCursorPosition(): void;
+export interface IHistoryManagerRecorder {
   recordChildReplace(parent: AstNode | null, oldNode: AstNode, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number): void;
   recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, startOffset: number | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void;
   recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string): void;
   recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
+}
+
+export interface IHistoryManager extends IHistoryManagerRecorder {
+  clear(): void;
+  restoreCursorPosition(): void;
   performOperationsAsTransaction(ast: AstNode, operations: AstOperation[], historyManager: IHistoryManager): AstNode;
   performOperation(ast: AstNode, operation: AstOperation, partOfTransaction?: boolean): AstNode;
   getReverseOperation(operation: AstOperation): AstOperation;
@@ -162,8 +165,14 @@ export interface ITextBlock {
   offset?: number;
 }
 
+export interface Idable {
+  id: string;
+}
+
+export type IdableNode = Node & Idable;
+
 export interface UpdateData {
-  parent: HTMLElement;
+  parent: IdableNode;
   higherLevelIndex: number;
   child: AstNode | null;
   grandChild: AstNode | null;

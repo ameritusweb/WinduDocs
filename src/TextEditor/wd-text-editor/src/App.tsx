@@ -8,18 +8,21 @@ import useConsoleToasts from './hooks/use-console-toasts.js';
 import { ToastContainer } from 'react-toastify';
 import { astContext, astHigherLevelContext } from './components/ast-mapping.js';
 import ast from './test/ast.json';
+import { useSafeStringify } from './hooks/use-safe-stringify.js';
 
 declare global {
-  interface Window { astContext: typeof astContext; astHigherLevelContext: typeof astHigherLevelContext; }
+  interface Window { astContext: typeof astContext; safeStringify: (value: any) => string, astHigherLevelContext: typeof astHigherLevelContext; }
 }
 
 function App() {
 
   useConsoleToasts();
+  const { safeStringify } = useSafeStringify();
   
   if (import.meta.env.MODE === 'development') {
     window.astContext = astContext;
     window.astHigherLevelContext = astHigherLevelContext;
+    window.safeStringify = safeStringify;
   }
 
   Prism.highlight('const a = 2;', Prism.languages.javascript, 'javascript');

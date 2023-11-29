@@ -127,9 +127,11 @@ describe('Paragraph', async () => {
 
         expect((updateAstMock.mock.lastCall || [])[3]!.editorState).toBe('unselected');
 
-        expect((updateAstMock.mock.lastCall || [])[4]!).toStrictEqual([ 0 ]);
+        expect((updateAstMock.mock.lastCall || [])[4]!).toStrictEqual({ types:[] });
 
-        expect((updateAstMock.mock.lastCall || [])[5]!).toBe('A123456-123456');
+        expect((updateAstMock.mock.lastCall || [])[5]!).toStrictEqual([ 0 ]);
+
+        expect((updateAstMock.mock.lastCall || [])[6]!).toBe('A123456-123456');
 
         expect(handleCharacterInsertionMock).toHaveBeenCalledTimes(1);
 
