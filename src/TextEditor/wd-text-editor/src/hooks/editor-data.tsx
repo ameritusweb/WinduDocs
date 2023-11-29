@@ -31,13 +31,11 @@ export class EditorData implements EditorDataType {
     public emitEvent(action: EventAction, id: string, payload: any) {
         if (id === 'broadcast') {
             const selection = window.getSelection();
-            if (selection) {
+            if (selection && selection.type !== 'None') {
                 const range = selection.getRangeAt(0);
                 const container = range.startContainer;
-                console.log('broadcast');
                 if (container instanceof Element)
                 {
-                    console.log(container.id);
                     this.events.emit(action, container.id, payload || null);
                 } else if (container instanceof Text)
                 {

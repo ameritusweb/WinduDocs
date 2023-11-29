@@ -131,6 +131,27 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       // Subscribe with the provided GUID
       editorData.events.subscribe(`para_${props.id}`, 'Outdent', handleOutdent);
 
+      const handleMakeBold = () => {
+          
+      };
+
+      // Subscribe with the provided GUID
+      editorData.events.subscribe(`para_${props.id}`, 'MakeBold', handleMakeBold);
+
+      const handleMakeItalic = () => {
+          
+      };
+
+      // Subscribe with the provided GUID
+      editorData.events.subscribe(`para_${props.id}`, 'MakeItalic', handleMakeItalic);
+
+      const handleMakeBoldAndItalic = () => {
+          
+      };
+
+      // Subscribe with the provided GUID
+      editorData.events.subscribe(`para_${props.id}`, 'MakeBoldAndItalic', handleMakeBoldAndItalic);
+
       return () => {
           // Unsubscribe the GUID on component unmount
           editorData.events.unsubscribe(`para_${props.id}`);

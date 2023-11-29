@@ -71,7 +71,7 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
                     if (rule.Action) {
                       editorData.emitEvent(rule.Action, 'broadcast', null);
                     }
-                    else if (rule.State) {
+                    if (rule.State) {
                       setState(rule.State);
                       editorData.editorState = rule.State;
                     }

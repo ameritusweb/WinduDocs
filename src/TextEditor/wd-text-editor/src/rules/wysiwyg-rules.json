@@ -2,22 +2,26 @@
       {
         "Name": "Normal",
         "GroupName": "Text Styles",
-        "State": "normal"
+        "State": "normal",
+        "Action": "MakeNormal"
       },
     {
       "Name": "Bold + Italic",
       "GroupName": "Text Styles",
-      "State": [ "strong", "em" ]
+      "State": [ "strong", "em" ],
+      "Action": "MakeBoldAndItalic"
     },
     {
       "Name": "Bold",
       "GroupName": "Text Styles",
-      "State": "strong"
+      "State": "strong",
+      "Action": "MakeBold"
     },
     {
       "Name": "Italic",
       "GroupName": "Text Styles",
-      "State": "em"
+      "State": "em",
+      "Action": "MakeItalic"
     },
     {
       "Name": "H1",
