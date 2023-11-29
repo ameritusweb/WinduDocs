@@ -9,10 +9,8 @@ export const useRichTextEditor = () => {
     const editorData: EditorDataType = EditorData;
     const historyManager: IHistoryManager = HistoryManager;
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelId?: string): AstUpdate => {
-
+    const gatherUpdateData = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[]): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; key: string; } | null => {
         const sel = window.getSelection();
-        const key = event.key;
         let higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
         if (higherLevelIndex === null) {
             higherLevelIndex = -1;
@@ -39,15 +37,27 @@ export const useRichTextEditor = () => {
             }
             const parent = container.parentElement;
             if (!parent)
-                return {type: 'none', nodes: children };
+                return null;
             const rootChildId = findClosestAncestor(parent, 'richTextEditor')?.id;
             if (!rootChildId)
-                return {type: 'none', nodes: children };
+                return null;
 
             const containerIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
             const grandChild = child?.Children[containerIndex] || null;
             const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex, grandChild }
+            return {updateData, container, endContainer, range, startOffset, key: event.key};
+        }
+        return null;
+    }
+
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelId?: string): AstUpdate => {
+
+        const updateDataRes = gatherUpdateData(event, children, higherLevelChildren);
+
+        if (updateDataRes)
+        {
+            const { updateData, container, endContainer, range, startOffset, key } = updateDataRes;
             if (key === 'Enter') {
                 event.preventDefault();
                 let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, context, range, startOffset, higherLevelId);
@@ -87,6 +97,7 @@ export const useRichTextEditor = () => {
     return {
         editorData,
         historyManager,
+        gatherUpdateData,
         updateAst,
         createNewAstNode,
         createNewAstNodeFromFormat,

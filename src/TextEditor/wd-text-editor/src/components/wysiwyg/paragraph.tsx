@@ -42,7 +42,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     useEffect(() => {
 
-      higherLevelPropsRef.current = props.higherLevelContent || null;;
+      higherLevelPropsRef.current = props.higherLevelContent || null;
 
     }, [props.higherLevelContent]);
 
