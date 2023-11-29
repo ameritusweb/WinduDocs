@@ -1,8 +1,9 @@
 import { generateKey, isNodeEmpty, splitNode } from ".";
 import { AstNode } from "../../components/wysiwyg/interface";
 
-const splitTreeDeux = (root: AstNode, target: AstNode, offset: number, rightNodeGuid?: string): [AstNode | null, AstNode | null] => {
+const splitTreeAndExtract = (root: AstNode, target: AstNode, startOffset: number, endOffset: number, rightNodeGuid?: string): [AstNode | null, AstNode | null, string] => {
     let targetFound = false;
+    let extractedText = "";
 
     const generateNewTree = (node: AstNode, generateNewGuid: boolean): AstNode => {
         return {
@@ -12,10 +13,17 @@ const splitTreeDeux = (root: AstNode, target: AstNode, offset: number, rightNode
         };
     };
 
+    const extractText = (node: AstNode) => {
+        return node.TextContent || '';
+    }
+
     const traverseAndSplit = (node: AstNode, depth: number): [AstNode, AstNode | null] => {
         if (node.Guid === target.Guid) {
             targetFound = true;
-            const [leftNode, rightNode] = splitNode(node, offset, undefined, rightNodeGuid);
+            const [leftNode, middleNode] = splitNode(node, startOffset);
+            // Then split the right part at the adjusted endOffset
+            const [middleText, rightNode] = splitNode(middleNode, endOffset - startOffset, undefined, rightNodeGuid);
+            extractedText = extractText(middleText); // You need to define this function
             return [leftNode, rightNode];
         }
 
@@ -44,7 +52,7 @@ const splitTreeDeux = (root: AstNode, target: AstNode, offset: number, rightNode
     };
 
     const [leftTree, rightTree] = traverseAndSplit(root, 0);
-    return [leftTree && !isNodeEmpty(leftTree) ? leftTree : null, rightTree && !isNodeEmpty(rightTree) ? rightTree : null];
+    return [leftTree && !isNodeEmpty(leftTree) ? leftTree : null, rightTree && !isNodeEmpty(rightTree) ? rightTree : null, extractedText];
 };
 
-export default splitTreeDeux;
+export default splitTreeAndExtract;

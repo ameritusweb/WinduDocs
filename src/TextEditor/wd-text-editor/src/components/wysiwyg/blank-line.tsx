@@ -66,9 +66,18 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
       }
     };
 
-    const handleInsertTable = (payload: { rows: number, cols: number } | null) => {
+    type TablePayload = { rows: number, cols: number };
+
+    function isTablePayload(payload: any): payload is TablePayload {
+      console.log(typeof payload);
+      console.log('rows' in payload);
+      console.log(payload);
+        return payload && typeof payload === 'object' && 'rows' in payload && 'cols' in payload;
+    }
+
+    const handleInsertTable = (payload: { rows: number, cols: number } | object) => {
       
-      if (higherLevelContent && higherLevelContent.updater && payload) {
+      if (higherLevelContent && higherLevelContent.updater && payload && isTablePayload(payload)) {
         const higherLevelContentCopy = higherLevelContentRef.current.map((h) => deepCopyAstNode(h));
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newTable = createTable(payload.rows, payload.cols);

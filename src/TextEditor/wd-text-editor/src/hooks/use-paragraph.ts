@@ -1,5 +1,6 @@
-import { AstContext, AstNode } from "../components/wysiwyg/interface";
-import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem } from "../rich-text-editor/node-operations";
+import { AstContext, AstNode, IHistoryManager } from "../components/wysiwyg/interface";
+import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, splitTreeAndExtract } from "../rich-text-editor/node-operations";
+import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import EditorData, { EditorDataType } from "./editor-data";
 import { useRichTextEditor } from "./use-rich-text-editor";
 
@@ -7,20 +8,67 @@ export const useParagraph = () => {
 
     const { gatherUpdateData } = useRichTextEditor();
     const editorData: EditorDataType = EditorData;
+    const historyManager: IHistoryManager = HistoryManager;
 
-    const handleMakeBold = (astCopy: AstNode[], higherLevelAstCopy: AstNode[], context: AstContext) => {
+    const handleMakeBold = (astCopy: AstNode[], higherLevelAstCopy: AstNode[], context: AstContext, pathIndices: number[]) => {
           
         const gatherRes = gatherUpdateData(astCopy, higherLevelAstCopy);
         if (gatherRes)
         {
-          const { updateData, container, endContainer, range, startOffset } = gatherRes;
+          const { updateData, container, endContainer, range, startOffset, endOffset } = gatherRes;
           if (container === endContainer) {
-                const { parent } = updateData;
-                if (parent) {
-                if (context.types.length === 0 && parent.nodeName === 'P')
-                {
-                    const higherLevelChildren = higherLevelAstCopy;
+                const { parent, child, grandChild, containerIndex } = updateData;
+                if (parent && child && grandChild) {
+                    if (context.types.length === 0 && parent.nodeName === 'P')
+                    {
+                        const higherLevelChildren = higherLevelAstCopy;
+                        const [leftNode, rightNode, extractedText] = splitTreeAndExtract(grandChild, grandChild, startOffset, endOffset);
+                        const newBold = createNewAstNode('Strong', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
+                        const oldNode = deepCopyAstNode(child);
+                        if (leftNode && rightNode) {
+                            child.Children.splice(containerIndex, 1, leftNode, newBold, rightNode);
+                        } else if (leftNode) {
+                            child.Children.splice(containerIndex, 1, leftNode, newBold);
+                        } else if (rightNode) {
+                            child.Children.splice(containerIndex, 1, newBold, rightNode);
+                        } else {
+                            child.Children.splice(containerIndex, 1, newBold);
+                        }
+                        historyManager.recordChildReplace(null, oldNode, child, newBold, 0, 0);
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'makeBold', nodes: child.Children, pathIndices });
+                    }
                 }
+            }
+        }
+    };
+
+    const handleMakeItalic = (astCopy: AstNode[], higherLevelAstCopy: AstNode[], context: AstContext, pathIndices: number[]) => {
+          
+        const gatherRes = gatherUpdateData(astCopy, higherLevelAstCopy);
+        if (gatherRes)
+        {
+          const { updateData, container, endContainer, range, startOffset, endOffset } = gatherRes;
+          if (container === endContainer) {
+                const { parent, child, grandChild, containerIndex } = updateData;
+                if (parent && child && grandChild) {
+                    if (context.types.length === 0 && parent.nodeName === 'P')
+                    {
+                        const higherLevelChildren = higherLevelAstCopy;
+                        const [leftNode, rightNode, extractedText] = splitTreeAndExtract(grandChild, grandChild, startOffset, endOffset);
+                        const newBold = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
+                        const oldNode = deepCopyAstNode(child);
+                        if (leftNode && rightNode) {
+                            child.Children.splice(containerIndex, 1, leftNode, newBold, rightNode);
+                        } else if (leftNode) {
+                            child.Children.splice(containerIndex, 1, leftNode, newBold);
+                        } else if (rightNode) {
+                            child.Children.splice(containerIndex, 1, newBold, rightNode);
+                        } else {
+                            child.Children.splice(containerIndex, 1, newBold);
+                        }
+                        historyManager.recordChildReplace(null, oldNode, child, newBold, 0, 0);
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
+                    }
                 }
             }
         }
@@ -89,6 +137,7 @@ export const useParagraph = () => {
 
     return {
         handleMakeBold,
+        handleMakeItalic,
         handleInsertLink,
         handleInsertInline,
         handleIndent

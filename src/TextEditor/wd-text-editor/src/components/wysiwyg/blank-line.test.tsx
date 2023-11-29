@@ -49,7 +49,7 @@ describe('BlankLine', async () => {
 
     const editorData: EditorDataType = EditorData;
     await act (() => {
-      editorData.emitEvent('InsertTable', 'e6b4cd51-3bf0-4eb9-94cf-7d56565de739', { rows: 2, columns: 2 });
+      editorData.emitEvent('InsertTable', 'e6b4cd51-3bf0-4eb9-94cf-7d56565de739', { rows: 2, cols: 2 });
     });
 
     expect(mockUpdater).toHaveBeenCalledTimes(1);
@@ -81,7 +81,7 @@ describe('BlankLine', async () => {
     });
 
     await act (() => {
-      editorData.emitEvent('InsertTable', 'broadcast', { rows: 2, columns: 2 });
+      editorData.emitEvent('InsertTable', 'broadcast', { rows: 2, cols: 2 });
     });
 
     expect(mockUpdater).toHaveBeenCalledTimes(1);
@@ -152,7 +152,7 @@ describe('BlankLine', async () => {
     });
 
     await act (() => {
-      editorData.emitEvent('InsertTable', 'broadcast', { rows: 2, columns: 2 });
+      editorData.emitEvent('InsertTable', 'broadcast', { rows: 2, cols: 2 });
     });
 
     const selection = window.getSelection();
@@ -165,7 +165,7 @@ describe('BlankLine', async () => {
     }
 
     await act (() => {
-      editorData.emitEvent('InsertTable', 'broadcast', { rows: 2, columns: 2 });
+      editorData.emitEvent('InsertTable', 'broadcast', { rows: 2, cols: 2 });
     });
 
     expect(mockUpdater).toHaveBeenCalledTimes(2);

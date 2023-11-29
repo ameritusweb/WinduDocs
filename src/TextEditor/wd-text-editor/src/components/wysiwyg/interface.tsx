@@ -21,6 +21,7 @@ export interface AstNode {
   export interface HigherLevelProps {
     id?: string;
     content: AstNode[];
+    children?: AstNode[];
     contentParent?: AstNode;
     updater?: (nodes: AstNode[], updateProcessed: boolean) => void;
   }
@@ -155,7 +156,7 @@ export interface IEventEmitter {
     unsubscribe(guid: string): void;
 
     // Emit an event to only the subscribers with a specific GUID
-    emit(event: string, guid: string, payload: any): void;
+    emit(event: string, guid: string, payload: object): void;
 }
 
 export interface ITextBlock {

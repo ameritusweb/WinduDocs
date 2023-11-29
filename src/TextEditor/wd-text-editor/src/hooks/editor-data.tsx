@@ -10,7 +10,7 @@ export interface EditorDataType {
     cursorLine: number;
 }
 
-export type EventAction = 'Indent' | 'Iutdent' | 'Copy' | 'Cut' | 'Paste' | 'update' | 'InsertHR' | 'InsertQuote' | 'InsertTable' | 'InsertNumbered' | 'InsertBulleted' | 'InsertFenced' | 'InsertWarningAlert' | 'InsertSuccessAlert' | 'InsertErrorAlert' | 'InsertInfoAlert';
+export type EventAction = 'Indent' | 'Outdent' | 'Copy' | 'Cut' | 'Paste' | 'update' | 'InsertHR' | 'InsertQuote' | 'InsertTable' | 'InsertNumbered' | 'InsertBulleted' | 'InsertFenced' | 'InsertWarningAlert' | 'InsertSuccessAlert' | 'InsertErrorAlert' | 'InsertInfoAlert' | '*';
 
 export class EditorData implements EditorDataType {
 
@@ -36,12 +36,12 @@ export class EditorData implements EditorDataType {
                 const container = range.startContainer;
                 if (container instanceof Element)
                 {
-                    this.events.emit(action, container.id, payload || null);
+                    this.events.emit(action, container.id, payload || {});
                 } else if (container instanceof Text)
                 {
                     const parent = container.parentElement as Element;
                     console.log(parent.id);
-                    this.events.emit(action, parent.id, payload || null);
+                    this.events.emit(action, parent.id, payload || {});
                 }
             }
         } else {

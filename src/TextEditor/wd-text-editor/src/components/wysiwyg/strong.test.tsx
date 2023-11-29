@@ -12,6 +12,7 @@ describe('Strong', async () => {
     render(
     <Strong 
         id={'123456-123456-123456-123456'} 
+        parentId={'A123456-123456-123456-123456'} 
         pathIndices={[]}  
         children={mockStrongData}   
         context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}

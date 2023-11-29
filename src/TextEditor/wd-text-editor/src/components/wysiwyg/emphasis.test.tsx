@@ -12,6 +12,7 @@ describe('Emphasis', async () => {
     render(
     <Emphasis 
         id={'123456-123456-123456-123456'} 
+        parentId={'A123456-123456-123456-123456'} 
         pathIndices={[]}  
         children={mockEmphasisData}   
         context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}

@@ -36,38 +36,40 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     const [ast, setAst] = useState<AstNode[]>(props.content);
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
-    const higherLevelPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
+    const higherLevelCopyPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
     const { updateAst } = useRichTextEditor();
-    const { handleMakeBold, handleInsertLink, handleInsertInline, handleIndent } = useParagraph();
+    const { handleMakeBold, handleMakeItalic, handleInsertLink, handleInsertInline, handleIndent } = useParagraph();
     const paraRef = useRef<T | null>(null);
     const editorData: EditorDataType = EditorData;
 
     useEffect(() => {
 
-      higherLevelPropsRef.current = props.higherLevelContent || null;
+      higherLevelCopyPropsRef.current = { ...{ ...props.higherLevelContent, content: (props.higherLevelContent?.content || []).map(h => deepCopyAstNode(h)) }, children: props.content.map(c => deepCopyAstNode(c)) } || null;
 
     }, [props.higherLevelContent]);
 
     useEffect(() => {
 
       const onInsertLink = (payload: { url: string, text: string }) => {
-          const higherLevelAstCopy = (higherLevelPropsRef.current?.content || []).map((p) => deepCopyAstNode(p));
-          handleInsertLink(higherLevelAstCopy, payload.text, payload.url, props.pathIndices);
+          const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
+          if (higherLevelAstCopy)
+            handleInsertLink(higherLevelAstCopy, payload.text, payload.url, props.pathIndices);
       };
 
       // Subscribe with the provided GUID
       editorData.events.subscribe(`para_${props.id}`, 'InsertLink', onInsertLink);
 
       const onInsertInline = () => {
-        const higherLevelAstCopy = (higherLevelPropsRef.current?.content || []).map((p) => deepCopyAstNode(p));
-        handleInsertInline(higherLevelAstCopy, props.pathIndices);
+        const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
+        if (higherLevelAstCopy)
+          handleInsertInline(higherLevelAstCopy, props.pathIndices);
     };
 
       editorData.events.subscribe(`para_${props.id}`, 'InsertInline', onInsertInline);
 
       const onIndent = () => {
-        const higherLevelAst = higherLevelPropsRef.current?.content || [];
-        const higherLevelChild = higherLevelPropsRef.current?.contentParent;
+        const higherLevelAst = higherLevelCopyPropsRef.current?.content || [];
+        const higherLevelChild = higherLevelCopyPropsRef.current?.contentParent;
         if (higherLevelChild)
           handleIndent(higherLevelAst, higherLevelChild, props.pathIndices);
       };
@@ -84,9 +86,10 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       const onMakeBold = () => {
           
-        const astCopy = ast.map((p) => deepCopyAstNode(p));
-        const higherLevelAstCopy = higherLevelAst.map((p) => deepCopyAstNode(p));
-        handleMakeBold(astCopy, higherLevelAstCopy, props.context);
+        const astCopy = higherLevelCopyPropsRef.current?.children;
+        const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
+        if (astCopy && higherLevelAstCopy)
+          handleMakeBold(astCopy, higherLevelAstCopy, props.context, props.pathIndices);
 
       };
 
@@ -95,6 +98,11 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       const onMakeItalic = () => {
           
+        const astCopy = higherLevelCopyPropsRef.current?.children;
+        const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
+        if (astCopy && higherLevelAstCopy)
+          handleMakeItalic(astCopy, higherLevelAstCopy, props.context, props.pathIndices);
+
       };
 
       // Subscribe with the provided GUID
@@ -113,6 +121,8 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       // Subscribe with the provided GUID
       editorData.events.subscribe(`para_${props.id}`, 'MakeNormal', onMakeNormal);
+
+      editorData.events.subscribe(`para_${props.id}`, '*', (payload: any) => { editorData.emitEvent(payload.event, `para_${props.id}`, payload); });
 
       return () => {
           // Unsubscribe the GUID on component unmount
@@ -180,9 +190,9 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         const childPathIndices = [...props.pathIndices, index];
         switch (item.NodeName) {
           case 'Strong':
-            return <Strong key={item.Guid + (item.Version || '0')} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Strong>;
+            return <Strong key={item.Guid + (item.Version || '0')} parentId={`para_${props.id}`} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Strong>;
           case 'Emphasis':
-            return <Emphasis key={item.Guid + (item.Version || '0')} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Emphasis>;
+            return <Emphasis key={item.Guid + (item.Version || '0')} parentId={`para_${props.id}`} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.Children}</Emphasis>;
           case 'CodeInline':
             return <CodeInline key={item.Guid + (item.Version || '0')} context={props.context} pathIndices={childPathIndices} id={item.Guid}>{item.TextContent}</CodeInline>;
           case 'Link':

@@ -33,8 +33,8 @@ const usePopunder = (id: string, setState: Dispatch<SetStateAction<{ content: st
 
   useEffect(() => {
 
-    editorData.events.subscribe(id, 'open', (content: string) => {
-      setState(getPopunderContentAndStyle(content));
+    editorData.events.subscribe(id, 'open', (content: { label: string }) => {
+      setState(getPopunderContentAndStyle(content.label));
     });
 
     return () => {

@@ -10,7 +10,7 @@ export const ToolbarButton: React.FC<ToolbarButtonProps> = ({ label, onClick, is
   
     return <button className={`toolbar-button${isActive ? ' active' : ''}`} 
       onClick={onClick}
-      onMouseEnter={() => editorData.events.emit('open', 'toolbar', label)}
+      onMouseEnter={() => editorData.events.emit('open', 'toolbar', { label })}
       >
       {label}
     </button>

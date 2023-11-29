@@ -23,6 +23,9 @@ class EventEmitter implements IEventEmitter {
     emit(event: string, guid: string, payload: any): void {
         if (this.subscribers[guid] && this.subscribers[guid][event]) {
             this.subscribers[guid][event](payload);
+        } else if (this.subscribers[guid] && this.subscribers[guid]['*']) {
+            payload.event = event;
+            this.subscribers[guid]['*'](payload); 
         }
     }
 }

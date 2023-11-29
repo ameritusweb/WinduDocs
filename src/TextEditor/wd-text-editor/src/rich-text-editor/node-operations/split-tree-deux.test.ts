@@ -13,8 +13,10 @@ afterEach(() => {
         const offset = 4; // Some offset
 
         const [leftTree, rightTree] = splitTreeDeux(root, leafNode, offset);
-        expect(leftTree.Children[0].Children[0].TextContent?.length).toEqual(4);
-        expect(rightTree.Children[0].Children[0].TextContent?.length).toEqual(26);
+        expect(leftTree).not.toBeNull();
+        expect(rightTree).not.toBeNull();
+        expect(leftTree!.Children[0].Children[0].TextContent?.length).toEqual(4);
+        expect(rightTree!.Children[0].Children[0].TextContent?.length).toEqual(26);
       });
 
       it('given a zero offset, splits nested structures correctly', () => {
@@ -24,8 +26,9 @@ afterEach(() => {
         
         const [leftTree, rightTree] = splitTreeDeux(root, leafNode, offset);
         
-        expect(isNodeEmpty(leftTree)).toEqual(true);
-        expect(rightTree.Children[0].Children[0].TextContent?.length).toEqual(30);
+        expect(leftTree).toBeNull();
+        expect(rightTree).not.toBeNull();
+        expect(rightTree!.Children[0].Children[0].TextContent?.length).toEqual(30);
       });
       
   })
