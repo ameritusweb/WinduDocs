@@ -6,8 +6,9 @@ import CodeInline from "./code-inline";
 import Link from "./link";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { HigherLevelProps } from './interface';
-import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem } from "../../rich-text-editor/node-operations";
+import { deepCopyAstNode } from "../../rich-text-editor/node-operations";
 import EditorData, { EditorDataType } from "../../hooks/editor-data";
+import { useParagraph } from "../../hooks/use-paragraph";
 
 interface ParagraphProps<T extends HTMLElement> {
   id: string;
@@ -36,7 +37,8 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const [ast, setAst] = useState<AstNode[]>(props.content);
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
     const higherLevelPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
-    const { updateAst, gatherUpdateData } = useRichTextEditor();
+    const { updateAst } = useRichTextEditor();
+    const { handleMakeBold, handleInsertLink, handleInsertInline, handleIndent } = useParagraph();
     const paraRef = useRef<T | null>(null);
     const editorData: EditorDataType = EditorData;
 
@@ -48,125 +50,69 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
     useEffect(() => {
 
-      const handleInsertLink = (payload: { url: string, text: string }) => {
+      const onInsertLink = (payload: { url: string, text: string }) => {
           const higherLevelAstCopy = (higherLevelPropsRef.current?.content || []).map((p) => deepCopyAstNode(p));
-          const textNode = createNewAstNode('Text', 0, 0, payload.text);
-          const linkNode = createNewAstNode('Link', 0, 0, null, [textNode]);
-          linkNode.Attributes.Url = payload.url;
-          const selection = window.getSelection();
-          if (selection)
-          {
-            const range = selection.getRangeAt(0);
-            const container = range.startContainer;
-            const parent = container.parentElement;
-            if (parent) {
-              const [foundNode] = findNodeByGuid(higherLevelAstCopy, parent.id, null);
-              if (foundNode) {
-                const childIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
-                foundNode.Children.splice(childIndex + 1, 0, linkNode);
-                editorData.emitEvent('update', 'richTextEditor', { type: 'insertLink', nodes: foundNode.Children, pathIndices: props.pathIndices });
-              }
-            }
-          }
+          handleInsertLink(higherLevelAstCopy, payload.text, payload.url, props.pathIndices);
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'InsertLink', handleInsertLink);
+      editorData.events.subscribe(`para_${props.id}`, 'InsertLink', onInsertLink);
 
-      const handleInsertInline = () => {
+      const onInsertInline = () => {
         const higherLevelAstCopy = (higherLevelPropsRef.current?.content || []).map((p) => deepCopyAstNode(p));
-        const inlineNode = createNewAstNode('CodeInline', 0, 0, '\n');
-        const selection = window.getSelection();
-        if (selection)
-        {
-          const range = selection.getRangeAt(0);
-          const container = range.startContainer;
-          const parent = container.parentElement;
-          if (parent) {
-            const [foundNode] = findNodeByGuid(higherLevelAstCopy, parent.id, null);
-            if (foundNode) {
-              const childIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
-              foundNode.Children.splice(childIndex + 1, 0, inlineNode);
-              editorData.emitEvent('update', 'richTextEditor', { type: 'insertInline', nodes: foundNode.Children, pathIndices: props.pathIndices });
-            }
-          }
-        }
+        handleInsertInline(higherLevelAstCopy, props.pathIndices);
     };
 
-      editorData.events.subscribe(`para_${props.id}`, 'InsertInline', handleInsertInline);
+      editorData.events.subscribe(`para_${props.id}`, 'InsertInline', onInsertInline);
 
-      const handleIndent = () => {
+      const onIndent = () => {
         const higherLevelAst = higherLevelPropsRef.current?.content || [];
         const higherLevelChild = higherLevelPropsRef.current?.contentParent;
         if (higherLevelChild)
-        {
-          const newListBlock = createListBlock(1, higherLevelChild.Attributes.IsOrdered === 'True');
-          const selection = window.getSelection();
-          if (selection)
-          {
-            const range = selection.getRangeAt(0);
-            const container = range.startContainer;
-            const parent = container.parentElement;
-            if (parent) {
-              const [foundNode, immediateChild] = findNodeByGuid(higherLevelAst, parent.id, null);
-              if (foundNode && immediateChild) {
-                const index = higherLevelAst.findIndex(h => h === immediateChild);
-                const res = indentListItem(deepCopyAstNode(higherLevelChild), index);
-                if (res) {
-                  editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: props.pathIndices });
-                }
-              }
-            }
-          }
-        }
+          handleIndent(higherLevelAst, higherLevelChild, props.pathIndices);
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'Indent', handleIndent);
+      editorData.events.subscribe(`para_${props.id}`, 'Indent', onIndent);
 
-      const handleOutdent = () => {
+      const onOutdent = () => {
           
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'Outdent', handleOutdent);
+      editorData.events.subscribe(`para_${props.id}`, 'Outdent', onOutdent);
 
-      const handleMakeBold = () => {
+      const onMakeBold = () => {
           
         const astCopy = ast.map((p) => deepCopyAstNode(p));
         const higherLevelAstCopy = higherLevelAst.map((p) => deepCopyAstNode(p));
-        const gatherRes = gatherUpdateData(astCopy, higherLevelAstCopy);
-        if (gatherRes)
-        {
-          const { updateData, container, endContainer, range, startOffset } = gatherRes;
-          if (container === endContainer) {
-            const { parent } = updateData;
-            if (parent) {
-              if (props.context.types.length === 0 && parent.nodeName === 'P')
-              {
-                const higherLevelChildren = higherLevelAstCopy;
-              }
-          }
-        }
+        handleMakeBold(astCopy, higherLevelAstCopy, props.context);
 
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'MakeBold', handleMakeBold);
+      editorData.events.subscribe(`para_${props.id}`, 'MakeBold', onMakeBold);
 
-      const handleMakeItalic = () => {
+      const onMakeItalic = () => {
           
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'MakeItalic', handleMakeItalic);
+      editorData.events.subscribe(`para_${props.id}`, 'MakeItalic', onMakeItalic);
 
-      const handleMakeBoldAndItalic = () => {
+      const onMakeBoldAndItalic = () => {
           
       };
 
       // Subscribe with the provided GUID
-      editorData.events.subscribe(`para_${props.id}`, 'MakeBoldAndItalic', handleMakeBoldAndItalic);
+      editorData.events.subscribe(`para_${props.id}`, 'MakeBoldAndItalic', onMakeBoldAndItalic);
+
+      const onMakeNormal = () => {
+          
+      };
+
+      // Subscribe with the provided GUID
+      editorData.events.subscribe(`para_${props.id}`, 'MakeNormal', onMakeNormal);
 
       return () => {
           // Unsubscribe the GUID on component unmount

@@ -9,7 +9,7 @@ export const useRichTextEditor = () => {
     const editorData: EditorDataType = EditorData;
     const historyManager: IHistoryManager = HistoryManager;
 
-    const gatherUpdateData = (children: AstNode[], higherLevelChildren: AstNode[]): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; } | null => {
+    const gatherUpdateData = (children: AstNode[], higherLevelChildren: AstNode[]): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; endOffset: number } | null => {
         const sel = window.getSelection();
         let higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
         if (higherLevelIndex === null) {
@@ -46,7 +46,7 @@ export const useRichTextEditor = () => {
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
             const grandChild = child?.Children[containerIndex] || null;
             const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex, grandChild }
-            return {updateData, container, endContainer, range, startOffset};
+            return {updateData, container, endContainer, range, startOffset, endOffset};
         }
         return null;
     }
@@ -57,7 +57,7 @@ export const useRichTextEditor = () => {
 
         if (updateDataRes)
         {
-            const { updateData, container, endContainer, range, startOffset } = updateDataRes;
+            const { updateData, container, endContainer, range, startOffset, endOffset } = updateDataRes;
             const key = event.key;
             if (key === 'Enter') {
                 event.preventDefault();
