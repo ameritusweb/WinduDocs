@@ -36,7 +36,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const [ast, setAst] = useState<AstNode[]>(props.content);
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
     const higherLevelPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
-    const { updateAst } = useRichTextEditor();
+    const { updateAst, gatherUpdateData } = useRichTextEditor();
     const paraRef = useRef<T | null>(null);
     const editorData: EditorDataType = EditorData;
 
@@ -133,6 +133,22 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       const handleMakeBold = () => {
           
+        const astCopy = ast.map((p) => deepCopyAstNode(p));
+        const higherLevelAstCopy = higherLevelAst.map((p) => deepCopyAstNode(p));
+        const gatherRes = gatherUpdateData(astCopy, higherLevelAstCopy);
+        if (gatherRes)
+        {
+          const { updateData, container, endContainer, range, startOffset } = gatherRes;
+          if (container === endContainer) {
+            const { parent } = updateData;
+            if (parent) {
+              if (props.context.types.length === 0 && parent.nodeName === 'P')
+              {
+                const higherLevelChildren = higherLevelAstCopy;
+              }
+          }
+        }
+
       };
 
       // Subscribe with the provided GUID

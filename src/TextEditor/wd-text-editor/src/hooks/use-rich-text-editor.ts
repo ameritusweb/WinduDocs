@@ -9,7 +9,7 @@ export const useRichTextEditor = () => {
     const editorData: EditorDataType = EditorData;
     const historyManager: IHistoryManager = HistoryManager;
 
-    const gatherUpdateData = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[]): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; key: string; } | null => {
+    const gatherUpdateData = (children: AstNode[], higherLevelChildren: AstNode[]): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; } | null => {
         const sel = window.getSelection();
         let higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
         if (higherLevelIndex === null) {
@@ -46,18 +46,19 @@ export const useRichTextEditor = () => {
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
             const grandChild = child?.Children[containerIndex] || null;
             const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex, grandChild }
-            return {updateData, container, endContainer, range, startOffset, key: event.key};
+            return {updateData, container, endContainer, range, startOffset};
         }
         return null;
     }
 
     const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelId?: string): AstUpdate => {
 
-        const updateDataRes = gatherUpdateData(event, children, higherLevelChildren);
+        const updateDataRes = gatherUpdateData(children, higherLevelChildren);
 
         if (updateDataRes)
         {
-            const { updateData, container, endContainer, range, startOffset, key } = updateDataRes;
+            const { updateData, container, endContainer, range, startOffset } = updateDataRes;
+            const key = event.key;
             if (key === 'Enter') {
                 event.preventDefault();
                 let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, context, range, startOffset, higherLevelId);
