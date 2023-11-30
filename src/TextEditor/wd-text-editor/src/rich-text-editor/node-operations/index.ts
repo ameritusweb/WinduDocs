@@ -4,6 +4,7 @@ export { default as createNewAstNodeFromFormat } from './create-new-ast-node-fro
 export { default as splitNode } from './split-node';
 export { default as splitTree } from './split-tree';
 export { default as splitTreeAndExtract } from './split-tree-and-extract';
+export { default as splitTreeAndExtractSpan } from './split-tree-and-extract-span';
 export { default as splitTreeDeux } from './split-tree-deux';
 export { default as replaceKeys } from './replace-keys';
 export { default as nestedSplitNode } from './nested-split-node';

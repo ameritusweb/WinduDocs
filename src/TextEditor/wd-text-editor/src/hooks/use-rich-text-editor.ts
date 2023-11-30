@@ -24,7 +24,8 @@ export const useRichTextEditor = () => {
         if (sel) {
             const range = sel.getRangeAt(0);
             let container = range.startContainer;
-            const endContainer = range.endContainer;
+            let endContainer = range.endContainer;
+            const differentContainers = container !== endContainer;
             const startOffset = range.startOffset;
             const endOffset = range.endOffset;
             if (container.nodeName !== '#text')
@@ -45,7 +46,25 @@ export const useRichTextEditor = () => {
             const containerIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
             const grandChild = child?.Children[containerIndex] || null;
-            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex, grandChild }
+            let endChild = null;
+            let endGrandChild = null;
+            if (differentContainers) {
+                if (endContainer.nodeName !== '#text')
+                {
+                    endContainer = endContainer.firstChild!;
+                }
+                if (endContainer.nodeName !== '#text')
+                {
+                    endContainer = endContainer.firstChild!;
+                }
+                const endParent = endContainer.parentElement;
+                if (endParent) {
+                    const endContainerIndex = Array.from(endParent.childNodes).findIndex((c) => c === endContainer);
+                    [endChild] = findNodeByGuid(higherLevelChildren, endParent?.id, null);
+                    endGrandChild = endChild?.Children[endContainerIndex] || null;
+                }
+            }
+            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex, grandChild, endChild, endGrandChild }
             return {updateData, container, endContainer, range, startOffset, endOffset};
         }
         return null;

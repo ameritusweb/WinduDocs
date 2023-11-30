@@ -177,6 +177,8 @@ export interface UpdateData {
   higherLevelIndex: number;
   child: AstNode | null;
   grandChild: AstNode | null;
+  endChild: AstNode | null;
+  endGrandChild: AstNode | null;
   astParent: AstNode | null;
   immediateChild: AstNode | null;
   rootChildId: string;

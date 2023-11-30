@@ -1,5 +1,5 @@
 import { AstContext, AstNode, IHistoryManager } from "../components/wysiwyg/interface";
-import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, splitTreeAndExtract } from "../rich-text-editor/node-operations";
+import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, splitTreeAndExtract, splitTreeAndExtractSpan } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import EditorData, { EditorDataType } from "./editor-data";
 import { useRichTextEditor } from "./use-rich-text-editor";
@@ -67,6 +67,49 @@ export const useParagraph = () => {
                             child.Children.splice(containerIndex, 1, newBold);
                         }
                         historyManager.recordChildReplace(null, oldNode, child, newBold, 0, 0);
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
+                    }
+                }
+            } else {
+                const { parent, child, grandChild, astParent, containerIndex, endChild, endGrandChild } = updateData;
+                if (parent && child && grandChild && endChild && endGrandChild) {
+                    if (context.types.length === 0 && parent.nodeName === 'P')
+                    {
+                        const higherLevelChildren = higherLevelAstCopy;
+                        const index1 = child.Children.findIndex(c => c === grandChild);
+                        const index2 = child.Children.findIndex(c => c === endGrandChild);
+                        const siblings = child.Children.slice(index1, index2 + 1);
+                        const [leftNode, rightNode, extractedText] = splitTreeAndExtractSpan(siblings, grandChild, startOffset, endGrandChild, endOffset);
+                        const newBold = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
+                        const oldNode = deepCopyAstNode(child);
+                        if (leftNode && rightNode) {
+                            child.Children.splice(containerIndex, siblings.length, ...leftNode, newBold, ...rightNode);
+                        } else if (leftNode) {
+                            child.Children.splice(containerIndex, siblings.length, ...leftNode, newBold);
+                        } else if (rightNode) {
+                            child.Children.splice(containerIndex, siblings.length, newBold, ...rightNode);
+                        } else {
+                            child.Children.splice(containerIndex, siblings.length, newBold);
+                        }
+                        historyManager.recordChildReplace(null, oldNode, child, newBold, 0, 0);
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
+                    } else if (context.types.length === 0 && astParent !== null && (parent.nodeName === 'STRONG' || parent.nodeName === 'EM' )) {
+                        const higherLevelChildren = higherLevelAstCopy;
+                        const index1 = child.Children.findIndex(c => c === grandChild);
+                        const index2 = child.Children.findIndex(c => c === endGrandChild);
+                        const [leftNode, rightNode, extractedText] = splitTreeAndExtractSpan(astParent.Children, grandChild, startOffset, endGrandChild, endOffset);
+                        const newItalic = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
+                        const oldNode = deepCopyAstNode(child);
+                        if (leftNode && rightNode) {
+                            child.Children.splice(containerIndex, astParent.Children.length, ...leftNode, newItalic, ...rightNode);
+                        } else if (leftNode) {
+                            child.Children.splice(containerIndex, astParent.Children.length, ...leftNode, newItalic);
+                        } else if (rightNode) {
+                            child.Children.splice(containerIndex, astParent.Children.length, newItalic, ...rightNode);
+                        } else {
+                            child.Children.splice(containerIndex, astParent.Children.length, newItalic);
+                        }
+                        historyManager.recordChildReplace(null, oldNode, child, newItalic, 0, 0);
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     }
                 }
