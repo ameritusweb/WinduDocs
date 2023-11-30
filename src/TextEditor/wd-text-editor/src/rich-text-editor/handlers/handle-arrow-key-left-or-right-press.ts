@@ -23,9 +23,6 @@ const handleArrowKeyLeftOrRightPress = (event: React.KeyboardEvent<HTMLElement>,
 
         if (currentNode.nodeType === Node.TEXT_NODE) {
             textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
-            if (textNodeIndex > 0) {
-                return;
-            }
             currentNode = currentNode.parentElement;
         }
 
@@ -48,8 +45,7 @@ const handleArrowKeyLeftOrRightPress = (event: React.KeyboardEvent<HTMLElement>,
         const res = processedAstMap.get(`${guid} ${textNodeIndex}`);
         if (!res) return;
 
-        const [i, j] = res;
-        if (j !== 0) return;
+        const [i] = res;
 
         const row = textBlocks[direction === 'left' ? i - 1 : i + 1];
         if (!row) return;
