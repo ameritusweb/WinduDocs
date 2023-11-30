@@ -64,6 +64,8 @@ const processAst = async (markdownAst: AstNode): Promise<[TextBlock[][], Map<str
 
         switch (node.NodeName) {
             case "CodeInline":
+                processTextNode(node, 'code_' + node.Guid, 0);
+                break;
             case "Text":
                 processTextNode(node, parentId, index);
                 break;
