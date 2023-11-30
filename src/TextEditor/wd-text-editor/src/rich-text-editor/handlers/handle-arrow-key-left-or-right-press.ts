@@ -7,8 +7,15 @@ const handleArrowKeyLeftOrRightPress = (event: React.KeyboardEvent<HTMLElement>,
         return;
     }
 
-    let range = selection.getRangeAt(0);
-    let isAtBoundary = direction === 'left' ? range.startOffset === 0 : range.startContainer.textContent && range.startOffset === range.startContainer.textContent.length;
+    const range = selection.getRangeAt(0);
+    const isAtBoundary = (range.startContainer.textContent && 
+                          range.startContainer.textContent === '\n' && 
+                          (range.startOffset === 0 || range.startOffset === 1 )) 
+                        || 
+                        (direction === 'left' 
+                            ? range.startOffset === 0 
+                            : range.startContainer.textContent && 
+                            range.startOffset === range.startContainer.textContent.length);
 
     if (isAtBoundary) {
         let currentNode: Node | null = range.startContainer;
@@ -28,6 +35,9 @@ const handleArrowKeyLeftOrRightPress = (event: React.KeyboardEvent<HTMLElement>,
         const gparent = currentNode.parentElement;
         if (gparent && (gparent.nodeName === 'CODE' || gparent.nodeName.match(/^H[1-6]$/))) {
             guid = gparent.id;
+            if (gparent.nodeName === 'CODE') {
+                textNodeIndex = Array.from(currentNode.parentElement?.childNodes || []).findIndex((e) => e === currentNode);
+            }
         }
 
         if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAst.length) {
@@ -49,13 +59,17 @@ const handleArrowKeyLeftOrRightPress = (event: React.KeyboardEvent<HTMLElement>,
         if (!element) return;
 
         const newRange = document.createRange();
-        let start = element.nodeName.match(/^(CODE|H[1-6])$/) ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
+        let start = element.nodeName.match(/^(H[1-6])$/) ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
+
+        if (element.nodeName.match(/^(CODE)$/)) {
+            start = start.childNodes[0];
+        }
 
         if (!start || !(start instanceof Text)) return;
 
         event.preventDefault();
-        newRange.setStart(start, direction === 'left' ? (start.textContent?.length || 0) : 0);
-        newRange.setEnd(start, direction === 'left' ? (start.textContent?.length || 0) : 0);
+        newRange.setStart(start, direction === 'left' ? (start.textContent?.length || 0) : ((start.textContent === '\n') ? 1 : 0));
+        newRange.setEnd(start, direction === 'left' ? (start.textContent?.length || 0) : ((start.textContent === '\n') ? 1 : 0));
 
         selection.removeAllRanges();
         selection.addRange(newRange);
