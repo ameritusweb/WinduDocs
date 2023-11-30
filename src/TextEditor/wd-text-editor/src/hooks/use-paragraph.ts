@@ -16,8 +16,6 @@ export const useParagraph = () => {
         if (gatherRes)
         {
           const { updateData, container, endContainer, range, startOffset, endOffset } = gatherRes;
-          console.log(container);
-          console.log(endContainer);
           if (container === endContainer) {
                 const { parent, child, grandChild, containerIndex } = updateData;
                 if (parent && child && grandChild) {
@@ -57,18 +55,19 @@ export const useParagraph = () => {
                     {
                         const higherLevelChildren = higherLevelAstCopy;
                         const [leftNode, rightNode, extractedText] = splitTreeAndExtract(grandChild, grandChild, startOffset, endOffset);
-                        const newBold = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
+                        const newItalic = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
                         const oldNode = deepCopyAstNode(child);
                         if (leftNode && rightNode) {
-                            child.Children.splice(containerIndex, 1, leftNode, newBold, rightNode);
+                            child.Children.splice(containerIndex, 1, leftNode, newItalic, rightNode);
                         } else if (leftNode) {
-                            child.Children.splice(containerIndex, 1, leftNode, newBold);
+                            child.Children.splice(containerIndex, 1, leftNode, newItalic);
                         } else if (rightNode) {
-                            child.Children.splice(containerIndex, 1, newBold, rightNode);
+                            child.Children.splice(containerIndex, 1, newItalic, rightNode);
                         } else {
-                            child.Children.splice(containerIndex, 1, newBold);
+                            child.Children.splice(containerIndex, 1, newItalic);
                         }
-                        historyManager.recordChildReplace(null, oldNode, child, newBold, 0, 0);
+                        historyManager.recordChildReplace(null, oldNode, child, newItalic, 0, 0);
+                        console.log('emitevent');
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     }
                 }

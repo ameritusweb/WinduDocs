@@ -49,7 +49,7 @@ afterEach(() => {
         };
     
         const [lines, guidMap] = await processAst(mockAst);
-    console.log(guidMap);
+
         // Verify that guidMap correctly references the positions of TextBlocks
         expect(guidMap.get('para_para-guid 0')).toEqual([0, 0]); // First line, first block
         expect(guidMap.get('guid-2 0')).toEqual([1, 0]); // Second line (BlankLine)

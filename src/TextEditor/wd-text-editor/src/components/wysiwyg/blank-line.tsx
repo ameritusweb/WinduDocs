@@ -69,9 +69,6 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
     type TablePayload = { rows: number, cols: number };
 
     function isTablePayload(payload: any): payload is TablePayload {
-      console.log(typeof payload);
-      console.log('rows' in payload);
-      console.log(payload);
         return payload && typeof payload === 'object' && 'rows' in payload && 'cols' in payload;
     }
 
@@ -165,7 +162,6 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
   }, [id]); // Depend on the GUID prop
 
     const onFocus = () => {
-      console.log('onfocus');
       const editorData: EditorDataType = EditorData;
       if (editorData.editorState)
       {
@@ -174,7 +170,6 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
     }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-      console.log('keydown ' + event.key + ' ' + event.ctrlKey);
       if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')
       {
         return;

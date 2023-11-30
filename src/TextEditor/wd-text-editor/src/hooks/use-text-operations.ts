@@ -81,7 +81,6 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
         const node = contentEditableRef.current.childNodes[range.startOffset - 1];
         if (node && node instanceof Node)
         {
-            console.log(node);
             const prev = node.previousSibling;
             const removePrev = node.nodeValue?.includes('\u200B');
             contentEditableRef.current.removeChild(node);
@@ -90,7 +89,6 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
             {
                 if (prev)
                 {
-                    console.log(prev);
                     contentEditableRef.current!.removeChild(prev);
                 }
             }
@@ -110,7 +108,6 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
             contentEditableRef.current!.removeChild(range.startContainer);
             if (prev)
             {
-                console.log(prev);
                 contentEditableRef.current!.removeChild(prev);
             }
         }
@@ -125,17 +122,14 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
         if (range.startContainer.textContent?.length === 0)
         {
           const prev = range.startContainer.previousSibling;
-          console.log(range.startContainer);
           contentEditableRef.current!.removeChild(range.startContainer);
           if (prev)
           {
-            console.log(prev);
             contentEditableRef.current!.removeChild(prev);
           }
         }
         else
         {
-            console.log(range.startContainer);
           contentEditableRef.current!.removeChild(range.startContainer);
         }
         isRemoved = true;

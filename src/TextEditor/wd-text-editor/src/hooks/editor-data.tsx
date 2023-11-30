@@ -40,7 +40,6 @@ export class EditorData implements EditorDataType {
                 } else if (container instanceof Text)
                 {
                     const parent = container.parentElement as Element;
-                    console.log(parent.id);
                     this.events.emit(action, parent.id, payload || {});
                 }
             }

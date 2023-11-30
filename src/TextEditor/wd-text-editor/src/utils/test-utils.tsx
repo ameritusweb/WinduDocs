@@ -56,6 +56,12 @@ export const selectText = (parentId: string, startOffset: number, endOffset: num
   // Create a new range
   const range = document.createRange();
 
+  if (!textNode.textContent)
+    throw new Error('No text content found for text node.');
+
+  if ((textNode.textContent?.length || 0) < (endOffset - 1))
+    throw new Error(`Range out of bounds for text node of length: ${textNode.textContent?.length}`);
+
   // Set the start and end of the range
   range.setStart(textNode, startOffset);
   range.setEnd(textNode, endOffset);
