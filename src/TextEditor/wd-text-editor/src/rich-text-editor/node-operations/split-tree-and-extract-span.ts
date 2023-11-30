@@ -25,7 +25,7 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
     };
 
     // Recursively traverses the AST nodes and their children, and splits them based on the provided nodes and offsets.
-    const traverseAndExtractSpan = (nodes: AstNode[]): [AstNode[], AstNode[], AstNode[]] => {
+    const traverseAndExtractSpan = (nodes: AstNode[], depth: number): [AstNode[], AstNode[], AstNode[]] => {
         let leftChildren: AstNode[] = [];
         let middleChildren: AstNode[] = [];
         let rightChildren: AstNode[] = [];
@@ -38,7 +38,6 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
                 leftTargetFound = true;
                 const [leftPart, middleStartNode] = splitNode(node, leftOffset);
                 leftChildren.push(leftPart);
-                extractedText += extractText(middleStartNode);
                 if (node.Guid === rightNode.Guid) {
                     rightTargetFound = true;
                     const [middleEndNode, rightPart] = splitNode(middleStartNode, rightOffset - leftOffset, undefined, rightNode.Guid);
@@ -47,10 +46,13 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
                     rightChildren.push(rightPart);
                     return;
                 } else {
+                    extractedText += extractText(middleStartNode);
                     middleChildren.push(middleStartNode);
                     isLeftSplit = true;
                 }
             } else if (node.Guid === rightNode.Guid) {
+                if (!leftTargetFound)
+                    throw new Error('Left target not found.');
                 rightTargetFound = true;
                 const [middleEndNode, rightPart] = splitNode(node, rightOffset);
                 extractedText += extractText(middleEndNode);
@@ -64,7 +66,7 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
             }
 
             if (node.Children && node.Children.length > 0) {
-                const [leftChild, middleChild, rightChild] = traverseAndExtractSpan(node.Children);
+                const [leftChild, middleChild, rightChild] = traverseAndExtractSpan(node.Children, depth + 1);
                 appendChildren(leftChildren, node, leftChild);
                 appendChildren(middleChildren, node, middleChild);
                 appendChildren(rightChildren, node, rightChild);
@@ -84,6 +86,11 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
                 rightChildren.push(node); // The whole node is part of the right section
             }
         });
+
+        if (depth === 0 && !rightTargetFound)
+        {
+            throw new Error('Right target not found.');
+        }
 
         return [leftChildren, middleChildren, rightChildren];
     };
@@ -107,7 +114,7 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
 
     try {
         // Begins the traversal and extraction process on the array of sibling nodes
-        const [leftTrees, middleTrees, rightTrees] = traverseAndExtractSpan(siblings);
+        const [leftTrees, middleTrees, rightTrees] = traverseAndExtractSpan(siblings, 0);
         return [leftTrees, rightTrees, extractedText];
     } catch (error) {
         console.error("Error encountered during traversal and extraction:", error);
