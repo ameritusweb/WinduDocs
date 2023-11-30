@@ -40,6 +40,39 @@ export const mockCustomElement = (node: CustomNode): IdableNode => {
   return element as Node & Idable;
 };
 
+export const selectText = (parentId: string, startOffset: number, endOffset: number) => {
+  // Find the parent element by its ID
+  const parent = document.getElementById(parentId);
+  if (!parent) {
+    throw new Error('No element with the specified ID found');
+  }
+
+  // Assume the first child node is the text node we want
+  const textNode = parent.childNodes[0];
+  if (!textNode || textNode.nodeType !== Node.TEXT_NODE) {
+    throw new Error('No text node found for the specified element');
+  }
+
+  // Create a new range
+  const range = document.createRange();
+
+  // Set the start and end of the range
+  range.setStart(textNode, startOffset);
+  range.setEnd(textNode, endOffset);
+
+  // Get the current selection
+  const selection = window.getSelection();
+  if (!selection) {
+    throw new Error('Unable to get the current selection');
+  }
+
+  // Remove all ranges from the current selection
+  selection.removeAllRanges();
+
+  // Add the new range to the selection
+  selection.addRange(range);
+}
+
 export * from '@testing-library/react'
 export { default as userEvent } from '@testing-library/user-event'
 // override render export

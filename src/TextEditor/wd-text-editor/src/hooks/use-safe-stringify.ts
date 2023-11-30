@@ -12,7 +12,7 @@ export const useSafeStringify = () => {
      * @param value The value to be checked.
      * @returns True if the value is a DOM node, false otherwise.
      */
-    const isDOMNode = (value: any): value is Node => 'nodeType' in value;
+    const isDOMNode = (value: any): value is Node => typeof value === 'object' && value !== null && 'nodeType' in value;
 
     /**
      * Converts a DOM node to a POJO.

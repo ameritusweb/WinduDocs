@@ -1,5 +1,196 @@
 import { AstNode } from "../components/wysiwyg/interface";
 
+export const mockUseParagraphData: AstNode[] = [
+  {
+    "NodeName": "ParagraphBlock",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Guid": "a8b579d3-93c2-4837-8731-34fa04badb8f",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Strong",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Guid": "c069fb1b-83fc-4bd9-b1fb-f385f4150da1",
+        "Depth": 2,
+        "TextContent": null,
+        "Children": [
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Guid": "ffcf0896-aa89-4a97-989c-ce4001943443",
+            "Depth": 3,
+            "TextContent": "This is a paragraph with both ",
+            "Children": []
+          },
+          {
+            "NodeName": "Strong",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Guid": "87c121eb-c1dd-4311-b0b7-31ff22564cc9",
+            "Depth": 3,
+            "TextContent": null,
+            "Children": [
+              {
+                "NodeName": "Emphasis",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
+                "Depth": 4,
+                "TextContent": null,
+                "Children": [
+                  {
+                    "NodeName": "Text",
+                    "Attributes": {},
+                    "ChildIndex": 0,
+                    "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+                    "Depth": 5,
+                    "TextContent": "bold and italic",
+                    "Children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Guid": "616cd0ab-ad17-4914-93ff-fb9b699d83bb",
+            "Depth": 3,
+            "TextContent": " text",
+            "Children": []
+          }
+        ]
+      },
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Guid": "d8d85efd-f787-4ad5-915e-d15f7face731",
+        "Depth": 2,
+        "TextContent": "This is another paragraph.",
+        "Children": []
+      }
+    ]
+  },
+  {
+    "NodeName": "BlankLine",
+    "Attributes": {},
+    "ChildIndex": 1,
+    "Guid": "2bfdc093-0f70-4d86-a57c-5f16315187cf",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": []
+  },
+  {
+    "NodeName": "ParagraphBlock",
+    "Attributes": {},
+    "ChildIndex": 2,
+    "Guid": "09621212-5193-46b4-a626-1dd15f4fc8d9",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Strong",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Guid": "cc4156fc-0d7d-46de-91f9-5206b3c1c912",
+        "Depth": 2,
+        "TextContent": null,
+        "Children": [
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Guid": "20a3b3a6-c02a-479d-a04e-ec2e18993714",
+            "Depth": 3,
+            "TextContent": "of bold text",
+            "Children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "NodeName": "BlankLine",
+    "Attributes": {},
+    "ChildIndex": 3,
+    "Guid": "6436b060-1804-4778-baec-1aaf8d4a9b9a",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": []
+  },
+  {
+    "NodeName": "ParagraphBlock",
+    "Attributes": {},
+    "ChildIndex": 4,
+    "Guid": "ac1f684e-57a4-464f-aa76-c751e7a36550",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Guid": "0ab14874-7955-4724-963d-8ed36c453662",
+        "Depth": 2,
+        "TextContent": "This is a third paragraph",
+        "Children": []
+      }
+    ]
+  },
+  {
+    "NodeName": "BlankLine",
+    "Attributes": {},
+    "ChildIndex": 5,
+    "Guid": "6649ce34-ee3e-4ecc-b87a-a9bfea8a72a5",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": []
+  },
+  {
+    "NodeName": "ParagraphBlock",
+    "Attributes": {},
+    "ChildIndex": 6,
+    "Guid": "5a079a29-5e17-480b-bfb2-7fdad1844130",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Guid": "8d771b9b-622d-462d-9788-3b25e2a335ef",
+        "Depth": 2,
+        "TextContent": "This is an inline code example: ",
+        "Children": []
+      },
+      {
+        "NodeName": "CodeInline",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Guid": "077cfba4-d7b0-4dca-9660-a6fec0243947",
+        "Depth": 2,
+        "TextContent": "let x = 5;",
+        "Children": []
+      }
+    ]
+  },
+  {
+    "NodeName": "BlankLine",
+    "Attributes": {},
+    "ChildIndex": 7,
+    "Guid": "078ac8ba-fd8d-4166-aa4d-90ba955d11b5",
+    "Depth": 1,
+    "TextContent": null,
+    "Children": []
+  }
+];
+
 export const mockBlankLineData: AstNode[] = [
   {
     "NodeName": "BlankLine",

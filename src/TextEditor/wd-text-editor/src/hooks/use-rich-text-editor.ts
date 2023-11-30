@@ -38,10 +38,16 @@ export const useRichTextEditor = () => {
             }
             const parent = container.parentElement;
             if (!parent)
+            {
+                console.warn('parent is null');
                 return null;
+            }
             const rootChildId = findClosestAncestor(parent, 'richTextEditor')?.id;
             if (!rootChildId)
+            {
+                console.warn('rootChildId is null');
                 return null;
+            }
 
             const containerIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);

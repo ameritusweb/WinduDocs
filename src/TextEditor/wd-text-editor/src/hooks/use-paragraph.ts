@@ -16,6 +16,8 @@ export const useParagraph = () => {
         if (gatherRes)
         {
           const { updateData, container, endContainer, range, startOffset, endOffset } = gatherRes;
+          console.log(container);
+          console.log(endContainer);
           if (container === endContainer) {
                 const { parent, child, grandChild, containerIndex } = updateData;
                 if (parent && child && grandChild) {
