@@ -60,8 +60,17 @@ export const useSafeStringify = () => {
     
         return jsonString;
     }
+
+    function mapToMock(map: Map<string, number[]>) {
+        let mockStatements = 'const mockProcessedAstMap = new Map<string, number[]>();\n';
+        for (const [key, value] of map.entries()) {
+          mockStatements += `mockProcessedAstMap.set('${key}', [${value}]);\n`;
+        }
+        return mockStatements;
+      }
     
         return {
+        mapToMock,
         safeStringify
     };
 }

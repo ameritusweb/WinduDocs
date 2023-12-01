@@ -7,7 +7,6 @@ export interface EditorDataType {
     emitEvent: (action: EventAction, id: string, payload: any) => void;
     cursorOffset: number;
     cursorOffsetReduction: number;
-    cursorLine: number;
 }
 
 export type EventAction = 'Indent' | 'Outdent' | 'Copy' | 'Cut' | 'Paste' | 'update' | 'InsertHR' | 'InsertQuote' | 'InsertTable' | 'InsertNumbered' | 'InsertBulleted' | 'InsertFenced' | 'InsertWarningAlert' | 'InsertSuccessAlert' | 'InsertErrorAlert' | 'InsertInfoAlert' | '*';
@@ -18,14 +17,12 @@ export class EditorData implements EditorDataType {
         this.editorState = editorState;
         this.events = new EventEmitter();
         this.cursorOffset = 0;
-        this.cursorLine = 0;
         this.cursorOffsetReduction = 0;
     }
 
     editorState: string;
     events: IEventEmitter;
     cursorOffset: number;
-    cursorLine: number;
     cursorOffsetReduction: number;
 
     public emitEvent(action: EventAction, id: string, payload: any) {

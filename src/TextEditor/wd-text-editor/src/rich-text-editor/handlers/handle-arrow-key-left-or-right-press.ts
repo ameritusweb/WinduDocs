@@ -37,10 +37,6 @@ const handleArrowKeyLeftOrRightPress = (event: React.KeyboardEvent<HTMLElement>,
             }
         }
 
-        if (editorData.cursorLine < 0 || editorData.cursorLine >= processedAst.length) {
-            throw new Error('Invalid start row number');
-        }
-
         const textBlocks = processedAst;
         const res = processedAstMap.get(`${guid} ${textNodeIndex}`);
         if (!res) 

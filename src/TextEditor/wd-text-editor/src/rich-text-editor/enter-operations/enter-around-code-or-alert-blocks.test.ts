@@ -45,7 +45,9 @@ describe('enterAroundCodeOrAlertBlocks', () => {
         },
         "rootChildId": "section_ca3e3b0b-be05-4a6d-b7c8-b29e8d64f34d",
         "containerIndex": 0,
-        "grandChild": null
+        "grandChild": null,
+        "endChild": null,
+        "endGrandChild": null
       };
       const mockHigherLevelChildren = [
         {

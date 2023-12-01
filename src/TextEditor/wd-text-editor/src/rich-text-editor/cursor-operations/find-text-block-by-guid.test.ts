@@ -1,7 +1,7 @@
 import { findTextBlockByGuid } from ".";
 
 describe('findTextBlockByGuid', () => {
-    const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0, cursorLine: 0 } as any;
+    const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as any;
     const mockProcessedAst = [
         [
           { guid: 'key-1-1', index: 0, textContent: 'Hello ' },
@@ -26,12 +26,6 @@ describe('findTextBlockByGuid', () => {
       expect(result!.offset).toBe(3);
       expect(result!.textContent).toBe('World');
       // Assert that result is the expected ITextBlock
-    });
-  
-    it('returns null for invalid cursor line', () => {
-      mockEditorData.cursorLine = -1; // Or a value >= mockProcessedAst.length
-      const result = findTextBlockByGuid(mockEditorData, mockProcessedAst, mockProcessedAstMap, 'ArrowDown', 'key-1-1', 0, 5);
-      expect(result).toBeNull();
     });
   
     it('returns null for GUID not found in map', () => {

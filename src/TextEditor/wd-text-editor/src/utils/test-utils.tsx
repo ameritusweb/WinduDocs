@@ -40,6 +40,16 @@ export const mockCustomElement = (node: CustomNode): IdableNode => {
   return element as Node & Idable;
 };
 
+export const removeEmptyTextNodes = (element: HTMLElement) => {
+  Array.from(element.childNodes).forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE && node instanceof Text && !(node.textContent || '').trim() && node.textContent !== '\n') {
+      element.removeChild(node);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      removeEmptyTextNodes(node as HTMLElement);
+    }
+  });
+}
+
 export const selectText = (parentId: string, startOffset: number, endOffset: number) => {
   // Find the parent element by its ID
   const parent = document.getElementById(parentId);
