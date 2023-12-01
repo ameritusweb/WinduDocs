@@ -1,7 +1,7 @@
-import { AstNode, AstUpdate } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 import { createNodeWithTypeAndKey, splitNode } from "../node-operations";
 
-const insertEitherStrongOrEmphasisTextIntoNormalText = (startOffset: number, container: Node, child: AstNode, children: AstNode[], index: number, higherLevelIndex: number | null, higherLevelChildren: AstNode[], type: string, rootChildId: string, editorState: string, key: string): AstUpdate | null => {
+const insertEitherStrongOrEmphasisTextIntoNormalText = (startOffset: number, container: Node, child: AstNode, children: AstNode[], index: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number | null, higherLevelChildren: AstNode[], type: string, rootChildId: string, editorState: string, key: string): AstUpdate | null => {
     if (startOffset === 0)
     {
         const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);

@@ -4,4 +4,5 @@ export { default as findNodeById } from './utils/find-node-by-id';
 export { default as findParentNode } from './utils/find-parent-node';
 export { default as incrementEnd } from './utils/increment-end';
 export { default as trimSpecial } from './utils/trim-special';
+export { default as toId } from './utils/to-id';
 export { default as createNodeOperations } from './operations/create-node-operation';

@@ -1,4 +1,4 @@
-import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManager, IdableNode, UpdateData } from "../../components/wysiwyg/interface";
 import { insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText, insertBothStrongAndEmphasisTextIntoNormalText, insertEitherStrongOrEmphasisTextIntoNormalText, insertNormalTextIntoBothStrongAndEmphasisText, insertNormalTextIntoEitherStrongOrEmphasisText, insertNormalTextIntoOtherNormalText, insertStrongTextIntoEmphasisTextOrViceVersa, insertTextIntoAListItem, insertTextIntoEitherACodeBlockOrAlertBlock, insertTextIntoHeading } from "../insertion-operations";
 
 // Handle character insertion
@@ -15,26 +15,26 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 }
                 if (astParent && parent.parentElement?.nodeName === 'STRONG' && parent.nodeName === 'EM' && editorState === 'normal')
                 {
-                    const res = insertNormalTextIntoBothStrongAndEmphasisText(container as Text, startOffset, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
+                    const res = insertNormalTextIntoBothStrongAndEmphasisText(container as Text, startOffset, historyManager, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
                     if (res)
                         return res;
                 }
                 else if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && editorState === 'normal')
                 {
-                    const res = insertNormalTextIntoEitherStrongOrEmphasisText(container as Text, startOffset, higherLevelIndex, child, containerIndex, higherLevelChildren, children, key);
+                    const res = insertNormalTextIntoEitherStrongOrEmphasisText(container as Text, startOffset, historyManager, higherLevelIndex, child, containerIndex, higherLevelChildren, children, key);
                     if (res)
                         return res;
                 } else if ((parent.nodeName === 'STRONG' && editorState === 'em') || (parent.nodeName === 'EM' && editorState === 'strong') )
                 {
-                    const res = insertStrongTextIntoEmphasisTextOrViceVersa(parent, editorState, startOffset, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
+                    const res = insertStrongTextIntoEmphasisTextOrViceVersa(parent, editorState, startOffset, historyManager, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
                     if (res)
                         return res;
                 } else if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && parent.parentElement?.nodeName !== 'STRONG' && Array.isArray(editorState)) {
-                    const res = insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText(parent, higherLevelIndex, higherLevelChildren, children, key);
+                    const res = insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText(parent, historyManager, higherLevelIndex, higherLevelChildren, children, key);
                     if (res)
                         return res;
                 } else if (grandParent && (grandParent.nodeName === 'CODE' || grandParent.nodeName === 'DIV')) {
-                    const res = insertTextIntoEitherACodeBlockOrAlertBlock(child, container as Text, startOffset, rootChildId, historyManager, higherLevelChildren, children, key);
+                    const res = insertTextIntoEitherACodeBlockOrAlertBlock(child, container as IdableNode, startOffset, rootChildId, historyManager, higherLevelChildren, children, key);
                     if (res)
                         return res;
                 } else if (grandParent && grandChild && astParent && grandParent.nodeName === 'LI') {
@@ -45,6 +45,19 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     const res = insertTextIntoHeading(child, container as Text, historyManager, startOffset, astParent, rootChildId, children, key);
                     if (res)
                         return res;
+                } else if (grandChild !== null && parent.nodeName === 'P' && ((editorState === 'strong' || editorState === 'em') || Array.isArray(editorState))) {
+                    let higherLevelIndex: number | null = null;
+                    let type = 'insertNew';
+                    if (Array.isArray(editorState))
+                    {
+                        const res = insertBothStrongAndEmphasisTextIntoNormalText(startOffset, container, grandChild, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                        if (res)
+                            return res;
+                    } else {
+                        const res = insertEitherStrongOrEmphasisTextIntoNormalText(startOffset, container, grandChild, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                        if (res)
+                            return res;
+                    }
                 } else if (grandChild !== null && grandParent) {
                     const res = insertNormalTextIntoOtherNormalText(grandChild, container as Text, startOffset, historyManager, child, rootChildId, children, key);
                     if (res)
@@ -53,8 +66,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     throw new Error('Something went wrong when entering a character.');
                 }
             } else {
-                const index = Array.from(parent.childNodes).findIndex((c) => c === container);
-                child = children[index];
+                child = children[containerIndex];
                 if (child) {
                     if (parent.nodeName === 'P' && ((editorState === 'strong' || editorState === 'em') || Array.isArray(editorState)))
                     {
@@ -62,11 +74,11 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                         let type = 'insertNew';
                         if (Array.isArray(editorState))
                         {
-                            const res = insertBothStrongAndEmphasisTextIntoNormalText(startOffset, container, child, children, index, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                            const res = insertBothStrongAndEmphasisTextIntoNormalText(startOffset, container, child, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
                             if (res)
                                 return res;
                         } else {
-                            const res = insertEitherStrongOrEmphasisTextIntoNormalText(startOffset, container, child, children, index, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                            const res = insertEitherStrongOrEmphasisTextIntoNormalText(startOffset, container, child, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
                             if (res)
                                 return res;
                         }

@@ -1,3 +1,4 @@
+import { toId } from "..";
 import { AddNodeParams, AstNode, AstOperation, AstOperationType, RemoveNodeParams, ReplaceNodeParams, UpdateNodeParams } from "../../../components/wysiwyg/interface";
 
 type OperationParamsMap = {
@@ -12,19 +13,6 @@ type OperationReturnMap = {
     'remove': AstOperation<'remove'>;
     'update': AstOperation<'update'>;
     'replace': AstOperation<'replace'>;
-}
-
-const toId = (node: AstNode | null) => {
-
-    if (!node)
-        return null;
-    if (node.NodeName === 'ParagraphBlock')
-    {
-        return `para_${node.Guid}`;
-    }
-
-    return node.Guid;
-
 }
 
 const createNodeOperation = <T extends AstOperationType>(type: T, params: OperationParamsMap[T]): OperationReturnMap[T] => {
