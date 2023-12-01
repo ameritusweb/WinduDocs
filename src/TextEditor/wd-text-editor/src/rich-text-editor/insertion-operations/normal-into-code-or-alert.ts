@@ -1,8 +1,8 @@
-import { AstNode, IHistoryManager } from "../../components/wysiwyg/interface";
+import { AstNode, IHistoryManager, IdableNode } from "../../components/wysiwyg/interface";
 import { findHigherlevelIndex } from "../node-operations";
 import { replaceText } from "../text-manipulation";
 
-const insertTextIntoEitherACodeBlockOrAlertBlock = (child: AstNode, container: Text, startOffset: number, rootChildId: string, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], key: string) => {
+const insertTextIntoEitherACodeBlockOrAlertBlock = (child: AstNode, container: IdableNode, startOffset: number, rootChildId: string, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], key: string) => {
     const oldText = '' + child.TextContent;
     let additionalOffset = 0;
     if (child.TextContent === '\n')
