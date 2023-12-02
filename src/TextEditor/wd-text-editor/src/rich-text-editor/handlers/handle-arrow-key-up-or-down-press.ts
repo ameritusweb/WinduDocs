@@ -46,7 +46,16 @@ const handleArrowKeyUpOrDownPress = (key: string, editorData: EditorDataType, pr
         return;
 
     const newRange = document.createRange();
-    let start =(element.nodeName.startsWith('H') || element.nodeName.startsWith('A')) ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
+    let start = null;
+    if (element.nodeName.startsWith('H') || element.nodeName.startsWith('A')) {
+         start = element.childNodes[0];
+         if (!(start instanceof Text)) {
+            start = start.childNodes[textBlock.index];
+         }
+     }
+     else { 
+        start = element.childNodes[textBlock.index];
+     }
 
     if (!start)
         return;

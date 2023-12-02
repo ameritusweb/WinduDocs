@@ -1106,19 +1106,29 @@
         "Attributes": {
           "Level": "2"
         },
-        "ChildIndex": 27,
+        "ChildIndex": 16,
         "Depth": 1,
-        "Guid": "385cf807-75b4-43c2-9799-0ab40a7357c6",
+        "Guid": "3f661a55-690a-49a9-b6c8-19cd6d8bc9df",
         "TextContent": null,
         "Children": [
           {
-            "NodeName": "Text",
+            "NodeName": "Strong",
             "Attributes": {},
             "ChildIndex": 0,
             "Depth": 2,
-            "Guid": "f9a7030e-a95d-466c-ab02-e594a16a0d31",
-            "TextContent": "Table",
-            "Children": []
+            "Guid": "c4346859-ba72-45de-8a9b-666eabdb6f11",
+            "TextContent": null,
+            "Children": [
+              {
+                "NodeName": "Text",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Depth": 3,
+                "Guid": "5ddb83eb-acc3-4919-b1dd-88bcf51916a7",
+                "TextContent": "Table",
+                "Children": []
+              }
+            ]
           }
         ]
       },

@@ -186,7 +186,7 @@ p > code {
   min-height: 0.5rem;
 }
 
-#richTextEditor > p {
+#richTextEditor > p, #richTextEditor > h1, #richTextEditor > h2, #richTextEditor > h3, #richTextEditor > h4, #richTextEditor > h5, #richTextEditor > h6 {
   padding-left: 1.1rem;
 }
 

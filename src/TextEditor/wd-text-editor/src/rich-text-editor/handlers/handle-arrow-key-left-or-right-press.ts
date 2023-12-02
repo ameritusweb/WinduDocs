@@ -59,7 +59,15 @@ const handleArrowKeyLeftOrRightPress = (event: React.KeyboardEvent<HTMLElement>,
         if (!element) return;
 
         const newRange = document.createRange();
-        let start = element.nodeName.match(/^(H[1-6])$/) ? element.childNodes[0].childNodes[textBlock.index] : element.childNodes[textBlock.index];
+        let start = null;
+        if (element.nodeName.match(/^(H[1-6])$/)) {
+            start = element.childNodes[0];
+            if (!(start instanceof Text)) {
+                start = start.childNodes[textBlock.index];
+            }
+        } else {
+            start = element.childNodes[textBlock.index];
+        }
 
         if (element.nodeName.match(/^(CODE)$/)) {
             start = start.childNodes[0];

@@ -29,15 +29,7 @@ export const Heading: React.FC<HeadingProps> = ({ id, context, version, level, p
     // Determine the tag based on the format. Default to 'p' for plain text.
     const Tag = level ? `h${level}` : 'p';
   
-    const elementChildren = children.map((child) => {
-        const childPathIndices = [...pathIndices];
-        switch (child.NodeName) {
-            case 'Text':
-                return <Paragraph<HTMLParagraphElement> key={child.Guid} pathIndices={childPathIndices} context={{ ...context, isHeading: true, types: [ ...context.types, 'h' ] }} id={child.Guid} version={child.Version || 'V0'} content={[child]} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
-            default:
-                return null;
-        }
-    });
+    const element = <Paragraph<HTMLParagraphElement> pathIndices={pathIndices} context={{ ...context, isHeading: true, types: [ ...context.types, 'h' ] }} id={id} version={version} content={children} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
 
     // Use React.createElement to dynamically create the element
     return (
@@ -50,7 +42,7 @@ export const Heading: React.FC<HeadingProps> = ({ id, context, version, level, p
         {React.createElement(
       Tag,
       { 'id': `${id}`, 'version': `${version}` },
-        elementChildren      
+        element     
     )}
                 {(
                 <UtilityContainer 

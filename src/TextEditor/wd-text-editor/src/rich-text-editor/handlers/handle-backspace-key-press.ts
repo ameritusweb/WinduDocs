@@ -44,7 +44,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
             const childIndex = children.findIndex((c) => c.Guid === parentId);
             if (childIndex === -1) {
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
-                if (child && child.Guid === trimSpecial(parent.id, { startString: 'para_' }))
+                if (child && child.NodeName !== 'Text' && child.Guid === trimSpecial(parent.id, { startString: 'para_' }))
                 {
                     const text = child.Children[index];
                     const oldText = '' + text.TextContent;
