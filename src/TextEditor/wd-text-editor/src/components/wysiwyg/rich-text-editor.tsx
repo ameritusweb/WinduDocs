@@ -252,6 +252,31 @@ useEffect(() => {
 
     const onClick = (event: React.MouseEvent<HTMLElement>) => {
 
+        function setFocusAtStart(this: Text) {
+            // Create a range and set it to the start of the text node
+            const range = document.createRange();
+            range.setStart(this, 0);
+            range.collapse(true);
+
+            function isWithin(node: HTMLElement | Text): boolean {
+                if (!node || !node.parentElement)
+                    return false;
+                return (node.parentElement as HTMLElement).id === 'richTextEditor' || isWithin(node.parentElement as HTMLElement);
+            }
+      
+            // Get the selection object and add the range
+            const selection = window.getSelection();
+            if (selection) {
+              if (selection.focusOffset > 0 && isWithin(selection.focusNode?.parentElement as HTMLElement))
+              {
+                return;
+              }
+              selection.removeAllRanges();
+              selection.addRange(range);
+            }
+            this.parentElement!.focus();
+        }
+
         const target = event.target as HTMLElement;
 
         if (target.nodeType !== Node.TEXT_NODE) {
@@ -260,18 +285,7 @@ useEffect(() => {
             const firstTextNode = findFirstTextNode(target);
         
             if (firstTextNode) {
-              // Create a range and set it to the start of the text node
-              const range = document.createRange();
-              range.setStart(firstTextNode, 0);
-              range.collapse(true);
-        
-              // Get the selection object and add the range
-              const selection = window.getSelection();
-              if (selection) {
-                selection.removeAllRanges();
-                selection.addRange(range);
-              }
-              firstTextNode.parentElement!.focus();
+              window.setTimeout(setFocusAtStart.bind(firstTextNode), 1);
             }
             else
             {

@@ -131,8 +131,6 @@ describe('Paragraph', async () => {
 
         expect((updateAstMock.mock.lastCall || [])[5]!).toStrictEqual([ 0 ]);
 
-        expect((updateAstMock.mock.lastCall || [])[6]!).toBe('A123456-123456');
-
         expect(handleCharacterInsertionMock).toHaveBeenCalledTimes(1);
 
         expect((handleCharacterInsertionMock.mock.lastCall || [])[0]!).not.toBe(null);

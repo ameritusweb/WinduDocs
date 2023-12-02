@@ -1,9 +1,9 @@
 import { vi } from "vitest";
-import { enterAroundCodeOrAlertBlocks } from ".";
+import { enterAroundStrongOrEmphasisText } from ".";
 import { mockCustomElement } from "../../utils/test-utils";
 import { IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 
-describe('enterAroundCodeOrAlertBlocks', () => {
+describe('enterAroundStrongOrEmphasisText', () => {
     it('handles startOffset === 0', () => {
       const mockHistoryManager: IHistoryManagerRecorder = {
         recordChildReplace: vi.fn(),
@@ -100,7 +100,7 @@ describe('enterAroundCodeOrAlertBlocks', () => {
         "childNodes": []
       });
   
-      const result = enterAroundCodeOrAlertBlocks(mockUpdateData, 'para_fc245cd8-38b5-45fb-ab93-8c4de8cd8116', mockHistoryManager, mockHigherLevelChildren, mockChildren, mockContainer, 0);
+      const result = enterAroundStrongOrEmphasisText(mockUpdateData, mockHistoryManager, mockHigherLevelChildren, mockContainer, 0);
       
       expect(mockHistoryManager.recordChildInsertBefore).toHaveBeenCalledTimes(1);
       expect(result).not.toBeNull();

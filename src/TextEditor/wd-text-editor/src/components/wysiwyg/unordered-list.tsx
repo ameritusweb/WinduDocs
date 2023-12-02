@@ -48,6 +48,7 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ id, context, isTopLevel, 
                     higherLevelChild={higherLevelChild} 
                     children={child.Children} 
                     higherLevelChildren={children} 
+                    higherLevelIndex={index}
                 /> : null
             })}
         </ul>
@@ -73,6 +74,7 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ id, context, isTopLevel, 
                     pathIndices={childPathIndices} 
                     higherLevelChild={higherLevelChild} 
                     children={child.Children} 
+                    higherLevelIndex={index}
                     higherLevelChildren={children} /> : null
             })}
         </ul>

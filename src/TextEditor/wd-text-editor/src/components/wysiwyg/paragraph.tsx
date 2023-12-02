@@ -164,7 +164,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         return;
       }
 
-        const update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.context, props.pathIndices, props.higherLevelContent?.id);
+        const update = updateAst(event, astCopy, higherLevelAstCopy, editorData, props.context, props.pathIndices, props.higherLevelContent?.higherLevelIndex);
         if (update.type === 'none')
         {
           return;

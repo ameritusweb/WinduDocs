@@ -1,14 +1,15 @@
-import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
+import { AstNode, IHistoryManagerRecorder, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNode, deepCopyAstNode, findNodeByGuid, generateKey, splitTree } from "../node-operations";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager: IHistoryManager, higherLevelChildren: AstNode[], container: Node, startOffset: number) => {
+const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager: IHistoryManagerRecorder, higherLevelChildren: AstNode[], container: Node, startOffset: number) => {
 
     const { higherLevelIndex, child, grandChild } = updateData;
 
     if (startOffset === 0)
     {
         const newBlank = createNewAstNode('BlankLine', 0, 0, null);
+        console.log(higherLevelIndex);
         const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
         higherLevelChildren.splice(higherLevelIndex, 0, newBlank);
         const historyBuilder = new HistoryBuilder();

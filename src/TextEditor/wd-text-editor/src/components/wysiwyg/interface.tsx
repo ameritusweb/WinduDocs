@@ -26,6 +26,7 @@ export interface AstNode extends AstNodeBase {
     content: AstNode[];
     children?: AstNode[];
     contentParent?: AstNode;
+    higherLevelIndex?: number;
     updater?: (nodes: AstNode[], updateProcessed: boolean) => void;
   }
 
@@ -208,6 +209,7 @@ export interface UpdateData {
   immediateChild: AstNode | null;
   rootChildId: string;
   containerIndex: number;
+  skyChildren: AstNode[];
 }
 
 export interface AstContext {

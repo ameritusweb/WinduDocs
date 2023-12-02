@@ -1,7 +1,7 @@
 import { AstContext, AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { enterAroundCodeOrAlertBlocks, enterAroundLists, enterAroundNormalText, enterAroundQuoteBlocks, enterAroundStrongOrEmphasisText } from "../enter-operations";
 
-const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, context: AstContext, range: Range, startOffset: number, higherLevelId?: string): AstUpdate | null => {
+const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, context: AstContext, range: Range, startOffset: number): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
     if (commonAncestor.nodeName !== '#text') {
 

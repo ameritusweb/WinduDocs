@@ -48,6 +48,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, path
                                 pathIndices={childPathIndices} 
                                 children={child.Children} 
                                 higherLevelChildren={children} 
+                                higherLevelIndex={index}
                                 higherLevelChild={higherLevelChild}
                             />
                         ) : null;
@@ -74,6 +75,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, path
                             children={child.Children} 
                             higherLevelChildren={children} 
                             higherLevelChild={higherLevelChild}
+                            higherLevelIndex={index}
                         />
                     ) : null;
                 })}

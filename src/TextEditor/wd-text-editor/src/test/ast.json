@@ -494,7 +494,7 @@
                 "Attributes": {},
                 "ChildIndex": 0,
                 "Depth": 3,
-                "Guid": "c42f0313-cde7-4f11-994a-04aa0acd2286",
+                "Guid": "567b7c66-9e94-4364-b61b-cec0d9ef0e2a",
                 "TextContent": null,
                 "Children": [
                   {
@@ -502,8 +502,36 @@
                     "Attributes": {},
                     "ChildIndex": 0,
                     "Depth": 4,
-                    "Guid": "c78bcb7c-9151-4ded-97ba-06d7fb875171",
-                    "TextContent": "First Level Item 1",
+                    "Guid": "1bc2b524-058b-4b05-a227-a99657e9f25b",
+                    "TextContent": "First ",
+                    "Children": []
+                  },
+                  {
+                    "NodeName": "Strong",
+                    "Attributes": {},
+                    "ChildIndex": 0,
+                    "Depth": 4,
+                    "Guid": "5b8cb389-a0f1-42c5-975d-4564c57bb8ab",
+                    "TextContent": null,
+                    "Children": [
+                      {
+                        "NodeName": "Text",
+                        "Attributes": {},
+                        "ChildIndex": 0,
+                        "Depth": 5,
+                        "Guid": "22703eb1-6e38-4452-bea1-16919a538ac6",
+                        "TextContent": "Level",
+                        "Children": []
+                      }
+                    ]
+                  },
+                  {
+                    "NodeName": "Text",
+                    "Attributes": {},
+                    "ChildIndex": 0,
+                    "Depth": 4,
+                    "Guid": "2bf73464-e26e-40cd-b086-e298ae101e95",
+                    "TextContent": " Item 1",
                     "Children": []
                   }
                 ]

@@ -9,14 +9,23 @@ export const useRichTextEditor = () => {
     const editorData: EditorDataType = EditorData;
     const historyManager: IHistoryManager = HistoryManager;
 
-    const gatherUpdateData = (children: AstNode[], higherLevelChildren: AstNode[]): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; endOffset: number } | null => {
+    const gatherUpdateData = (children: AstNode[], higherLevelChildren: AstNode[], index?: number): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; endOffset: number } | null => {
         const sel = window.getSelection();
+        let skyChildren = higherLevelChildren;
         let higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
         if (higherLevelIndex === null) {
             higherLevelIndex = -1;
             const i = higherLevelChildren.findIndex(c => c.Guid === children[0].Guid);
             if (i > -1) {
                 higherLevelChildren[i] = children[0];
+            } else if (index !== undefined) {
+                const nestedIndex = findHigherlevelIndex(children, higherLevelChildren[index].Children);
+                if (nestedIndex !== null) {
+                    higherLevelChildren[index].Children[nestedIndex].Children = children;
+                    skyChildren = higherLevelChildren;
+                    higherLevelChildren = higherLevelChildren[index].Children;
+                    higherLevelIndex = nestedIndex;
+                }
             }
         } else {
             higherLevelChildren[higherLevelIndex].Children = children;
@@ -72,15 +81,15 @@ export const useRichTextEditor = () => {
                     endGrandChild = endChild?.Children[endContainerIndex] || null;
                 }
             }
-            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, lowerLevelChild, immediateChild, rootChildId, containerIndex, grandChild, endChild, endGrandChild }
+            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, lowerLevelChild, immediateChild, rootChildId, containerIndex, grandChild, endChild, endGrandChild, skyChildren }
             return {updateData, container, endContainer, range, startOffset, endOffset};
         }
         return null;
     }
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelId?: string): AstUpdate => {
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelIndex?: number): AstUpdate => {
 
-        const updateDataRes = gatherUpdateData(children, higherLevelChildren);
+        const updateDataRes = gatherUpdateData(children, higherLevelChildren, higherLevelIndex);
 
         if (updateDataRes)
         {
@@ -88,7 +97,7 @@ export const useRichTextEditor = () => {
             const key = event.key;
             if (key === 'Enter') {
                 event.preventDefault();
-                let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, context, range, startOffset, higherLevelId);
+                let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, context, range, startOffset);
                 if (update) {
                     update = { ...update, pathIndices };
                     editorData.emitEvent('update', 'richTextEditor', update);
