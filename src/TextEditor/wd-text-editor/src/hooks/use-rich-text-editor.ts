@@ -11,7 +11,7 @@ export const useRichTextEditor = () => {
 
     const gatherUpdateData = (children: AstNode[], higherLevelChildren: AstNode[], index?: number): { updateData: UpdateData; container: Node; endContainer: Node; range: Range; startOffset: number; endOffset: number } | null => {
         const sel = window.getSelection();
-        let skyChildren = higherLevelChildren;
+        let skyChildren: AstNode[] = [];
         let higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
         if (higherLevelIndex === null) {
             higherLevelIndex = -1;
@@ -59,7 +59,7 @@ export const useRichTextEditor = () => {
             }
 
             const containerIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
-            const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, trimSpecial(parent?.id, { startString: 'para_' }), null);
+            const [child, astParent, immediateChild] = findNodeByGuid(skyChildren.length > 0 ? skyChildren : higherLevelChildren, trimSpecial(parent?.id, { startString: 'para_' }), null);
             const lowerLevelIndex = findNodeIndexByGuid(children, parent?.id || '');
             const lowerLevelChild: AstNode | null = children[lowerLevelIndex === null ? -1 : lowerLevelIndex] || null;
             const grandChild = child?.Children[containerIndex] || null;

@@ -103,6 +103,9 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ ast }) => {
           if (update.type.startsWith('higherLevel'))
           {
             indices = update.pathIndices.slice(0, -1);
+          } else if (update.type.startsWith('skyLevel'))
+          {
+            indices = update.pathIndices.slice(0, -2);
           }
 
             // Update the tree with the new children directly using the current AST
