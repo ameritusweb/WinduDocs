@@ -251,68 +251,57 @@ useEffect(() => {
     };
 
     const onClick = (event: React.MouseEvent<HTMLElement>) => {
-
-        function setFocusAtStart(this: Text) {
-            // Create a range and set it to the start of the text node
+        const richTextEditorId = 'richTextEditor';
+    
+        function setFocusAtStart(textNode: Text) {
             const range = document.createRange();
-            range.setStart(this, 0);
+            range.setStart(textNode, 0);
             range.collapse(true);
-
-            function isWithin(node: HTMLElement | Text): boolean {
-                if (!node || !node.parentElement)
-                    return false;
-                return (node.parentElement as HTMLElement).id === 'richTextEditor' || isWithin(node.parentElement as HTMLElement);
-            }
-      
-            // Get the selection object and add the range
+    
             const selection = window.getSelection();
-            if (selection) {
-              if (selection.focusOffset > 0 && isWithin(selection.focusNode?.parentElement as HTMLElement))
-              {
-                return;
-              }
-              selection.removeAllRanges();
-              selection.addRange(range);
+            if (selection && shouldSetFocus(selection)) {
+                selection.removeAllRanges();
+                selection.addRange(range);
             }
-            this.parentElement!.focus();
+            textNode.parentElement!.focus();
         }
-
-        const target = event.target as HTMLElement;
-
-        if (target.nodeType !== Node.TEXT_NODE) {
-        
-            // Find the first text node
-            const firstTextNode = findFirstTextNode(target);
-        
-            if (firstTextNode) {
-              window.setTimeout(setFocusAtStart.bind(firstTextNode), 1);
-            }
-            else
-            {
-                (event.target as HTMLElement).focus();
-            }
-        } else {
-            (event.target as HTMLElement).focus();
+    
+        function shouldSetFocus(selection: Selection) {
+            return selection.focusOffset === 0 || !isWithinEditor(selection.focusNode as Element);
         }
-        
+    
+        function isWithinEditor(node: Element | null) {
+            while (node && node.nodeType !== Node.DOCUMENT_NODE) {
+                if (node.id === richTextEditorId) return true;
+                node = node.parentNode as Element;
+            }
+            return false;
+        }
+    
         function findFirstTextNode(node: Node): Text | null {
-          // If the current node is a text node, return it
-          if (node.nodeType === Node.TEXT_NODE) {
-            return node as Text;
-          }
-        
-          // Otherwise, search its children
-          for (let child of node.childNodes) {
-            const result = findFirstTextNode(child);
-            if (result) {
-              return result;
+            if (node.nodeType === Node.TEXT_NODE) {
+                return node as Text;
             }
-          }
         
-          // Return null if no text node is found
-          return null;
+            for (const child of node.childNodes) {
+                const textNode = findFirstTextNode(child);
+                if (textNode) {
+                    return textNode;
+                }
+            }
+        
+            return null;
         }
-    }
+    
+        const target = event.target as HTMLElement;
+        const textNode = target.nodeType === Node.TEXT_NODE ? target : findFirstTextNode(target);
+    
+        if (textNode) {
+            setFocusAtStart(textNode as Text);
+        } else {
+            target.focus();
+        }
+    };    
 
     const onMouseDown = (event: React.MouseEvent<HTMLElement>) => {
 

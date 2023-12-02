@@ -81,15 +81,15 @@ export const useRichTextEditor = () => {
                     endGrandChild = endChild?.Children[endContainerIndex] || null;
                 }
             }
-            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, lowerLevelChild, immediateChild, rootChildId, containerIndex, grandChild, endChild, endGrandChild, skyChildren }
+            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, lowerLevelChild, immediateChild, rootChildId, containerIndex, grandChild, endChild, endGrandChild, skyChildren, higherLevelChildren }
             return {updateData, container, endContainer, range, startOffset, endOffset};
         }
         return null;
     }
 
-    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherLevelChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelIndex?: number): AstUpdate => {
+    const updateAst = (event: React.KeyboardEvent<HTMLElement>, children: AstNode[], higherChildren: AstNode[], editorData: EditorDataType, context: AstContext, pathIndices: number[], higherLevelIndex?: number): AstUpdate => {
 
-        const updateDataRes = gatherUpdateData(children, higherLevelChildren, higherLevelIndex);
+        const updateDataRes = gatherUpdateData(children, higherChildren, higherLevelIndex);
 
         if (updateDataRes)
         {
@@ -97,7 +97,7 @@ export const useRichTextEditor = () => {
             const key = event.key;
             if (key === 'Enter') {
                 event.preventDefault();
-                let update = handleEnterKeyPress(historyManager, container, children, higherLevelChildren, updateData, context, range, startOffset);
+                let update = handleEnterKeyPress(historyManager, container, children, updateData, context, range, startOffset);
                 if (update) {
                     update = { ...update, pathIndices };
                     editorData.emitEvent('update', 'richTextEditor', update);
@@ -105,7 +105,7 @@ export const useRichTextEditor = () => {
             }
             else if (key === 'Backspace') {
                 event.preventDefault();
-                let update = handleBackspaceKeyPress(historyManager, container, endContainer, children, higherLevelChildren, updateData, range, startOffset, endOffset);
+                let update = handleBackspaceKeyPress(historyManager, container, endContainer, children, updateData, range, startOffset, endOffset);
                 if (update) {
                     update = { ...update, pathIndices };
                     editorData.emitEvent('update', 'richTextEditor', update);
@@ -113,7 +113,7 @@ export const useRichTextEditor = () => {
             }
             else if (key.length === 1) {
                 event.preventDefault();
-                let update = handleCharacterInsertion(historyManager, container, children, higherLevelChildren, updateData, event.key, editorData.editorState, startOffset);
+                let update = handleCharacterInsertion(historyManager, container, children, updateData, event.key, editorData.editorState, startOffset);
                 if (update) {
                     update = { ...update, pathIndices };
                     editorData.emitEvent('update', 'richTextEditor', update);

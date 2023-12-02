@@ -3,9 +3,9 @@ import { moveArray } from "../array-processing";
 import { createNewAstNode, deepCopyAstNode, generateKey, splitNode } from "../node-operations";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
+const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryManager, children: AstNode[], container: Node, startOffset: number) => {
 
-    const { higherLevelIndex, child, grandChild, containerIndex } = updateData;
+    const { higherLevelIndex, child, grandChild, containerIndex, higherLevelChildren } = updateData;
 
     if (startOffset === 0)
     {

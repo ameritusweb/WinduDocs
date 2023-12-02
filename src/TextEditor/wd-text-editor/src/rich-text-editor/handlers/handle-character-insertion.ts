@@ -2,10 +2,10 @@ import { AstNode, AstUpdate, IHistoryManager, IdableNode, UpdateData } from "../
 import { insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText, insertBothStrongAndEmphasisTextIntoNormalText, insertEitherStrongOrEmphasisTextIntoNormalText, insertNormalTextIntoBothStrongAndEmphasisText, insertNormalTextIntoEitherStrongOrEmphasisText, insertNormalTextIntoOtherNormalText, insertStrongTextIntoEmphasisTextOrViceVersa, insertTextIntoAListItem, insertTextIntoEitherACodeBlockOrAlertBlock, insertTextIntoHeading } from "../insertion-operations";
 
 // Handle character insertion
-const handleCharacterInsertion = (historyManager: IHistoryManager, container: Node, children: AstNode[], higherLevelChildren: AstNode[], updateData: UpdateData, key: string, editorState: string, startOffset: number): AstUpdate | null => {
+const handleCharacterInsertion = (historyManager: IHistoryManager, container: Node, children: AstNode[], updateData: UpdateData, key: string, editorState: string, startOffset: number): AstUpdate | null => {
     if (container && container.nodeName === '#text')
     {
-        let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex} = updateData;
+        let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex, higherLevelChildren} = updateData;
         if (parent) {
             const grandParent = parent.parentElement;
             if (child) {

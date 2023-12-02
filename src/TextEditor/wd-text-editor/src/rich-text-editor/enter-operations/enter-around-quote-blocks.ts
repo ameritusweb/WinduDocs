@@ -3,9 +3,9 @@ import { createNewAstNodeFromFormat, deepCopyAstNode, splitTree } from "../node-
 import { trimSpecial } from "../undo-redo-ot";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
+const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManager, children: AstNode[], container: Node, startOffset: number) => {
 
-    const { higherLevelIndex, child, grandChild, containerIndex } = updateData;
+    const { higherLevelIndex, child, grandChild, containerIndex, higherLevelChildren } = updateData;
 
     if (startOffset === 0)
     {

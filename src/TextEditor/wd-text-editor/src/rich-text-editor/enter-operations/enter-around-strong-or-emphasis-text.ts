@@ -2,9 +2,9 @@ import { AstNode, IHistoryManagerRecorder, UpdateData } from "../../components/w
 import { createNewAstNode, deepCopyAstNode, findNodeByGuid, generateKey, splitTree } from "../node-operations";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager: IHistoryManagerRecorder, higherLevelChildren: AstNode[], container: Node, startOffset: number) => {
+const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager: IHistoryManagerRecorder, container: Node, startOffset: number) => {
 
-    const { higherLevelIndex, child, grandChild } = updateData;
+    const { higherLevelIndex, child, grandChild, higherLevelChildren } = updateData;
 
     if (startOffset === 0)
     {

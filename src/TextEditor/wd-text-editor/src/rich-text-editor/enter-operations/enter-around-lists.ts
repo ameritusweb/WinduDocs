@@ -1,9 +1,9 @@
 import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNodeFromFormat, findNodeByGuid, generateKey, replaceKeys } from "../node-operations";
 
-const enterAroundLists = (updateData: UpdateData, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
+const enterAroundLists = (updateData: UpdateData, historyManager: IHistoryManager, children: AstNode[], container: Node, startOffset: number) => {
 
-    const { astParent, containerIndex } = updateData;
+    const { astParent, containerIndex, higherLevelChildren } = updateData;
 
     if (startOffset === 0)
     {

@@ -3,9 +3,9 @@ import { createNewAstNode, deepCopyAstNode, splitNode } from "../node-operations
 import { trimSpecial } from "../undo-redo-ot";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManagerRecorder, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
+const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManagerRecorder, children: AstNode[], container: Node, startOffset: number) => {
 
-    const { higherLevelIndex, child, containerIndex } = updateData;
+    const { higherLevelIndex, child, containerIndex, higherLevelChildren } = updateData;
 
     if (startOffset === 0)
     {

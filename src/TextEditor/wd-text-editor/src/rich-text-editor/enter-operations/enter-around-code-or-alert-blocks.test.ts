@@ -52,37 +52,37 @@ describe('enterAroundCodeOrAlertBlocks', () => {
         "grandChild": null,
         "endChild": null,
         "endGrandChild": null,
-        "skyChildren": []
+        "skyChildren": [],
+        "higherLevelChildren": [
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Guid": "fc245cd8-38b5-45fb-ab93-8c4de8cd8116",
+            "Depth": 2,
+            "TextContent": "console.log('Hello, world!');",
+            "Children": []
+          },
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 1,
+            "Guid": "b7ea8d0a-fa75-4c41-b503-52be791878f1",
+            "Depth": 2,
+            "TextContent": "\n",
+            "Children": []
+          },
+          {
+            "NodeName": "Text",
+            "Attributes": {},
+            "ChildIndex": 2,
+            "Guid": "744a50aa-4fef-40cc-8bff-707e24c719fd",
+            "Depth": 2,
+            "TextContent": "console.log('This is line 2!');",
+            "Children": []
+          }
+        ]
       };
-      const mockHigherLevelChildren = [
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 0,
-          "Guid": "fc245cd8-38b5-45fb-ab93-8c4de8cd8116",
-          "Depth": 2,
-          "TextContent": "console.log('Hello, world!');",
-          "Children": []
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 1,
-          "Guid": "b7ea8d0a-fa75-4c41-b503-52be791878f1",
-          "Depth": 2,
-          "TextContent": "\n",
-          "Children": []
-        },
-        {
-          "NodeName": "Text",
-          "Attributes": {},
-          "ChildIndex": 2,
-          "Guid": "744a50aa-4fef-40cc-8bff-707e24c719fd",
-          "Depth": 2,
-          "TextContent": "console.log('This is line 2!');",
-          "Children": []
-        }
-      ];
       const mockChildren = [
         {
           "NodeName": "Text",
@@ -100,7 +100,7 @@ describe('enterAroundCodeOrAlertBlocks', () => {
         "childNodes": []
       });
   
-      const result = enterAroundCodeOrAlertBlocks(mockUpdateData, 'para_fc245cd8-38b5-45fb-ab93-8c4de8cd8116', mockHistoryManager, mockHigherLevelChildren, mockChildren, mockContainer, 0);
+      const result = enterAroundCodeOrAlertBlocks(mockUpdateData, 'para_fc245cd8-38b5-45fb-ab93-8c4de8cd8116', mockHistoryManager, mockChildren, mockContainer, 0);
       
       expect(mockHistoryManager.recordChildInsertBefore).toHaveBeenCalledTimes(1);
       expect(result).not.toBeNull();

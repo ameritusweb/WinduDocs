@@ -210,6 +210,7 @@ export interface UpdateData {
   rootChildId: string;
   containerIndex: number;
   skyChildren: AstNode[];
+  higherLevelChildren: AstNode[];
 }
 
 export interface AstContext {

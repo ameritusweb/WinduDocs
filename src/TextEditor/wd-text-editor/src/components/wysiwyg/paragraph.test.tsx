@@ -141,19 +141,17 @@ describe('Paragraph', async () => {
 
         expect((handleCharacterInsertionMock.mock.lastCall || [])[2]!.length).toBe(2);
 
-        expect((handleCharacterInsertionMock.mock.lastCall || [])[3]!.length).toBe(2);
+        expect((handleCharacterInsertionMock.mock.lastCall || [])[3]!.parent.nodeName).toBe('P');
 
-        expect((handleCharacterInsertionMock.mock.lastCall || [])[4]!.parent.nodeName).toBe('P');
+        expect((handleCharacterInsertionMock.mock.lastCall || [])[3]!.child).not.toBe(null);
 
-        expect((handleCharacterInsertionMock.mock.lastCall || [])[4]!.child).not.toBe(null);
+        expect((handleCharacterInsertionMock.mock.lastCall || [])[3]!.astParent).toBe(null);
 
-        expect((handleCharacterInsertionMock.mock.lastCall || [])[4]!.astParent).toBe(null);
+        expect((handleCharacterInsertionMock.mock.lastCall || [])[4]!).toBe('a');
 
-        expect((handleCharacterInsertionMock.mock.lastCall || [])[5]!).toBe('a');
+        expect((handleCharacterInsertionMock.mock.lastCall || [])[5]!).toBe('unselected');
 
-        expect((handleCharacterInsertionMock.mock.lastCall || [])[6]!).toBe('unselected');
-
-        expect((handleCharacterInsertionMock.mock.lastCall || [])[7]!).toBe(26);
+        expect((handleCharacterInsertionMock.mock.lastCall || [])[6]!).toBe(26);
 
           const editorData = EditorData;
           expect(editorData.emitEvent).toHaveBeenCalled();
