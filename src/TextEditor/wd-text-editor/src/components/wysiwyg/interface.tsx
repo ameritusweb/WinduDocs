@@ -251,5 +251,5 @@ export interface IHistoryBuilder {
   addReplaceCommand(oldNode: AstNode, newNode: AstNode): void;
 
   // Build and apply the history commands to a given history manager
-  apply(): void;
+  applyTo(historyManager: IHistoryManagerRecorder): void;
 }

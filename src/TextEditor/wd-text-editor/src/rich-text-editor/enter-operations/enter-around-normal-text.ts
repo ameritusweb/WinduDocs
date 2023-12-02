@@ -16,7 +16,7 @@ const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryM
         historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
         historyBuilder.addFinalCursorPosition(oldNode, 0, 0);
         historyBuilder.addInsertBeforeCommand(oldNode, newBlank);
-        historyBuilder.apply();
+        historyBuilder.applyTo(historyManager);
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
     else if (startOffset === container.textContent?.length)
@@ -27,7 +27,7 @@ const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryM
         historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
         historyBuilder.addFinalCursorPosition(newBlank, 0, 0);
         historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex], newBlank);
-        historyBuilder.apply();
+        historyBuilder.applyTo(historyManager);
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
     else
@@ -47,7 +47,7 @@ const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryM
         higherLevelChildren.splice(higherLevelIndex + 1, 0, newPara);
         historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], newPara);
         historyBuilder.addFinalCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, 0);
-        historyBuilder.apply();
+        historyBuilder.applyTo(historyManager);
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
 

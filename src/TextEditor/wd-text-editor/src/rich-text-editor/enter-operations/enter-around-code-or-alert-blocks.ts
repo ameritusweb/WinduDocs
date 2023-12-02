@@ -18,7 +18,7 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
             historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, 0);
             historyBuilder.addFinalCursorPosition({ ...higherLevelChildren[higherLevelIndex + 1], NodeName: 'ParagraphBlock' }, containerIndex, 0);
             historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
-            historyBuilder.apply();
+            historyBuilder.applyTo(historyManager);
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }   
     }
@@ -33,7 +33,7 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
             historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
             historyBuilder.addFinalCursorPosition({ ...higherLevelChildren[higherLevelIndex + 1], NodeName: 'ParagraphBlock' }, 0, 0);
             historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
-            historyBuilder.apply();
+            historyBuilder.applyTo(historyManager);
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }   
     }
@@ -48,7 +48,7 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
         higherLevelChildren.splice(higherLevelIndex + 1, 0, node2);
         historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], node2);
         historyBuilder.addFinalCursorPosition({ ...node2, NodeName: 'ParagraphBlock' }, 0, 0);
-        historyBuilder.apply();
+        historyBuilder.applyTo(historyManager);
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
 

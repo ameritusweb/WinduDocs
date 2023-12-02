@@ -6,13 +6,11 @@ class HistoryBuilder implements IHistoryBuilder {
     private initialCursorPosition: CursorPositionParams | null;
     private finalCursorPosition: CursorPositionParams | null;
     private commands: IHistoryCommand[];
-    private historyManager: IHistoryManagerRecorder;
 
     constructor() {
         this.initialCursorPosition = null;
         this.finalCursorPosition = null;
         this.commands = [];
-        this.historyManager = HistoryManager;
     }
 
     addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
@@ -44,11 +42,11 @@ class HistoryBuilder implements IHistoryBuilder {
         this.commands.push({ type: 'replace', siblingId: null, oldNode, newNode });
     }
 
-    apply() {
+    applyTo(historyManager: IHistoryManagerRecorder) {
         this.commands.forEach((c, ind) => {
             switch (c.type) {
                 case 'insertBefore':
-                    this.historyManager.recordChildInsertBefore(
+                    historyManager.recordChildInsertBefore(
                         this.initialCursorPosition,
                         this.finalCursorPosition, 
                         c.siblingId || '', 
@@ -56,7 +54,7 @@ class HistoryBuilder implements IHistoryBuilder {
                         ind > 0);
                         break;
                 case 'insertAfter':
-                    this.historyManager.recordChildInsertAfter(
+                    historyManager.recordChildInsertAfter(
                         this.initialCursorPosition,
                         this.finalCursorPosition, 
                         c.siblingId || '', 
@@ -64,7 +62,7 @@ class HistoryBuilder implements IHistoryBuilder {
                         ind > 0);
                         break;
                 case 'removeBefore':
-                    this.historyManager.recordChildRemoveBefore(
+                    historyManager.recordChildRemoveBefore(
                         this.initialCursorPosition,
                         this.finalCursorPosition, 
                         c.siblingId || '', 
@@ -72,7 +70,7 @@ class HistoryBuilder implements IHistoryBuilder {
                         ind > 0);
                         break;
                 case 'removeAfter':
-                    this.historyManager.recordChildRemoveAfter(
+                    historyManager.recordChildRemoveAfter(
                         this.initialCursorPosition,
                         this.finalCursorPosition, 
                         c.siblingId || '', 
@@ -81,7 +79,7 @@ class HistoryBuilder implements IHistoryBuilder {
                         break;
                 case 'replace':
                     if (c.oldNode) {
-                        this.historyManager.recordChildReplace(
+                        historyManager.recordChildReplace(
                             this.initialCursorPosition,
                             this.finalCursorPosition, 
                             c.oldNode, 

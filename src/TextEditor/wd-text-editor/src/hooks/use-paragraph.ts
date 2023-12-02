@@ -39,7 +39,7 @@ export const useParagraph = () => {
                         historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
                         historyBuilder.addFinalCursorPosition(newBold, 0, 0);
                         historyBuilder.addReplaceCommand(oldNode, child);
-                        historyBuilder.apply();
+                        historyBuilder.applyTo(historyManager);
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeBold', nodes: child.Children, pathIndices });
                     }
                 }
@@ -75,7 +75,7 @@ export const useParagraph = () => {
                         historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
                         historyBuilder.addFinalCursorPosition(newItalic, 0, 0);
                         historyBuilder.addReplaceCommand(oldNode, child);
-                        historyBuilder.apply();
+                        historyBuilder.applyTo(historyManager);
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     }
                 }
@@ -104,7 +104,7 @@ export const useParagraph = () => {
                         historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
                         historyBuilder.addFinalCursorPosition(newBold, 0, 0);
                         historyBuilder.addReplaceCommand(oldNode, child);
-                        historyBuilder.apply();
+                        historyBuilder.applyTo(historyManager);
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     } else if (context.types.length === 0 && astParent !== null && (parent.nodeName === 'STRONG' || parent.nodeName === 'EM' )) {
                         const higherLevelChildren = higherLevelAstCopy;
@@ -126,7 +126,7 @@ export const useParagraph = () => {
                         historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
                         historyBuilder.addFinalCursorPosition(newItalic, 0, 0);
                         historyBuilder.addReplaceCommand(oldNode, child);
-                        historyBuilder.apply();
+                        historyBuilder.applyTo(historyManager);
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     }
                 }

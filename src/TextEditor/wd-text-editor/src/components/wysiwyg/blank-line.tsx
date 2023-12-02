@@ -20,7 +20,6 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
     const { createNewAstNode, createNewAstNodeFromFormat, historyManager } = useRichTextEditor();
     const editorData: EditorDataType = EditorData;
 
-
     useEffect(() => {
 
       higherLevelContentRef.current = higherLevelContent.content;
@@ -40,7 +39,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
           historyBuilder.addFinalCursorPosition(newParagraph, 0, 0);
           historyBuilder.addReplaceCommand(oldNode, newLine);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
@@ -57,7 +56,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
           historyBuilder.addFinalCursorPosition({ ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
           historyBuilder.addReplaceCommand(oldNode, newCodeBlock);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
@@ -73,7 +72,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
           historyBuilder.addFinalCursorPosition(newHR, 0, 0);
           historyBuilder.addReplaceCommand(oldNode, newHR);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
@@ -97,7 +96,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
           historyBuilder.addFinalCursorPosition(newTable, 0, 0);
           historyBuilder.addReplaceCommand(oldNode, newTable);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -117,7 +116,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
           historyBuilder.addFinalCursorPosition({ ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
           historyBuilder.addReplaceCommand(oldNode, newCodeBlock);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -135,7 +134,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
           historyBuilder.addFinalCursorPosition(newListBlock.Children[0].Children[0], 0, 0);
           historyBuilder.addReplaceCommand(oldNode, newListBlock);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -153,7 +152,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
           historyBuilder.addFinalCursorPosition(newListBlock.Children[0].Children[0], 0, 0);
           historyBuilder.addReplaceCommand(oldNode, newListBlock);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -226,7 +225,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(higherLevelContentCopy[index], 0, 0);
           historyBuilder.addFinalCursorPosition(newLine, 0, 0);
           historyBuilder.addInsertAfterCommand(higherLevelContentCopy[index], newLine);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
         } else if (event.key === 'Backspace') {
           event.preventDefault();
@@ -244,7 +243,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           historyBuilder.addInitialCursorPosition(oldNode, 0, 1);
           historyBuilder.addFinalCursorPosition(newNode, 0, 1);
           historyBuilder.addReplaceCommand(oldNode, newNode);
-          historyBuilder.apply();
+          historyBuilder.applyTo(historyManager);
           higherLevelContent.updater(higherLevelContentCopy, true);
         }
 

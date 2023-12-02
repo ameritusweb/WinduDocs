@@ -15,7 +15,7 @@ const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager:
         historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
         historyBuilder.addFinalCursorPosition(oldNode, 0, 0);
         historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex], newBlank);
-        historyBuilder.apply();
+        historyBuilder.applyTo(historyManager);
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
     else if (startOffset === container.textContent?.length)
@@ -26,7 +26,7 @@ const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager:
         historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
         historyBuilder.addFinalCursorPosition(newBlank, 0, 0);
         historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], newBlank);
-        historyBuilder.apply();
+        historyBuilder.applyTo(historyManager);
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
     else
@@ -49,7 +49,7 @@ const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager:
             if (newParent && newChildIndex !== undefined && newChildIndex !== null) {
                 historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], split[1]);
                 historyBuilder.addFinalCursorPosition(newParent, newChildIndex, 0);
-                historyBuilder.apply();
+                historyBuilder.applyTo(historyManager);
             }
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }

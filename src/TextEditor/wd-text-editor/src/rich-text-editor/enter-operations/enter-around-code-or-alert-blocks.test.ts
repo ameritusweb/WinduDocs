@@ -100,6 +100,7 @@ describe.only('enterAroundCodeOrAlertBlocks', () => {
   
       const result = enterAroundCodeOrAlertBlocks(mockUpdateData, 'para_fc245cd8-38b5-45fb-ab93-8c4de8cd8116', mockHistoryManager, mockHigherLevelChildren, mockChildren, mockContainer, 0);
       
+      expect(mockHistoryManager.recordChildInsertBefore).toHaveBeenCalledTimes(1);
       expect(result).not.toBeNull();
       expect(result!.type).toBe("higherLevelSplitOrMove");
       expect(result!.nodes[0].TextContent).toBe("\n");
