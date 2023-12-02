@@ -3,10 +3,6 @@ import { AstNode } from "../components/wysiwyg/interface";
 export const useMarkdownGenerator = () => {
 
     const convertTableToMarkdown = (tableNode: AstNode, depth: number): string => {
-        if (tableNode.NodeName !== 'Table') {
-          return '';
-        }
-      
         let markdownTable = '';
         let headerRow = '';
         let dividerRow = '';

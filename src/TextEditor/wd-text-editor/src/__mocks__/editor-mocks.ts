@@ -795,6 +795,15 @@ export const mockQuoteBlockData: AstNode[] = [
         "Children": []
       }
     ]
+  },
+  {
+    "NodeName": "FakeNode",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 3,
+    "Guid": "1aef21a1-5e28-4074-afc7-086140b0f28d",
+    "TextContent": "",
+    "Children": []
   }
 ]
 
@@ -1242,6 +1251,15 @@ export const mockTableData: AstNode[] = [{
       ]
     }
   ]
+},
+{
+  "NodeName": "FakeNode",
+  "Attributes": {},
+  "ChildIndex": 0,
+  "Depth": 5,
+  "Guid": "2fc92807-a2fd-46a3-a920-f0082e95821c",
+  "TextContent": "",
+  "Children": []
 }
 ];
 
