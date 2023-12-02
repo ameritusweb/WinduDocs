@@ -201,6 +201,7 @@ export interface UpdateData {
   endChild: AstNode | null;
   endGrandChild: AstNode | null;
   astParent: AstNode | null;
+  lowerLevelChild: AstNode | null;
   immediateChild: AstNode | null;
   rootChildId: string;
   containerIndex: number;

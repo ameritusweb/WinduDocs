@@ -1,6 +1,6 @@
 import { AstContext, AstNode, AstUpdate, IHistoryManager, UpdateData } from "../components/wysiwyg/interface";
 import { handleBackspaceKeyPress, handleCharacterInsertion, handleEnterKeyPress } from "../rich-text-editor/handlers";
-import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid } from "../rich-text-editor/node-operations";
+import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid, findNodeIndexByGuid } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import EditorData, { EditorDataType } from "./editor-data";
 
@@ -51,6 +51,8 @@ export const useRichTextEditor = () => {
 
             const containerIndex = Array.from(parent.childNodes).findIndex((c) => c === container);
             const [child, astParent, immediateChild] = findNodeByGuid(higherLevelChildren, parent?.id, null);
+            const lowerLevelIndex = findNodeIndexByGuid(children, parent?.id || '');
+            const lowerLevelChild: AstNode | null = children[lowerLevelIndex === null ? -1 : lowerLevelIndex] || null;
             const grandChild = child?.Children[containerIndex] || null;
             let endChild = null;
             let endGrandChild = null;
@@ -70,7 +72,7 @@ export const useRichTextEditor = () => {
                     endGrandChild = endChild?.Children[endContainerIndex] || null;
                 }
             }
-            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, immediateChild, rootChildId, containerIndex, grandChild, endChild, endGrandChild }
+            const updateData: UpdateData = { parent, higherLevelIndex, child, astParent, lowerLevelChild, immediateChild, rootChildId, containerIndex, grandChild, endChild, endGrandChild }
             return {updateData, container, endContainer, range, startOffset, endOffset};
         }
         return null;

@@ -11,7 +11,11 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
         const {parent} = updateData;
         if (parent) {
             const parentId = parent.id;
-            if (context.types.length === 0 && parent.nodeName === 'P')
+            if (context.isLink || updateData.lowerLevelChild?.NodeName === 'Link')
+            {
+                return null;
+            }
+            else if (context.types.length === 0 && parent.nodeName === 'P')
             {
                 const res = enterAroundNormalText(updateData, historyManager, higherLevelChildren, children, container, startOffset);
                 if (res)

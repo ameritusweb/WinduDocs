@@ -97,7 +97,7 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
                 initialPosition: replaceParams.initialPosition,
                 finalPosition: replaceParams.finalPosition,
                 parentNodeId: null,
-                targetNodeId: null,
+                targetNodeId: replaceParams.oldNode.Guid,
                 nodeIndex: null,
                 payload: { 
                     oldNode: replaceParams.oldNode,

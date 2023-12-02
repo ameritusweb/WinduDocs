@@ -14,6 +14,7 @@ export { default as deepCopyAstNode } from './deep-copy-ast-node';
 export { default as findClosestAncestor } from './find-closest-ancestor';
 export { default as findFirstTextNode } from './find-first-text-node';
 export { default as findLastTextNode } from './find-last-text-node';
+export { default as findNodeIndexByGuid } from './find-node-index-by-guid';
 export { default as createTableCell } from './create-table-cell';
 export { default as createTable } from './create-table';
 export { default as createListItem } from './create-list-item';

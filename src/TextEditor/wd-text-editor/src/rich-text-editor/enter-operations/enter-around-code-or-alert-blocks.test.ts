@@ -37,6 +37,7 @@ describe.only('enterAroundCodeOrAlertBlocks', () => {
           "Children": []
         },
         "astParent": null,
+        "lowerLevelChild": null,
         "immediateChild": {
           "NodeName": "Text",
           "Attributes": {},
