@@ -28,7 +28,7 @@ export const applyRemoveBeforeOperation = (ast: AstNode, operation: AstOperation
     if (operation.payload.siblingId) {
         const [ parentNode, spliceIndex ] = findParentNodeAndSpliceIndex(ast, operation.payload.siblingId, true);
         if (parentNode) {
-            parentNode.Children.splice(spliceIndex, 1);
+            parentNode.Children.splice(spliceIndex - 1, 1);
         }
     }
     return ast; // Return the modified AST

@@ -164,7 +164,7 @@ code {
   max-height:inherit;
   height:inherit;
   padding:0 1em;
-  line-height: 1.45;
+  line-height: 1.5;
   display: inline-flex;
   overflow:auto
 }

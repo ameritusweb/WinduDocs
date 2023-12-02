@@ -15,8 +15,8 @@ const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, histor
             const newNode = createNewAstNodeFromFormat('p', '\n');
             higherLevelChildren.splice(higherLevelIndex, 0, newNode);
             const historyBuilder = new HistoryBuilder();
-            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, startOffset);
-            historyBuilder.addFinalCursorPosition(newNode, 0, 0);
+            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
+            historyBuilder.addFinalCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, 0);
             historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
             historyBuilder.applyTo(historyManager);
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };

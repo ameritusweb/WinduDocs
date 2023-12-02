@@ -13,11 +13,12 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
         const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === trimSpecial(parentId, { startString: 'para_' }));
         if (child && higherLevelIndex !== -1) {
             const newNode = createNewAstNode('Text', 0, 0, '\n');
+            const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
             higherLevelChildren.splice(higherLevelIndex, 0, newNode);
             const historyBuilder = new HistoryBuilder();
-            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, 0);
+            historyBuilder.addInitialCursorPosition({ ...higherLevelChildren[higherLevelIndex], NodeName: 'ParagraphBlock' }, 0, 0);
             historyBuilder.addFinalCursorPosition({ ...higherLevelChildren[higherLevelIndex + 1], NodeName: 'ParagraphBlock' }, containerIndex, 0);
-            historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
+            historyBuilder.addInsertBeforeCommand(oldNode, newNode);
             historyBuilder.applyTo(historyManager);
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }   
@@ -30,9 +31,9 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
             const newNode = createNewAstNode('Text', 0, 0, '\n');
             higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
             const historyBuilder = new HistoryBuilder();
-            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
+            historyBuilder.addInitialCursorPosition({ ...higherLevelChildren[higherLevelIndex], NodeName: 'ParagraphBlock' }, 0, startOffset);
             historyBuilder.addFinalCursorPosition({ ...higherLevelChildren[higherLevelIndex + 1], NodeName: 'ParagraphBlock' }, 0, 0);
-            historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
+            historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], newNode);
             historyBuilder.applyTo(historyManager);
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }   
