@@ -1,6 +1,7 @@
 import { AstNode, IHistoryManagerRecorder, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNode, deepCopyAstNode, splitNode } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
+import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
 const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManagerRecorder, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
 
@@ -13,7 +14,11 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
         if (child && higherLevelIndex !== -1) {
             const newNode = createNewAstNode('Text', 0, 0, '\n');
             higherLevelChildren.splice(higherLevelIndex, 0, newNode);
-            historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex + 1], startOffset, newNode, { ...higherLevelChildren[higherLevelIndex + 1], NodeName: 'ParagraphBlock' }, containerIndex, 0);
+            const historyBuilder = new HistoryBuilder();
+            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, 0);
+            historyBuilder.addFinalCursorPosition({ ...higherLevelChildren[higherLevelIndex + 1], NodeName: 'ParagraphBlock' }, containerIndex, 0);
+            historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
+            historyBuilder.apply();
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }   
     }
@@ -24,7 +29,11 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
         if (child && higherLevelIndex !== -1) {
             const newNode = createNewAstNode('Text', 0, 0, '\n');
             higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
-            historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], startOffset, newNode, { ...newNode, NodeName: 'ParagraphBlock' }, 0, 0);
+            const historyBuilder = new HistoryBuilder();
+            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
+            historyBuilder.addFinalCursorPosition({ ...higherLevelChildren[higherLevelIndex + 1], NodeName: 'ParagraphBlock' }, 0, 0);
+            historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
+            historyBuilder.apply();
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }   
     }
@@ -33,9 +42,13 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
         const [node1, node2] = splitNode(child!, startOffset);
         const oldNode = deepCopyAstNode(higherLevelChildren[containerIndex]);
         higherLevelChildren.splice(higherLevelIndex, 1, node1);
-        historyManager.recordChildReplace(null, oldNode, node1, { ...node1, NodeName: 'ParagraphBlock' }, 0, startOffset);
+        const historyBuilder = new HistoryBuilder();
+        historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
+        historyBuilder.addReplaceCommand(oldNode, node1);
         higherLevelChildren.splice(higherLevelIndex + 1, 0, node2);
-        historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], startOffset, node2, { ...node2, NodeName: 'ParagraphBlock' }, 0, 0, true);
+        historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], node2);
+        historyBuilder.addFinalCursorPosition({ ...node2, NodeName: 'ParagraphBlock' }, 0, 0);
+        historyBuilder.apply();
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
 

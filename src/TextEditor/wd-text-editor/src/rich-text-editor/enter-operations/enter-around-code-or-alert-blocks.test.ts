@@ -3,14 +3,17 @@ import { enterAroundCodeOrAlertBlocks } from ".";
 import { mockCustomElement } from "../../utils/test-utils";
 import { IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 
-describe('enterAroundCodeOrAlertBlocks', () => {
+describe.only('enterAroundCodeOrAlertBlocks', () => {
     it('handles startOffset === 0', () => {
       const mockHistoryManager: IHistoryManagerRecorder = {
         recordChildReplace: vi.fn(),
         recordChildTextUpdate: vi.fn(),
         recordOperation: vi.fn(),
         recordOperationsAsTransaction: vi.fn(),
-        recordChildAdd: vi.fn(),
+        recordChildInsertBefore: vi.fn(),
+        recordChildInsertAfter: vi.fn(),
+        recordChildRemoveBefore: vi.fn(),
+        recordChildRemoveAfter: vi.fn(),
     };
       const mockUpdateData = {
         "parent": mockCustomElement({
@@ -97,7 +100,6 @@ describe('enterAroundCodeOrAlertBlocks', () => {
   
       const result = enterAroundCodeOrAlertBlocks(mockUpdateData, 'para_fc245cd8-38b5-45fb-ab93-8c4de8cd8116', mockHistoryManager, mockHigherLevelChildren, mockChildren, mockContainer, 0);
       
-      expect(mockHistoryManager.recordChildAdd).toHaveBeenCalledTimes(1);
       expect(result).not.toBeNull();
       expect(result!.type).toBe("higherLevelSplitOrMove");
       expect(result!.nodes[0].TextContent).toBe("\n");

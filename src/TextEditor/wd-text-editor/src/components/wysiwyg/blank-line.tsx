@@ -3,6 +3,7 @@ import EditorData, { EditorDataType } from "../../hooks/editor-data";
 import { AstNode, HigherLevelProps } from "./interface";
 import { useRichTextEditor } from "../../hooks/use-rich-text-editor";
 import { createListBlock, createTable, deepCopyAstNode } from "../../rich-text-editor/node-operations";
+import HistoryBuilder from "../../rich-text-editor/undo-redo-ot/history/history-builder";
 
 export interface BlankLineProps {
     id: string;
@@ -35,7 +36,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const newLine = createNewAstNode('QuoteBlock', 0, 0, null, [newParagraph]);
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newLine);
-          historyManager.recordChildReplace(null, oldNode, newLine, newParagraph, 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+          historyBuilder.addFinalCursorPosition(newParagraph, 0, 0);
+          historyBuilder.addReplaceCommand(oldNode, newLine);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
@@ -48,7 +53,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const newCodeBlock = createNewAstNode('FencedCodeBlock', 0, 0, null, [newText]);
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newCodeBlock);
-          historyManager.recordChildReplace(null, oldNode, newCodeBlock, { ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+          historyBuilder.addFinalCursorPosition({ ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
+          historyBuilder.addReplaceCommand(oldNode, newCodeBlock);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
     };
@@ -60,7 +69,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const newHR = createNewAstNode('ThematicBreakBlock', 0, 0, null);
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newHR);
-          historyManager.recordChildReplace(null, oldNode, newHR, newHR, 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+          historyBuilder.addFinalCursorPosition(newHR, 0, 0);
+          historyBuilder.addReplaceCommand(oldNode, newHR);
+          historyBuilder.apply();
           
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
@@ -80,7 +93,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const newTable = createTable(payload.rows, payload.cols);
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newTable);
-          historyManager.recordChildReplace(null, oldNode, newTable, newTable, 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+          historyBuilder.addFinalCursorPosition(newTable, 0, 0);
+          historyBuilder.addReplaceCommand(oldNode, newTable);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -96,7 +113,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           newCodeBlock.Attributes.Language = type;
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newCodeBlock);
-          historyManager.recordChildReplace(null, oldNode, newCodeBlock, { ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+          historyBuilder.addFinalCursorPosition({ ...newText, NodeName: 'ParagraphBlock' }, 0, 0);
+          historyBuilder.addReplaceCommand(oldNode, newCodeBlock);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -110,7 +131,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const newListBlock = createListBlock(1, true);
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newListBlock);
-          historyManager.recordChildReplace(null, oldNode, newListBlock, newListBlock.Children[0].Children[0], 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+          historyBuilder.addFinalCursorPosition(newListBlock.Children[0].Children[0], 0, 0);
+          historyBuilder.addReplaceCommand(oldNode, newListBlock);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -124,7 +149,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const newListBlock = createListBlock(1, false);
           const oldNode = deepCopyAstNode(higherLevelContentCopy[index]);
           higherLevelContentCopy.splice(index, 1, newListBlock);
-          historyManager.recordChildReplace(null, oldNode, newListBlock, newListBlock.Children[0].Children[0], 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+          historyBuilder.addFinalCursorPosition(newListBlock.Children[0].Children[0], 0, 0);
+          historyBuilder.addReplaceCommand(oldNode, newListBlock);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
       }
 
@@ -193,7 +222,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           const index = higherLevelContentCopy.findIndex((c) => c.Guid === self.Guid);
           const newLine = createNewAstNode('BlankLine', 0, 0, null);
           higherLevelContentCopy.splice(index + 1, 0, newLine);
-          historyManager.recordChildAdd(null, higherLevelContentCopy[index], 0, newLine, newLine, 0, 0);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(higherLevelContentCopy[index], 0, 0);
+          historyBuilder.addFinalCursorPosition(newLine, 0, 0);
+          historyBuilder.addInsertAfterCommand(higherLevelContentCopy[index], newLine);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
         } else if (event.key === 'Backspace') {
           event.preventDefault();
@@ -207,7 +240,11 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
           higherLevelContentCopy.splice(index, 1);
           const newNode = createNewAstNodeFromFormat(lineFormat!, event.key);
           higherLevelContentCopy.splice(index, 0, newNode);
-          historyManager.recordChildReplace(null, oldNode, newNode, newNode, 0, 1);
+          const historyBuilder = new HistoryBuilder();
+          historyBuilder.addInitialCursorPosition(oldNode, 0, 1);
+          historyBuilder.addFinalCursorPosition(newNode, 0, 1);
+          historyBuilder.addReplaceCommand(oldNode, newNode);
+          historyBuilder.apply();
           higherLevelContent.updater(higherLevelContentCopy, true);
         }
 

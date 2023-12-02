@@ -34,13 +34,15 @@ export interface AstNode {
     higherLevelNodes?: AstNode[];
 }
 
-export type AstOperationType = 'add' | 'remove' | 'update' | 'replace';
+export type AstOperationType = 'insertBefore' | 'insertAfter' | 'removeBefore' | 'removeAfter' | 'update' | 'replace';
 
-export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' | 'update' | 'replace'> {
+export interface AstOperation<Type extends AstOperationType = 'insertBefore' | 'insertAfter' | 'removeBefore' | 'removeAfter' | 'update' | 'replace'> {
   type: Type;
-  parentNodeId: string;
-  nodeIndex: number;
-  targetNodeId: string;
+  initialPosition: CursorPositionParams | null;
+  finalPosition: CursorPositionParams | null;
+  parentNodeId: string | null;
+  nodeIndex: number | null;
+  targetNodeId: string | null;
   payload: OperationPayloads[Type];
   timestamp: number;
   oldState?: AstNode | string; // Adjust this based on what oldState represents
@@ -51,34 +53,37 @@ export interface AstOperation<Type extends AstOperationType = 'add' | 'remove' |
 
 export type Transaction = AstOperation[];
 
-export interface CursorPositionType {
-  offset: number;
-  parentId: string;
-  nextSibling: boolean;
-  lastChild: boolean;
-  index: number;
-}
-
-export interface AddNodeParams {
-  parentNode: AstNode | null;
-  previousSibling: AstNode | null;
-  startOffset: number | null;
-  cursorTargetParent: AstNode;
+export interface CursorPositionParams {
+  targetParentId: string;
   nodeIndex: number;
   offset: number;
+}
+
+export interface InsertBeforeNodeParams {
+  initialPosition: CursorPositionParams | null;
+  finalPosition: CursorPositionParams | null;
+  siblingId: string;
   newNode: AstNode;
 }
 
-export interface ReplaceNodeParams {
-  parentNode: AstNode | null;
-  oldNode: AstNode;
-  cursorTargetParent: AstNode;
-  nodeIndex: number;
-  offset: number;
+export interface InsertAfterNodeParams {
+  initialPosition: CursorPositionParams | null;
+  finalPosition: CursorPositionParams | null;
+  siblingId: string;
   newNode: AstNode;
 }
 
-export interface RemoveNodeParams {
+export interface RemoveBeforeNodeParams {
+  initialPosition: CursorPositionParams | null;
+  finalPosition: CursorPositionParams | null;
+  siblingId: string;
+  targetNode: AstNode;
+}
+
+export interface RemoveAfterNodeParams {
+  initialPosition: CursorPositionParams | null;
+  finalPosition: CursorPositionParams | null;
+  siblingId: string;
   targetNode: AstNode;
 }
 
@@ -94,11 +99,21 @@ export interface UpdateNodeParams {
   rootChildId: string | undefined;
 }
 
+export interface ReplaceNodeParams {
+  initialPosition: CursorPositionParams | null;
+  finalPosition: CursorPositionParams | null;
+  oldNode: AstNode;
+  newNode: AstNode;
+}
+
 export interface IHistoryManagerRecorder {
-  recordChildReplace(parent: AstNode | null, oldNode: AstNode, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number): void;
-  recordChildAdd(parent: AstNode | null, previousSibling: AstNode | null, startOffset: number | null, newNode: AstNode, cursorTargetParent: AstNode, nodeIndex: number | null, offset: number, partOfTransaction?: boolean): void;
-  recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string): void;
-  recordOperation<Type extends 'add' | 'remove' | 'update'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
+  recordChildReplace(initialCursorPosition: CursorPositionParams | null, finalCursorPosition: CursorPositionParams | null, oldNode: AstNode, newNode: AstNode, partOfTransaction?: boolean): void;
+  recordChildInsertBefore(initialCursorPosition: CursorPositionParams | null, finalCursorPosition: CursorPositionParams | null, siblingId: string, newNode: AstNode, partOfTransaction?: boolean): void;
+  recordChildInsertAfter(initialCursorPosition: CursorPositionParams | null, finalCursorPosition: CursorPositionParams | null, siblingId: string, newNode: AstNode, partOfTransaction?: boolean): void;
+  recordChildRemoveBefore(initialCursorPosition: CursorPositionParams | null, finalCursorPosition: CursorPositionParams | null, siblingId: string, targetNode: AstNode, partOfTransaction?: boolean): void;
+  recordChildRemoveAfter(initialCursorPosition: CursorPositionParams | null, finalCursorPosition: CursorPositionParams | null, siblingId: string, targetNode: AstNode, partOfTransaction?: boolean): void;
+  recordChildTextUpdate(oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string, partOfTransaction?: boolean): void;
+  recordOperation<Type extends 'insertBefore' | 'insertAfter' | 'removeBefore' | 'removeAfter' | 'update' | 'replace'>(operation: AstOperation<Type>, partOfTransaction?: boolean): void;
   recordOperationsAsTransaction(operations: AstOperation[], historyManager: IHistoryManager): void;
 }
 
@@ -112,17 +127,23 @@ export interface IHistoryManager extends IHistoryManagerRecorder {
   redo(ast: AstNode): [AstNode, string] | null;
 }
 
-export interface AddNodePayload {
-  previousSiblingId: string | null;
-  startOffset: number | null;
-  offset: number;
+export interface InsertBeforeNodePayload {
+  siblingId: string | null;
   newNode: AstNode;
 }
 
-export interface RemoveNodePayload {
-  previousSiblingId: string | null;
-  startOffset: number | null;
-  offset: number;
+export interface InsertAfterNodePayload {
+  siblingId: string | null;
+  newNode: AstNode;
+}
+
+export interface RemoveBeforeNodePayload {
+  siblingId: string | null;
+  targetNode: AstNode;
+}
+
+export interface RemoveAfterNodePayload {
+  siblingId: string | null;
   targetNode: AstNode;
 }
 
@@ -134,14 +155,14 @@ export interface UpdateNodePayload {
 
 export interface ReplaceNodePayload {
   oldNode: AstNode;
-  offset: number;
   newNode: AstNode;
 }
 
-
 export interface OperationPayloads {
-  'add': AddNodePayload;
-  'remove': RemoveNodePayload;
+  'insertBefore': InsertBeforeNodePayload;
+  'insertAfter': InsertAfterNodePayload;
+  'removeBefore': RemoveBeforeNodePayload;
+  'removeAfter': RemoveAfterNodePayload;
   'update': UpdateNodePayload;
   'replace': ReplaceNodePayload;
 }
@@ -198,4 +219,37 @@ export interface AstContext {
   isOrderedList: boolean;
   isUnorderedList: boolean;
   types: string[];
+}
+
+export interface IHistoryCommand {
+  type: 'insertBefore' | 'insertAfter' | 'removeBefore' | 'removeAfter' | 'replace';
+  siblingId: string | null;
+  oldNode: AstNode | null;
+  newNode: AstNode;
+}
+
+export interface IHistoryBuilder {
+  // Add initial cursor position to the history
+  addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
+
+  // Add final cursor position to the history
+  addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
+
+  // Add a command to insert a new node before a specified sibling node
+  addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode): void;
+
+  // Add a command to insert a new node after a specified sibling node
+  addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode): void;
+
+  // Add a command to remove a node before a specified sibling node
+  addRemoveBeforeCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
+
+  // Add a command to remove a node after a specified sibling node
+  addRemoveAfterCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
+
+  // Add a command to replace an old node with a new node
+  addReplaceCommand(oldNode: AstNode, newNode: AstNode): void;
+
+  // Build and apply the history commands to a given history manager
+  apply(): void;
 }

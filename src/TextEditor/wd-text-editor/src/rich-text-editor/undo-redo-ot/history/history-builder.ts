@@ -1,63 +1,26 @@
-import { toId } from "..";
-import { AstNode, IHistoryManagerRecorder } from "../../../components/wysiwyg/interface";
-
-export interface ICursorHistoryItem {
-    parentId: string | null;
-    index: number;
-    offset: number;
-}
-
-export interface IHistoryCommand {
-    type: 'insertBefore' | 'insertAfter' | 'removeBefore' | 'removeAfter' | 'replace';
-    siblingId: string | null;
-    oldNode: AstNode | null;
-    newNode: AstNode;
-}
-
-export interface IHistoryBuilder {
-    // Add initial cursor position to the history
-    addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
-
-    // Add final cursor position to the history
-    addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
-
-    // Add a command to insert a new node before a specified sibling node
-    addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode): void;
-
-    // Add a command to insert a new node after a specified sibling node
-    addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode): void;
-
-    // Add a command to remove a node before a specified sibling node
-    addRemoveBeforeCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
-
-    // Add a command to remove a node after a specified sibling node
-    addRemoveAfterCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
-
-    // Add a command to replace an old node with a new node
-    addReplaceCommand(oldNode: AstNode, newNode: AstNode): void;
-
-    // Build and apply the history commands to a given history manager
-    applyTo(historyManager: IHistoryManagerRecorder): void;
-}
+import { HistoryManager, toId } from "..";
+import { AstNode, CursorPositionParams, IHistoryBuilder, IHistoryCommand, IHistoryManagerRecorder } from "../../../components/wysiwyg/interface";
 
 class HistoryBuilder implements IHistoryBuilder {
 
-    private initialCursorPosition: ICursorHistoryItem | null;
-    private finalCursorPosition: ICursorHistoryItem | null;
+    private initialCursorPosition: CursorPositionParams | null;
+    private finalCursorPosition: CursorPositionParams | null;
     private commands: IHistoryCommand[];
+    private historyManager: IHistoryManagerRecorder;
 
     constructor() {
         this.initialCursorPosition = null;
         this.finalCursorPosition = null;
         this.commands = [];
+        this.historyManager = HistoryManager;
     }
 
     addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
-        this.initialCursorPosition = { parentId:  toId(parentWithId), index: indexToTextNode, offset };
+        this.initialCursorPosition = { targetParentId:  toId(parentWithId) || '', nodeIndex: indexToTextNode, offset };
     }
 
     addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
-        this.finalCursorPosition = { parentId: toId(parentWithId), index: indexToTextNode, offset };
+        this.finalCursorPosition = { targetParentId: toId(parentWithId) || '', nodeIndex: indexToTextNode, offset };
     }
 
     addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
@@ -81,10 +44,54 @@ class HistoryBuilder implements IHistoryBuilder {
         this.commands.push({ type: 'replace', siblingId: null, oldNode, newNode });
     }
 
-    applyTo(historyManager: IHistoryManagerRecorder) {
-        // TODO
+    apply() {
+        this.commands.forEach((c, ind) => {
+            switch (c.type) {
+                case 'insertBefore':
+                    this.historyManager.recordChildInsertBefore(
+                        this.initialCursorPosition,
+                        this.finalCursorPosition, 
+                        c.siblingId || '', 
+                        c.newNode, 
+                        ind > 0);
+                        break;
+                case 'insertAfter':
+                    this.historyManager.recordChildInsertAfter(
+                        this.initialCursorPosition,
+                        this.finalCursorPosition, 
+                        c.siblingId || '', 
+                        c.newNode, 
+                        ind > 0);
+                        break;
+                case 'removeBefore':
+                    this.historyManager.recordChildRemoveBefore(
+                        this.initialCursorPosition,
+                        this.finalCursorPosition, 
+                        c.siblingId || '', 
+                        c.newNode, 
+                        ind > 0);
+                        break;
+                case 'removeAfter':
+                    this.historyManager.recordChildRemoveAfter(
+                        this.initialCursorPosition,
+                        this.finalCursorPosition, 
+                        c.siblingId || '', 
+                        c.newNode, 
+                        ind > 0);
+                        break;
+                case 'replace':
+                    if (c.oldNode) {
+                        this.historyManager.recordChildReplace(
+                            this.initialCursorPosition,
+                            this.finalCursorPosition, 
+                            c.oldNode, 
+                            c.newNode, 
+                            ind > 0);
+                    }
+                        break;
+            }
+        })
     }
-
 }
 
 export default HistoryBuilder;

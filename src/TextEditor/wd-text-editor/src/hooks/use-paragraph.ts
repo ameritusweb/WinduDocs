@@ -1,6 +1,7 @@
 import { AstContext, AstNode, IHistoryManager } from "../components/wysiwyg/interface";
 import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, splitTreeAndExtract, splitTreeAndExtractSpan } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
+import HistoryBuilder from "../rich-text-editor/undo-redo-ot/history/history-builder";
 import EditorData, { EditorDataType } from "./editor-data";
 import { useRichTextEditor } from "./use-rich-text-editor";
 
@@ -34,7 +35,11 @@ export const useParagraph = () => {
                         } else {
                             child.Children.splice(containerIndex, 1, newBold);
                         }
-                        historyManager.recordChildReplace(null, oldNode, child, newBold, 0, 0);
+                        const historyBuilder = new HistoryBuilder();
+                        historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+                        historyBuilder.addFinalCursorPosition(newBold, 0, 0);
+                        historyBuilder.addReplaceCommand(oldNode, child);
+                        historyBuilder.apply();
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeBold', nodes: child.Children, pathIndices });
                     }
                 }
@@ -66,8 +71,11 @@ export const useParagraph = () => {
                         } else {
                             child.Children.splice(containerIndex, 1, newItalic);
                         }
-                        historyManager.recordChildReplace(null, oldNode, child, newItalic, 0, 0);
-                        console.log('emitevent');
+                        const historyBuilder = new HistoryBuilder();
+                        historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+                        historyBuilder.addFinalCursorPosition(newItalic, 0, 0);
+                        historyBuilder.addReplaceCommand(oldNode, child);
+                        historyBuilder.apply();
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     }
                 }
@@ -92,7 +100,11 @@ export const useParagraph = () => {
                         } else {
                             child.Children.splice(containerIndex, siblings.length, newBold);
                         }
-                        historyManager.recordChildReplace(null, oldNode, child, newBold, 0, 0);
+                        const historyBuilder = new HistoryBuilder();
+                        historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+                        historyBuilder.addFinalCursorPosition(newBold, 0, 0);
+                        historyBuilder.addReplaceCommand(oldNode, child);
+                        historyBuilder.apply();
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     } else if (context.types.length === 0 && astParent !== null && (parent.nodeName === 'STRONG' || parent.nodeName === 'EM' )) {
                         const higherLevelChildren = higherLevelAstCopy;
@@ -110,7 +122,11 @@ export const useParagraph = () => {
                         } else {
                             child.Children.splice(containerIndex, astParent.Children.length, newItalic);
                         }
-                        historyManager.recordChildReplace(null, oldNode, child, newItalic, 0, 0);
+                        const historyBuilder = new HistoryBuilder();
+                        historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+                        historyBuilder.addFinalCursorPosition(newItalic, 0, 0);
+                        historyBuilder.addReplaceCommand(oldNode, child);
+                        historyBuilder.apply();
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     }
                 }

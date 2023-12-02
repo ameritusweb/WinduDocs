@@ -1,6 +1,7 @@
 import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNodeFromFormat, deepCopyAstNode, splitTree } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
+import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
 const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
 
@@ -13,7 +14,11 @@ const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, histor
         if (child && higherLevelIndex !== -1) {
             const newNode = createNewAstNodeFromFormat('p', '\n');
             higherLevelChildren.splice(higherLevelIndex, 0, newNode);
-            historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex + 1], startOffset, newNode, higherLevelChildren[higherLevelIndex + 1], 0, 0);
+            const historyBuilder = new HistoryBuilder();
+            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, startOffset);
+            historyBuilder.addFinalCursorPosition(newNode, 0, 0);
+            historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex + 1], newNode);
+            historyBuilder.apply();
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }
     }
@@ -24,7 +29,11 @@ const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, histor
         if (child && higherLevelIndex !== -1) {
             const newNode = createNewAstNodeFromFormat('p', '\n');
             higherLevelChildren.splice(higherLevelIndex + 1, 0, newNode);
-            historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], startOffset, newNode, newNode, 0, 0);
+            const historyBuilder = new HistoryBuilder();
+            historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
+            historyBuilder.addFinalCursorPosition(newNode, 0, 0);
+            historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], newNode);
+            historyBuilder.apply();
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }
     }
@@ -34,9 +43,14 @@ const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, histor
             const [node1, node2] = splitTree(higherLevelChild, grandChild!, startOffset);
             const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
             higherLevelChildren.splice(higherLevelIndex, 1, node1);
-            historyManager.recordChildReplace(null, oldNode, node1, node1, 0, startOffset);
+
+            const historyBuilder = new HistoryBuilder();
+            historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
+            historyBuilder.addReplaceCommand(oldNode, node1);
             higherLevelChildren.splice(higherLevelIndex + 1, 0, node2);
-            historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], startOffset, node2, node2, 0, 0, true);
+            historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], node2);
+            historyBuilder.addFinalCursorPosition(node2, 0, 0);
+            historyBuilder.apply();
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
         }
     }

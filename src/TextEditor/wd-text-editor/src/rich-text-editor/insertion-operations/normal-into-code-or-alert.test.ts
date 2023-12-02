@@ -15,7 +15,10 @@ describe('insertTextIntoEitherACodeBlockOrAlertBlock', () => {
             }),
             recordOperation: vi.fn(),
             recordOperationsAsTransaction: vi.fn(),
-            recordChildAdd: vi.fn(),
+            recordChildInsertBefore: vi.fn(),
+            recordChildInsertAfter: vi.fn(),
+            recordChildRemoveBefore: vi.fn(),
+            recordChildRemoveAfter: vi.fn()
         };
       const mockChild: AstNode = {
         "NodeName": "Text",

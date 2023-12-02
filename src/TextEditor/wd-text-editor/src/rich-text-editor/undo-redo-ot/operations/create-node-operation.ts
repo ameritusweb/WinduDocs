@@ -1,16 +1,20 @@
 import { toId } from "..";
-import { AddNodeParams, AstNode, AstOperation, AstOperationType, RemoveNodeParams, ReplaceNodeParams, UpdateNodeParams } from "../../../components/wysiwyg/interface";
+import { AstOperation, AstOperationType, InsertAfterNodeParams, InsertBeforeNodeParams, RemoveAfterNodeParams, RemoveBeforeNodeParams, ReplaceNodeParams, UpdateNodeParams } from "../../../components/wysiwyg/interface";
 
 type OperationParamsMap = {
-    'add': AddNodeParams;
-    'remove': RemoveNodeParams;
+    'insertBefore': InsertBeforeNodeParams;
+    'removeBefore': RemoveBeforeNodeParams;
+    'insertAfter': InsertAfterNodeParams;
+    'removeAfter': RemoveAfterNodeParams;
     'update': UpdateNodeParams;
     'replace': ReplaceNodeParams;
 }
 
 type OperationReturnMap = {
-    'add': AstOperation<'add'>;
-    'remove': AstOperation<'remove'>;
+    'insertBefore': AstOperation<'insertBefore'>;
+    'removeBefore': AstOperation<'removeBefore'>;
+    'insertAfter': AstOperation<'insertAfter'>;
+    'removeAfter': AstOperation<'removeAfter'>;
     'update': AstOperation<'update'>;
     'replace': AstOperation<'replace'>;
 }
@@ -18,43 +22,91 @@ type OperationReturnMap = {
 const createNodeOperation = <T extends AstOperationType>(type: T, params: OperationParamsMap[T]): OperationReturnMap[T] => {
     switch (type)
     {
-        case 'add':
-            return {
-                type: 'add',
-                targetNodeId: !(params as AddNodeParams).parentNode ? null : toId((params as AddNodeParams).parentNode!),
-                parentNodeId: toId((params as ReplaceNodeParams).cursorTargetParent),
-                nodeIndex: (params as AddNodeParams).nodeIndex,
+        case 'insertBefore': {
+            const insertBeforeParams = params as InsertBeforeNodeParams;
+            const op: OperationReturnMap['insertBefore'] = {
+                type: 'insertBefore',
+                initialPosition: insertBeforeParams.initialPosition,
+                finalPosition: insertBeforeParams.finalPosition,
+                parentNodeId: null,
+                targetNodeId: null,
+                nodeIndex: null,
                 payload: { 
-                    newNode: (params as AddNodeParams).newNode,
-                    previousSiblingId: toId((params as AddNodeParams).previousSibling),
-                    offset: (params as AddNodeParams).offset,
-                    startOffset: (params as AddNodeParams).startOffset
+                    siblingId: insertBeforeParams.siblingId,
+                    newNode: insertBeforeParams.newNode
                 },
                 timestamp: Date.now()
-            } as OperationReturnMap[T]; // Type assertion here
-        case 'replace':
-            return {
+            };
+            return op as OperationReturnMap[T];
+        }
+        case 'insertAfter': {
+            const insertAfterParams = params as InsertAfterNodeParams;
+            const op: OperationReturnMap['insertAfter'] = {
+                type: 'insertAfter',
+                initialPosition: insertAfterParams.initialPosition,
+                finalPosition: insertAfterParams.finalPosition,
+                parentNodeId: null,
+                targetNodeId: null,
+                nodeIndex: null,
+                payload: { 
+                    siblingId: insertAfterParams.siblingId,
+                    newNode: insertAfterParams.newNode
+                },
+                timestamp: Date.now()
+            };
+            return op as OperationReturnMap[T];
+        }
+        case 'removeBefore': {
+            const removeBeforeParams = params as RemoveBeforeNodeParams;
+            const op: OperationReturnMap['removeBefore'] = {
+                type: 'removeBefore',
+                initialPosition: removeBeforeParams.initialPosition,
+                finalPosition: removeBeforeParams.finalPosition,
+                parentNodeId: null,
+                targetNodeId: null,
+                nodeIndex: null,
+                payload: { 
+                    siblingId: removeBeforeParams.siblingId,
+                    targetNode: removeBeforeParams.targetNode
+                },
+                timestamp: Date.now()
+            };
+            return op as OperationReturnMap[T];
+        }
+        case 'removeAfter': {
+            const removeAfterParams = params as RemoveAfterNodeParams;
+            const op: OperationReturnMap['removeAfter'] = {
+                type: 'removeAfter',
+                initialPosition: removeAfterParams.initialPosition,
+                finalPosition: removeAfterParams.finalPosition,
+                parentNodeId: null,
+                targetNodeId: null,
+                nodeIndex: null,
+                payload: { 
+                    siblingId: removeAfterParams.siblingId,
+                    targetNode: removeAfterParams.targetNode
+                },
+                timestamp: Date.now()
+            };
+            return op as OperationReturnMap[T];
+        }
+        case 'replace': {
+            const replaceParams = params as ReplaceNodeParams;
+            const op: OperationReturnMap['replace'] = {
                 type: 'replace',
-                targetNodeId: !(params as ReplaceNodeParams).parentNode ? null : toId((params as ReplaceNodeParams).parentNode!),
-                parentNodeId: toId((params as ReplaceNodeParams).cursorTargetParent),
-                nodeIndex: (params as ReplaceNodeParams).nodeIndex,
+                initialPosition: replaceParams.initialPosition,
+                finalPosition: replaceParams.finalPosition,
+                parentNodeId: null,
+                targetNodeId: null,
+                nodeIndex: null,
                 payload: { 
-                    newNode: (params as ReplaceNodeParams).newNode,
-                    oldNode: (params as ReplaceNodeParams).oldNode,
-                    offset: (params as ReplaceNodeParams).offset
+                    oldNode: replaceParams.oldNode,
+                    newNode: replaceParams.newNode
                 },
                 timestamp: Date.now()
-            } as OperationReturnMap[T]; // Type assertion here
-        case 'remove':
-            return {
-                type: 'remove',
-                targetNodeId: (params as RemoveNodeParams).targetNode.Guid,
-                parentNodeId: toId((params as ReplaceNodeParams).cursorTargetParent),
-                payload: {
-                    targetNode: (params as RemoveNodeParams).targetNode, 
-                },
-                timestamp: Date.now()
-            } as OperationReturnMap[T]; // Type assertion here
+            };
+            return op as OperationReturnMap[T];
+        }
         case 'update':
             return {
                 type: 'update',

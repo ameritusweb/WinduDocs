@@ -1,6 +1,7 @@
 import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
 import { moveArray } from "../array-processing";
 import { createNewAstNode, deepCopyAstNode, generateKey, splitNode } from "../node-operations";
+import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
 const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryManager, higherLevelChildren: AstNode[], children: AstNode[], container: Node, startOffset: number) => {
 
@@ -11,14 +12,22 @@ const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryM
         const newBlank = createNewAstNode('BlankLine', 0, 0, null);
         const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
         higherLevelChildren.splice(higherLevelIndex, 0, newBlank);
-        historyManager.recordChildAdd(null, oldNode, startOffset, newBlank, oldNode, 0, 0);
+        const historyBuilder = new HistoryBuilder();
+        historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+        historyBuilder.addFinalCursorPosition(oldNode, 0, 0);
+        historyBuilder.addInsertBeforeCommand(oldNode, newBlank);
+        historyBuilder.apply();
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
     else if (startOffset === container.textContent?.length)
     {
         const newBlank = createNewAstNode('BlankLine', 0, 0, null);
         higherLevelChildren.splice(higherLevelIndex + 1, 0, newBlank);
-        historyManager.recordChildAdd(null, higherLevelChildren[higherLevelIndex], startOffset, newBlank, newBlank, 0, 0);
+        const historyBuilder = new HistoryBuilder();
+        historyBuilder.addInitialCursorPosition(higherLevelChildren[higherLevelIndex], 0, startOffset);
+        historyBuilder.addFinalCursorPosition(newBlank, 0, 0);
+        historyBuilder.addInsertBeforeCommand(higherLevelChildren[higherLevelIndex], newBlank);
+        historyBuilder.apply();
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
     else
@@ -31,9 +40,14 @@ const enterAroundNormalText = (updateData: UpdateData, historyManager: IHistoryM
         moveArray(children, containerIndex + 1, newPara.Children, 0);
         higherLevelChildren[higherLevelIndex].Guid = generateKey();
         const newNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
-        historyManager.recordChildReplace(null, oldNode, newNode, oldLowerLevelParent!, containerIndex, startOffset);
+
+        const historyBuilder = new HistoryBuilder();
+        historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
+        historyBuilder.addReplaceCommand(oldNode, newNode);
         higherLevelChildren.splice(higherLevelIndex + 1, 0, newPara);
-        historyManager.recordChildAdd(null, newNode, startOffset, higherLevelChildren[higherLevelIndex + 1], higherLevelChildren[higherLevelIndex + 1], 0, 0, true);
+        historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], newPara);
+        historyBuilder.addFinalCursorPosition(higherLevelChildren[higherLevelIndex + 1], 0, 0);
+        historyBuilder.apply();
         return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
 
