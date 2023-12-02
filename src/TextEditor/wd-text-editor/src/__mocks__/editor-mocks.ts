@@ -1373,6 +1373,15 @@ export const mockListData: AstNode[] = [
             ]
           }
         ]
+      },
+      {
+        "NodeName": "FakeNode",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 2,
+        "Guid": "fe891315-9518-4872-9a94-be019bd68e38",
+        "TextContent": "Sample Markdown",
+        "Children": []
       }
 ];
 
@@ -1508,6 +1517,15 @@ export const mockCodeBlockData: AstNode[] = [
         "Depth": 2,
         "Guid": "744a50aa-4fef-40cc-8bff-707e24c719fd",
         "TextContent": "console.log(\u0027This is line 2!\u0027);",
+        "Children": []
+      },
+      {
+        "NodeName": "FakeNode",
+        "Attributes": {},
+        "ChildIndex": 2,
+        "Depth": 2,
+        "Guid": "144a50aa-4fef-40cc-8bff-707e24c719fd",
+        "TextContent": "",
         "Children": []
       }
     ];

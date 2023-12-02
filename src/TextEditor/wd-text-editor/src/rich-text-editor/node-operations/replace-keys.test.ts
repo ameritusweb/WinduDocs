@@ -36,6 +36,6 @@ afterEach(() => {
         });
     
         // Check if generateKey was called correctly
-        expect(generateKey).toHaveBeenCalledTimes(6); // Once for the parent and once for each child
+        expect(generateKey).toHaveBeenCalledTimes(7); // Once for the parent and once for each child
       });
   })

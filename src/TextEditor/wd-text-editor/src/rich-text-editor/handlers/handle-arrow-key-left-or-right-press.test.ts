@@ -272,7 +272,6 @@ describe('handleArrowKeyLeftOrRightPress', () => {
 
       document.body.innerHTML = mockOutputHtml;
       removeEmptyTextNodes(document.body);
-      console.log(document.getElementById('para_077cfba4-d7b0-4dca-9660-a6fec0243947')?.childNodes.length);
       const textNode = document.getElementById('para_077cfba4-d7b0-4dca-9660-a6fec0243947')?.childNodes[0];
       expect(textNode).not.toBeUndefined();
 
@@ -280,7 +279,6 @@ describe('handleArrowKeyLeftOrRightPress', () => {
       if (selection) {
         const range: Range = new Range();
         expect(textNode?.textContent?.length).toBeGreaterThan(0);
-        console.log(textNode?.textContent?.length);
         range.setStart(textNode!, textNode?.textContent?.length || 0);
         range.setEnd(textNode!, textNode?.textContent?.length || 0);
         selection.removeAllRanges();
@@ -290,7 +288,6 @@ describe('handleArrowKeyLeftOrRightPress', () => {
       handleArrowKeyLeftOrRightPress(mockEvent, editorData, mockProcessedAst, mockProcessedAstMap, 'right');
 
       const newRange = selection?.getRangeAt(0);
-      console.log(newRange?.startOffset);
       expect(newRange).not.toBeUndefined();
 
       const newContainer = newRange?.startContainer;

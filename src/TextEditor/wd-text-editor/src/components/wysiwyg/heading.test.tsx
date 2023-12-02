@@ -1,5 +1,5 @@
 import { mockHeadingData } from '../../__mocks__/editor-mocks';
-import { cleanup, render, screen } from '../../utils/test-utils'
+import { act, cleanup, fireEvent, render, screen, userEvent } from '../../utils/test-utils'
 import Heading from './heading'
 import { AstContext } from './interface';
 
@@ -8,10 +8,10 @@ afterEach(() => {
   });
   
 describe('Heading', async () => {
-  it('should render the Heading', () => {
-    render(
+  it('should render the Heading', async () => {
+    const { container } = render(
       <Heading 
-        id={'123456-123456-123456-123456'} 
+        id={'H123456-123456-123456-123456'} 
         pathIndices={[]} 
         level={'1'}
         version={'V0'} 
@@ -23,6 +23,47 @@ describe('Heading', async () => {
     )
     const matchingElements = screen.getAllByText((content) => content.includes('Markdown'));
     expect(matchingElements.length).toBe(1);
+
+    const heading = container.querySelector('#H123456-123456-123456-123456');
+    expect(heading).not.toBe(null);
+
+    await act(async () => {
+      expect(heading).toBeTruthy();
+      if (heading) 
+        await userEvent.click(heading);
+    });
+
+    const utilityContainer = container.querySelector('.utility-container');
+    expect(utilityContainer).toBeTruthy();
+
+    await act(async () => {
+        const del = await screen.findByTitle('Delete');
+        expect(del).toBeTruthy();
+        await userEvent.click(del);
+    });
+
+    await act(async () => {
+      const cut = await screen.findByTitle('Cut');
+      expect(cut).toBeTruthy();
+      await userEvent.click(cut);
+    });
+
+    await act(async () => {
+      const copy = await screen.findByTitle('Copy');
+      expect(copy).toBeTruthy();
+      await userEvent.click(copy);
+    });
+
+    await act(async () => {
+      const paste = await screen.findByTitle('Paste');
+      expect(paste).toBeTruthy();
+      await userEvent.click(paste);
+    });
+
+    await act(async () => {
+      if (heading) 
+        await fireEvent.blur(heading);
+    });
   })
 
   it.each([
@@ -32,6 +73,7 @@ describe('Heading', async () => {
     ['4', 'H4'],
     ['5', 'H5'],
     ['6', 'H6'],
+    ['', 'P'],
   ])('given a level of %s, should display with a %s tag', async (inputState: string, expectedOutput: string) => {
     const { container } = render(
         <Heading 

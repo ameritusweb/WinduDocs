@@ -19,6 +19,35 @@ describe('ParagraphContainer', async () => {
         });
         const utilityContainer = sectionElement?.querySelector('.utility-container');
         expect(utilityContainer).not.toBe(null);
+    
+        await act(async () => {
+            const del = await screen.findByTitle('Delete');
+            expect(del).toBeTruthy();
+            await userEvent.click(del);
+        });
+    
+        await act(async () => {
+          const cut = await screen.findByTitle('Cut');
+          expect(cut).toBeTruthy();
+          await userEvent.click(cut);
+        });
+    
+        await act(async () => {
+          const copy = await screen.findByTitle('Copy');
+          expect(copy).toBeTruthy();
+          await userEvent.click(copy);
+        });
+    
+        await act(async () => {
+          const paste = await screen.findByTitle('Paste');
+          expect(paste).toBeTruthy();
+          await userEvent.click(paste);
+        });
+    
+        await act(async () => {
+          if (sectionElement) 
+            await fireEvent.blur(sectionElement);
+        });
       });
 
       it('shows rendered paragraph', async () => {

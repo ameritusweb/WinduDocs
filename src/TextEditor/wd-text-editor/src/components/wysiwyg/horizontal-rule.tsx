@@ -7,11 +7,8 @@ export interface HorizontalRuleProps {
 
 const HorizontalRule: React.FC<HorizontalRuleProps> = ({id}) => {
 
-    const [isHovered, setIsHovered] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => setIsHovered(false);
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
@@ -23,8 +20,6 @@ const HorizontalRule: React.FC<HorizontalRuleProps> = ({id}) => {
     return (
     <section id={`section_${id}`}
         className="relative"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             onFocus={handleFocus}
             onBlur={handleBlur}
             tabIndex={1} // Make it focusable if needed

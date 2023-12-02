@@ -32,7 +32,6 @@ const findOffset = (editorData: EditorDataType, i: number, j: number, key: strin
         }
         const textBlockWithOffset = findTextBlockWithOffset(arr, cursorOffset);
         if (textBlockWithOffset) {
-            console.log(textBlockWithOffset);
             editorData.cursorOffsetReduction = textBlockWithOffset.reduction;
             return Object.assign({ offset: textBlockWithOffset.blockOffset }, textBlockWithOffset.block);
         }

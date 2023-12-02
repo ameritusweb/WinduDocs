@@ -2,7 +2,6 @@ import { ITextBlock } from "../../components/wysiwyg/interface";
 
 const findTextBlockWithOffset = (blocks: ITextBlock[], totalOffset: number): { block: ITextBlock, blockOffset: number, reduction: number } => {
     let cumulativeLength = 0;
-  console.log(blocks);
     for (const block of blocks) {
       const textLength = block.textContent.length;
       if (cumulativeLength + textLength >= totalOffset) {

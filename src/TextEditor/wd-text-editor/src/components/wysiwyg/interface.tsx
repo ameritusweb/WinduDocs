@@ -7,15 +7,18 @@ export interface AstNodeAttributes {
     Language?: string;
   }
 
-export interface AstNode {
+  export interface AstNodeBase {
     NodeName: string;
     Attributes: AstNodeAttributes;
     ChildIndex: number;
     Guid: string;
     Depth: number;
     TextContent: string | null;
-    Children: AstNode[];
     Version?: string;
+  }
+
+export interface AstNode extends AstNodeBase {
+    Children: AstNode[];
   }
 
   export interface HigherLevelProps {
