@@ -189,13 +189,27 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
       };
   }, [id]); // Depend on the GUID prop
 
-    const onFocus = () => {
-      const editorData: EditorDataType = EditorData;
-      if (editorData.editorState)
-      {
-        setLineFormat(editorData.editorState);
-      }
+  const onFocus = () => {
+    const editorData: EditorDataType = EditorData;
+    const currentFocus: HTMLElement = document.activeElement as HTMLElement;
+  
+    if (editorData.editorState) {
+      const currentFocusId = currentFocus.id;
+  
+      setLineFormat(prev => {
+        if (prev !== editorData.editorState) {
+          // Using requestAnimationFrame for smoother UI updates
+          requestAnimationFrame(() => {
+            const elementToFocus = document.getElementById(currentFocusId);
+            if (elementToFocus) {
+              elementToFocus.focus();
+            }
+          });
+        }
+        return editorData.editorState;
+      });
     }
+  }  
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
       if (event.key === 'Control' || event.key === 'Shift' || event.key === 'Alt')

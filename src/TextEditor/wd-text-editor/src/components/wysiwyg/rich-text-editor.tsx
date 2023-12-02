@@ -250,6 +250,56 @@ useEffect(() => {
         }
     };
 
+    const onClick = (event: React.MouseEvent<HTMLElement>) => {
+
+        const target = event.target as HTMLElement;
+
+        if (target.nodeType !== Node.TEXT_NODE) {
+        
+            // Find the first text node
+            const firstTextNode = findFirstTextNode(target);
+        
+            if (firstTextNode) {
+              // Create a range and set it to the start of the text node
+              const range = document.createRange();
+              range.setStart(firstTextNode, 0);
+              range.collapse(true);
+        
+              // Get the selection object and add the range
+              const selection = window.getSelection();
+              if (selection) {
+                selection.removeAllRanges();
+                selection.addRange(range);
+              }
+              firstTextNode.parentElement!.focus();
+            }
+            else
+            {
+                (event.target as HTMLElement).focus();
+            }
+        } else {
+            (event.target as HTMLElement).focus();
+        }
+        
+        function findFirstTextNode(node: Node): Text | null {
+          // If the current node is a text node, return it
+          if (node.nodeType === Node.TEXT_NODE) {
+            return node as Text;
+          }
+        
+          // Otherwise, search its children
+          for (let child of node.childNodes) {
+            const result = findFirstTextNode(child);
+            if (result) {
+              return result;
+            }
+          }
+        
+          // Return null if no text node is found
+          return null;
+        }
+    }
+
     const onMouseDown = (event: React.MouseEvent<HTMLElement>) => {
 
         if (event.button === 0) {
@@ -318,6 +368,7 @@ useEffect(() => {
                  ref={editorRef}
                  onKeyDown={onKeyDown}
                  onMouseDown={onMouseDown}
+                 onClick={onClick}
                  className="bg-white dark:bg-zinc-950 text-gray-600/90 dark:text-zinc-400 absolute top-0 left-0 w-full min-h-[100px] overflow-visible outline-none whitespace-pre-wrap p-[1.1rem_2rem_1rem_2rem] cursor-text text-left text-base"
                  id="richTextEditor"
                  style={{
