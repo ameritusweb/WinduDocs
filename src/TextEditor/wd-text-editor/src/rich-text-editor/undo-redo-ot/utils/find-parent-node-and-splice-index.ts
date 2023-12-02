@@ -8,15 +8,15 @@ import { AstNode } from "../../../components/wysiwyg/interface";
  * @returns A tuple containing the parent node and the index for splicing.
  */
 const findParentNodeAndSpliceIndex = (root: AstNode, siblingGuid: string, insertBefore: boolean): [AstNode | null, number] => {
-    function findNode(node: AstNode, parent: AstNode | null = null): [AstNode | null, number] {
+    function findNode(node: AstNode): [AstNode | null, number] {
         for (let i = 0; i < node.Children.length; i++) {
             const child = node.Children[i];
             if (child.Guid === siblingGuid) {
                 // Determine the index based on the insertBefore flag
-                return [parent, insertBefore ? i : i + 1];
+                return [node, insertBefore ? i : i + 1];
             }
 
-            const result = findNode(child, node);
+            const result = findNode(child);
             if (result[0]) {
                 return result;
             }

@@ -23,19 +23,19 @@ class HistoryBuilder implements IHistoryBuilder {
 
     addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
 
-        this.commands.push({ type: 'insertBefore', siblingId: toId(siblingWithId), oldNode: null, newNode });
+        this.commands.push({ type: 'insertBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode });
     }
 
     addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode) {
-        this.commands.push({ type: 'insertAfter', siblingId: toId(siblingWithId), oldNode: null, newNode });
+        this.commands.push({ type: 'insertAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode });
     }
 
     addRemoveBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
-        this.commands.push({ type: 'removeBefore', siblingId: toId(siblingWithId), oldNode: null, newNode });
+        this.commands.push({ type: 'removeBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode });
     }
 
     addRemoveAfterCommand(siblingWithId: AstNode, newNode: AstNode) {
-        this.commands.push({ type: 'removeAfter', siblingId: toId(siblingWithId), oldNode: null, newNode });
+        this.commands.push({ type: 'removeAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode });
     }
 
     addReplaceCommand(oldNode: AstNode, newNode: AstNode) {

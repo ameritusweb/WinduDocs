@@ -2,7 +2,7 @@ import { AstNode, AstUpdate, IHistoryManagerRecorder } from "../../components/wy
 import { createNodeWithTypeAndKey, deepCopyAstNode, splitNode } from "../node-operations";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const insertEitherStrongOrEmphasisTextIntoNormalText = (startOffset: number, container: Node, child: AstNode, children: AstNode[], index: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number | null, higherLevelChildren: AstNode[], type: string, rootChildId: string, editorState: string, key: string): AstUpdate | null => {
+const insertEitherStrongOrEmphasisTextIntoNormalText = (startOffset: number, container: Node, astParent: AstNode, child: AstNode, children: AstNode[], index: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number | null, higherLevelChildren: AstNode[], type: string, rootChildId: string, editorState: string, key: string): AstUpdate | null => {
     if (startOffset === 0)
     {
         const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);
@@ -15,11 +15,11 @@ const insertEitherStrongOrEmphasisTextIntoNormalText = (startOffset: number, con
         const oldNode = deepCopyAstNode(children[index]);
         children.splice(index, 1, node1, newContainer, node2);
         const historyBuilder = new HistoryBuilder();
-        historyBuilder.addInitialCursorPosition(oldNode, 0, 0);
+        historyBuilder.addInitialCursorPosition(astParent, index, startOffset);
         historyBuilder.addReplaceCommand(oldNode, node1);
         historyBuilder.addInsertAfterCommand(node1, newContainer);
         historyBuilder.addInsertAfterCommand(newContainer, node2);
-        historyBuilder.addFinalCursorPosition(node2, 0, 0);
+        historyBuilder.addFinalCursorPosition(astParent, index + 2, 0);
         historyBuilder.applyTo(historyManager);
     } else
     {

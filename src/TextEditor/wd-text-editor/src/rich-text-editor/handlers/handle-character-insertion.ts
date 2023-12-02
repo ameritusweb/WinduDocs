@@ -50,11 +50,11 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     let type = 'insertNew';
                     if (Array.isArray(editorState))
                     {
-                        const res = insertBothStrongAndEmphasisTextIntoNormalText(startOffset, container, grandChild, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                        const res = insertBothStrongAndEmphasisTextIntoNormalText(startOffset, container, child, grandChild, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
                         if (res)
                             return res;
                     } else {
-                        const res = insertEitherStrongOrEmphasisTextIntoNormalText(startOffset, container, grandChild, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                        const res = insertEitherStrongOrEmphasisTextIntoNormalText(startOffset, container, child, grandChild, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
                         if (res)
                             return res;
                     }
@@ -70,15 +70,16 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 if (child) {
                     if (parent.nodeName === 'P' && ((editorState === 'strong' || editorState === 'em') || Array.isArray(editorState)))
                     {
-                        let higherLevelIndex: number | null = null;
+                        const higherLevelChild = higherLevelChildren[higherLevelIndex];
+                        let higherLevelIndexNew: number | null = null;
                         let type = 'insertNew';
                         if (Array.isArray(editorState))
                         {
-                            const res = insertBothStrongAndEmphasisTextIntoNormalText(startOffset, container, child, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                            const res = insertBothStrongAndEmphasisTextIntoNormalText(startOffset, container, higherLevelChild, child, children, containerIndex, historyManager, higherLevelIndexNew, higherLevelChildren, type, rootChildId, editorState, key);
                             if (res)
                                 return res;
                         } else {
-                            const res = insertEitherStrongOrEmphasisTextIntoNormalText(startOffset, container, child, children, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, key);
+                            const res = insertEitherStrongOrEmphasisTextIntoNormalText(startOffset, container, higherLevelChild, child, children, containerIndex, historyManager, higherLevelIndexNew, higherLevelChildren, type, rootChildId, editorState, key);
                             if (res)
                                 return res;
                         }
