@@ -7,7 +7,7 @@ const insertNormalTextIntoEitherStrongOrEmphasisText = (container: Text, startOf
     }
     else if (startOffset < (container.textContent || '').length) // insert in the middle
     {
-        const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, child, startOffset, containerIndex, children.indexOf(child), 'Text', key, children, higherLevelChildren, false);
+        const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, child, startOffset, historyManager, containerIndex, children.indexOf(child), 'Text', key, children, higherLevelChildren, containerIndex, false);
         if (nodes !== null)
             return { type: 'higherLevelSplit', nodes };
     } else { // insert at the end

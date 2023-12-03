@@ -10,7 +10,7 @@ const insertNormalTextIntoOtherNormalText = (grandChild: AstNode, container: Tex
         additionalOffset = 1;
     }
     replaceText(container, grandChild, startOffset, key);
-    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, child, grandChild, rootChildId);
+    historyManager.recordChildTextUpdate(oldText, startOffset + additionalOffset, {...child, NodeName: 'ParagraphBlock'}, grandChild, rootChildId);
     return { type: 'insert', rootChildId, nodes: children.map((c) => {
         return Object.assign({}, c)
     }) };

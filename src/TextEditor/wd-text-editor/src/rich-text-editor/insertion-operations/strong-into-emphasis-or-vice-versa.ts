@@ -4,7 +4,7 @@ import { createNodeWithTypeAndKey, splitAndUpdateHigherLevelNodes, updateHigherL
 const insertStrongTextIntoEmphasisTextOrViceVersa = (parent: Node, editorState: string, startOffset: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number, astParent: AstNode | null, containerIndex: number, higherLevelChildren: AstNode[], children: AstNode[], key: string): AstUpdate | null => {
     if (astParent && parent.parentElement?.nodeName === 'STRONG')
     {
-        const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, astParent, startOffset, containerIndex, children.indexOf(astParent), 'Strong', key, children, higherLevelChildren, true);
+        const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, astParent, startOffset, historyManager, containerIndex, children.indexOf(astParent), 'Strong', key, children, higherLevelChildren, containerIndex, true);
         if (nodes !== null)
             return { type: 'higherLevelSplit', nodes };
     } else {
