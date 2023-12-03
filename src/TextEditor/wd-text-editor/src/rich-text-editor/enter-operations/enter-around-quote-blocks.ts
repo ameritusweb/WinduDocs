@@ -1,9 +1,9 @@
-import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
+import { AstNode, IHistoryManagerRecorder, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNodeFromFormat, deepCopyAstNode, splitTreeDeux } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManager, children: AstNode[], container: Node, startOffset: number) => {
+const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, historyManager: IHistoryManagerRecorder, children: AstNode[], container: Node, startOffset: number) => {
 
     const { higherLevelIndex, child, grandChild, containerIndex, higherLevelChildren } = updateData;
 
