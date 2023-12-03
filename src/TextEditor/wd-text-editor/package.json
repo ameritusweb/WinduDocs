@@ -11,7 +11,7 @@
     "coverage": "vitest run --coverage",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "devtest": "concurrently -p none \"vite\" \"vitest\""
+    "devtest": "concurrently -p none \"vite\" \"vitest --changed=HEAD\""
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.0.5",

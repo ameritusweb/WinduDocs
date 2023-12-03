@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { AstNode, IHistoryManager, IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
+import { AstNode, IHistoryManager, IHistoryManagerRecorder, IdableNode } from "../../components/wysiwyg/interface";
 import { mockCustomElement } from "../../utils/test-utils";
 import { insertTextIntoEitherACodeBlockOrAlertBlock } from ".";
 

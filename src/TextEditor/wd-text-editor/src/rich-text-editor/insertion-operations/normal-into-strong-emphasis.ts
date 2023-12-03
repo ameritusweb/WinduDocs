@@ -1,7 +1,7 @@
-import { AstNode, AstUpdate, IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManagerRecorder, IdableNode } from "../../components/wysiwyg/interface";
 import { createNodeWithTypeAndKey, splitAndUpdateHigherLevelNodes, updateHigherLevelNodes } from "../node-operations";
 
-const insertNormalTextIntoBothStrongAndEmphasisText = (container: Text, startOffset: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number, astParent: AstNode, containerIndex: number, higherLevelChildren: AstNode[], children: AstNode[], key: string): AstUpdate | null => {
+const insertNormalTextIntoBothStrongAndEmphasisText = (container: IdableNode, startOffset: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number, astParent: AstNode, containerIndex: number, higherLevelChildren: AstNode[], children: AstNode[], key: string): AstUpdate | null => {
     if (startOffset === 0) {
         const newText = createNodeWithTypeAndKey('Text', key);
         const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, 'beginning');
