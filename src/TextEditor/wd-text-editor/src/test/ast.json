@@ -34,7 +34,7 @@
               {
                 "NodeName": "Emphasis",
                 "Attributes": {},
-                "ChildIndex": 0,
+                "ChildIndex": 1,
                 "Depth": 4,
                 "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
                 "TextContent": null,
@@ -53,7 +53,7 @@
               {
                 "NodeName": "Text",
                 "Attributes": {},
-                "ChildIndex": 0,
+                "ChildIndex": 2,
                 "Depth": 3,
                 "Guid": "616cd0ab-ad17-4914-93ff-fb9b699d83bb",
                 "TextContent": " text",

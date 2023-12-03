@@ -1,10 +1,20 @@
-import { createNodeWithTypeAndKey, deepCopyAstNode, nestedSplitNode, splitNode } from ".";
+import { createNodeWithTypeAndKey, deepCopyAstNode, nestedSplitNode, splitNode, splitTreeDeux } from ".";
 import { AstNode, IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const splitAndUpdateHigherLevelNodes = (childIndex: number, child: AstNode, startOffset: number, historyManager: IHistoryManagerRecorder, indexToSplit: number | undefined, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], containerIndex: number, useNestedSplit: boolean) => {
+const splitAndUpdateHigherLevelNodes = (childIndex: number, child: AstNode, startOffset: number, historyManager: IHistoryManagerRecorder, indexToSplit: number | undefined, indexToRemoveAndAdd: number, type: string, key: string, children: AstNode[], higherLevelChildren: AstNode[], containerIndex: number, useNestedSplit: boolean, splitTreeChild?: AstNode) => {
 
-    const [node1, node2] = useNestedSplit ? nestedSplitNode(child, startOffset) : splitNode(child, startOffset, indexToSplit);
+    let node1: AstNode = {} as AstNode;
+    let node2: AstNode = {} as AstNode;
+    if (splitTreeChild) {
+        const [n1, n2] = splitTreeDeux(child, splitTreeChild, startOffset);
+        if (!n1 || !n2)
+            throw new Error('Split tree failed.');
+        node1 = n1;
+        node2 = n2;
+    } else {
+        [node1, node2] = useNestedSplit ? nestedSplitNode(child, startOffset) : splitNode(child, startOffset, indexToSplit);
+    }
     const newContainer = createNodeWithTypeAndKey(type, key);
     if (childIndex !== null) {
         const oldNode = deepCopyAstNode(children[indexToRemoveAndAdd]);

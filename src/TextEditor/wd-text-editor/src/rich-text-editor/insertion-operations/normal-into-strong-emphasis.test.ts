@@ -38,11 +38,27 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
         "textContent": "bold and italic"
       });
       const startOffset = 2;
+      const mockChild = toMockAst({
+        "NodeName": "Emphasis",
+        "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
+        "Children": [
+          {
+            "NodeName": "Text",
+            "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+            "TextContent": "bold and italic"
+          }
+        ]
+      });
       const mockAstParent = toMockAst(
         {
             "NodeName": "Strong",
-            "Guid": "87c121eb-c1dd-4311-b0b7-31ff22564cc9",
+            "Guid": "c069fb1b-83fc-4bd9-b1fb-f385f4150da1",
             "Children": [
+              {
+                "NodeName": "Text",
+                "Guid": "ffcf0896-aa89-4a97-989c-ce4001943443",
+                "TextContent": "This is a paragraph with both "
+              },
               {
                 "NodeName": "Emphasis",
                 "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
@@ -53,6 +69,11 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
                     "TextContent": "bold and italic"
                   }
                 ]
+              },
+              {
+                "NodeName": "Text",
+                "Guid": "616cd0ab-ad17-4914-93ff-fb9b699d83bb",
+                "TextContent": " text"
               }
             ]
           }
@@ -73,19 +94,13 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
                       "TextContent": "This is a paragraph with both "
                     },
                     {
-                      "NodeName": "Strong",
-                      "Guid": "87c121eb-c1dd-4311-b0b7-31ff22564cc9",
+                      "NodeName": "Emphasis",
+                      "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
                       "Children": [
                         {
-                          "NodeName": "Emphasis",
-                          "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
-                          "Children": [
-                            {
-                              "NodeName": "Text",
-                              "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
-                              "TextContent": "bold and italic"
-                            }
-                          ]
+                          "NodeName": "Text",
+                          "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+                          "TextContent": "bold and italic"
                         }
                       ]
                     },
@@ -141,19 +156,13 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
               "TextContent": "This is a paragraph with both "
             },
             {
-              "NodeName": "Strong",
-              "Guid": "87c121eb-c1dd-4311-b0b7-31ff22564cc9",
+              "NodeName": "Emphasis",
+              "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
               "Children": [
                 {
-                  "NodeName": "Emphasis",
-                  "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
-                  "Children": [
-                    {
-                      "NodeName": "Text",
-                      "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
-                      "TextContent": "bold and italic"
-                    }
-                  ]
+                  "NodeName": "Text",
+                  "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+                  "TextContent": "bold and italic"
                 }
               ]
             },
@@ -171,36 +180,26 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
         }
       ]);
       mockHigherLevelChildren[0].Children = mockChildren;
-      mockChildren[0].Children[1] = mockAstParent;
+      mockChildren[0] = mockAstParent;
   
       const result = insertNormalTextIntoBothStrongAndEmphasisText(
-        mockContainer, startOffset, mockHistoryManager as IHistoryManager, 0, mockAstParent, 0, mockHigherLevelChildren, mockChildren, 'a'
-      );
+        mockContainer, startOffset, mockChild, mockHistoryManager as IHistoryManager, 0, mockAstParent, 0, mockHigherLevelChildren, mockChildren, 'a');
   
       // Assertions here
       // expect(mockGrandChild.TextContent).toBe('This is a third paaragraph');
       expect(mockHistoryManager.recordChildInsertAfter).toHaveBeenCalledTimes(2);
       expect(result!.type).toBe('higherLevelSplit');
-      expect(result!.nodes.length).toBe(3);
-      console.log('normal into strong or emphasis');
+      expect(result!.nodes.length).toBe(4);
+      console.log('normal into strong and emphasis');
       console.log(JSON.stringify(result, null, 2));
       expect(result).toStrictEqual({
         "type": "higherLevelSplit",
         "nodes": [
           {
-            "NodeName": "BlankLine",
-            "Attributes": {},
-            "ChildIndex": 0,
-            "Guid": "2bfdc093-0f70-4d86-a57c-5f16315187cf",
-            "Depth": 0,
-            "TextContent": null,
-            "Children": []
-          },
-          {
             "NodeName": "ParagraphBlock",
             "Attributes": {},
-            "ChildIndex": 1,
-            "Guid": "09621212-5193-46b4-a626-1dd15f4fc8d9",
+            "ChildIndex": 0,
+            "Guid": "a8b579d3-93c2-4837-8731-34fa04badb8f",
             "Depth": 0,
             "TextContent": null,
             "Children": [
@@ -208,7 +207,7 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
                 "NodeName": "Strong",
                 "Attributes": {},
                 "ChildIndex": 0,
-                "Guid": "cc4156fc-0d7d-46de-91f9-5206b3c1c912",
+                "Guid": "c069fb1b-83fc-4bd9-b1fb-f385f4150da1",
                 "Depth": 0,
                 "TextContent": null,
                 "Children": [
@@ -216,10 +215,29 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
                     "NodeName": "Text",
                     "Attributes": {},
                     "ChildIndex": 0,
-                    "Guid": "20a3b3a6-c02a-479d-a04e-ec2e18993714",
+                    "Guid": "ffcf0896-aa89-4a97-989c-ce4001943443",
                     "Depth": 1,
-                    "TextContent": "of bol",
+                    "TextContent": "This is a paragraph with both ",
                     "Children": []
+                  },
+                  {
+                    "NodeName": "Emphasis",
+                    "Attributes": {},
+                    "ChildIndex": 1,
+                    "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
+                    "Depth": 1,
+                    "TextContent": null,
+                    "Children": [
+                      {
+                        "NodeName": "Text",
+                        "Attributes": {},
+                        "ChildIndex": 0,
+                        "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+                        "Depth": 2,
+                        "TextContent": "bo",
+                        "Children": []
+                      }
+                    ]
                   }
                 ]
               },
@@ -242,12 +260,78 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
                 "TextContent": null,
                 "Children": [
                   {
+                    "NodeName": "Emphasis",
+                    "Attributes": {},
+                    "ChildIndex": 1,
+                    "Guid": "mock-key",
+                    "Depth": 1,
+                    "TextContent": null,
+                    "Children": [
+                      {
+                        "NodeName": "Text",
+                        "Attributes": {},
+                        "ChildIndex": 0,
+                        "Guid": "mock-key",
+                        "Depth": 2,
+                        "TextContent": "ld and italic",
+                        "Children": []
+                      }
+                    ]
+                  },
+                  {
+                    "NodeName": "Text",
+                    "Attributes": {},
+                    "ChildIndex": 2,
+                    "Guid": "mock-key",
+                    "Depth": 1,
+                    "TextContent": " text",
+                    "Children": []
+                  }
+                ]
+              },
+              {
+                "NodeName": "Text",
+                "Attributes": {},
+                "ChildIndex": 1,
+                "Guid": "d8d85efd-f787-4ad5-915e-d15f7face731",
+                "Depth": 0,
+                "TextContent": "This is another paragraph.",
+                "Children": []
+              }
+            ]
+          },
+          {
+            "NodeName": "BlankLine",
+            "Attributes": {},
+            "ChildIndex": 1,
+            "Guid": "2bfdc093-0f70-4d86-a57c-5f16315187cf",
+            "Depth": 0,
+            "TextContent": null,
+            "Children": []
+          },
+          {
+            "NodeName": "ParagraphBlock",
+            "Attributes": {},
+            "ChildIndex": 2,
+            "Guid": "09621212-5193-46b4-a626-1dd15f4fc8d9",
+            "Depth": 0,
+            "TextContent": null,
+            "Children": [
+              {
+                "NodeName": "Strong",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Guid": "cc4156fc-0d7d-46de-91f9-5206b3c1c912",
+                "Depth": 1,
+                "TextContent": null,
+                "Children": [
+                  {
                     "NodeName": "Text",
                     "Attributes": {},
                     "ChildIndex": 0,
-                    "Guid": "mock-key",
-                    "Depth": 1,
-                    "TextContent": "d text",
+                    "Guid": "20a3b3a6-c02a-479d-a04e-ec2e18993714",
+                    "Depth": 2,
+                    "TextContent": "of bold text",
                     "Children": []
                   }
                 ]
@@ -257,14 +341,13 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
           {
             "NodeName": "BlankLine",
             "Attributes": {},
-            "ChildIndex": 2,
+            "ChildIndex": 3,
             "Guid": "6436b060-1804-4778-baec-1aaf8d4a9b9a",
             "Depth": 0,
             "TextContent": null,
             "Children": []
           }
         ]
-      }
-      );
+      });
     });
   });

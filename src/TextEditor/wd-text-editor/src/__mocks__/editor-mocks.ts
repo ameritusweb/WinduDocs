@@ -391,6 +391,16 @@ export const mockStrongData: AstNode[] = [
   }
 ];
 
+export const mockTargetAst: AstNode = {
+  "NodeName": "Text",
+  "Attributes": {},
+  "ChildIndex": 0,
+  "Depth": 3,
+  "Guid": "ffcf0896-aa89-4a97-989c-ce4001943443",
+  "TextContent": "This is a paragraph with both ",
+  "Children": []
+};
+
 export const mockAstData: AstNode = {
   "NodeName": "MarkdownDocument",
   "Attributes": {},

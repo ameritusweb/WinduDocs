@@ -18,7 +18,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                 }
                 if (astParent && parent.parentElement?.nodeName === 'STRONG' && parent.nodeName === 'EM' && editorState === 'normal')
                 {
-                    const res = insertNormalTextIntoBothStrongAndEmphasisText(container as IdableNode, startOffset, historyManager, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
+                    const res = insertNormalTextIntoBothStrongAndEmphasisText(container as IdableNode, startOffset, child, historyManager, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
                     if (res)
                         return res;
                 }
