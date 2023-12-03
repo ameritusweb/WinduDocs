@@ -1,8 +1,8 @@
-import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
+import { AstNode, IHistoryManagerRecorder, UpdateData } from "../../components/wysiwyg/interface";
 import { createNewAstNodeFromFormat, findNodeByGuid, generateKey, replaceKeys } from "../node-operations";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const enterAroundLists = (updateData: UpdateData, historyManager: IHistoryManager, children: AstNode[], container: Node, startOffset: number) => {
+const enterAroundLists = (updateData: UpdateData, historyManager: IHistoryManagerRecorder, children: AstNode[], container: Node, startOffset: number) => {
 
     const { astParent, containerIndex, skyChildren } = updateData;
 
