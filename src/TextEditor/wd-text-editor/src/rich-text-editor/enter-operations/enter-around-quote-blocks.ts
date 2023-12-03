@@ -1,5 +1,5 @@
 import { AstNode, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
-import { createNewAstNodeFromFormat, deepCopyAstNode, splitTree } from "../node-operations";
+import { createNewAstNodeFromFormat, deepCopyAstNode, splitTreeDeux } from "../node-operations";
 import { trimSpecial } from "../undo-redo-ot";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
@@ -40,7 +40,9 @@ const enterAroundQuoteBlocks = (updateData: UpdateData, parentId: string, histor
     else {
         const higherLevelChild = higherLevelChildren[higherLevelIndex];
         if (child) {
-            const [node1, node2] = splitTree(higherLevelChild, grandChild!, startOffset);
+            const [node1, node2] = splitTreeDeux(higherLevelChild, grandChild!, startOffset);
+            if (!node1 || !node2)
+                throw new Error('Split tree failed.');
             const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
             higherLevelChildren.splice(higherLevelIndex, 1, node1);
 

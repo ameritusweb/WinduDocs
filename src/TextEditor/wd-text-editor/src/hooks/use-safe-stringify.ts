@@ -39,6 +39,26 @@ export const useSafeStringify = () => {
         nodeMap.current.set(uniqueId, JSON.stringify(convertNodeToPOJO(value), null, 2));
         return uniqueId;
     }
+
+    // Removing specific attributes
+    if (key === 'ChildIndex' || key === 'Depth') {
+        return undefined; // Return undefined to omit the key
+    }
+
+    // Removing 'Attributes' attribute if it's an empty object
+    if (key === 'Attributes' && value && Object.keys(value).length === 0) {
+        return undefined;
+    }
+
+    // Removing 'Children' array if it's empty
+    if (key === 'Children' && Array.isArray(value) && value.length === 0) {
+        return undefined;
+    }
+
+    if (key === 'TextContent' && (value === null)) {
+        return undefined;
+    }
+
     return value;
     };
     

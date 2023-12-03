@@ -3,7 +3,10 @@ import { createNodeWithTypeAndKey, splitAndUpdateHigherLevelNodes, updateHigherL
 
 const insertNormalTextIntoEitherStrongOrEmphasisText = (container: Text, startOffset: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number, child: AstNode, containerIndex: number, higherLevelChildren: AstNode[], children: AstNode[], key: string): AstUpdate | null => {
     if (startOffset === 0) {
-        // TODO
+        const newText = createNodeWithTypeAndKey('Text', key);
+        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, 'beginning');
+        if (nodes !== null)
+            return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
     else if (startOffset < (container.textContent || '').length) // insert in the middle
     {

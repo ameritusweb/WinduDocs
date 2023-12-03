@@ -28,7 +28,11 @@ const updateHigherLevelNodes = (childIndex: number, higherLevelChildren: AstNode
     higherLevelChild.Children.splice(insertionIndex, 0, ...newNodes);
     const historyBuilder = new HistoryBuilder();
     historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
-    historyBuilder.addFinalCursorPosition(higherLevelChild, oldIndex + newNodes.length, 1);
+    if (insertAt === 'end') {
+        historyBuilder.addFinalCursorPosition(higherLevelChild, oldIndex + newNodes.length, 1);
+    } else {
+        historyBuilder.addFinalCursorPosition(higherLevelChild, oldIndex, 1);
+    }
     let prev = oldNode;
     for (const node of newNodes) {
         if (insertAt === 'end') {

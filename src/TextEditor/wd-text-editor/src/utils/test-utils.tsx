@@ -104,6 +104,10 @@ export interface PartialAstNode extends AstNodeBase {
   Children: PartialAst[];
 }
 
+export const toMockAstArray = (mockNodes: PartialAst[], depth: number = 0): AstNode[] => {
+  return mockNodes.map((node, index) => toMockAst(node, depth, index));
+};
+
 export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstNode => {
   return {
     ...defaultAstNode,
