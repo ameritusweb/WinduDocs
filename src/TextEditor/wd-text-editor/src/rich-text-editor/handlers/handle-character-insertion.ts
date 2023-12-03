@@ -30,7 +30,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                     if (res)
                         return res;
                 } else if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && parent.parentElement?.nodeName !== 'STRONG' && Array.isArray(editorState)) {
-                    const res = insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText(parent, historyManager, higherLevelIndex, higherLevelChildren, children, key);
+                    const res = insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText(parent, historyManager, higherLevelIndex, higherLevelChildren, children, startOffset, key);
                     if (res)
                         return res;
                 } else if (grandParent && (grandParent.nodeName === 'CODE' || grandParent.nodeName === 'DIV')) {

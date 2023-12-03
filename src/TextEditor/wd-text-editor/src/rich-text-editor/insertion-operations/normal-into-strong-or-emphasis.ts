@@ -12,7 +12,7 @@ const insertNormalTextIntoEitherStrongOrEmphasisText = (container: Text, startOf
             return { type: 'higherLevelSplit', nodes };
     } else { // insert at the end
         const newText = createNodeWithTypeAndKey('Text', key);
-        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, [newText], 'end');
+        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, 'end');
         if (nodes !== null)
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }

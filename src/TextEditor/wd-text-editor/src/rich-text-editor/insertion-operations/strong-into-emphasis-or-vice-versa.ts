@@ -9,7 +9,7 @@ const insertStrongTextIntoEmphasisTextOrViceVersa = (parent: Node, editorState: 
             return { type: 'higherLevelSplit', nodes };
     } else {
         const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);
-        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, [newContainer], 'end');
+        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newContainer], startOffset, 'end');
         if (nodes !== null) 
             return { type: 'higherLevelInsertNew', nodes: higherLevelChildren };
     }
