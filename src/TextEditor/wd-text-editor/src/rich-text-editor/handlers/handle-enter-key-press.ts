@@ -21,7 +21,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManager, container: Node, c
                 if (res)
                     return res;
             }
-            else if (context.types.length === 0 && (parent.nodeName === 'STRONG' || parent.nodeName === 'EMPHASIS'))
+            else if (context.types.length === 0 && (parent.nodeName === 'STRONG' || parent.nodeName === 'EM'))
             {
                 const res = enterAroundStrongOrEmphasisText(updateData, historyManager, container, startOffset);
                 if (res)

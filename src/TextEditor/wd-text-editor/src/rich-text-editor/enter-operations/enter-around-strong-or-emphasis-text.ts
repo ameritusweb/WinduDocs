@@ -4,7 +4,7 @@ import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
 const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager: IHistoryManagerRecorder, container: Node, startOffset: number) => {
 
-    const { higherLevelIndex, child, grandChild, higherLevelChildren } = updateData;
+    const { higherLevelIndex, child, grandChild, containerIndex, higherLevelChildren } = updateData;
 
     if (startOffset === 0)
     {
@@ -42,7 +42,7 @@ const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager:
 
 
             const historyBuilder = new HistoryBuilder();
-            historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
+            historyBuilder.addInitialCursorPosition(child, containerIndex, startOffset);
             historyBuilder.addReplaceCommand(oldNode, split[0]);
             higherLevelChildren.splice(higherLevelIndex + 1, 0, split[1]);
             const [newChild, newParent] = findNodeByGuid(higherLevelChildren, guid, null);

@@ -41,10 +41,11 @@ const enterAroundCodeOrAlertBlocks = (updateData: UpdateData, parentId: string, 
     else
     {
         const [node1, node2] = splitNode(child!, startOffset);
+        const higherLevelIndex = higherLevelChildren.findIndex((c) => c.Guid === trimSpecial(parentId, { startString: 'para_' }));
         const oldNode = deepCopyAstNode(higherLevelChildren[containerIndex]);
         higherLevelChildren.splice(higherLevelIndex, 1, node1);
         const historyBuilder = new HistoryBuilder();
-        historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
+        historyBuilder.addInitialCursorPosition({ ...oldNode, NodeName: 'ParagraphBlock' }, 0, startOffset);
         historyBuilder.addReplaceCommand(oldNode, node1);
         higherLevelChildren.splice(higherLevelIndex + 1, 0, node2);
         historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], node2);
