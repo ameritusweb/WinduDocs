@@ -13,12 +13,16 @@ class HistoryBuilder implements IHistoryBuilder {
         this.commands = [];
     }
 
+    getCommands(): readonly IHistoryCommand[] {
+        return this.commands;
+    }
+
     addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
-        this.initialCursorPosition = { targetParentId:  toId(parentWithId) || '', nodeIndex: indexToTextNode, offset };
+        this.initialCursorPosition = { targetParentId:  toId(parentWithId)!, nodeIndex: indexToTextNode, offset };
     }
 
     addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
-        this.finalCursorPosition = { targetParentId: toId(parentWithId) || '', nodeIndex: indexToTextNode, offset };
+        this.finalCursorPosition = { targetParentId: toId(parentWithId)!, nodeIndex: indexToTextNode, offset };
     }
 
     addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
