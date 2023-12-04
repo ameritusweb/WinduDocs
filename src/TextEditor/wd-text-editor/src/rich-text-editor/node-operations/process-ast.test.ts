@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { act, cleanup, render, screen, toMockAst, userEvent } from '../../utils/test-utils'
 import { AstNode } from '../../components/wysiwyg/interface';
-import { mockAstData } from '../../__mocks__/editor-mocks';
+import { mockAstData, mockHigherLevelCodeBlockData, mockListData, mockTableData } from '../../__mocks__/editor-mocks';
 import processAst from './process-ast';
 import { createNewAstNode } from '.';
 
@@ -13,7 +13,12 @@ afterEach(() => {
   describe('process-ast', () => {
     it('correctly processes the AST', async () => {
         const mockAst: AstNode = mockAstData;
-    
+        mockAst.Children.push(toMockAst({ NodeName: "Table", Children: mockTableData }));
+        mockAst.Children.push(toMockAst({ NodeName: "ListBlock", Attributes: { IsOrdered: 'True' },   Children: mockListData }));
+        mockAst.Children.push(...mockHigherLevelCodeBlockData);
+        mockAst.Children.push(toMockAst({ NodeName: 'Text', TextContent:'Test Text\nMore Test Text' }));
+        mockAst.Children.push(toMockAst({ NodeName: 'Text', TextContent:'\n' }));
+
         const [lines, guidMap] = await processAst(mockAst);
     
         // Assertions for lines
