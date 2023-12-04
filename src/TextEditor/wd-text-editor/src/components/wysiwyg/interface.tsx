@@ -212,6 +212,16 @@ export interface UpdateData {
   higherLevelChildren: AstNode[];
 }
 
+export type Simplifiable<T> = {
+  [P in keyof T]?: T[P] | undefined;
+} & {
+  Children?: Simplifiable<Partial<T>>[];
+};
+
+export type TestData = {
+  [key: string]: string | null | number | Simplifiable<Partial<TestData>> | Simplifiable<Partial<TestData>>[];
+};
+
 export interface AstContext {
   isQuoteBlock: boolean;
   isLink: boolean;
