@@ -17,7 +17,7 @@ export const useParagraph = () => {
         if (gatherRes)
         {
           const { updateData, container, endContainer, range, startOffset, endOffset } = gatherRes;
-          if (container === endContainer) {
+          if (container === endContainer && range.startOffset !== range.endOffset) {
                 const { parent, child, grandChild, containerIndex } = updateData;
                 if (parent && child && grandChild) {
                     if (context.types.length === 0 && parent.nodeName === 'P')

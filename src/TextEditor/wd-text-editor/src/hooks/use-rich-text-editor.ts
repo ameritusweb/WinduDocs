@@ -35,7 +35,7 @@ export const useRichTextEditor = () => {
             let container = range.startContainer;
             let endContainer = range.endContainer;
             const differentContainers = container !== endContainer;
-            const startOffset = range.startOffset;
+            let startOffset = range.startOffset;
             const endOffset = range.endOffset;
             if (container.nodeName !== '#text')
             {
@@ -45,11 +45,56 @@ export const useRichTextEditor = () => {
             {
                 container = container.firstChild!;
             }
-            const parent = container.parentElement;
+            let parent = container.parentElement;
             if (!parent)
             {
                 console.warn('parent is null');
                 return null;
+            }
+            if (!differentContainers && startOffset === 0 && container.previousSibling) {
+                if (editorData.editorState === 'strong' && container.previousSibling.nodeName === 'STRONG') {
+                    container = container.previousSibling;
+                    startOffset = container.textContent?.length || 0;
+                } else if (editorData.editorState === 'em' && container.previousSibling.nodeName === 'EM') {
+                    container = container.previousSibling;
+                    startOffset = container.textContent?.length || 0;
+                }
+                if (container.nodeName !== '#text')
+                {
+                    container = container.firstChild!;
+                }
+                if (container.nodeName !== '#text')
+                {
+                    container = container.firstChild!;
+                }
+                parent = container.parentElement;
+                if (!parent)
+                {
+                    console.warn('parent is null');
+                    return null;
+                }
+            } else if (!differentContainers && startOffset === container.textContent?.length && container.nextSibling) {
+                if (editorData.editorState === 'strong' && container.nextSibling.nodeName === 'STRONG') {
+                    container = container.nextSibling;
+                    startOffset = 0;
+                } else if (editorData.editorState === 'em' && container.nextSibling.nodeName === 'EM') {
+                    container = container.nextSibling;
+                    startOffset = 0;
+                }
+                if (container.nodeName !== '#text')
+                {
+                    container = container.firstChild!;
+                }
+                if (container.nodeName !== '#text')
+                {
+                    container = container.firstChild!;
+                }
+                parent = container.parentElement;
+                if (!parent)
+                {
+                    console.warn('parent is null');
+                    return null;
+                }
             }
             const rootChildId = findClosestAncestor(parent, 'richTextEditor')?.id;
             if (!rootChildId)
