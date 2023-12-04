@@ -17,6 +17,7 @@ function customRender(ui: React.ReactElement, options = {}) {
 
 interface CustomNode {
   nodeName: string;
+  id?: string;
   textContent?: string;
   childNodes?: CustomNode[];
 }
@@ -28,6 +29,7 @@ export const mockCustomElement = (node: CustomNode): IdableNode => {
     element = document.createTextNode(node.textContent || '');
   } else {
     element = document.createElement(node.nodeName) as HTMLElement;
+    node.id && (element.id = node.id);
     element.textContent = node.textContent || null;
 
     if (node.childNodes) {

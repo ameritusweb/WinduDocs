@@ -123,7 +123,6 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
       expect(result).not.toBeNull();
       expect(result!.type).toBe('insertNew');
       expect(result!.nodes.length).toBe(3);
-      console.log(JSON.stringify(result, null, 2));
       expect(result!).toStrictEqual({
         "type": "insertNew",
         "rootChildId": "section_ac1f684e-57a4-464f-aa76-c751e7a36550",
@@ -279,7 +278,6 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
       expect(result).not.toBeNull();
       expect(result!.type).toBe('insertNew');
       expect(result!.nodes.length).toBe(2);
-      console.log(JSON.stringify(result, null, 2));
       expect(result!).toStrictEqual({
         "type": "insertNew",
         "rootChildId": "section_ac1f684e-57a4-464f-aa76-c751e7a36550",
@@ -426,7 +424,6 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
       expect(result).not.toBeNull();
       expect(result!.type).toBe('insertNew');
       expect(result!.nodes.length).toBe(2);
-      console.log(JSON.stringify(result, null, 2));
       expect(result!).toStrictEqual({
         "type": "insertNew",
         "rootChildId": "section_ac1f684e-57a4-464f-aa76-c751e7a36550",

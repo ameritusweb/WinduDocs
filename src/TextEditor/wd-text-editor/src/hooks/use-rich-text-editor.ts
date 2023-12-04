@@ -1,4 +1,4 @@
-import { AstContext, AstNode, AstUpdate, IHistoryManager, UpdateData } from "../components/wysiwyg/interface";
+import { AstContext, AstNode, AstUpdate, IHistoryManager, IdableNode, UpdateData } from "../components/wysiwyg/interface";
 import { handleBackspaceKeyPress, handleCharacterInsertion, handleEnterKeyPress } from "../rich-text-editor/handlers";
 import { createNewAstNode, createNewAstNodeFromFormat, findClosestAncestor, findHigherlevelIndex, findNodeByGuid, findNodeIndexByGuid } from "../rich-text-editor/node-operations";
 import { HistoryManager, trimSpecial } from "../rich-text-editor/undo-redo-ot";
@@ -150,7 +150,7 @@ export const useRichTextEditor = () => {
             }
             else if (key === 'Backspace') {
                 event.preventDefault();
-                let update = handleBackspaceKeyPress(historyManager, container, endContainer, children, updateData, range, startOffset, endOffset);
+                let update = handleBackspaceKeyPress(historyManager, container, endContainer, children, updateData, range.commonAncestorContainer as IdableNode, startOffset, endOffset);
                 if (update) {
                     update = { ...update, pathIndices };
                     editorData.emitEvent('update', 'richTextEditor', update);

@@ -1,12 +1,12 @@
-import { AstNode, AstUpdate, IHistoryManager, UpdateData } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManagerRecorder, IdableNode, UpdateData } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
 import { createNewAstNode, findClosestAncestor, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
 import { removeText } from "../text-manipulation";
 import { trimSpecial } from "../undo-redo-ot";
 
 // Handle Backspace key press
-const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Node, endContainer: Node, children: AstNode[], updateData: UpdateData, range: Range, startOffset: number, endOffset: number): AstUpdate | null => {
-    const commonAncestor = range.commonAncestorContainer;
+const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, container: Node, endContainer: Node, children: AstNode[], updateData: UpdateData, commonAncestorContainer: IdableNode, startOffset: number, endOffset: number): AstUpdate | null => {
+    const commonAncestor = commonAncestorContainer;
     const higherLevelChildren = updateData.higherLevelChildren;
     if (commonAncestor.nodeName !== '#text') {
         const ancestorChildNodes = processArray(Array.from(commonAncestor.childNodes) as (Node | Text)[], (i) => i === container, (j) => j === endContainer);
@@ -88,7 +88,6 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManager, container: Nod
             }
             let bchild = children[childIndex];
             if (bchild) {
-
                 const index = Array.from(parent.childNodes).findIndex((c) => c === container);
                 let text = bchild.Children[index];
                 if (!text) {

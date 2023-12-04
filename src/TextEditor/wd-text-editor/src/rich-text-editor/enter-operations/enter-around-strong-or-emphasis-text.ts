@@ -9,7 +9,6 @@ const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager:
     if (startOffset === 0)
     {
         const newBlank = createNewAstNode('BlankLine', 0, 0, null);
-        console.log(higherLevelIndex);
         const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
         higherLevelChildren.splice(higherLevelIndex, 0, newBlank);
         const historyBuilder = new HistoryBuilder();
@@ -38,15 +37,9 @@ const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager:
             const oldNode = deepCopyAstNode(higherLevelChildren[higherLevelIndex]);
             const guid = generateKey();
 
-            console.log(JSON.stringify(higherLevelChild, null, 2));
-            console.log(JSON.stringify(lowerLevelChild, null, 2));
-            console.log(startOffset);
-
             const split = splitTreeDeux(higherLevelChild, lowerLevelChild!, startOffset, guid);
             if (!split[0] || !split[1])
                 throw new Error('Split tree failed.');
-            console.log(JSON.stringify(split[0], null, 2));
-            console.log(JSON.stringify(split[1], null, 2));
             higherLevelChildren.splice(higherLevelIndex, 1, split[0]);
 
 
@@ -57,9 +50,6 @@ const enterAroundStrongOrEmphasisText = (updateData: UpdateData, historyManager:
             const [newChild, newParent] = findNodeByGuid(higherLevelChildren, guid, null);
             const newChildIndex = newParent?.Children.findIndex(c => c.Guid === newChild?.Guid);
             
-            console.log(guid);
-            console.log(newParent);
-            console.log(newChildIndex);
             if (newParent && newChildIndex !== undefined && newChildIndex !== null) {
                 historyBuilder.addInsertAfterCommand(higherLevelChildren[higherLevelIndex], split[1]);
                 historyBuilder.addFinalCursorPosition(newParent, newChildIndex, 0);

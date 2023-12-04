@@ -191,6 +191,7 @@ export interface ITextBlock {
 
 export interface Idable {
   id: string;
+  childNodes: NodeListOf<IdableNode>
 }
 
 export type IdableNode = Node & Idable;

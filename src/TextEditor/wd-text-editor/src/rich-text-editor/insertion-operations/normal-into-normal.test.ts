@@ -62,8 +62,6 @@ describe('insertNormalTextIntoNormalText', () => {
       expect(result.type).toBe('insert');
       expect(result.rootChildId).toBe('section_ca3e3b0b-be05-4a6d-b7c8-b29e8d64f34d');
       expect(result.nodes.length).toBe(1);
-      console.log('normal into normal');
-      console.log(JSON.stringify(result, null, 2));
       expect(result).toStrictEqual({
         "type": "insert",
         "rootChildId": "section_ca3e3b0b-be05-4a6d-b7c8-b29e8d64f34d",

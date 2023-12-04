@@ -23,7 +23,6 @@ describe('splitTreeAndExtract', () => {
       const [leftTree, rightTree, extractedText] = splitTreeAndExtract(root, target, 2, 5);
   
       // Assert the structure of leftTree, rightTree, and the extractedText
-      console.log(JSON.stringify(rightTree, null, 2));
       expect(leftTree).toEqual({
         "NodeName": "MarkdownDocument",
         "Attributes": {},

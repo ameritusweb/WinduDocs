@@ -103,8 +103,6 @@ describe('insertNormalTextIntoStrongOrEmphasisText', () => {
       expect(mockHistoryManager.recordChildInsertAfter).toHaveBeenCalledTimes(2);
       expect(result!.type).toBe('higherLevelSplit');
       expect(result!.nodes.length).toBe(3);
-      console.log('normal into strong or emphasis');
-      console.log(JSON.stringify(result, null, 2));
       expect(result).toStrictEqual({
         "type": "higherLevelSplit",
         "nodes": [
