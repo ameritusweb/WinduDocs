@@ -40,10 +40,6 @@ const Strong: React.FC<StrongProps> = ({ id, parentId, context, pathIndices, chi
                         return <Emphasis key={child.Guid} id={child.Guid} parentId={id} context={{ ...context, isStrong: true, types: [...context.types, 'strong'] }} pathIndices={childPathIndices} children={child.Children} />;
                     case 'Text':
                         return <React.Fragment key={child.Guid}>{child.TextContent}</React.Fragment>;
-                    case 'Strong':
-                        return child.Children.map((child) => {
-                            return <Emphasis key={child.Guid} id={child.Guid} parentId={id} context={{ ...context, isStrong: true, types: [...context.types, 'strong'] }} pathIndices={childPathIndices} children={child.Children} />;
-                        });
                     default:
                         return null;
                 }
