@@ -56,7 +56,7 @@ describe('insertNormalTextIntoNormalText', () => {
         mockGrandChild, mockContainer, startOffset, mockHistoryManager as IHistoryManager, mockChild, rootChildId, mockChildren, 'a'
       );
   
-      // Assertions here
+      
       expect(mockGrandChild.TextContent).toBe('This is a third paaragraph');
       expect(mockHistoryManager.recordChildTextUpdate).toHaveBeenCalledTimes(1);
       expect(result.type).toBe('insert');

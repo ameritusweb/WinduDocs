@@ -470,8 +470,8 @@ describe('enterAroundStrongOrEmphasisText', () => {
       expect(result).not.toBeNull();
       expect(result!.type).toBe("higherLevelSplitOrMove");
       expect(result!.nodes[0].Children[0].Children[0].TextContent).toBe("This is a parag");
-      // Assertions here
+      
     });
   
-    // More tests for other scenarios
+    
   });

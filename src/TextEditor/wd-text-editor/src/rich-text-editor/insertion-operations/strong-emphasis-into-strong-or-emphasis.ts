@@ -8,12 +8,12 @@ const insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText = (parent:
         if (nodes !== null)
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
-    else if (startOffset < (container.textContent || '').length) // insert in the middle
+    else if (startOffset < (container.textContent || '').length) 
     {
         const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, child, startOffset, historyManager, containerIndex, children.indexOf(child), 'Strong + Emphasis', key, children, higherLevelChildren, containerIndex, true, child.Children[containerIndex]);
         if (nodes !== null)
             return { type: 'higherLevelSplit', nodes };
-    } else { // insert at the end
+    } else { 
         const newContainer = createNodeWithTypeAndKey('Strong + Emphasis', key);
         const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newContainer], startOffset, 'end');
         if (nodes !== null)

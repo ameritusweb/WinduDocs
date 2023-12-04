@@ -151,10 +151,10 @@ class HistoryManager implements IHistoryManager {
             throw new Error('No operations provided for the transaction');
         }
     
-        // Start the transaction with the first operation
+        
         historyManager.recordOperation(operations[0], false);
     
-        // Record all intermediate operations as part of the transaction
+        
         operations.slice(1).forEach(operation => {
             historyManager.recordOperation(operation, true);
         });
@@ -251,7 +251,7 @@ class HistoryManager implements IHistoryManager {
         return [ast, rootChildIds.trimEnd()];
     }
 
-    // Redoes the last transaction
+    
     redo(ast: AstNode): [AstNode, string] | null {
         if (this.redoStack.isEmpty()) {
             return null;

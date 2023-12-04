@@ -9,10 +9,10 @@ describe('handleArrowKeyLeftOrRightPress', () => {
     it('moves cursor to the left at the start of a text node', () => {
 
       const mockEvent = {
-        key: 'ArrowLeft', // Or 'ArrowRight' depending on the test case
+        key: 'ArrowLeft', 
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
-        // Add any other properties or methods that are accessed within the function
+        
       } as unknown as React.KeyboardEvent<HTMLElement>;
 
       const editorData: EditorDataType = EditorData;
@@ -48,15 +48,15 @@ describe('handleArrowKeyLeftOrRightPress', () => {
     });
 
     it('should use default behavior when moving cursor to the right at the start of a text node', () => {
-        // Setup and simulate cursor at end
-        // Trigger right arrow key press
-        // Assert expected behavior
+        
+        
+        
   
         const mockEvent = {
-          key: 'ArrowRight', // Or 'ArrowRight' depending on the test case
+          key: 'ArrowRight', 
           preventDefault: vi.fn(),
           stopPropagation: vi.fn(),
-          // Add any other properties or methods that are accessed within the function
+          
         } as unknown as React.KeyboardEvent<HTMLElement>;
   
         const editorData: EditorDataType = EditorData;
@@ -93,15 +93,15 @@ describe('handleArrowKeyLeftOrRightPress', () => {
       });
   
     it('moves cursor to the right at the end of a text node', () => {
-      // Setup and simulate cursor at end
-      // Trigger right arrow key press
-      // Assert expected behavior
+      
+      
+      
 
       const mockEvent = {
-        key: 'ArrowRight', // Or 'ArrowRight' depending on the test case
+        key: 'ArrowRight', 
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
-        // Add any other properties or methods that are accessed within the function
+        
       } as unknown as React.KeyboardEvent<HTMLElement>;
 
       const editorData: EditorDataType = EditorData;
@@ -137,15 +137,15 @@ describe('handleArrowKeyLeftOrRightPress', () => {
     });
   
     it('handles no movement at the start of the first node in a row', () => {
-      // Setup for the first node scenario
-      // Trigger left arrow key press
-      // Assert no movement
+      
+      
+      
 
       const mockEvent = {
-        key: 'ArrowLeft', // Or 'ArrowRight' depending on the test case
+        key: 'ArrowLeft', 
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
-        // Add any other properties or methods that are accessed within the function
+        
       } as unknown as React.KeyboardEvent<HTMLElement>;
 
       const editorData: EditorDataType = EditorData;
@@ -181,15 +181,15 @@ describe('handleArrowKeyLeftOrRightPress', () => {
     });
   
     it('moves cursor to the next row at the end of the last node in a row', () => {
-      // Setup for the last node scenario
-      // Trigger right arrow key press
-      // Assert cursor moves to the next row
+      
+      
+      
 
       const mockEvent = {
-        key: 'ArrowRight', // Or 'ArrowRight' depending on the test case
+        key: 'ArrowRight', 
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
-        // Add any other properties or methods that are accessed within the function
+        
       } as unknown as React.KeyboardEvent<HTMLElement>;
 
       const editorData: EditorDataType = EditorData;
@@ -225,15 +225,15 @@ describe('handleArrowKeyLeftOrRightPress', () => {
     });
   
     it('handles no selection available scenario', () => {
-      // Setup for no selection
-      // Trigger arrow key press
-      // Assert correct handling
+      
+      
+      
 
       const mockEvent = {
-        key: 'ArrowRight', // Or 'ArrowRight' depending on the test case
+        key: 'ArrowRight', 
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
-        // Add any other properties or methods that are accessed within the function
+        
       } as unknown as React.KeyboardEvent<HTMLElement>;
 
       const editorData: EditorDataType = EditorData;
@@ -257,15 +257,15 @@ describe('handleArrowKeyLeftOrRightPress', () => {
     });
   
     it('handles selection inside a special node', () => {
-      // Setup for a selection inside a special node like CODE or H1
-      // Trigger arrow key press
-      // Assert correct handling
+      
+      
+      
 
       const mockEvent = {
-        key: 'ArrowRight', // Or 'ArrowRight' depending on the test case
+        key: 'ArrowRight', 
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
-        // Add any other properties or methods that are accessed within the function
+        
       } as unknown as React.KeyboardEvent<HTMLElement>;
 
       const editorData: EditorDataType = EditorData;
@@ -303,5 +303,5 @@ describe('handleArrowKeyLeftOrRightPress', () => {
 
     });
   
-    // Additional scenarios as needed
+    
   });

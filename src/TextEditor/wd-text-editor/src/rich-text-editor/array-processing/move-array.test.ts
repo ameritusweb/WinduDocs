@@ -10,10 +10,10 @@ describe('moveArray function', () => {
   
       moveArray(sourceArray, sliceStart, destinationArray, destinationIndex, sliceEnd);
   
-      // Check if the destination array contains the moved elements
+      
       expect(destinationArray).toEqual([10, 11, 2, 3, 4, 12]);
   
-      // Check if the source array only contains the remaining elements
+      
       expect(sourceArray).toEqual([1, 5]);
     });
   });

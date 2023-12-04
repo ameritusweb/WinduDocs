@@ -34,7 +34,7 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ id, context, isTopLevel, 
             className="relative"
             onFocus={handleFocus}
             onBlur={handleBlur}
-            tabIndex={1} // Make it focusable if needed
+            tabIndex={1} 
         >
         <ul id={id} onClick={onClick}>
             {children.map((child, index) => {

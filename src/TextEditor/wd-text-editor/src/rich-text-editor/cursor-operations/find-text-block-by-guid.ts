@@ -11,7 +11,7 @@ if (res)
     return findOffset(editorData, i, j, key, processedAst, startOffset);
 }
 
-// If not found in either loop, return null
+
 return null;
 
 }

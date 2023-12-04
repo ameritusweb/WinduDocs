@@ -160,10 +160,10 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
 
     useEffect(() => {
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(id, 'InsertHR', handleInsertHR);
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(id, 'InsertQuote', handleInsertQuote);
 
       editorData.events.subscribe(id, 'InsertTable', handleInsertTable);
@@ -172,7 +172,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
 
       editorData.events.subscribe(id, 'InsertBulleted', handleBulletedList);
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(id, 'InsertFenced', handleInsertFenced);
 
       editorData.events.subscribe(id, 'InsertWarningAlert', () => handleInsertAlert('type-alert-warning'));
@@ -184,10 +184,10 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
       editorData.events.subscribe(id, 'InsertErrorAlert', () => handleInsertAlert('type-alert-error'));
 
       return () => {
-          // Unsubscribe the GUID on component unmount
+          
           editorData.events.unsubscribe(id);
       };
-  }, [id]); // Depend on the GUID prop
+  }, [id]); 
 
   const onFocus = () => {
     const editorData: EditorDataType = EditorData;
@@ -198,7 +198,7 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
   
       setLineFormat(prev => {
         if (prev !== editorData.editorState) {
-          // Using requestAnimationFrame for smoother UI updates
+          
           requestAnimationFrame(() => {
             const elementToFocus = document.getElementById(currentFocusId);
             if (elementToFocus) {
@@ -266,10 +266,10 @@ const BlankLine: React.FC<BlankLineProps> = ({ id, format, self, higherLevelCont
 
     }
 
-    // Determine the tag based on the format. Default to 'p' for plain text.
+    
     const Tag = lineFormat && lineFormat !== 'unselected' && typeof lineFormat === 'string' && lineFormat.startsWith('h') && !Array.isArray(lineFormat) ? lineFormat : 'p';
 
-    // Use React.createElement to dynamically create the element
+    
     return React.createElement(
       Tag,
       { ref: blankLineRef, id, className: "blank-line", onFocus: onFocus, onKeyDown: onKeyDown, contentEditable: true, suppressContentEditableWarning: true },

@@ -71,11 +71,11 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ ast }) => {
 
     const updateNodeChildren = (node: AstNode, path: number[], update: AstUpdate, currentDepth: number = 0): AstNode => {
         if (path.length === currentDepth) {
-          // Reached the node to update
+          
           return { ...node, Children: update.nodes };
         }
       
-        // Recurse into the children
+        
         const childIndex = path[currentDepth];
         if (childIndex < node.Children.length) {
           return {
@@ -92,7 +92,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ ast }) => {
           };
         }
       
-        // If the path is invalid, return the node as is
+        
         return node;
       };
 
@@ -108,10 +108,10 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ ast }) => {
             indices = update.pathIndices.slice(0, -2);
           }
 
-            // Update the tree with the new children directly using the current AST
+            
             const updatedAst = updateNodeChildren(astRef.current, indices, update);
             
-            // Update the content with the new tree
+            
             updateContent(updatedAst.Children, update.type !== 'insert');
         }
       };      
@@ -128,7 +128,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ ast }) => {
 
 useEffect(() => {
     const observer = new MutationObserver((mutationsList) => {
-      // Check for the specific mutation type, if necessary
+      
       if (mutationsList.length > 0) {
         restoreCursorPosition(mutationsList);
 
@@ -247,7 +247,7 @@ useEffect(() => {
                             format={null} 
                             self={node} 
                             higherLevelContent={{ content: higherLevelContent, updater: updateContent }} />
-            // ... handle other types as needed
+            
             default:
                 return null;
         }
@@ -364,8 +364,8 @@ useEffect(() => {
             event.preventDefault();
 
         return;
-        //const markdown = convertToMarkdown(astRef.current, 0);
-        //console.log(JSON.stringify(markdown, null, 2));
+        
+        
     }
 
     return (

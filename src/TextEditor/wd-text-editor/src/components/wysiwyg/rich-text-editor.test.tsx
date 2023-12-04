@@ -71,13 +71,13 @@ describe('RichTextEditor', async () => {
       
         const { unmount } = render(<RichTextEditor ast={ast} />);
       
-        // Check if the observer is observing the correct element
+        
         expect(observe).toHaveBeenCalled();
       
-        // Unmount the component
+        
         unmount();
       
-        // Check if the observer disconnects on unmount
+        
         expect(disconnect).toHaveBeenCalled();
       });      
 
@@ -87,7 +87,7 @@ describe('RichTextEditor', async () => {
         const [ restoreCursorPositionMock ] = await mockRichTextEditor;
         const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
       
-        // Start observing the editor element for mutations
+        
         const editorElement = container.querySelector('#richTextEditor');
 
         expect(editorElement).not.toBe(null);
@@ -103,7 +103,7 @@ describe('RichTextEditor', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'a', code: 'a' });
         });
 
@@ -118,7 +118,7 @@ describe('RichTextEditor', async () => {
         const [ leftOrRightMock ] = await mockHandlers;
         const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
       
-        // Start observing the editor element for mutations
+        
         const editorElement = container.querySelector('#richTextEditor');
 
         expect(editorElement).not.toBe(null);
@@ -132,7 +132,7 @@ describe('RichTextEditor', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'ArrowLeft', code: 'ArrowLeft' });
         });
 
@@ -145,7 +145,7 @@ describe('RichTextEditor', async () => {
         const [ leftOrRightMock ] = await mockHandlers;
         const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
       
-        // Start observing the editor element for mutations
+        
         const editorElement = container.querySelector('#richTextEditor');
 
         expect(editorElement).not.toBe(null);
@@ -159,7 +159,7 @@ describe('RichTextEditor', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'ArrowRight', code: 'ArrowRight' });
         });
 
@@ -172,7 +172,7 @@ describe('RichTextEditor', async () => {
         const [ leftOrRightMock, upOrDownMock ] = await mockHandlers;
         const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
       
-        // Start observing the editor element for mutations
+        
         const editorElement = container.querySelector('#richTextEditor');
 
         expect(editorElement).not.toBe(null);
@@ -186,7 +186,7 @@ describe('RichTextEditor', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'ArrowUp', code: 'ArrowUp' });
         });
 
@@ -199,7 +199,7 @@ describe('RichTextEditor', async () => {
         const [ leftOrRightMock, upOrDownMock ] = await mockHandlers;
         const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
       
-        // Start observing the editor element for mutations
+        
         const editorElement = container.querySelector('#richTextEditor');
 
         expect(editorElement).not.toBe(null);
@@ -213,7 +213,7 @@ describe('RichTextEditor', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'ArrowDown', code: 'ArrowDown' });
         });
 
@@ -226,7 +226,7 @@ describe('RichTextEditor', async () => {
         const [ undoMock ] = mockUndoRedo();
         const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
       
-        // Start observing the editor element for mutations
+        
         const editorElement = container.querySelector('#richTextEditor');
 
         expect(editorElement).not.toBe(null);
@@ -240,7 +240,7 @@ describe('RichTextEditor', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'z', ctrlKey: true });
         });
 
@@ -253,7 +253,7 @@ describe('RichTextEditor', async () => {
         const [ redoMock ] = mockUndoRedo();
         const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
       
-        // Start observing the editor element for mutations
+        
         const editorElement = container.querySelector('#richTextEditor');
 
         expect(editorElement).not.toBe(null);
@@ -267,7 +267,7 @@ describe('RichTextEditor', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'z', ctrlKey: true });
         });
 

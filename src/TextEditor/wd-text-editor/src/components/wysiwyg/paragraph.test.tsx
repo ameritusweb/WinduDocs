@@ -113,7 +113,7 @@ describe('Paragraph', async () => {
         await act(async () => {
             fireEvent.mouseDown(paragraphElement!);
 
-            // Simulate key press event, e.g., Enter key
+            
             fireEvent.keyDown(paragraphElement!, { key: 'a', code: 'a' });
         });
 

@@ -27,7 +27,7 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({ id, context, pathIndices, child
             className="relative"
             onFocus={handleFocus}
             onBlur={handleBlur}
-            tabIndex={1} // Make it focusable if needed
+            tabIndex={1} 
         >
         <blockquote id={id}>
             {children.map((child, index) => {

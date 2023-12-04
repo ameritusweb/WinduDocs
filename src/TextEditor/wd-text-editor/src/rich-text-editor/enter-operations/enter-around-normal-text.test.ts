@@ -361,8 +361,8 @@ describe('enterAroundNormalText', () => {
       expect(result).not.toBeNull();
       expect(result!.type).toBe("higherLevelSplitOrMove");
       expect(result!.nodes[5].Children[0].TextContent).toBe("This is a thir");
-      // Assertions here
+      
     });
   
-    // More tests for other scenarios
+    
   });

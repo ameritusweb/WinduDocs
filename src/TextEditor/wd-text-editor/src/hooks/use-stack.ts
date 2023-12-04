@@ -40,11 +40,11 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
         while (currentNode) {
             const parent = currentNode.parentNode as Node | Text;
     
-            // Create AST for the current node
+            
             const currentAST: ASTNode = {
                 nodeName: currentNode.nodeName,
                 attributes: {},
-                children: ast ? [ast] : [], // Add previously created AST as a child
+                children: ast ? [ast] : [], 
                 textContent: currentNode.nodeType === Node.TEXT_NODE ? currentNode.textContent : null,
                 hasChanged: currentNode === changedNode,
                 hasDescendantChanged: currentNode !== changedNode,
@@ -53,7 +53,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
             };
     
             if (currentNode.nodeType !== Node.TEXT_NODE) {
-                // Handle attributes for element nodes
+                
                 for (const attr of (currentNode as Element).attributes) {
                     currentAST.attributes[attr.name] = attr.value;
                 }
@@ -65,7 +65,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
     
             ast = currentAST;
 
-            // Stop if we've reached the root of the editor
+            
             if (parent === contentEditableRef.current) {
                 ast.childIndex = Array.from(contentEditableRef.current.childNodes).findIndex((n) => n === currentNode);
                 break;
@@ -153,7 +153,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
         const stackHeight = stackData.stackHeight;
         const stacks = stackData.stacks;
         const maxStackHeight = stackData.maxStackHeight;
-        // Check if there's a next state to go to
+        
         if (contentEditableRef.current) {
             if (stackHeight < maxStackHeight && contentEditableRef.current.childNodes.length === stacks.length) {
 
@@ -173,7 +173,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
     };
 
     const applyAST = (astNode: ASTNode, domNode: Node | Text) => {
-        // Handle text nodes
+        
         if (astNode.nodeName === '#text') {
             if (astNode.mode === 'undo')
             {
@@ -188,13 +188,13 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
             return;
         }
     
-        // Update attributes for element nodes
+        
         if (astNode.attributes && domNode instanceof Element) {
             for (const [attrName, attrValue] of Object.entries(astNode.attributes)) {
                 domNode.setAttribute(attrName, attrValue);
             }
     
-            // Remove any attributes that are no longer present
+            
             Array.from(domNode.attributes).forEach(attr => {
                 if (!Object.prototype.hasOwnProperty.call(astNode.attributes, attr.name)) {
                     domNode.removeAttribute(attr.name);
@@ -207,7 +207,7 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
             return;
         }
     
-        // Use a document fragment for efficient updates if all children are leaf nodes
+        
         if (astNode.hasChanged && astNode.depth === 1) {
             const fragment = document.createDocumentFragment();
             astNode.children.forEach(childAST => {
@@ -217,18 +217,18 @@ export const useStack = (contentEditableRef: RefObject<HTMLDivElement>) => {
             (domNode as Element).innerHTML = '';
             domNode.appendChild(fragment);
         } else {
-            // Standard children update logic
+            
             astNode.children.forEach((childAST, index) => {
                 if (domNode.childNodes[index]) {
                     applyAST(childAST, domNode.childNodes[index]);
                 } else {
-                    // If the child doesn't exist in the DOM, create it
+                    
                     const newChild = createDOMNodeFromAST(childAST);
                     domNode.appendChild(newChild);
                 }
             });
     
-            // Remove any extra DOM nodes
+            
             while (domNode.childNodes.length > astNode.children.length) {
                 if (domNode.lastChild)
                     domNode.removeChild(domNode.lastChild);

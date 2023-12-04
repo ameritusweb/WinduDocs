@@ -56,7 +56,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
             handleInsertLink(higherLevelAstCopy, payload.text, payload.url, props.pathIndices);
       };
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(`para_${props.id}`, 'InsertLink', onInsertLink);
 
       const onInsertInline = () => {
@@ -74,14 +74,14 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
           handleIndent(higherLevelAst, higherLevelChild, props.pathIndices);
       };
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(`para_${props.id}`, 'Indent', onIndent);
 
       const onOutdent = () => {
           
       };
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(`para_${props.id}`, 'Outdent', onOutdent);
 
       const onMakeBold = () => {
@@ -93,7 +93,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       };
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(`para_${props.id}`, 'MakeBold', onMakeBold);
 
       const onMakeItalic = () => {
@@ -105,30 +105,30 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       };
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(`para_${props.id}`, 'MakeItalic', onMakeItalic);
 
       const onMakeBoldAndItalic = () => {
           
       };
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(`para_${props.id}`, 'MakeBoldAndItalic', onMakeBoldAndItalic);
 
       const onMakeNormal = () => {
           
       };
 
-      // Subscribe with the provided GUID
+      
       editorData.events.subscribe(`para_${props.id}`, 'MakeNormal', onMakeNormal);
 
       editorData.events.subscribe(`para_${props.id}`, '*', (payload: any) => { editorData.emitEvent(payload.event, `para_${props.id}`, payload); });
 
       return () => {
-          // Unsubscribe the GUID on component unmount
+          
           editorData.events.unsubscribe(`para_${props.id}`);
       };
-  }, [props.id]); // Depend on the GUID prop
+  }, [props.id]); 
 
     useEffect(() => {
 

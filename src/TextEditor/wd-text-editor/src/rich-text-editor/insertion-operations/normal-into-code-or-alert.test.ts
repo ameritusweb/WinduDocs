@@ -81,7 +81,7 @@ describe('insertTextIntoEitherACodeBlockOrAlertBlock', () => {
         mockChild, mockContainer, startOffset, rootChildId, mockHistoryManager as IHistoryManager, higherLevelChildren, children, 'a'
       );
   
-      // Assertions here
+      
       expect(mockChild.TextContent).toBe('console.log(\'This is aline 2!\');');
       expect(mockHistoryManager.recordChildTextUpdate).toHaveBeenCalledTimes(1);
       expect(result.type).toBe('higherLevelInsert');

@@ -9,8 +9,8 @@ afterEach(() => {
   describe('split-tree-deux', () => {
     it('splits nested structures correctly', () => {
         const root = mockSplitTreeData;
-        const leafNode = root.Children[0].Children[0]; // Nested leaf node
-        const offset = 4; // Some offset
+        const leafNode = root.Children[0].Children[0]; 
+        const offset = 4; 
 
         const [leftTree, rightTree] = splitTreeDeux(root, leafNode, offset);
         expect(leftTree).not.toBeNull();
@@ -21,8 +21,8 @@ afterEach(() => {
 
       it('given a zero offset, splits nested structures correctly', () => {
         const root = mockSplitTreeData;
-        const leafNode = root.Children[0].Children[0]; // Nested leaf node
-        const offset = 0; // Some offset
+        const leafNode = root.Children[0].Children[0]; 
+        const offset = 0; 
         
         const [leftTree, rightTree] = splitTreeDeux(root, leafNode, offset);
         

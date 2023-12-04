@@ -21,13 +21,13 @@ afterEach(() => {
 
         const [lines, guidMap] = await processAst(mockAst);
     
-        // Assertions for lines
+        
         expect(lines).toBeInstanceOf(Array);
-        // Additional assertions based on expected structure
+        
     
-        // Assertions for guidMap
+        
         expect(guidMap).toBeInstanceOf(Map);
-        // Additional assertions based on expected mappings
+        
       });
 
       it('correctly processes basic text nodes', async () => {
@@ -35,11 +35,11 @@ afterEach(() => {
     
         const [lines, guidMap] = await processAst(mockAst);
     
-        // Check that there is one line with one TextBlock
+        
         expect(lines).toHaveLength(1);
         expect(lines[0]).toHaveLength(1);
         expect(lines[0][0].textContent).toBe('Hello, world!');
-        // Add more detailed assertions as needed
+        
       });
 
       it('creates an accurate guidMap', async () => {
@@ -55,11 +55,11 @@ afterEach(() => {
     
         const [lines, guidMap] = await processAst(mockAst);
 
-        // Verify that guidMap correctly references the positions of TextBlocks
-        expect(guidMap.get('para_para-guid 0')).toEqual([0, 0]); // First line, first block
-        expect(guidMap.get('guid-2 0')).toEqual([1, 0]); // Second line (BlankLine)
-        expect(guidMap.get('para_para-guid 2')).toEqual([2, 0]); // Third line, first block
+        
+        expect(guidMap.get('para_para-guid 0')).toEqual([0, 0]); 
+        expect(guidMap.get('guid-2 0')).toEqual([1, 0]); 
+        expect(guidMap.get('para_para-guid 2')).toEqual([2, 0]); 
     
-        // Add more assertions for different nodes and nesting levels
+        
       });
   })

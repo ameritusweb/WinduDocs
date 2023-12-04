@@ -51,7 +51,7 @@ const processAst = async (markdownAst: AstNode): Promise<[TextBlock[][], Map<str
                     });
                 }
             } else {
-                // If there are no newlines, handle the text content directly.
+                
                 const block = new TextBlock(parentId, index, node.TextContent);
                 currentLine.push(block);
                 guidMap.set(`${block.guid} ${index}`, [lines.length, currentLine.length - 1]);

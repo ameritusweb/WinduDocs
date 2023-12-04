@@ -35,12 +35,12 @@ describe('deepCopyAstNode', () => {
   
       const copiedNode = deepCopyAstNode(mockNode);
   
-      // Mutate the copy
+      
       copiedNode.NodeName = 'newNode';
       copiedNode.Attributes.Title = 'newTitle';
       copiedNode.Children[0].NodeName = 'newChildNode';
   
-      // Assert the original node remains unchanged
+      
       expect(mockNode.NodeName).not.toBe(copiedNode.NodeName);
       expect(mockNode.Attributes.Title).not.toBe(copiedNode.Attributes.Title);
       expect(mockNode.Children[0].NodeName).not.toBe(copiedNode.Children[0].NodeName);

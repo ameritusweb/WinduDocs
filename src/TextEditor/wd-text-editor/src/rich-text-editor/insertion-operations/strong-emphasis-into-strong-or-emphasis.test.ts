@@ -5,8 +5,8 @@ import { insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText, insert
 
 vi.mock('../node-operations/generate-key', () => {
     return {
-      __esModule: true, // This property is important for mocking default exports
-      default: vi.fn().mockReturnValue('mock-key') // Mock implementation
+      __esModule: true, 
+      default: vi.fn().mockReturnValue('mock-key') 
     };
   });
 
@@ -159,7 +159,7 @@ describe('insertStrongAndEmphasisTextIntoStrongOrEmphasisText', () => {
       const result = insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText(
         mockParent, mockChild, mockContainer, containerIndex, mockHistoryManager as IHistoryManager, higherLevelIndex, mockHigherLevelChildren, mockChildren, startOffset, 'a');
   
-      // Assertions here
+      
       expect(mockChildren[3].Children[0].TextContent).toBe('ita');
       expect(mockHistoryManager.recordChildInsertAfter).toHaveBeenCalledTimes(2);
       expect(result).not.toBeNull();

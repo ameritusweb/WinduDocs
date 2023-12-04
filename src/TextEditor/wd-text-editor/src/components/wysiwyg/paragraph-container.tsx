@@ -28,7 +28,7 @@ const ParagraphContainer: React.FC<ParagraphContainerProps> = ({ renderParagraph
             onFocus={handleFocus}
             onBlur={handleBlur}
             className="relative"
-            tabIndex={1} // Make it focusable if needed
+            tabIndex={1} 
         >
             {renderParagraph({ handleFocus, handleBlur })}
             {(

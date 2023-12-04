@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ToolbarTab } from './toolbar-tab';
 import { ToolbarButton } from './toolbar-button';
-import './wysiwyg-toolbar.css'; // Import the CSS stylesheet
+import './wysiwyg-toolbar.css'; 
 import rules from '../rules/wysiwyg-rules.json';
 import { useEditorContext } from '../hooks/use-editor-context';
 import EditorData, { EditorDataType } from '../hooks/editor-data';
@@ -13,7 +13,7 @@ interface ToolbarProps {
 
 }
 
-// Utility function to get unique groups from DSL rules
+
 const getUniqueGroups = (dslRules: any[]) => {
     const groupMap = new Map();
   
@@ -45,7 +45,7 @@ export const WysiwygToolbar: React.FC<ToolbarProps> = () => {
     const editorData: EditorDataType = EditorData;
 
     const renderTabContent = (rules: any[], groupName: string) => {
-        // Filter rules based on the active group
+        
         const filteredRules = rules.filter(rule => rule.GroupName === groupName);
       
         return filteredRules.map((rule) => {

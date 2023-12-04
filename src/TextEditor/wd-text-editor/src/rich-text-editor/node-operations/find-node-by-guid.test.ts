@@ -10,10 +10,10 @@ afterEach(() => {
   
   describe('find-node-by-guid', () => {
         const mockNodes: AstNode[] = [
-            // Mock AST structure
+            
             { ...createNewAstNode('Text', 0, 0, null), Guid: 'node1', Children: [] },
             { ...createNewAstNode('ParagraphBlock', 0, 0, null), Guid: 'node2', Children: [{ ...createNewAstNode('Text', 0, 0, null), Guid: 'child1', Children: [] }] },
-            // Add more nodes as necessary
+            
         ];
     
       it('finds a top-level node by GUID', () => {

@@ -9,7 +9,7 @@ afterEach(() => {
 
 function customRender(ui: React.ReactElement, options = {}) {
   return render(ui, {
-    // wrap provider(s) here if needed
+    
     wrapper: ({ children }) => children,
     ...options,
   })
@@ -54,17 +54,17 @@ export const removeEmptyTextNodes = (element: HTMLElement) => {
 }
 
 export const selectText = (parentId: string, startOffset: number, endOffset: number) => {
-  // Find the parent element by its ID
+  
   const parent = document.getElementById(parentId);
   if (parent) {
 
-    // Assume the first child node is the text node we want
+    
     const textNode = parent.childNodes[0];
     if (!textNode || textNode.nodeType !== Node.TEXT_NODE) {
       throw new Error('No text node found for the specified element');
     }
 
-    // Create a new range
+    
     const range = document.createRange();
 
     if (!textNode.textContent)
@@ -73,18 +73,18 @@ export const selectText = (parentId: string, startOffset: number, endOffset: num
     if ((textNode.textContent?.length || 0) < (endOffset - 1))
       throw new Error(`Range out of bounds for text node of length: ${textNode.textContent?.length}`);
 
-    // Set the start and end of the range
+    
     range.setStart(textNode, startOffset);
     range.setEnd(textNode, endOffset);
 
-    // Get the current selection
+    
     const selection = window.getSelection();
     if (selection) {
 
-      // Remove all ranges from the current selection
+      
       selection.removeAllRanges();
 
-      // Add the new range to the selection
+      
       selection.addRange(range);
     }
   }
@@ -124,5 +124,5 @@ export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstN
 
 export * from '@testing-library/react'
 export { default as userEvent } from '@testing-library/user-event'
-// override render export
+
 export { customRender as render }

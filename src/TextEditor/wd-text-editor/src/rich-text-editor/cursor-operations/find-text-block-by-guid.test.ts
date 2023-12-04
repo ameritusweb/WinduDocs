@@ -25,7 +25,7 @@ describe('findTextBlockByGuid', () => {
       expect(result!.index).toBe(1);
       expect(result!.offset).toBe(3);
       expect(result!.textContent).toBe('World');
-      // Assert that result is the expected ITextBlock
+      
     });
   
     it('returns null for GUID not found in map', () => {

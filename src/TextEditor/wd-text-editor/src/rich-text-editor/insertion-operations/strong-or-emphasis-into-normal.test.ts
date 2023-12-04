@@ -5,8 +5,8 @@ import { insertEitherStrongOrEmphasisTextIntoNormalText, insertTextIntoEitherACo
 
 vi.mock('../node-operations/generate-key', () => {
     return {
-      __esModule: true, // This property is important for mocking default exports
-      default: vi.fn().mockReturnValue('mock-key') // Mock implementation
+      __esModule: true, 
+      default: vi.fn().mockReturnValue('mock-key') 
     };
   });
 
@@ -117,7 +117,7 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
       const result = insertEitherStrongOrEmphasisTextIntoNormalText(
         startOffset, mockContainer, mockAstParent, mockChild, children, index, mockHistoryManager as IHistoryManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, 'a');
   
-      // Assertions here
+      
       expect(children[index].TextContent).toBe('This is a third p');
       expect(mockHistoryManager.recordChildInsertAfter).toHaveBeenCalledTimes(2);
       expect(result).not.toBeNull();
@@ -272,7 +272,7 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
       const result = insertEitherStrongOrEmphasisTextIntoNormalText(
         startOffset, mockContainer, mockAstParent, mockChild, children, index, mockHistoryManager as IHistoryManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, 'a');
   
-      // Assertions here
+      
       expect(children[index].Children[0].TextContent).toBe('a');
       expect(mockHistoryManager.recordChildInsertBefore).toHaveBeenCalledTimes(1);
       expect(result).not.toBeNull();
@@ -418,7 +418,7 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
       const result = insertEitherStrongOrEmphasisTextIntoNormalText(
         startOffset, mockContainer, mockAstParent, mockChild, children, index, mockHistoryManager as IHistoryManager, higherLevelIndex, higherLevelChildren, type, rootChildId, editorState, 'a');
   
-      // Assertions here
+      
       expect(children[index + 1].Children[0].TextContent).toBe('a');
       expect(mockHistoryManager.recordChildInsertAfter).toHaveBeenCalledTimes(1);
       expect(result).not.toBeNull();

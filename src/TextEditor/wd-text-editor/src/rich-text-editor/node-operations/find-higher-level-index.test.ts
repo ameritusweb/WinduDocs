@@ -20,7 +20,7 @@ describe('findHigherlevelIndex function', () => {
       ];
   
       const index = findHigherlevelIndex(nodes, higherLevelNodes);
-      expect(index).toBe(1); // Since nodes match the second item in higherLevelNodes
+      expect(index).toBe(1); 
     });
   
     it('returns null when no match is found', () => {
@@ -31,7 +31,7 @@ describe('findHigherlevelIndex function', () => {
   
       const higherLevelNodes = [
         { ...createNewAstNode('ParagraphBlock', 0, 0, null), Children: [{ ...createNewAstNode('Text', 0, 0, 'other'), Guid: 'other' }, { ...createNewAstNode('Text', 0, 0, 'nodes'), Guid: 'nodes' }], /* other properties */ }
-        // No matching children here
+        
       ];
   
       const index = findHigherlevelIndex(nodes, higherLevelNodes);

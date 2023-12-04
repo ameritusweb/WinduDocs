@@ -21,9 +21,9 @@ const splitTreeAndExtract = (root: AstNode, target: AstNode, startOffset: number
         if (node.Guid === target.Guid) {
             targetFound = true;
             const [leftNode, middleNode] = splitNode(node, startOffset);
-            // Then split the right part at the adjusted endOffset
+            
             const [middleText, rightNode] = splitNode(middleNode, endOffset - startOffset, undefined, rightNodeGuid);
-            extractedText = extractText(middleText); // You need to define this function
+            extractedText = extractText(middleText); 
             return [leftNode, rightNode];
         }
 

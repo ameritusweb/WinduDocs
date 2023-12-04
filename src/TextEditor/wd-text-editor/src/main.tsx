@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-//import './prism/prism.js'
-//import './prism/prism.css'
+
+
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

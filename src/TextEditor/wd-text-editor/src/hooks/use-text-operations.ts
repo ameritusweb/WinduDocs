@@ -1,7 +1,7 @@
 import { RefObject, useState } from 'react';
 import { isAtEnd } from '../utils/editor-utilities';
 
-// Custom hook for managing text operations
+
 export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>) => {
   const [code, setCode] = useState<string>('');
 
@@ -11,7 +11,7 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
     const frag = document.createDocumentFragment();
     let node, lastNode;
     while ((node = el.firstChild)) {
-        // Skip empty text nodes
+        
     if (node.nodeType === Node.TEXT_NODE && node.nodeValue?.length === 0) {
         el.removeChild(node);
         continue;
@@ -25,13 +25,13 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0) {
       let range = sel.getRangeAt(0);
-      range.deleteContents(); // Delete any selected text
+      range.deleteContents(); 
   
-      // Insert the HTML fragment
+      
       const fragment = createFragment(text);
       range.insertNode(fragment.frag!);
 
-      // Preserve the selection
+      
       if (fragment.lastNode) {
 
         if (removeZeroWidthSpace && fragment.lastNode.previousSibling && fragment.lastNode.previousSibling.nodeValue?.includes('\u200B'))
@@ -66,7 +66,7 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
   const handleBackspace = () => {
     const selection = window.getSelection();
     if (selection && selection.toString() && selection.type === 'Range') {
-      // Delete selected text
+      
       selection.deleteFromDocument();
       cleanupStart(contentEditableRef);
       setCode(contentEditableRef.current?.innerHTML || '');
@@ -175,30 +175,30 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
   };
 
   const handleEnter = () => {
-      // Insert placeholder for new line which will be replaced in the overlay
+      
     insertTextAtCursor('\n');
-    insertTextAtCursor('\u200B'); // Include a zero-width space after the <br> to ensure it gets rendered
+    insertTextAtCursor('\u200B'); 
   };
 
   const handleTab = () => {
-    insertTextAtCursor('    '); // Insert four spaces for a tab
+    insertTextAtCursor('    '); 
   };
 
   const handlePaste = (text: string) => {
 
-        // Split text into an array of characters
+        
         const chars = text.split('');
 
-        // Create a document fragment to build DOM
+        
         const docFrag = document.createDocumentFragment();
     
-        // Create a text node for each character
+        
         for(const char of chars) {
           const node = document.createTextNode(char);
           docFrag.appendChild(node);
         }
     
-        // Create text nodes for new lines 
+        
         const lines = text.split('\n');
         lines.forEach(line => {
           if (line) {
@@ -216,13 +216,13 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
     if (selection) {
       const range = selection.getRangeAt(0);
 
-      // Get the text that would have been cut
+      
       const text = range.toString(); 
 
-      // Set clipboard data
+      
       event.clipboardData.setData('text/plain', text);
 
-      // Delete selected content
+      
       range.deleteContents();
 
       cleanupStart(contentEditableRef);
@@ -234,28 +234,28 @@ export const useTextOperations = (contentEditableRef: RefObject<HTMLDivElement>)
   }
 
   const findEmptyTextNodes = (div: HTMLDivElement): Node[] | undefined => {
-    // Get the div element by its ID
+    
     if (!div) {
       console.error('Div not found');
       return;
     }
   
-    // Create a TreeWalker to traverse text nodes only
+    
     const walker = document.createTreeWalker(
       div,
-      NodeFilter.SHOW_TEXT, // filter to only consider text nodes
+      NodeFilter.SHOW_TEXT, 
       {
         acceptNode: (node: Node & Text) => {
-          // Custom filter function to only accept nodes that are empty or have a length of zero
+          
           return node.length === 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
         }
       }
     );
   
-    // Use an array to collect the empty text nodes
+    
     const emptyTextNodes: Node[] = [];
     
-    // Traverse the TreeWalker
+    
     let node: Node | null;
     while (node = walker.nextNode()) {
       emptyTextNodes.push(node);

@@ -197,7 +197,7 @@ init(contentEditableRef.current);
     } else if (selection) {
         if(selection.rangeCount === 1) {
 
-            // No selection, insert H1 at cursor position
+            
             const range = selection.getRangeAt(0);
             const start = range.startOffset;
             const container = range.startContainer;

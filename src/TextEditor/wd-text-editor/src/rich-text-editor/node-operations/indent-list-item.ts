@@ -10,10 +10,10 @@ const indentListItem = (ast: AstNode, itemIndex: number): AstNode | null => {
     const targetListItem = ast.Children[itemIndex];
     const previousListItem = ast.Children[itemIndex - 1];
   
-    // Remove the target ListItemBlock from its current position
+    
     ast.Children.splice(itemIndex, 1);
   
-    // Find or create a ListBlock inside the previous ListItemBlock
+    
     let innerListBlock = previousListItem.Children.find(child => child.NodeName === "ListBlock");
     if (!innerListBlock) {
       innerListBlock = {
@@ -28,7 +28,7 @@ const indentListItem = (ast: AstNode, itemIndex: number): AstNode | null => {
       previousListItem.Children.push(innerListBlock);
     }
   
-    // Add the target ListItemBlock to the found or created ListBlock
+    
     innerListBlock.Children.push(targetListItem);
 
     return ast;

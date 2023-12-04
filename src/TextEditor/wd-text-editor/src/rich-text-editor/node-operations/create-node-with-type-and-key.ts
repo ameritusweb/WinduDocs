@@ -20,9 +20,9 @@ const createNodeWithTypeAndKey = (type: string, key: string) => {
             newNode = createNewAstNode('Strong', 0, 0, null);
             newNode.Children = [createNodeWithTypeAndKey('Emphasis', key)];
             break;
-        // Add cases for other types as needed
+        
         default:
-            // Optionally handle unknown types or throw an error
+            
             break;
     }
 

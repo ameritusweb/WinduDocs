@@ -12,7 +12,7 @@ afterEach(() => {
     it('splits a text node correctly', () => {
         const higherLevelNodes = mockStrongData.map(c => deepCopyAstNode(c));
         const node = createNewAstNode('Text', 0, 0, 'Test content');
-        const index = 0; // Example index
+        const index = 0; 
         const startOffset = 6;
         const indexToSplit = undefined;
         const indexToRemoveAndAdd = 0;

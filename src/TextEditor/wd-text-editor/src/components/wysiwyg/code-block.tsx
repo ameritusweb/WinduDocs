@@ -28,7 +28,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ id, context, pathIndices, languag
             className="relative"
             onFocus={handleFocus}
             onBlur={handleBlur}
-            tabIndex={1} // Make it focusable if needed
+            tabIndex={1} 
         >
         <pre id={`pre_${id}`}>
             <code id={id} className={`rich-code language-${language}`}>

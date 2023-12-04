@@ -12,7 +12,7 @@ const findParentNodeAndSpliceIndex = (root: AstNode, siblingGuid: string, insert
         for (let i = 0; i < node.Children.length; i++) {
             const child = node.Children[i];
             if (child.Guid === siblingGuid) {
-                // Determine the index based on the insertBefore flag
+                
                 return [node, insertBefore ? i : i + 1];
             }
 

@@ -123,7 +123,7 @@ const createNodeOperation = <T extends AstOperationType>(type: T, params: Operat
                 oldOffset: (params as UpdateNodeParams).oldOffset,
                 rootChildId: (params as UpdateNodeParams).rootChildId,
                 timestamp: Date.now()
-            } as OperationReturnMap[T]; // Type assertion here
+            } as OperationReturnMap[T]; 
         default:
             throw new Error('Invalid operation type');
     }

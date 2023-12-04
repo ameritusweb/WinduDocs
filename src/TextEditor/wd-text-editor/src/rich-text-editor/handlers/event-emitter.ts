@@ -5,7 +5,7 @@ class EventEmitter implements IEventEmitter {
     private subscribers: { [guid: string]: { [event: string]: EventListener } };
 
     constructor() {
-        this.subscribers = {}; // Stores subscribers indexed by their GUID
+        this.subscribers = {}; 
     }
 
     subscribe(guid: string, event: string, listener: EventListener): string {

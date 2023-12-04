@@ -4,7 +4,7 @@ import { insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText, insert
     insertNormalTextIntoEitherStrongOrEmphasisText, insertNormalTextIntoOtherNormalText, 
     insertStrongTextIntoEmphasisTextOrViceVersa, insertTextIntoEitherACodeBlockOrAlertBlock } from "../insertion-operations";
 
-// Handle character insertion
+
 const handleCharacterInsertion = (historyManager: IHistoryManager, container: Node, children: AstNode[], updateData: UpdateData, key: string, editorState: string, startOffset: number): AstUpdate | null => {
     if (container && container.nodeName === '#text')
     {

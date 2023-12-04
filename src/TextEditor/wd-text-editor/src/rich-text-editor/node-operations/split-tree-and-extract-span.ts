@@ -19,19 +19,19 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
     let rightTargetFound = false;
     let extractedText = "";
 
-    // Extracts text from a given node if it contains text.
+    
     const extractText = (node: AstNode): string => {
         return node.TextContent || '';
     };
 
-    // Recursively traverses the AST nodes and their children, and splits them based on the provided nodes and offsets.
+    
     const traverseAndExtractSpan = (nodes: AstNode[], depth: number): [AstNode[], AstNode[], AstNode[]] => {
         let leftChildren: AstNode[] = [];
         let middleChildren: AstNode[] = [];
         let rightChildren: AstNode[] = [];
 
         nodes.forEach(node => {
-            // Flags to determine if the current node or its children are split
+            
             let isLeftSplit = false;
             let isRightSplit = false;
             if (node.Guid === leftNode.Guid) {
@@ -72,18 +72,18 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
                 appendChildren(rightChildren, node, rightChild);
             }
 
-            // Decide which array to push the node (or its split parts) to
+            
             if (!leftTargetFound) {
                 if (isLeftSplit || isRightSplit) {
-                    // If the node was split, its parts are already added to respective arrays in the recursive call
-                    // No need to add the whole node here
+                    
+                    
                 } else {
-                    leftChildren.push(node); // The whole node is part of the left section
+                    leftChildren.push(node); 
                 }
             } else if (leftTargetFound && !rightTargetFound) {
-                middleChildren.push(node); // The whole node is part of the middle section
+                middleChildren.push(node); 
             } else if (rightTargetFound) {
-                rightChildren.push(node); // The whole node is part of the right section
+                rightChildren.push(node); 
             }
         });
 
@@ -107,13 +107,13 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
         }
     };
 
-    // Error handling for invalid offsets
+    
     if (leftOffset < 0 || rightOffset < 0) {
         throw new Error("Invalid offset: Offsets must be non-negative");
     }
 
     try {
-        // Begins the traversal and extraction process on the array of sibling nodes
+        
         const [leftTrees, middleTrees, rightTrees] = traverseAndExtractSpan(siblings, 0);
         return [leftTrees, rightTrees, extractedText];
     } catch (error) {

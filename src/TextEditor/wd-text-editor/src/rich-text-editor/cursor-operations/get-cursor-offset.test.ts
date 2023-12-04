@@ -6,10 +6,10 @@ describe('getCursorOffset', () => {
       const previousBlocks = [
         { guid: generateKey(), index: 0, textContent: 'Hello' },
         { guid: generateKey(), index: 1, textContent: 'World' },
-        // Add more ITextBlock objects as needed
+        
       ];
       const initialOffset = 5;
-      const expectedOffset = 15; // Adjust based on your test case
+      const expectedOffset = 15; 
   
       const result = getCursorOffset(previousBlocks, initialOffset);
       expect(result).toBe(expectedOffset);

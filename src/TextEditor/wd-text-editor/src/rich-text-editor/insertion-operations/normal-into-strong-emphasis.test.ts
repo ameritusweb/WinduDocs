@@ -5,8 +5,8 @@ import { insertNormalTextIntoBothStrongAndEmphasisText, insertNormalTextIntoEith
 
 vi.mock('../node-operations/generate-key', () => {
     return {
-      __esModule: true, // This property is important for mocking default exports
-      default: vi.fn().mockReturnValue('mock-key') // Mock implementation
+      __esModule: true, 
+      default: vi.fn().mockReturnValue('mock-key') 
     };
   });
 
@@ -185,8 +185,8 @@ describe('insertNormalTextIntoBothStrongAndEmphasisText', () => {
       const result = insertNormalTextIntoBothStrongAndEmphasisText(
         mockContainer, startOffset, mockChild, mockHistoryManager as IHistoryManager, 0, mockAstParent, 0, mockHigherLevelChildren, mockChildren, 'a');
   
-      // Assertions here
-      // expect(mockGrandChild.TextContent).toBe('This is a third paaragraph');
+      
+      
       expect(mockHistoryManager.recordChildInsertAfter).toHaveBeenCalledTimes(2);
       expect(result!.type).toBe('higherLevelSplit');
       expect(result!.nodes.length).toBe(4);

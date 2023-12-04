@@ -2,15 +2,15 @@ import { generateKey } from ".";
 import { AstNode } from "../../components/wysiwyg/interface";
 
 const nestedSplitNode = (node: AstNode, offset: number, depth: number = 0): [AstNode, AstNode, AstNode] => {
-        // Internal recursive function to traverse depth-first
+        
   const findChildToSplit = (currentNode: AstNode, currentOffset: number, currentDepth: number): [number, number, number] => {
     if (currentNode.TextContent) {
       const length = currentNode.TextContent.length;
       if (currentOffset <= length) {
-        // Offset is within the current node
+        
         return [currentOffset, currentDepth, currentDepth === 0 ? -1 : 0];
       } else {
-        // Decrease offset and continue depth-first search
+        
         currentOffset -= length;
       }
     }
@@ -18,13 +18,13 @@ const nestedSplitNode = (node: AstNode, offset: number, depth: number = 0): [Ast
     for (let i = 0; i < currentNode.Children.length; i++) {
       const [newOffset, newDepth, childIndex] = findChildToSplit(currentNode.Children[i], currentOffset, currentDepth + 1);
       if (newDepth > currentDepth) {
-        // Found the correct level to split
+        
         return [newOffset, newDepth, i];
       }
       currentOffset = newOffset;
     }
 
-    // No child to split found at this level
+    
     return [currentOffset, currentDepth - 1, -1];
   };
 
@@ -35,7 +35,7 @@ const nestedSplitNode = (node: AstNode, offset: number, depth: number = 0): [Ast
   }
 
   if (newDepth > depth) {
-    // Recurse into the child node to perform the split
+    
     const [leftChild, rightChild, newLine] = nestedSplitNode(node.Children[childIndexToSplit], newOffset, newDepth);
     return [
       {
@@ -52,7 +52,7 @@ const nestedSplitNode = (node: AstNode, offset: number, depth: number = 0): [Ast
     ];
   }
 
-  // Splitting the current node
+  
   const leftNode: AstNode = {
     ...node,
     TextContent: node.TextContent ? node.TextContent.substring(0, newOffset) : null,

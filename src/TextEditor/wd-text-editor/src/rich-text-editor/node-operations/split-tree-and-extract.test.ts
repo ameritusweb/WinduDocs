@@ -5,8 +5,8 @@ import { cleanup } from "../../utils/test-utils";
 
 vi.mock('../node-operations/generate-key', () => {
     return {
-      __esModule: true, // This property is important for mocking default exports
-      default: vi.fn().mockReturnValue('mock-key') // Mock implementation
+      __esModule: true, 
+      default: vi.fn().mockReturnValue('mock-key') 
     };
   });
 
@@ -22,7 +22,7 @@ describe('splitTreeAndExtract', () => {
   
       const [leftTree, rightTree, extractedText] = splitTreeAndExtract(root, target, 2, 5);
   
-      // Assert the structure of leftTree, rightTree, and the extractedText
+      
       expect(leftTree).toEqual({
         "NodeName": "MarkdownDocument",
         "Attributes": {},
@@ -358,5 +358,5 @@ describe('splitTreeAndExtract', () => {
       expect(extractedText).toBe('is ');
     });
   
-    // Add more tests for different scenarios
+    
   });

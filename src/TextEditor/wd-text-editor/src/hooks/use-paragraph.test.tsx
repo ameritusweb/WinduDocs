@@ -60,7 +60,7 @@ describe('useParagraph', () => {
 
       const { result } = renderHook(() => useParagraph());
 
-      // Invoke handler
+      
       expect(() => result.current.handleMakeBold(mockAst, mockHigherLevelAst, mockAstContext, mockPathIndices)).toThrow();
       
     });
@@ -124,7 +124,7 @@ describe('useParagraph', () => {
         const mockEmitEvent = editorData.emitEvent as Mock<[action: EventAction, id: string, payload: AstUpdate], void>;
         mockEmitEvent.mockReset();
 
-        // Invoke handler
+        
         result.current.handleMakeBold(mockAst, mockHigherLevelAst, mockAstContext, mockPathIndices);
 
         expect(mockEmitEvent).toHaveBeenCalledTimes(1);
@@ -232,7 +232,7 @@ describe('useParagraph', () => {
         const mockEmitEvent = editorData.emitEvent as Mock<[action: EventAction, id: string, payload: AstUpdate], void>;
         mockEmitEvent.mockReset();
 
-        // Invoke handler
+        
         result.current.handleMakeItalic(mockAst, mockHigherLevelAst, mockAstContext, mockPathIndices);
 
         expect(mockEmitEvent).toHaveBeenCalledTimes(1);

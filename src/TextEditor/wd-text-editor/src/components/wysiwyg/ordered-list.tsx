@@ -35,7 +35,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, path
                 className="relative"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                tabIndex={1} // Make it focusable if needed
+                tabIndex={1} 
             >
                 <ol id={id} onClick={onClick}>
                     {children.map((child, index) => {

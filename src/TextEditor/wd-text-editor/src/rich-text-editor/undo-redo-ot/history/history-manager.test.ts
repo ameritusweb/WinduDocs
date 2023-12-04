@@ -11,14 +11,14 @@ describe('HistoryManager', () => {
     });
   
     it('initializes with empty undo and redo stacks', () => {
-      // Test that undoStack and redoStack are empty upon initialization
+      
       expect((historyManager as typeof HistoryManager).stacksReadOnly()[0].length === 0).toBe(true);
       expect((historyManager as typeof HistoryManager).stacksReadOnly()[1].length === 0).toBe(true);
     });
 
     it('records an insertBefore operation', () => {
 
-        // Record the operation
+        
         expect(() => {
             historyManager.recordChildInsertBefore(
             { targetParentId: '', nodeIndex: 0, offset: 0 },
@@ -32,7 +32,7 @@ describe('HistoryManager', () => {
 
     it('records an insertAfter operation', () => {
 
-        // Record the operation
+        
         expect(() => {
             historyManager.recordChildInsertAfter(
             { targetParentId: '', nodeIndex: 0, offset: 0 },
@@ -46,7 +46,7 @@ describe('HistoryManager', () => {
 
     it('records a removeBefore operation', () => {
 
-        // Record the operation
+        
         expect(() => {
             historyManager.recordChildRemoveBefore(
             { targetParentId: '', nodeIndex: 0, offset: 0 },
@@ -60,7 +60,7 @@ describe('HistoryManager', () => {
 
     it('records a removeAfter operation', () => {
 
-        // Record the operation
+        
         expect(() => {
             historyManager.recordChildRemoveAfter(
             { targetParentId: '', nodeIndex: 0, offset: 0 },
@@ -74,7 +74,7 @@ describe('HistoryManager', () => {
 
     it('records a replace operation', () => {
 
-        // Record the operation
+        
         expect(() => {
             historyManager.recordChildReplace(
             { targetParentId: '', nodeIndex: 0, offset: 0 },
@@ -88,7 +88,7 @@ describe('HistoryManager', () => {
 
     it('records a text update operation', () => {
 
-        // Record the operation
+        
         expect(() => {
             historyManager.recordChildTextUpdate(
             "Old Text",
@@ -114,7 +114,7 @@ describe('HistoryManager', () => {
             timestamp: 3
         };
         const reverseOperation = historyManager.getReverseOperation(mockOperation);
-        // Assertions to verify reverseOperation is correct
+        
       });
 
       it('returns reverse operation for insertAfter', () => {
@@ -130,7 +130,7 @@ describe('HistoryManager', () => {
             timestamp: 3
         };
         const reverseOperation = historyManager.getReverseOperation(mockOperation);
-        // Assertions to verify reverseOperation is correct
+        
       });
 
       it('returns reverse operation for removeBefore', () => {
@@ -146,7 +146,7 @@ describe('HistoryManager', () => {
             timestamp: 3
         };
         const reverseOperation = historyManager.getReverseOperation(mockOperation);
-        // Assertions to verify reverseOperation is correct
+        
       });
 
       it('returns reverse operation for removeAfter', () => {
@@ -162,7 +162,7 @@ describe('HistoryManager', () => {
             timestamp: 3
         };
         const reverseOperation = historyManager.getReverseOperation(mockOperation);
-        // Assertions to verify reverseOperation is correct
+        
       });
 
       it('returns reverse operation for replace', () => {
@@ -178,11 +178,11 @@ describe('HistoryManager', () => {
             timestamp: 3
         };
         const reverseOperation = historyManager.getReverseOperation(mockOperation);
-        // Assertions to verify reverseOperation is correct
+        
       });
   
     it('records an operation', () => {
-        // Create a mock operation
+        
         const mockOperation: AstOperation<'replace'> = 
             { 
                 type: 'replace', 
@@ -195,10 +195,10 @@ describe('HistoryManager', () => {
                 timestamp: 3
             };
     
-        // Record the operation
+        
         historyManager.recordOperation(mockOperation);
     
-        // Verify it's added to the undoStack
+        
         const [undoStack, redoStack] = (historyManager as typeof HistoryManager).stacksReadOnly();
         expect(undoStack.length).toBe(1);
         expect(undoStack[0]).toStrictEqual([
@@ -244,8 +244,8 @@ describe('HistoryManager', () => {
       });
   
     it('clears stacks', () => {
-      // Test the clear method and assert both stacks are empty after calling it
-        // Create a mock operation
+      
+        
         const mockOperation: AstOperation<'replace'> = 
             { 
                 type: 'replace', 
@@ -258,19 +258,19 @@ describe('HistoryManager', () => {
                 timestamp: 3
             };
     
-        // Record the operation
+        
         historyManager.recordOperation(mockOperation);
-      // Call the clear method
+      
         historyManager.clear();
 
-        // Verify both stacks are empty after calling clear
+        
         const [undoStack, redoStack] = (historyManager as typeof HistoryManager).stacksReadOnly();
         expect(undoStack.length).toBe(0);
         expect(redoStack.length).toBe(0);
     });
   
     it('undoes an operation', () => {
-      // Record an operation, then undo it, and verify the state change
+      
 
       const mockOperation: AstOperation<'replace'> = 
       { 
@@ -285,7 +285,7 @@ describe('HistoryManager', () => {
           rootChildId: 'R123'
       };
 
-        // Record the operation
+        
         historyManager.recordOperation(mockOperation);
         
         const res = historyManager.undo(toMockAst({
@@ -321,7 +321,7 @@ describe('HistoryManager', () => {
           });
         expect(str).toBe('R123');
 
-        // Verify both stacks are empty after calling undo
+        
         const [undoStack, redoStack] = (historyManager as typeof HistoryManager).stacksReadOnly();
         expect(undoStack.length).toBe(0);
         expect(redoStack.length).toBe(1);
@@ -342,7 +342,7 @@ describe('HistoryManager', () => {
           rootChildId: 'R123'
       };
 
-        // Record the operation
+        
         historyManager.recordOperation(mockOperation);
         
         const res = historyManager.undo(toMockAst({
@@ -360,9 +360,9 @@ describe('HistoryManager', () => {
 
         const redoRes = historyManager.redo(res![0]);
 
-      // Assertions to verify the redo operation
+      
         expect(redoRes).not.toBeNull();
-        // Verify the AST node after redoing the operation
+        
         const [newAst, rootChildIds] = redoRes!;
 
         expect(newAst).toEqual({
@@ -386,14 +386,14 @@ describe('HistoryManager', () => {
           });
         expect(rootChildIds).toEqual("R123 ");
 
-        // Verify the stacks' state after redoing
+        
         const [undoStack, redoStack] = (historyManager as typeof HistoryManager).stacksReadOnly();
         expect(undoStack.length).toBe(1);
         expect(redoStack.length).toBe(0);
     });
   
     it('handles undo when undo stack is empty', () => {
-      // Call undo on an empty stack and verify the behavior or return value
+      
       const res = historyManager.undo(toMockAst({
             NodeName: 'ParagraphBlock',
             Guid: 'C123',
@@ -408,7 +408,7 @@ describe('HistoryManager', () => {
     });
   
     it('handles redo when redo stack is empty', () => {
-      // Call redo on an empty stack and verify the behavior or return value
+      
       const res = historyManager.redo(toMockAst({
             NodeName: 'ParagraphBlock',
             Guid: 'C123',
@@ -423,7 +423,7 @@ describe('HistoryManager', () => {
     });
   
     it('records and performs a transaction', () => {
-      // Test recording multiple operations as a single transaction
+      
       const mockOperations: [AstOperation<'replace'>, AstOperation<'insertBefore'>, AstOperation<'insertAfter'>] = [
         { 
             type: 'replace', 
@@ -460,18 +460,18 @@ describe('HistoryManager', () => {
         }
       ];
     
-      // Record operations as a transaction
+      
       historyManager.recordOperationsAsTransaction(mockOperations, historyManager);
     
-      // Verify that operations are added to the undo stack as a single transaction
+      
       const [undoStack] = (historyManager as typeof HistoryManager).stacksReadOnly();
-      expect(undoStack.length).toBe(1); // There should be one transaction recorded
+      expect(undoStack.length).toBe(1); 
       expect(undoStack[0].length).toBe(mockOperations.length);
     });
   
     it('restores cursor position after replace', () => {
         document.body.innerHTML = mockOutputHtml;
-      // Test restoring the cursor position based on the last transaction
+      
       const mockOperation: AstOperation<'replace'> = 
       { 
           type: 'replace', 
@@ -485,7 +485,7 @@ describe('HistoryManager', () => {
           rootChildId: 'R123'
       };
 
-        // Record the operation
+        
         historyManager.recordOperation(mockOperation);
 
         historyManager.restoreCursorPosition();
@@ -493,7 +493,7 @@ describe('HistoryManager', () => {
 
     it('restores cursor position after update', () => {
         document.body.innerHTML = mockOutputHtml;
-        // Test restoring the cursor position based on the last transaction
+        
         const mockOperation: AstOperation<'update'> = 
         { 
             type: 'update', 
@@ -507,11 +507,11 @@ describe('HistoryManager', () => {
             rootChildId: 'R123'
         };
   
-          // Record the operation
+          
           historyManager.recordOperation(mockOperation);
   
           historyManager.restoreCursorPosition();
       });
   
-    // Additional tests for any other public methods or important internal behavior
+    
   });

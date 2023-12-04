@@ -4,7 +4,7 @@ import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
 const updateHigherLevelNodes = (childIndex: number, higherLevelChildren: AstNode[], children: AstNode[], historyManager: IHistoryManagerRecorder, newNodes: AstNode[] | null, startOffset: number, insertAt?: string) => {
 
-    // If no valid index is found, you might want to handle this case differently
+    
     if (childIndex === -1 || childIndex === null) {
         console.error("No valid insertion index found for higher level nodes.");
         return null;
@@ -24,7 +24,7 @@ const updateHigherLevelNodes = (childIndex: number, higherLevelChildren: AstNode
 
     const oldIndex = insertionIndex === 0 ? 0 : insertionIndex - 1;
     const oldNode = deepCopyAstNode(higherLevelChild.Children[oldIndex]);
-    // Insert the newNodes into the higherLevelChild Children array at the found index
+    
     higherLevelChild.Children.splice(insertionIndex, 0, ...newNodes);
     const historyBuilder = new HistoryBuilder();
     historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
@@ -44,7 +44,7 @@ const updateHigherLevelNodes = (childIndex: number, higherLevelChildren: AstNode
     }
     historyBuilder.applyTo(historyManager);
 
-    // Return the updated array
+    
     return higherLevelChildren;
 };
 

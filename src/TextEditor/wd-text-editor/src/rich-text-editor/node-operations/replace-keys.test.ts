@@ -28,14 +28,14 @@ afterEach(() => {
     
         const result = replaceKeys(mockNode);
     
-        // Check the parent node
+        
         expect(result.Guid).toBe('mock-key');
-        // Check child nodes
+        
         result.Children.forEach(child => {
           expect(child.Guid).toBe('mock-key');
         });
     
-        // Check if generateKey was called correctly
-        expect(generateKey).toHaveBeenCalledTimes(7); // Once for the parent and once for each child
+        
+        expect(generateKey).toHaveBeenCalledTimes(7); 
       });
   })

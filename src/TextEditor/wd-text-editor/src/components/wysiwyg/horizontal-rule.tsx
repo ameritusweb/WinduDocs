@@ -22,7 +22,7 @@ const HorizontalRule: React.FC<HorizontalRuleProps> = ({id}) => {
         className="relative"
             onFocus={handleFocus}
             onBlur={handleBlur}
-            tabIndex={1} // Make it focusable if needed
+            tabIndex={1} 
         >
     <hr tabIndex={1} className="hr-inset" id={id} />
     {(

@@ -9,7 +9,7 @@ describe('reverse', () => {
         expect(reversed.next().value).toBe(inputArray[i]);
       }
   
-      // Check if the generator is done
+      
       expect(reversed.next().done).toBe(true);
     });
   });

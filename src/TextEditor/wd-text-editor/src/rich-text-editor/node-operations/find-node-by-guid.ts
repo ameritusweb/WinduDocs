@@ -14,7 +14,7 @@ const findNodeByGuid = (nodes: AstNode[], guid: string, parent: AstNode | null):
 
         const foundInChildren = findNodeByGuid(node.Children, guid, node);
         if (foundInChildren[0]) {
-            // If the target node is found in the children, set the current node as the third element
+            
             return [foundInChildren[0], foundInChildren[1], node];
         }
     }

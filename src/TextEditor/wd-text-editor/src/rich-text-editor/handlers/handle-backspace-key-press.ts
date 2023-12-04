@@ -4,7 +4,7 @@ import { createNewAstNode, findClosestAncestor, findHigherlevelIndex, findNodeBy
 import { removeText } from "../text-manipulation";
 import { trimSpecial } from "../undo-redo-ot";
 
-// Handle Backspace key press
+
 const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, container: Node, endContainer: Node, children: AstNode[], updateData: UpdateData, commonAncestorContainer: IdableNode, startOffset: number, endOffset: number): AstUpdate | null => {
     const commonAncestor = commonAncestorContainer;
     const higherLevelChildren = updateData.higherLevelChildren;
@@ -40,7 +40,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
     } else {
         let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex} = updateData;
         if (parent) {
-            // const rootChild = findClosestAncestor(parent, 'richTextEditor');
+            
             const parentId = parent.id;
             const childIndex = children.findIndex((c) => c.Guid === parentId);
             if (childIndex === -1) {

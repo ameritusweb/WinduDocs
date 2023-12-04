@@ -106,7 +106,7 @@ describe('enterAroundCodeOrAlertBlocks', () => {
       expect(result).not.toBeNull();
       expect(result!.type).toBe("higherLevelSplitOrMove");
       expect(result!.nodes[0].TextContent).toBe("\n");
-      // Assertions here
+      
     });
 
     it('handles startOffset at the end', () => {
@@ -211,8 +211,8 @@ describe('enterAroundCodeOrAlertBlocks', () => {
       expect(result).not.toBeNull();
       expect(result!.type).toBe("higherLevelSplitOrMove");
       expect(result!.nodes[1].TextContent).toBe("\n");
-      // Assertions here
+      
     });
   
-    // More tests for other scenarios
+    
   });

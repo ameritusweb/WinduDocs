@@ -75,7 +75,7 @@ describe('operationHandlers', () => {
     
         const updatedAst = applyOperation(mockAst, mockOperation);
         expect(updatedAst).not.toBeNull();
-        // Assert that the node after the sibling node was removed from updatedAst
+        
       });
 
     it('correctly applies remove before operation', () => {
@@ -113,7 +113,7 @@ describe('operationHandlers', () => {
     
         const updatedAst = applyOperation(mockAst, mockOperation);
         expect(updatedAst).not.toBeNull();
-        // Assert that the node after the sibling node was removed from updatedAst
+        
       });
 
     it('correctly applies update operation', () => {
@@ -137,7 +137,7 @@ describe('operationHandlers', () => {
     
         const updatedAst = applyOperation(mockAst, mockOperation);
         expect(updatedAst).not.toBeNull();
-        // Assert that the node after the sibling node was removed from updatedAst
+        
       });
 
     it('correctly applies insert after operation', () => {
@@ -241,7 +241,7 @@ describe('operationHandlers', () => {
     
         const updatedAst = applyOperation(mockAst, mockOperation);
         expect(updatedAst).not.toBeNull();
-        // Assert that the node after the sibling node was removed from updatedAst
+        
       });
 
     it('correctly applies replace operation', () => {
@@ -373,7 +373,7 @@ describe('operationHandlers', () => {
     
         const updatedAst = applyOperation(mockAst, mockOperation);
         expect(updatedAst).not.toBeNull();
-        // Assert that the node after the sibling node was removed from updatedAst
+        
       });
 
     it('correctly applies remove after operation', () => {
@@ -477,6 +477,6 @@ describe('operationHandlers', () => {
   
       const updatedAst = applyOperation(mockAst, mockOperation);
       expect(updatedAst).not.toBeNull();
-      // Assert that the node after the sibling node was removed from updatedAst
+      
     });
   });

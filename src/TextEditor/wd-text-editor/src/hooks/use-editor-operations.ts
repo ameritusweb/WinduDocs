@@ -165,12 +165,12 @@ export const useEditorOperations = (contentEditableRef: RefObject<HTMLDivElement
     }
 
     const splitAndInsertNode = (textNode: Text, h1Node: Node, splitIndex: number) => {
-        // Ensure that the textNode is actually a text node
+        
         if (textNode.nodeType !== Node.TEXT_NODE) {
             return;
         }
 
-        // Extract text and split based on index
+        
         const textContent = textNode.textContent;
         if (!textContent)
         {
@@ -179,16 +179,16 @@ export const useEditorOperations = (contentEditableRef: RefObject<HTMLDivElement
         const beforeText = textContent.substring(0, splitIndex);
         const afterText = textContent.substring(splitIndex);
 
-        // Get parent node for insertion
+        
         const parentNode = textNode.parentNode;
         if (!parentNode) {
             return;
         }
 
-        // Create a document fragment
+        
         const fragment = document.createDocumentFragment();
 
-        // Add new nodes to the fragment
+        
         if (beforeText) {
             fragment.appendChild(document.createTextNode(beforeText));
         }
@@ -199,7 +199,7 @@ export const useEditorOperations = (contentEditableRef: RefObject<HTMLDivElement
             fragment.appendChild(document.createTextNode(afterText));
         }
 
-        // Replace the original text node with the fragment
+        
         parentNode.replaceChild(fragment, textNode);
     }
 

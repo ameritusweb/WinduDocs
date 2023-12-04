@@ -6,7 +6,7 @@ describe('findTextBlockWithOffset', () => {
       const blocks = [
         { guid: generateKey(), index: 0, textContent: 'Hello ' },
         { guid: generateKey(), index: 1, textContent: 'World' },
-        // Add more ITextBlock objects as needed
+        
       ];
       const totalOffset = 8;
       const expectedBlock = blocks[1];

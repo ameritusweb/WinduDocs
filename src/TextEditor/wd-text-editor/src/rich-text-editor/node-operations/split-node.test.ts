@@ -9,12 +9,12 @@ afterEach(() => {
   describe('split-node', () => {
     it('splits a text node correctly', () => {
         const node = createNewAstNode('Text', 0, 0, 'Test content');
-        const index = 6; // Example index
+        const index = 6; 
     
         const [leftNode, rightNode, newLine] = splitNode(node, index);
     
-        expect(leftNode.TextContent).toBe('Test c'); // Check left node text
-        expect(rightNode.TextContent).toBe('ontent'); // Check right node text
-        // Add more assertions as needed
+        expect(leftNode.TextContent).toBe('Test c'); 
+        expect(rightNode.TextContent).toBe('ontent'); 
+        
       });
   })

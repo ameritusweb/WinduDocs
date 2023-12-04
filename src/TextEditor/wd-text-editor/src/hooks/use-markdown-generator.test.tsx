@@ -160,7 +160,7 @@ describe('useMarkdownGenerator', () => {
               }
             ]
           });
-        // Provide the expected Markdown for the table structure
+        
         expect(result.current.convertToMarkdown(tableNode, 0)).toBe('| Header 1 | Header 2 |\n| --- | --- |\nRow 1 **test** | Data 1 *test* |');
       });
     
@@ -247,7 +247,7 @@ describe('useMarkdownGenerator', () => {
               }
             ]
           });
-        // Provide the expected Markdown for the quote block structure
+        
         expect(result.current.convertToMarkdown(quoteBlockNode, 0)).toBe('> This is a blockquote.\n> It can span');
       });
 

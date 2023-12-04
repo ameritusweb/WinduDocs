@@ -49,7 +49,7 @@ export interface AstOperation<Type extends AstOperationType = 'insertBefore' | '
   targetNodeId: string | null;
   payload: OperationPayloads[Type];
   timestamp: number;
-  oldState?: AstNode | string; // Adjust this based on what oldState represents
+  oldState?: AstNode | string; 
   oldVersion?: string;
   oldOffset?: number;
   rootChildId?: string;
@@ -172,13 +172,13 @@ export interface OperationPayloads {
 type EventListener = (payload: any) => void;
 
 export interface IEventEmitter {
-    // Subscribe to an event with a specific GUID
+    
     subscribe(guid: string, event: string, listener: EventListener): string;
 
-    // Unsubscribe using the subscriber's GUID
+    
     unsubscribe(guid: string): void;
 
-    // Emit an event to only the subscribers with a specific GUID
+    
     emit(event: string, guid: string, payload: object): void;
 }
 
@@ -235,27 +235,27 @@ export interface IHistoryCommand {
 }
 
 export interface IHistoryBuilder {
-  // Add initial cursor position to the history
+  
   addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
 
-  // Add final cursor position to the history
+  
   addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
 
-  // Add a command to insert a new node before a specified sibling node
+  
   addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode): void;
 
-  // Add a command to insert a new node after a specified sibling node
+  
   addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode): void;
 
-  // Add a command to remove a node before a specified sibling node
+  
   addRemoveBeforeCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
 
-  // Add a command to remove a node after a specified sibling node
+  
   addRemoveAfterCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
 
-  // Add a command to replace an old node with a new node
+  
   addReplaceCommand(oldNode: AstNode, newNode: AstNode): void;
 
-  // Build and apply the history commands to a given history manager
+  
   applyTo(historyManager: IHistoryManagerRecorder): void;
 }

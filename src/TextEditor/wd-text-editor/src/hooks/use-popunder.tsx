@@ -25,7 +25,7 @@ const usePopunder = (id: string, setState: Dispatch<SetStateAction<{ content: st
         return { content: 'Normal', style: { fontStyle: 'normal' } };
       case 'BOLD + ITALIC':
         return { content: 'Bold + Italic', style: { fontWeight: 'bold', fontStyle: 'italic' } };
-      // Add more cases as needed
+      
       default:
         return { content: '', style: {} };
     }

@@ -40,7 +40,7 @@ describe('HistoryBuilder', () => {
 
       historyBuilder.applyTo(mockHistoryManager);
   
-      // Check if the command was added correctly
+      
       expect(historyBuilder.getCommands()).toContainEqual({
         type: 'insertBefore',
         siblingId: 'sibling-id',
@@ -63,7 +63,7 @@ describe('HistoryBuilder', () => {
 
         historyBuilder.applyTo(mockHistoryManager);
     
-        // Check if the command was added correctly
+        
         expect(historyBuilder.getCommands()).toContainEqual({
           type: 'removeBefore',
           siblingId: 'sibling-id',
@@ -86,7 +86,7 @@ describe('HistoryBuilder', () => {
 
         historyBuilder.applyTo(mockHistoryManager);
     
-        // Check if the command was added correctly
+        
         expect(historyBuilder.getCommands()).toContainEqual({
           type: 'insertAfter',
           siblingId: 'sibling-id',
@@ -109,7 +109,7 @@ describe('HistoryBuilder', () => {
 
         historyBuilder.applyTo(mockHistoryManager);
     
-        // Check if the command was added correctly
+        
         expect(historyBuilder.getCommands()).toContainEqual({
           type: 'removeAfter',
           siblingId: 'sibling-id',
@@ -132,7 +132,7 @@ describe('HistoryBuilder', () => {
 
         historyBuilder.applyTo(mockHistoryManager);
     
-        // Check if the command was added correctly
+        
         expect(historyBuilder.getCommands()).toContainEqual({
           type: 'replace',
           siblingId: null,

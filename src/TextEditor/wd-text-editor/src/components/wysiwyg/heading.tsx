@@ -26,18 +26,18 @@ export const Heading: React.FC<HeadingProps> = ({ id, context, version, level, p
     const handleCopy = () => {/* Implement copy logic */};
     const handlePaste = () => {/* Implement paste logic */};
     
-    // Determine the tag based on the format. Default to 'p' for plain text.
+    
     const Tag = level ? `h${level}` : 'p';
   
     const element = <Paragraph<HTMLParagraphElement> pathIndices={pathIndices} context={{ ...context, isHeading: true, types: [ ...context.types, 'h' ] }} id={id} version={version} content={children} higherLevelContent={{ id: id, content: higherLevelChildren, updater: rootUpdater }} render={props => <p {...props}></p>} />;
 
-    // Use React.createElement to dynamically create the element
+    
     return (
         <section id={`section_${id}`}
             className="relative"
             onFocus={handleFocus}
             onBlur={handleBlur}
-            tabIndex={1} // Make it focusable if needed
+            tabIndex={1} 
         >
         {React.createElement(
       Tag,

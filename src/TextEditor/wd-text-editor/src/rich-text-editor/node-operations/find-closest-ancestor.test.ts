@@ -9,7 +9,7 @@ afterEach(() => {
 
 describe('find-closest-ancestor', () => {
 it('finds the closest ancestor with the specified id', () => {
-    // Create mock elements
+    
     document.body.innerHTML = `
       <div id="ancestor">
         <div id="parent">

@@ -8,12 +8,12 @@ const insertNormalTextIntoEitherStrongOrEmphasisText = (container: IdableNode, s
         if (nodes !== null)
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
-    else if (startOffset < (container.textContent || '').length) // insert in the middle
+    else if (startOffset < (container.textContent || '').length) 
     {
         const nodes = splitAndUpdateHigherLevelNodes(higherLevelIndex, child, startOffset, historyManager, containerIndex, children.indexOf(child), 'Text', key, children, higherLevelChildren, containerIndex, false);
         if (nodes !== null)
             return { type: 'higherLevelSplit', nodes };
-    } else { // insert at the end
+    } else { 
         const newText = createNodeWithTypeAndKey('Text', key);
         const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, 'end');
         if (nodes !== null)

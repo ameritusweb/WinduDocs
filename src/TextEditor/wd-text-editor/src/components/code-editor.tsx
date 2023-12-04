@@ -19,7 +19,7 @@ export const CodeEditor: React.FC = () => {
     handleCut
   } = useTextOperations(contentEditableRef);
 
-  // ... rest of the component code
+  
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!contentEditableRef.current)
@@ -49,7 +49,7 @@ export const CodeEditor: React.FC = () => {
         event.preventDefault();
         handleBackspace();
         break;
-      // handle other keys...
+      
       default:
         if (event.key.length === 1)
         {
@@ -66,7 +66,7 @@ export const CodeEditor: React.FC = () => {
       console.warn(nodes);
     }
 
-    // Update code state as needed, for example after inserting text
+    
     setCode(contentEditableRef.current.innerHTML || '');
   };
 
@@ -91,17 +91,17 @@ export const CodeEditor: React.FC = () => {
     setCode(contentEditableRef.current?.innerHTML || '');
   }, []);
 
-  // This useEffect is for applying syntax highlighting.
+  
   useEffect(() => {
     if (overlayRef.current && contentEditableRef.current) {
   
-      // Apply Prism syntax highlighting
+      
       Prism.highlightElement(overlayRef.current);
     }
   }, [code]);
 
   const onInput = (event: React.FormEvent<HTMLDivElement>) => {
-    // Capturing innerHTML to include structural HTML like <div> and <br>
+    
     const html = (event.currentTarget as HTMLDivElement).innerHTML;
     setCode(html);
   };

@@ -22,14 +22,14 @@ const Emphasis: React.FC<EmphasisProps> = ({ id, parentId, context, pathIndices,
             editorData.emitEvent('*', parentId, payload);
         }
         
-        // Subscribe with the provided GUID
+        
         editorData.events.subscribe(`${id}`, '*', broadcastEvent);
   
         return () => {
-            // Unsubscribe the GUID on component unmount
+            
             editorData.events.unsubscribe(`${id}`);
         };
-    }, [id]); // Depend on the GUID prop
+    }, [id]); 
     
     return (
         <em data-testid={serializeContext(context)} id={id}>
