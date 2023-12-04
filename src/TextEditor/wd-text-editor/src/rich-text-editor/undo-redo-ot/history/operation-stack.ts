@@ -7,6 +7,10 @@ class OperationStack {
         this.stack = [];
     }
 
+    stackReadOnly(): readonly Transaction[] {
+        return this.stack;
+    }
+
     // Starts a new transaction
     startTransaction(): void {
         this.stack.push([]);

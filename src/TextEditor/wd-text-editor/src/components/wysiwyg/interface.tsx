@@ -124,8 +124,6 @@ export interface IHistoryManagerRecorder {
 export interface IHistoryManager extends IHistoryManagerRecorder {
   clear(): void;
   restoreCursorPosition(): void;
-  performOperationsAsTransaction(ast: AstNode, operations: AstOperation[], historyManager: IHistoryManager): AstNode;
-  performOperation(ast: AstNode, operation: AstOperation, partOfTransaction?: boolean): AstNode;
   getReverseOperation(operation: AstOperation): AstOperation;
   undo(ast: AstNode): [AstNode, string] | null;
   redo(ast: AstNode): [AstNode, string] | null;
