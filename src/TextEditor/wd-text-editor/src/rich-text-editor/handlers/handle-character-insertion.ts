@@ -29,11 +29,11 @@ const handleCharacterInsertion = (historyManager: IHistoryManager, container: No
                         return res;
                 } else if ((parent.nodeName === 'STRONG' && editorState === 'em') || (parent.nodeName === 'EM' && editorState === 'strong') )
                 {
-                    const res = insertStrongTextIntoEmphasisTextOrViceVersa(parent, editorState, startOffset, historyManager, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
+                    const res = insertStrongTextIntoEmphasisTextOrViceVersa(parent, child, editorState, startOffset, historyManager, higherLevelIndex, astParent, containerIndex, higherLevelChildren, children, key);
                     if (res)
                         return res;
                 } else if ((parent.nodeName === 'STRONG' || parent.nodeName === 'EM') && parent.parentElement?.nodeName !== 'STRONG' && Array.isArray(editorState)) {
-                    const res = insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText(parent, historyManager, higherLevelIndex, higherLevelChildren, children, startOffset, key);
+                    const res = insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText(parent, child, container as IdableNode, containerIndex, historyManager, higherLevelIndex, higherLevelChildren, children, startOffset, key);
                     if (res)
                         return res;
                 } else if (grandParent && (grandParent.nodeName === 'CODE' || grandParent.nodeName === 'DIV')) {

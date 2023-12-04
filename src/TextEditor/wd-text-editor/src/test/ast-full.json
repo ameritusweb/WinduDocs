@@ -32,31 +32,21 @@
                 "Children": []
               },
               {
-                "NodeName": "Strong",
+                "NodeName": "Emphasis",
                 "Attributes": {},
                 "ChildIndex": 0,
-                "Depth": 3,
-                "Guid": "87c121eb-c1dd-4311-b0b7-31ff22564cc9",
+                "Depth": 4,
+                "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
                 "TextContent": null,
                 "Children": [
                   {
-                    "NodeName": "Emphasis",
+                    "NodeName": "Text",
                     "Attributes": {},
                     "ChildIndex": 0,
-                    "Depth": 4,
-                    "Guid": "9987ba9d-5a15-46eb-975f-3817f25b2185",
-                    "TextContent": null,
-                    "Children": [
-                      {
-                        "NodeName": "Text",
-                        "Attributes": {},
-                        "ChildIndex": 0,
-                        "Depth": 5,
-                        "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
-                        "TextContent": "bold and italic",
-                        "Children": []
-                      }
-                    ]
+                    "Depth": 5,
+                    "Guid": "2a2c1af5-8ee8-4963-b888-50788959963f",
+                    "TextContent": "bold and italic",
+                    "Children": []
                   }
                 ]
               },
