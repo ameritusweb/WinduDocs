@@ -263,8 +263,11 @@ useEffect(() => {
     
             const selection = window.getSelection();
             if (selection && shouldSetFocus(selection)) {
-                selection.removeAllRanges();
-                selection.addRange(range);
+                if (selection.type === 'None')
+                {
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
             }
             textNode.parentElement!.focus();
         }

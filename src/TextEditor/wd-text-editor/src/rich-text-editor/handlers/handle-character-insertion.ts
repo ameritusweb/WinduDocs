@@ -50,7 +50,7 @@ const handleCharacterInsertion = (historyManager: IHistoryManagerRecorder, conta
                     const res = insertTextIntoEitherACodeBlockOrAlertBlock(child, container as IdableNode, startOffset, rootChildId, historyManager, higherLevelChildren, children, key);
                     if (res)
                         return res;
-                } else if (grandChild !== null && parent.nodeName === 'P' && ((editorState === 'strong' || editorState === 'em') || Array.isArray(editorState))) {
+                } else if (grandChild !== null && (parent.nodeName === 'P' || parent.nodeName === 'SPAN') && ((editorState === 'strong' || editorState === 'em') || Array.isArray(editorState))) {
                     console.log("c10");
                     const higherLevelIndex: number | null = null;
                     const type = 'insertNew';
