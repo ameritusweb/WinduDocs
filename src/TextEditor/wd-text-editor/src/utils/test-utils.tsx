@@ -90,6 +90,49 @@ export const selectText = (parentId: string, startOffset: number, endOffset: num
   }
 }
 
+export const selectTextRange = (startParentId: string, endParentId: string, startIndex: number, endIndex: number, startOffset: number, endOffset: number) => {
+  const startParent = document.getElementById(startParentId);
+  const endParent = document.getElementById(endParentId);
+  
+  if (!startParent) {
+      throw new Error(`Start parent element with id ${startParentId} not found`);
+  }
+
+  if (!endParent) {
+      throw new Error(`End parent element with id ${endParentId} not found`);
+  }
+  
+  const startNode = startParent.childNodes[startIndex];
+  const endNode = endParent.childNodes[endIndex];
+
+  if (!startNode || startNode.nodeType !== Node.TEXT_NODE) {
+      throw new Error('No text node found in the start parent element');
+  }
+
+  console.log(startParent.outerHTML);
+  if (!endNode || endNode.nodeType !== Node.TEXT_NODE) {
+      throw new Error('No text node found in the end parent element');
+  }
+
+  if (!startNode.textContent || !endNode.textContent) {
+      throw new Error('One of the text nodes has no text content');
+  }
+
+  if (startNode.textContent.length < startOffset || endNode.textContent.length < endOffset) {
+      throw new Error('Range out of bounds');
+  }
+
+  const range = document.createRange();
+  range.setStart(startNode, startOffset);
+  range.setEnd(endNode, endOffset);
+
+  const selection = window.getSelection();
+  if (selection) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+  }
+};
+
 const defaultAstNode: AstNode = {
   NodeName: 'defaultName',
   Attributes: {},

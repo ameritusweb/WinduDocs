@@ -95,15 +95,7 @@ describe('splitTreeAndExtract', () => {
                     "TextContent": "is a paragraph with both ",
                     "Children": []
                   },
-                  {
-                    "NodeName": "Strong",
-                    "Attributes": {},
-                    "ChildIndex": 0,
-                    "Depth": 3,
-                    "Guid": "mock-key",
-                    "TextContent": null,
-                    "Children": [
-                      {
+                    {
                         "NodeName": "Emphasis",
                         "Attributes": {},
                         "ChildIndex": 0,
@@ -111,7 +103,7 @@ describe('splitTreeAndExtract', () => {
                         "Guid": "mock-key",
                         "TextContent": null,
                         "Children": [
-                          {
+                            {
                             "NodeName": "Text",
                             "Attributes": {},
                             "ChildIndex": 0,
@@ -119,11 +111,9 @@ describe('splitTreeAndExtract', () => {
                             "Guid": "mock-key",
                             "TextContent": "bold and italic",
                             "Children": []
-                          }
+                            }
                         ]
-                      }
-                    ]
-                  },
+                    },
                   {
                     "NodeName": "Text",
                     "Attributes": {},
