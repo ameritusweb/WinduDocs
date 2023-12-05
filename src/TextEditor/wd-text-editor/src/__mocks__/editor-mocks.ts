@@ -1,4 +1,19 @@
-import { AstNode } from "../components/wysiwyg/interface";
+import { AstContext, AstNode } from "../components/wysiwyg/interface";
+
+export const mockAstContext: AstContext = {
+  "isAlertBlock": false,
+  "isQuoteBlock": false,
+  "isCodeBlock": false,
+  "isEmphasis": false,
+  "isHeading": false,
+  "isInlineCode": false,
+  "isLink": false,
+  "isOrderedList": false,
+  "isStrong": false,
+  "isTable": false,
+  "isUnorderedList": false,
+  "types": []
+};
 
 export const mockUseParagraphData: AstNode[] = [
   {

@@ -1,6 +1,6 @@
 import { cleanup, render } from '@testing-library/react'
 import { afterEach } from 'vitest'
-import { AstNode, AstNodeAttributes, AstNodeBase, Idable, IdableNode, Simplifiable, TestData } from '../components/wysiwyg/interface'
+import { AstNode, AstNodeAttributes, AstNodeBase, CustomNode, Idable, IdableNode, Simplifiable, TestData } from '../components/wysiwyg/interface'
 import { generateKey } from '../rich-text-editor/node-operations'
 
 afterEach(() => {
@@ -15,20 +15,13 @@ function customRender(ui: React.ReactElement, options = {}) {
   })
 }
 
-interface CustomNode {
-  nodeName: string;
-  id?: string;
-  textContent?: string;
-  childNodes?: CustomNode[];
-}
-
-export const mockCustomElement = (node: CustomNode): IdableNode => {
+export const mockCustomElement = (node: Partial<CustomNode>): IdableNode => {
   let element: IdableNode | Text;
 
   if (node.nodeName === '#text') {
     element = document.createTextNode(node.textContent || '');
   } else {
-    element = document.createElement(node.nodeName) as HTMLElement;
+    element = document.createElement(node.nodeName || '') as HTMLElement;
     node.id && (element.id = node.id);
     element.textContent = node.textContent || null;
 

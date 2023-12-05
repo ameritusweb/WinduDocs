@@ -244,28 +244,20 @@ export interface IHistoryCommand {
   newNode: AstNode;
 }
 
+export interface CustomNode {
+  nodeName: string;
+  id?: string;
+  textContent?: string;
+  childNodes?: CustomNode[];
+};
+
 export interface IHistoryBuilder {
-  
   addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
-
-  
   addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
-
-  
   addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode): void;
-
-  
   addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode): void;
-
-  
   addRemoveBeforeCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
-
-  
   addRemoveAfterCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
-
-  
   addReplaceCommand(oldNode: AstNode, newNode: AstNode): void;
-
-  
   applyTo(historyManager: IHistoryManagerRecorder): void;
 }
