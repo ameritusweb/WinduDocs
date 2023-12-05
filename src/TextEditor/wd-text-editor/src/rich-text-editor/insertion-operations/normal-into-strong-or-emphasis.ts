@@ -4,7 +4,7 @@ import { createNodeWithTypeAndKey, splitAndUpdateHigherLevelNodes, updateHigherL
 const insertNormalTextIntoEitherStrongOrEmphasisText = (container: IdableNode, startOffset: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number, child: AstNode, containerIndex: number, higherLevelChildren: AstNode[], children: AstNode[], key: string): AstUpdate | null => {
     if (startOffset === 0) {
         const newText = createNodeWithTypeAndKey('Text', key);
-        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, 'beginning');
+        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, children.indexOf(child), 'beginning');
         if (nodes !== null)
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
@@ -15,7 +15,7 @@ const insertNormalTextIntoEitherStrongOrEmphasisText = (container: IdableNode, s
             return { type: 'higherLevelSplit', nodes };
     } else { 
         const newText = createNodeWithTypeAndKey('Text', key);
-        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, 'end');
+        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newText], startOffset, children.indexOf(child), 'end');
         if (nodes !== null)
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }

@@ -2,29 +2,30 @@ import { deepCopyAstNode } from ".";
 import { AstNode, IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
-const updateHigherLevelNodes = (childIndex: number, higherLevelChildren: AstNode[], children: AstNode[], historyManager: IHistoryManagerRecorder, newNodes: AstNode[] | null, startOffset: number, insertAt?: string) => {
+const updateHigherLevelNodes = (higherLevelChildIndex: number, higherLevelChildren: AstNode[], children: AstNode[], historyManager: IHistoryManagerRecorder, newNodes: AstNode[] | null, startOffset: number, childIndex: number, insertAt?: string) => {
 
     
-    if (childIndex === -1 || childIndex === null) {
+    if (higherLevelChildIndex === -1 || higherLevelChildIndex === null) {
         console.error("No valid insertion index found for higher level nodes.");
         return null;
     }
 
-    const higherLevelChild = higherLevelChildren[childIndex];
+    const higherLevelChild = higherLevelChildren[higherLevelChildIndex];
     higherLevelChild.Children = [... children];
 
     if (newNodes === null)
         return higherLevelChildren;
 
-    let insertionIndex = 0;
+    let insertionIndex = childIndex;
     if (insertAt === 'end')
     {
-        insertionIndex = higherLevelChild.Children.length;
+        insertionIndex = childIndex + 1;
     }
 
     const oldIndex = insertionIndex === 0 ? 0 : insertionIndex - 1;
     const oldNode = deepCopyAstNode(higherLevelChild.Children[oldIndex]);
-    
+    console.log(higherLevelChild.Children);
+    console.log(insertionIndex);
     higherLevelChild.Children.splice(insertionIndex, 0, ...newNodes);
     const historyBuilder = new HistoryBuilder();
     historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);

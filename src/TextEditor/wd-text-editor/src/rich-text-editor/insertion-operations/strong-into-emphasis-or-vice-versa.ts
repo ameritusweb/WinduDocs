@@ -4,7 +4,7 @@ import { createNodeWithTypeAndKey, splitAndUpdateHigherLevelNodes, updateHigherL
 const insertStrongTextIntoEmphasisTextOrViceVersa = (container: Node, child: AstNode, editorState: string, startOffset: number, historyManager: IHistoryManagerRecorder, higherLevelIndex: number, astParent: AstNode | null, containerIndex: number, higherLevelChildren: AstNode[], children: AstNode[], key: string): AstUpdate | null => {
     if (startOffset === 0) {
         const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);
-        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newContainer], startOffset, 'beginning');
+        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newContainer], startOffset, children.indexOf(child), 'beginning');
         if (nodes !== null)
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
@@ -15,7 +15,7 @@ const insertStrongTextIntoEmphasisTextOrViceVersa = (container: Node, child: Ast
             return { type: 'higherLevelSplit', nodes };
     } else { 
         const newContainer = createNodeWithTypeAndKey(editorState === 'strong' ? 'Strong' : 'Emphasis', key);
-        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newContainer], startOffset, 'end');
+        const nodes = updateHigherLevelNodes(higherLevelIndex, higherLevelChildren, children, historyManager, [newContainer], startOffset, children.indexOf(child), 'end');
         if (nodes !== null)
             return { type: 'higherLevelSplitOrMove', nodes: higherLevelChildren };
     }
