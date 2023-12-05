@@ -1,7 +1,7 @@
-import { AstNode, AstUpdate, IHistoryManager, IdableNode } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryManagerRecorder, IdableNode } from "../../components/wysiwyg/interface";
 import { replaceText } from "../text-manipulation";
 
-const insertNormalTextIntoOtherNormalText = (grandChild: AstNode, container: IdableNode, startOffset: number, historyManager: IHistoryManager, child: AstNode, rootChildId: string, children: AstNode[], key: string): AstUpdate => {
+const insertNormalTextIntoOtherNormalText = (grandChild: AstNode, container: IdableNode, startOffset: number, historyManager: IHistoryManagerRecorder, child: AstNode, rootChildId: string, children: AstNode[], key: string): AstUpdate => {
     const oldText = '' + grandChild.TextContent;
     let additionalOffset = 0;
     if (grandChild.TextContent === '\n')
