@@ -1,6 +1,6 @@
 import { mockAstData } from "../../__mocks__/editor-mocks";
 import RichTextEditor from "./rich-text-editor";
-import { act, cleanup, fireEvent, render, screen, userEvent, waitFor } from '../../utils/test-utils'
+import { act, cleanup, fireEvent, render, userEvent } from '../../utils/test-utils'
 import { vi } from "vitest";
 import DomDiff from "../../utils/dom-diff";
 import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
@@ -8,8 +8,8 @@ import { HistoryManager } from "../../rich-text-editor/undo-redo-ot";
 const mockUndoRedo = () => {
 
     const historyManager = HistoryManager;
-    let undoMock = vi.spyOn(historyManager, 'undo');
-    let redoMock = vi.spyOn(historyManager, 'redo');
+    const undoMock = vi.spyOn(historyManager, 'undo');
+    const redoMock = vi.spyOn(historyManager, 'redo');
 
     return [ undoMock, redoMock ];
 
@@ -17,8 +17,8 @@ const mockUndoRedo = () => {
 
 const mockHandlers = await vi.hoisted(async () => {
     const actualHandlers = await vi.importActual("../../rich-text-editor/handlers") as typeof import("../../rich-text-editor/handlers");
-    let leftOrRightMock = vi.fn(actualHandlers.handleArrowKeyLeftOrRightPress);
-    let upOrDownMock = vi.fn(actualHandlers.handleArrowKeyUpOrDownPress);
+    const leftOrRightMock = vi.fn(actualHandlers.handleArrowKeyLeftOrRightPress);
+    const upOrDownMock = vi.fn(actualHandlers.handleArrowKeyUpOrDownPress);
 
     vi.mock('../../rich-text-editor/handlers', async () => {
         
@@ -34,7 +34,7 @@ const mockHandlers = await vi.hoisted(async () => {
 
 const mockRichTextEditor = await vi.hoisted(async () => {
     const actualRichTextEditor = await vi.importActual("../../hooks/use-rich-text-editor") as typeof import("../../hooks/use-rich-text-editor");
-    let myMock = vi.fn(actualRichTextEditor.useRichTextEditor().restoreCursorPosition);
+    const myMock = vi.fn(actualRichTextEditor.useRichTextEditor().restoreCursorPosition);
 
     vi.mock('../../hooks/use-rich-text-editor', async () => {
         
@@ -63,7 +63,7 @@ describe('RichTextEditor', async () => {
         const takeRecords = vi.fn();
       
         global.MutationObserver = class {
-          constructor(callback: MutationCallback) {}
+          constructor() {}
           observe = observe;
           disconnect = disconnect;
           takeRecords = takeRecords;
@@ -84,8 +84,8 @@ describe('RichTextEditor', async () => {
       it('makes appropriate DOM changes on AST update', async () => {
         const ast = mockAstData;
         const domDiff = DomDiff;
-        const [ restoreCursorPositionMock ] = await mockRichTextEditor;
-        const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
+        await mockRichTextEditor;
+        const { container } = render(<RichTextEditor ast={ast} />);
       
         
         const editorElement = container.querySelector('#richTextEditor');
@@ -116,7 +116,7 @@ describe('RichTextEditor', async () => {
       it('when pressing the left arrow key calls handleArrowKeyLeftOrRightPress one time', async () => {
         const ast = mockAstData;
         const [ leftOrRightMock ] = await mockHandlers;
-        const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
+        const { container } = render(<RichTextEditor ast={ast} />);
       
         
         const editorElement = container.querySelector('#richTextEditor');
@@ -143,7 +143,7 @@ describe('RichTextEditor', async () => {
       it('when pressing the right arrow key calls handleArrowKeyLeftOrRightPress one time', async () => {
         const ast = mockAstData;
         const [ leftOrRightMock ] = await mockHandlers;
-        const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
+        const { container } = render(<RichTextEditor ast={ast} />);
       
         
         const editorElement = container.querySelector('#richTextEditor');
@@ -170,7 +170,7 @@ describe('RichTextEditor', async () => {
       it('when pressing the up arrow key calls handleArrowKeyUpOrDownPress one time', async () => {
         const ast = mockAstData;
         const [ leftOrRightMock, upOrDownMock ] = await mockHandlers;
-        const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
+        const { container } = render(<RichTextEditor ast={ast} />);
       
         
         const editorElement = container.querySelector('#richTextEditor');
@@ -197,7 +197,7 @@ describe('RichTextEditor', async () => {
       it('when pressing the down arrow key calls handleArrowKeyUpOrDownPress one time', async () => {
         const ast = mockAstData;
         const [ leftOrRightMock, upOrDownMock ] = await mockHandlers;
-        const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
+        const { container } = render(<RichTextEditor ast={ast} />);
       
         
         const editorElement = container.querySelector('#richTextEditor');
@@ -224,7 +224,7 @@ describe('RichTextEditor', async () => {
       it('when pressing ctrl+Z key calls undo one time', async () => {
         const ast = mockAstData;
         const [ undoMock ] = mockUndoRedo();
-        const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
+        const { container } = render(<RichTextEditor ast={ast} />);
       
         
         const editorElement = container.querySelector('#richTextEditor');
@@ -251,7 +251,7 @@ describe('RichTextEditor', async () => {
       it('when pressing ctrl+Y key calls redo one time', async () => {
         const ast = mockAstData;
         const [ redoMock ] = mockUndoRedo();
-        const { container, getByTestId } = render(<RichTextEditor ast={ast} />);
+        const { container } = render(<RichTextEditor ast={ast} />);
       
         
         const editorElement = container.querySelector('#richTextEditor');

@@ -1,6 +1,5 @@
 import { incrementEnd } from '..';
-import { act, cleanup, render, screen, userEvent } from '../../../utils/test-utils'
-import trimSpecial, { TrimOptions } from './trim-special';
+import { cleanup } from '../../../utils/test-utils'
 
 afterEach(() => {
     cleanup();

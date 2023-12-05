@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 import { mockStrongData } from '../../__mocks__/editor-mocks';
 import { IHistoryManagerRecorder } from '../../components/wysiwyg/interface';
 import { cleanup } from '../../utils/test-utils'
-import { createNewAstNode, deepCopyAstNode, splitAndUpdateHigherLevelNodes, splitNode } from '../node-operations';
+import { createNewAstNode, deepCopyAstNode, splitAndUpdateHigherLevelNodes } from '../node-operations';
 
 afterEach(() => {
     cleanup();

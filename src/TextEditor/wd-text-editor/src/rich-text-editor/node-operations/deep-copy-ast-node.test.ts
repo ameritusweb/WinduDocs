@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup } from '../../utils/test-utils'
 import { mockAstData } from '../../__mocks__/editor-mocks';
 import { createNewAstNode, deepCopyAstNode } from '.';
 import { AstNode } from '../../components/wysiwyg/interface';

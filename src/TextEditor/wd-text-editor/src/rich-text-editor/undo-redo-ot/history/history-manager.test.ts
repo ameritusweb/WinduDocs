@@ -4,7 +4,7 @@ import { AstOperation, IHistoryManager } from "../../../components/wysiwyg/inter
 import { toMockAst } from "../../../utils/test-utils";
 
 describe('HistoryManager', () => {
-    let historyManager: IHistoryManager = HistoryManager;
+    const historyManager: IHistoryManager = HistoryManager;
 
     beforeEach(() => {
         historyManager.clear();
@@ -113,7 +113,7 @@ describe('HistoryManager', () => {
             payload: { siblingId: 'A123', newNode: toMockAst({ Guid: 'B123'})},
             timestamp: 3
         };
-        const reverseOperation = historyManager.getReverseOperation(mockOperation);
+        historyManager.getReverseOperation(mockOperation);
         
       });
 
@@ -129,7 +129,7 @@ describe('HistoryManager', () => {
             payload: { siblingId: 'A123', newNode: toMockAst({ Guid: 'B123'})},
             timestamp: 3
         };
-        const reverseOperation = historyManager.getReverseOperation(mockOperation);
+        historyManager.getReverseOperation(mockOperation);
         
       });
 
@@ -145,7 +145,7 @@ describe('HistoryManager', () => {
             payload: { siblingId: 'A123', targetNode: toMockAst({ Guid: 'B123'})},
             timestamp: 3
         };
-        const reverseOperation = historyManager.getReverseOperation(mockOperation);
+        historyManager.getReverseOperation(mockOperation);
         
       });
 
@@ -161,7 +161,7 @@ describe('HistoryManager', () => {
             payload: { siblingId: 'A123', targetNode: toMockAst({ Guid: 'B123'})},
             timestamp: 3
         };
-        const reverseOperation = historyManager.getReverseOperation(mockOperation);
+        historyManager.getReverseOperation(mockOperation);
         
       });
 
@@ -177,7 +177,7 @@ describe('HistoryManager', () => {
             payload: {  oldNode: toMockAst({ Guid: 'A123'}), newNode: toMockAst({ Guid: 'B123'})},
             timestamp: 3
         };
-        const reverseOperation = historyManager.getReverseOperation(mockOperation);
+        historyManager.getReverseOperation(mockOperation);
         
       });
   

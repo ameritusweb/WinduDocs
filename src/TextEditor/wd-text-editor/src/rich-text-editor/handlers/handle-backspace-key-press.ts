@@ -1,6 +1,6 @@
 import { AstNode, AstUpdate, IHistoryManagerRecorder, IdableNode, UpdateData } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
-import { createNewAstNode, findClosestAncestor, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
+import { createNewAstNode, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
 import { removeText } from "../text-manipulation";
 import { trimSpecial } from "../undo-redo-ot";
 
@@ -38,7 +38,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
             };
         }
     } else {
-        let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex} = updateData;
+        const {parent, child, astParent, rootChildId } = updateData;
         if (parent) {
             
             const parentId = parent.id;

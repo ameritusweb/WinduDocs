@@ -1,7 +1,7 @@
 const handleListClick = (event: React.MouseEvent<HTMLUListElement | HTMLOListElement>) => {
 
     if (event.target instanceof Element) {
-        let target = event.target;
+        const target = event.target;
         let p, li;
         if (target.tagName === 'LI') {
             
@@ -11,11 +11,11 @@ const handleListClick = (event: React.MouseEvent<HTMLUListElement | HTMLOListEle
             
             let closestLi = null;
             let closestDistance = Infinity;
-            let clickY = event.clientY;
+            const clickY = event.clientY;
 
             target.querySelectorAll('li').forEach(liElement => {
-                let liRect = liElement.getBoundingClientRect();
-                let distance = Math.abs(clickY - liRect.top - (liRect.height / 2)); 
+                const liRect = liElement.getBoundingClientRect();
+                const distance = Math.abs(clickY - liRect.top - (liRect.height / 2)); 
 
                 if (distance < closestDistance) {
                     closestDistance = distance;
@@ -29,8 +29,8 @@ const handleListClick = (event: React.MouseEvent<HTMLUListElement | HTMLOListEle
 
         if (p && p.firstChild) {
             
-            let range = document.createRange();
-            let sel = window.getSelection();
+            const range = document.createRange();
+            const sel = window.getSelection();
 
             range.setStart(p.firstChild, 0);
             range.collapse(true);

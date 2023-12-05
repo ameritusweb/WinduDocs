@@ -1,6 +1,6 @@
 import { findNodeById } from '..';
 import { mockAstData, mockListData } from '../../../__mocks__/editor-mocks';
-import { act, cleanup, render, screen, userEvent } from '../../../utils/test-utils'
+import { cleanup } from '../../../utils/test-utils'
 
 afterEach(() => {
     cleanup();

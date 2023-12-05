@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup } from '../../utils/test-utils'
 import { createNewAstNode, nestedSplitNode } from '.';
 
 afterEach(() => {
@@ -18,7 +18,7 @@ afterEach(() => {
           };
           
         const offset = 2; 
-        const [leftNode, rightNode, newLine] = nestedSplitNode(mockNodeWithChildren, offset);
+        const [leftNode, rightNode] = nestedSplitNode(mockNodeWithChildren, offset);
         expect(leftNode.Children).toHaveLength(1);
         expect(leftNode.Children[0].TextContent).toBe('He');
         expect(rightNode.Children).toHaveLength(1);
@@ -37,7 +37,7 @@ afterEach(() => {
           };
           
         const offset = 7; 
-        const [leftNode, rightNode, newLine] = nestedSplitNode(mockNodeWithChildren, offset);
+        const [leftNode, rightNode] = nestedSplitNode(mockNodeWithChildren, offset);
         expect(leftNode.Children).toHaveLength(2);
         expect(leftNode.Children[0].TextContent).toBe('Hello');
         expect(leftNode.Children[1].TextContent).toBe('Wo');

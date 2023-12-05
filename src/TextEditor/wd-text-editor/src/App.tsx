@@ -11,7 +11,7 @@ import ast from './test/ast.json';
 import { useSafeStringify } from './hooks/use-safe-stringify.js';
 
 declare global {
-  interface Window { astContext: typeof astContext; safeStringify: (value: any) => string, mapToMock: (value: any) => string, astHigherLevelContext: typeof astHigherLevelContext; }
+  interface Window { astContext: typeof astContext; safeStringify: (value: object) => string, mapToMock: (value: Map<string, number[]>) => string, astHigherLevelContext: typeof astHigherLevelContext; }
 }
 
 function App() {

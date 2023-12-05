@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { createNewAstNode, findNodeByGuid, generateKey, indentListItem, isNodeEmpty } from '.';
+import { cleanup } from '../../utils/test-utils'
+import { createNewAstNode, findNodeByGuid } from '.';
 import { AstNode } from '../../components/wysiwyg/interface';
 
 afterEach(() => {

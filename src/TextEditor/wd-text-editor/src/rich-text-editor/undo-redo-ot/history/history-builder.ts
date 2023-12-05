@@ -1,4 +1,4 @@
-import { HistoryManager, toId } from "..";
+import { toId } from "..";
 import { AstNode, CursorPositionParams, IHistoryBuilder, IHistoryCommand, IHistoryManagerRecorder } from "../../../components/wysiwyg/interface";
 
 class HistoryBuilder implements IHistoryBuilder {

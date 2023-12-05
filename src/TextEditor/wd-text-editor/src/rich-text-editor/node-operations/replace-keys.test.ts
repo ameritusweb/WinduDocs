@@ -1,11 +1,9 @@
 import { vi } from 'vitest';
-import { mockSplitTreeData } from '../../__mocks__/editor-mocks';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { createNewAstNode, isNodeEmpty, replaceKeys, splitNode } from '../node-operations';
+import { cleanup } from '../../utils/test-utils'
+import { createNewAstNode, replaceKeys } from '../node-operations';
 import generateKey from './generate-key';
 
 vi.mock('./generate-key', async () => {
-    const actual = await vi.importActual("./generate-key") as typeof import("./generate-key");
     return {
       __esModule: true,
       default: vi.fn(() => 'mock-key')

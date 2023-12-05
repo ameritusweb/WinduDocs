@@ -18,7 +18,7 @@ const Strong: React.FC<StrongProps> = ({ id, parentId, context, pathIndices, chi
     
     useEffect(() => {
 
-        const broadcastEvent = (payload: any) => {
+        const broadcastEvent = (payload: object | null) => {
             editorData.emitEvent('*', parentId, payload);
         }
         

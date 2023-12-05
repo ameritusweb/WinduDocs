@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup } from '../../utils/test-utils'
 import { createNewAstNode, isNodeEmpty } from '.';
 
 afterEach(() => {

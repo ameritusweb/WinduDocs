@@ -1,6 +1,6 @@
 import { cleanup, render } from '@testing-library/react'
 import { afterEach } from 'vitest'
-import { AstNode, AstNodeAttributes, AstNodeBase, CustomNode, Idable, IdableNode, Simplifiable, TestData } from '../components/wysiwyg/interface'
+import { AstNode, AstNodeBase, CustomNode, Idable, IdableNode, Simplifiable, TestData } from '../components/wysiwyg/interface'
 import { generateKey } from '../rich-text-editor/node-operations'
 
 afterEach(() => {
@@ -162,7 +162,7 @@ export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstN
   return (obj1, obj2) => {
       
       function compareObjects(o1: Simplifiable<TestData>, o2: Simplifiable<TestData>): boolean {
-          for (let key of keys) {
+          for (const key of keys) {
               if (typeof key === 'string') {
                 if ((key in o1) && (key in o2)) {        
                   if (o1[key] !== o2[key]) {
@@ -206,7 +206,7 @@ export const safeSimplify = <T extends object>(keys: Array<keyof T>): ((obj: Par
   return (obj) => {
       
       function simplifyObject(o: Partial<T>): Simplifiable<Partial<T>> {
-          let simplified: Simplifiable<Partial<T>> = {};
+          const simplified: Simplifiable<Partial<T>> = {};
 
           if (!o)
           {
@@ -214,7 +214,7 @@ export const safeSimplify = <T extends object>(keys: Array<keyof T>): ((obj: Par
           }
 
           
-          for (let key of keys) {
+          for (const key of keys) {
               if (key in o) {
                   
                   simplified[key] = o[key] as any;
@@ -241,7 +241,7 @@ export const createSimplifiedObject = <T extends object>(obj: { [key: string]: a
   
   const simplify = safeSimplify(keys);
   
-  let output: { [innerKey: string]: Simplifiable<Partial<T>> | Simplifiable<Partial<T>>[] } = {};
+  const output: { [innerKey: string]: Simplifiable<Partial<T>> | Simplifiable<Partial<T>>[] } = {};
 
   function isPrimitive(value: any) {
     return value === null || (typeof value !== 'object' && typeof value !== 'function');
@@ -266,7 +266,7 @@ export const createSimplifiedObject = <T extends object>(obj: { [key: string]: a
   return output;
 };
 
-export * from '@testing-library/react'
+export { fireEvent, act, screen, cleanup, renderHook, waitFor } from '@testing-library/react'
 export { default as userEvent } from '@testing-library/user-event'
 
 export { customRender as render }

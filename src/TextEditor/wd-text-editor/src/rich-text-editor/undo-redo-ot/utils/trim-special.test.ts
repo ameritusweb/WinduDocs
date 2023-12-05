@@ -1,4 +1,4 @@
-import { act, cleanup, render, screen, userEvent } from '../../../utils/test-utils'
+import { cleanup } from '../../../utils/test-utils'
 import trimSpecial, { TrimOptions } from './trim-special';
 
 afterEach(() => {

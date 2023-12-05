@@ -26,9 +26,9 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
 
     
     const traverseAndExtractSpan = (nodes: AstNode[], depth: number): [AstNode[], AstNode[], AstNode[]] => {
-        let leftChildren: AstNode[] = [];
-        let middleChildren: AstNode[] = [];
-        let rightChildren: AstNode[] = [];
+        const leftChildren: AstNode[] = [];
+        const middleChildren: AstNode[] = [];
+        const rightChildren: AstNode[] = [];
 
         nodes.forEach(node => {
             
@@ -74,11 +74,8 @@ const splitTreeAndExtractSpan = (siblings: AstNode[], leftNode: AstNode, leftOff
 
             
             if (!leftTargetFound) {
-                if (isLeftSplit || isRightSplit) {
-                    
-                    
-                } else {
-                    leftChildren.push(node); 
+                if (!(isLeftSplit || isRightSplit)) {
+                    leftChildren.push(node);    
                 }
             } else if (leftTargetFound && !rightTargetFound) {
                 middleChildren.push(node); 

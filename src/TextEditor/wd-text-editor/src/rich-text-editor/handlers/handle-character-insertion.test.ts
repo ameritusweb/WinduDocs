@@ -114,7 +114,7 @@ describe('handleCharacterInsertion', () => {
       };
     
     it('handles character insertion for strong text into normal text', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
       handleCharacterInsertion(
@@ -131,7 +131,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for emphasis text into normal text', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
       handleCharacterInsertion(
@@ -148,7 +148,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for normal text', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
         const grandParent = mockCustomElement({
@@ -183,7 +183,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for both strong and emphasis into normal text', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
         const grandParent = mockCustomElement({
@@ -218,7 +218,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for code or alert blocks', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
         const grandParent = mockCustomElement({
@@ -253,7 +253,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for both strong and emphasis text into either strong or emphasis text', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
         const grandParent = mockCustomElement({
@@ -288,7 +288,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for strong or emphasis text into the other', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
         const grandParent = mockCustomElement({
@@ -323,7 +323,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for normal text into either strong or emphasis text', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
         const grandParent = mockCustomElement({
@@ -358,7 +358,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles character insertion for normal text into both strong and emphasis text', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
         const grandParent = mockCustomElement({
@@ -393,7 +393,7 @@ describe('handleCharacterInsertion', () => {
     });
 
     it('handles an invalid scenario', () => {
-        const { mockHistoryManager, mockContainer, mockContext, mockUpdateData, mockChildren, mockRange } 
+        const { mockHistoryManager, mockContainer, mockUpdateData, mockChildren } 
         = createMocks({ nodeName: 'P' }, {});
   
       expect(() => handleCharacterInsertion(

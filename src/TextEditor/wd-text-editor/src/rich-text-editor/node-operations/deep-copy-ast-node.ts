@@ -2,7 +2,7 @@ import { AstNode } from "../../components/wysiwyg/interface";
 
 const deepCopyAstNode = (node: AstNode): AstNode => {
     
-    let nodeCopy: AstNode = {
+    const nodeCopy: AstNode = {
         NodeName: node.NodeName,
         Attributes: { ...node.Attributes }, 
         ChildIndex: node.ChildIndex,

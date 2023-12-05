@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 import { AstNode, IHistoryManager, IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 import { cleanup, mockCustomElement, toMockAst, toMockAstArray } from "../../utils/test-utils";
-import { insertNormalTextIntoBothStrongAndEmphasisText, insertNormalTextIntoEitherStrongOrEmphasisText, insertNormalTextIntoOtherNormalText, insertTextIntoEitherACodeBlockOrAlertBlock } from ".";
+import { insertNormalTextIntoBothStrongAndEmphasisText } from ".";
 
 vi.mock('../node-operations/generate-key', () => {
     return {

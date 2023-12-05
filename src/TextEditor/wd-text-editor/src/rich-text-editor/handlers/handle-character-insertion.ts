@@ -8,7 +8,8 @@ import { insertBothStrongAndEmphasisTextInsideEitherStrongOrEmphasisText, insert
 const handleCharacterInsertion = (historyManager: IHistoryManagerRecorder, container: Node, children: AstNode[], updateData: UpdateData, key: string, editorState: string, startOffset: number): AstUpdate | null => {
     if (container && container.nodeName === '#text')
     {
-        let {parent, child, astParent, higherLevelIndex, immediateChild, rootChildId, containerIndex, higherLevelChildren} = updateData;
+        const {parent, astParent, higherLevelIndex, rootChildId, containerIndex, higherLevelChildren} = updateData;
+        let { child } = updateData;
         console.log("c1");
         if (parent) {
             console.log("c2");
@@ -51,8 +52,8 @@ const handleCharacterInsertion = (historyManager: IHistoryManagerRecorder, conta
                         return res;
                 } else if (grandChild !== null && parent.nodeName === 'P' && ((editorState === 'strong' || editorState === 'em') || Array.isArray(editorState))) {
                     console.log("c10");
-                    let higherLevelIndex: number | null = null;
-                    let type = 'insertNew';
+                    const higherLevelIndex: number | null = null;
+                    const type = 'insertNew';
                     if (Array.isArray(editorState))
                     {
                         console.log("c10a");
@@ -83,8 +84,8 @@ const handleCharacterInsertion = (historyManager: IHistoryManagerRecorder, conta
                     {
                         console.log("c15");
                         const higherLevelChild = higherLevelChildren[higherLevelIndex];
-                        let higherLevelIndexNew: number | null = null;
-                        let type = 'insertNew';
+                        const higherLevelIndexNew: number | null = null;
+                        const type = 'insertNew';
                         if (Array.isArray(editorState))
                         {
                             console.log("c16");

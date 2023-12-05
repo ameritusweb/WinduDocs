@@ -1,6 +1,6 @@
 import { mockSplitTreeData } from '../../__mocks__/editor-mocks';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { createNewAstNode, isNodeEmpty, splitTreeDeux } from '../node-operations';
+import { cleanup } from '../../utils/test-utils'
+import { splitTreeDeux } from '../node-operations';
 
 afterEach(() => {
     cleanup();

@@ -1,5 +1,5 @@
 import { AstContext, AstNode, IHistoryManager } from "../components/wysiwyg/interface";
-import { createListBlock, createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, splitTreeAndExtract, splitTreeAndExtractSpan } from "../rich-text-editor/node-operations";
+import { createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, splitTreeAndExtract, splitTreeAndExtractSpan } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import HistoryBuilder from "../rich-text-editor/undo-redo-ot/history/history-builder";
 import EditorData, { EditorDataType } from "./editor-data";
@@ -22,7 +22,6 @@ export const useParagraph = () => {
                 if (parent && child && grandChild) {
                     if (context.types.length === 0 && parent.nodeName === 'P')
                     {
-                        const higherLevelChildren = higherLevelAstCopy;
                         const [leftNode, rightNode, extractedText] = splitTreeAndExtract(grandChild, grandChild, startOffset, endOffset);
                         const newBold = createNewAstNode('Strong', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
                         const oldNode = deepCopyAstNode(child);
@@ -52,13 +51,12 @@ export const useParagraph = () => {
         const gatherRes = gatherUpdateData(astCopy, higherLevelAstCopy);
         if (gatherRes)
         {
-          const { updateData, container, endContainer, range, startOffset, endOffset } = gatherRes;
+          const { updateData, container, endContainer, startOffset, endOffset } = gatherRes;
           if (container === endContainer) {
                 const { parent, child, grandChild, containerIndex } = updateData;
                 if (parent && child && grandChild) {
                     if (context.types.length === 0 && parent.nodeName === 'P')
                     {
-                        const higherLevelChildren = higherLevelAstCopy;
                         const [leftNode, rightNode, extractedText] = splitTreeAndExtract(grandChild, grandChild, startOffset, endOffset);
                         const newItalic = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
                         const oldNode = deepCopyAstNode(child);
@@ -84,7 +82,6 @@ export const useParagraph = () => {
                 if (parent && child && grandChild && endChild && endGrandChild) {
                     if (context.types.length === 0 && parent.nodeName === 'P')
                     {
-                        const higherLevelChildren = higherLevelAstCopy;
                         const index1 = child.Children.findIndex(c => c === grandChild);
                         const index2 = child.Children.findIndex(c => c === endGrandChild);
                         const siblings = child.Children.slice(index1, index2 + 1);
@@ -107,9 +104,6 @@ export const useParagraph = () => {
                         historyBuilder.applyTo(historyManager);
                         editorData.emitEvent('update', 'richTextEditor', { type: 'makeItalic', nodes: child.Children, pathIndices });
                     } else if (context.types.length === 0 && astParent !== null && (parent.nodeName === 'STRONG' || parent.nodeName === 'EM' )) {
-                        const higherLevelChildren = higherLevelAstCopy;
-                        const index1 = child.Children.findIndex(c => c === grandChild);
-                        const index2 = child.Children.findIndex(c => c === endGrandChild);
                         const [leftNode, rightNode, extractedText] = splitTreeAndExtractSpan(astParent.Children, grandChild, startOffset, endGrandChild, endOffset);
                         const newItalic = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
                         const oldNode = deepCopyAstNode(child);
@@ -175,7 +169,7 @@ export const useParagraph = () => {
     }
 
     const handleIndent = (higherLevelChildren: AstNode[], higherLevelChild: AstNode, pathIndices: number[]) => {
-        const newListBlock = createListBlock(1, higherLevelChild.Attributes.IsOrdered === 'True');
+        /*const newListBlock = createListBlock(1, higherLevelChild.Attributes.IsOrdered === 'True');*/
         const selection = window.getSelection();
         if (selection)
         {

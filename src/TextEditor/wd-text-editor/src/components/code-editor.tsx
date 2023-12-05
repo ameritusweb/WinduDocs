@@ -89,7 +89,7 @@ export const CodeEditor: React.FC = () => {
       contentEditableRef.current.appendChild(fragment.frag!);
     }
     setCode(contentEditableRef.current?.innerHTML || '');
-  }, []);
+  }, [createFragment, setCode]);
 
   
   useEffect(() => {

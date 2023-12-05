@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, toMockAst, userEvent } from '../../utils/test-utils'
+import { cleanup, toMockAst } from '../../utils/test-utils'
 import { AstNode } from '../../components/wysiwyg/interface';
 import { mockAstData, mockHigherLevelCodeBlockData, mockListData, mockTableData } from '../../__mocks__/editor-mocks';
 import processAst from './process-ast';
@@ -33,7 +33,7 @@ afterEach(() => {
       it('correctly processes basic text nodes', async () => {
         const mockAst: AstNode = createNewAstNode('Text', 0, 0, 'Hello, world!');
     
-        const [lines, guidMap] = await processAst(mockAst);
+        const [lines] = await processAst(mockAst);
     
         
         expect(lines).toHaveLength(1);

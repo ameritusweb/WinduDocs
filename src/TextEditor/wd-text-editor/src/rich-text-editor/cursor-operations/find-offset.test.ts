@@ -1,10 +1,11 @@
 import { findOffset } from ".";
 import { ITextBlock } from "../../components/wysiwyg/interface";
+import { EditorDataType } from "../../hooks/editor-data";
 
 describe('findOffset', () => {
   
     it('handles ArrowUp key correctly', () => {
-     const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as any;
+     const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as EditorDataType;
      const mockProcessAst = [
       [
         { guid: 'key-1-1', index: 0, textContent: 'Hello ' },
@@ -27,7 +28,7 @@ describe('findOffset', () => {
     });
   
     it('handles ArrowDown key correctly', () => {
-     const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as any;
+     const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as EditorDataType;
      const mockProcessAst = [
       [
         { guid: 'key-1-1', index: 0, textContent: 'Hello ' },
@@ -50,7 +51,7 @@ describe('findOffset', () => {
     });
 
     it('handles cursor offset reduction on ArrowUp correctly', () => {
-        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as any;
+        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as EditorDataType;
         const mockProcessAst = [
          [
            { guid: 'key-1-1', index: 0, textContent: 'H' },
@@ -73,7 +74,7 @@ describe('findOffset', () => {
        });
 
     it('handles cursor offset reduction on ArrowDown correctly', () => {
-        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as any;
+        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as EditorDataType;
         const mockProcessAst = [
          [
            { guid: 'key-1-1', index: 0, textContent: 'Hello ' },
@@ -96,7 +97,7 @@ describe('findOffset', () => {
        });
 
        it('handles the total offset being beyong the total length of all blocks', () => {
-        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as any;
+        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as EditorDataType;
         const mockProcessAst = [
          [
            { guid: 'key-1-1', index: 0, textContent: 'Hello ' },
@@ -119,7 +120,7 @@ describe('findOffset', () => {
        });
 
        it('handles the process AST being empty', () => {
-        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as any;
+        const mockEditorData = { cursorOffset: 0, cursorOffsetReduction: 0 } as EditorDataType;
         const mockProcessAst: ITextBlock[][] = [];
    
          const result = findOffset(mockEditorData, 0, 0, 'ArrowDown', mockProcessAst, 80);

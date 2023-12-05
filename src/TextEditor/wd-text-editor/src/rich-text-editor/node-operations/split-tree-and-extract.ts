@@ -27,8 +27,8 @@ const splitTreeAndExtract = (root: AstNode, target: AstNode, startOffset: number
             return [leftNode, rightNode];
         }
 
-        let leftChildren = [];
-        let rightChildren = [];
+        const leftChildren = [];
+        const rightChildren = [];
         for (let i = 0; i < node.Children.length; i++) {
             if (targetFound) {
                 const newChild = generateNewTree(node.Children[i], true);

@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 import { AstNode, IHistoryManager, IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 import { cleanup, mockCustomElement, toMockAst, toMockAstArray } from "../../utils/test-utils";
-import { insertEitherStrongOrEmphasisTextIntoNormalText, insertTextIntoEitherACodeBlockOrAlertBlock } from ".";
+import { insertEitherStrongOrEmphasisTextIntoNormalText } from ".";
 
 vi.mock('../node-operations/generate-key', () => {
     return {
@@ -19,7 +19,7 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
     it('updates text and calls history manager correctly', () => {
         const mockHistoryManager: IHistoryManagerRecorder = {
             recordChildReplace: vi.fn(),
-            recordChildTextUpdate: vi.fn((oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string) => 
+            recordChildTextUpdate: vi.fn((oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null) => 
             {  
                 expect(offset).toBe(21);
                 const target = child || parent;
@@ -174,7 +174,7 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
     it('updates text and calls history manager correctly if startOffset === 0', () => {
         const mockHistoryManager: IHistoryManagerRecorder = {
             recordChildReplace: vi.fn(),
-            recordChildTextUpdate: vi.fn((oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string) => 
+            recordChildTextUpdate: vi.fn((oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null) => 
             {  
                 expect(offset).toBe(21);
                 const target = child || parent;
@@ -320,7 +320,7 @@ describe('insertStrongOrEmphasisTextIntoNormalText', () => {
     it('updates text and calls history manager correctly if startOffset is at the end', () => {
         const mockHistoryManager: IHistoryManagerRecorder = {
             recordChildReplace: vi.fn(),
-            recordChildTextUpdate: vi.fn((oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null, rootChildId?: string) => 
+            recordChildTextUpdate: vi.fn((oldTextContent: string, offset: number, parent: AstNode, child: AstNode | null) => 
             {  
                 expect(offset).toBe(21);
                 const target = child || parent;

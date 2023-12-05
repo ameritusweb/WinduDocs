@@ -1268,6 +1268,98 @@ export const mockTableData: AstNode[] = [{
 }
 ];
 
+export const mockListItemData: AstNode[] = [
+  {
+    "NodeName": "ParagraphBlock",
+    "Attributes": {},
+    "ChildIndex": 0,
+    "Depth": 3,
+    "Guid": "9913f879-c7fa-45f0-a40d-4f7d10d0ae5e",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "Text",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 4,
+        "Guid": "c11ce1a9-5bcc-487c-842a-1a554f77e85d",
+        "TextContent": "First level ordered item",
+        "Children": []
+      }
+    ]
+  },
+  {
+    "NodeName": "ListBlock",
+    "Attributes": {
+      "IsOrdered": "False"
+    },
+    "ChildIndex": 1,
+    "Depth": 3,
+    "Guid": "241748ef-a575-42c7-bb86-049a4990d93a",
+    "TextContent": null,
+    "Children": [
+      {
+        "NodeName": "ListItemBlock",
+        "Attributes": {},
+        "ChildIndex": 0,
+        "Depth": 4,
+        "Guid": "29bfcaaa-cecf-421f-988e-d73639a26ea0",
+        "TextContent": null,
+        "Children": [
+          {
+            "NodeName": "ParagraphBlock",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 5,
+            "Guid": "fcd8b871-15ed-4db0-a8e3-77511d8f75ad",
+            "TextContent": null,
+            "Children": [
+              {
+                "NodeName": "Text",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Depth": 6,
+                "Guid": "754cd07c-ed54-4cbd-8bdc-b6fcf6946558",
+                "TextContent": "First level unordered item",
+                "Children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "NodeName": "ListItemBlock",
+        "Attributes": {},
+        "ChildIndex": 1,
+        "Depth": 4,
+        "Guid": "eaae6ab8-421b-4174-8172-22c3d83b6f27",
+        "TextContent": null,
+        "Children": [
+          {
+            "NodeName": "ParagraphBlock",
+            "Attributes": {},
+            "ChildIndex": 0,
+            "Depth": 5,
+            "Guid": "e4d786f7-a9fa-4bd8-acfe-f18952ba2cfe",
+            "TextContent": null,
+            "Children": [
+              {
+                "NodeName": "Text",
+                "Attributes": {},
+                "ChildIndex": 0,
+                "Depth": 6,
+                "Guid": "bdfc05bb-02db-4403-80f0-6693700f0114",
+                "TextContent": "Another first level unordered item",
+                "Children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
 export const mockListData: AstNode[] = [
     {
         "NodeName": "ListItemBlock",

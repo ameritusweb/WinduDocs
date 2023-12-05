@@ -60,7 +60,7 @@ console.log('This is line 2!');
 init(contentEditableRef.current);
 
     }
-  }, []);
+  }, [init]);
 
   const onInput = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!contentEditableRef.current)

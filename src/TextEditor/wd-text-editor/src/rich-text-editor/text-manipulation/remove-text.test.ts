@@ -1,5 +1,5 @@
 import { removeText } from '.';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
+import { cleanup } from '../../utils/test-utils'
 import { createNewAstNode } from '../node-operations';
 
 afterEach(() => {
@@ -10,13 +10,10 @@ afterEach(() => {
     it('removes the specified text range', () => {
         
         const container = document.createTextNode("Hello World");
-        
-        
+            
         const child = createNewAstNode('Text', 0, 0, 'Hello World');
     
-        
         removeText(container, child, 6, 11);
-    
         
         expect(child.TextContent).toBe("Hello ");
       });
@@ -24,13 +21,10 @@ afterEach(() => {
       it('removes the specified text range from the beginning', () => {
         
         const container = document.createTextNode("Hello World");
-        
-        
+            
         const child = createNewAstNode('Text', 0, 0, 'Hello World');
     
-        
         removeText(container, child, 0, 6);
-    
         
         expect(child.TextContent).toBe("World");
       });

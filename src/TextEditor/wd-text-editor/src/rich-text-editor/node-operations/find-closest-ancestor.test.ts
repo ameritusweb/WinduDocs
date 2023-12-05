@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { createNewAstNode, deepCopyAstNode, findClosestAncestor } from '.';
+import { cleanup } from '../../utils/test-utils'
+import { findClosestAncestor } from '.';
 
 afterEach(() => {
     cleanup();

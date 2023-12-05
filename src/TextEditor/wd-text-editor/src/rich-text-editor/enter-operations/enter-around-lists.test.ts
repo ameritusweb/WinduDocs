@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { enterAroundLists, enterAroundNormalText, enterAroundQuoteBlocks, enterAroundStrongOrEmphasisText } from ".";
+import { enterAroundLists } from ".";
 import { mockCustomElement, toMockAst, toMockAstArray } from "../../utils/test-utils";
 import { IHistoryManagerRecorder } from "../../components/wysiwyg/interface";
 

@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
-import { act, cleanup, render, screen, userEvent } from '../../utils/test-utils'
-import { createNewAstNode, indentListItem, isNodeEmpty } from '.';
+import { cleanup } from '../../utils/test-utils'
+import { createNewAstNode, indentListItem } from '.';
 import { AstNode } from '../../components/wysiwyg/interface';
 import { mockListData } from '../../__mocks__/editor-mocks';
 
