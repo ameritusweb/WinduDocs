@@ -172,13 +172,8 @@ export interface OperationPayloads {
 type EventListener = (payload: any) => void;
 
 export interface IEventEmitter {
-    
     subscribe(guid: string, event: string, listener: EventListener): string;
-
-    
     unsubscribe(guid: string): void;
-
-    
     emit(event: string, guid: string, payload: object): void;
 }
 
