@@ -160,7 +160,7 @@ export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstN
 
   export const safeMatch = <T extends object>(keys: Array<keyof T>): ((obj1: Simplifiable<TestData>, obj2: Simplifiable<TestData>) => boolean) => {
   return (obj1, obj2) => {
-      // Recursive function to compare objects including their Children
+      
       function compareObjects(o1: Simplifiable<TestData>, o2: Simplifiable<TestData>): boolean {
           for (let key of keys) {
               if (typeof key === 'string') {
@@ -173,19 +173,19 @@ export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstN
             }
           }
 
-          // Special handling for Children property
+          
           const hasChildren1 = 'Children' in o1 && Array.isArray(o1.Children);
           const hasChildren2 = 'Children' in o2 && Array.isArray(o2.Children);
 
           if (hasChildren1 || hasChildren2) {
               if (!hasChildren1 || !hasChildren2) {
                   console.warn(`One has Children and the other does not.`);
-                  return false; // One object has Children, the other doesn't
+                  return false; 
               }
               if (Array.isArray(o1.Children) && Array.isArray(o2.Children)) {
                 if (o1.Children.length !== o2.Children.length) {
                     console.warn(`Children arrays are of different lengths.`);
-                    return false; // Children arrays are of different lengths
+                    return false; 
                 }
                 for (let i = 0; i < o1.Children.length; i++) {
                     if (!compareObjects(o1.Children[i], o2.Children[i])) {
@@ -204,7 +204,7 @@ export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstN
 
 export const safeSimplify = <T extends object>(keys: Array<keyof T>): ((obj: Partial<T>) => Simplifiable<Partial<T>>) => {
   return (obj) => {
-      // Recursive function to simplify the object
+      
       function simplifyObject(o: Partial<T>): Simplifiable<Partial<T>> {
           let simplified: Simplifiable<Partial<T>> = {};
 
@@ -213,15 +213,15 @@ export const safeSimplify = <T extends object>(keys: Array<keyof T>): ((obj: Par
             console.log('not defined');
           }
 
-          // Include specified keys
+          
           for (let key of keys) {
               if (key in o) {
-                  // Using type assertion
+                  
                   simplified[key] = o[key] as any;
               }
           }
 
-          // Special handling for Children property
+          
           if ('Children' in o && Array.isArray(o.Children)) {
               const val = o.Children.map(child => simplifyObject(child as any));
               if (val.length > 0)
@@ -238,7 +238,7 @@ export const safeSimplify = <T extends object>(keys: Array<keyof T>): ((obj: Par
 }
 
 export const createSimplifiedObject = <T extends object>(obj: { [key: string]: any }, keys: Array<keyof T>): { [innerKey: string]: Simplifiable<Partial<T>> | Simplifiable<Partial<T>>[] } => {
-  // Reusing the simplifyObject function from safeSimplify
+  
   const simplify = safeSimplify(keys);
   
   let output: { [innerKey: string]: Simplifiable<Partial<T>> | Simplifiable<Partial<T>>[] } = {};
@@ -249,7 +249,7 @@ export const createSimplifiedObject = <T extends object>(obj: { [key: string]: a
 
   for (const key in obj) {
       if (Array.isArray(obj[key])) {
-          // If the value is an array, simplify each element of the array
+          
           const val = (obj[key] as Array<Partial<T>>).map(element => simplify(element));
           if (val.length > 0)
           {
@@ -258,7 +258,7 @@ export const createSimplifiedObject = <T extends object>(obj: { [key: string]: a
       } else if (isPrimitive(obj[key])) {
         output[key] = obj[key];
       } else {
-          // If the value is an object, simplify the object
+          
           output[key] = simplify(obj[key] as Partial<T>);
       }
   }

@@ -43,7 +43,7 @@ describe('useRichTextEditor', () => {
 
         selectText('cc4156fc-0d7d-46de-91f9-5206b3c1c912', 3, 3);
     
-        // Mock input data
+        
         const mockChildren = toMockAstArray([
           {
             "NodeName": "Strong",
@@ -125,13 +125,13 @@ describe('useRichTextEditor', () => {
     
         const res = result.current.gatherUpdateData(mockChildren, mockHigherLevelChildren);
     
-        // Assert the returned data structure
+        
         expect(res).not.toBeNull();
         expect(res!.container.nodeName).toBe('#text');
         expect(res!.endContainer.nodeName).toBe('#text');
         expect(res!.startOffset).toBe(3);
         expect(res!.endOffset).toBe(3);
-        // console.log(JSON.stringify(createSimplifiedObject(res!.updateData, ['id', 'Guid', 'TextContent', 'NodeName', 'nodeName']), null, 2));
+        
         expect(safeMatch(['id', 'Guid', 'TextContent', 'NodeName', 'nodeName'])(res!.updateData as unknown as TestData, 
           {
             "parent": {
@@ -303,7 +303,7 @@ describe('useRichTextEditor', () => {
 
         selectTextRange('c069fb1b-83fc-4bd9-b1fb-f385f4150da1', 'c069fb1b-83fc-4bd9-b1fb-f385f4150da1', 0, 2, 0, 3);
     
-        // Mock input data
+        
         const mockChildren = toMockAstArray([
           {
             "NodeName": "Strong",
@@ -385,13 +385,13 @@ describe('useRichTextEditor', () => {
     
         const res = result.current.gatherUpdateData(mockChildren, mockHigherLevelChildren);
     
-        // Assert the returned data structure
+        
         expect(res).not.toBeNull();
         expect(res!.container.nodeName).toBe('#text');
         expect(res!.endContainer.nodeName).toBe('#text');
         expect(res!.startOffset).toBe(0);
         expect(res!.endOffset).toBe(3);
-        // console.log(JSON.stringify(createSimplifiedObject(res!.updateData, ['id', 'Guid', 'TextContent', 'NodeName', 'nodeName']), null, 2));
+        
         expect(safeMatch(['id', 'Guid', 'TextContent', 'NodeName', 'nodeName'])(res!.updateData as unknown as TestData, 
           {
             "parent": {
