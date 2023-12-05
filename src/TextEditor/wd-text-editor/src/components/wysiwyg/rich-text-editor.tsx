@@ -267,9 +267,9 @@ useEffect(() => {
                 {
                     selection.removeAllRanges();
                     selection.addRange(range);
+                    textNode.parentElement!.focus();
                 }
             }
-            textNode.parentElement!.focus();
         }
     
         function shouldSetFocus(selection: Selection) {

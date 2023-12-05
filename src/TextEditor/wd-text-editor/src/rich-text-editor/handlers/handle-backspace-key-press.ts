@@ -28,7 +28,14 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                     {
                         const start = isStartNode ? startOffset : 0;
                         const end = isEndNode ? endOffset : (node.textContent || '').length;
-                        removeText(node, child, start, end);
+                        if (start === 0 && end === (node.textContent || '').length)
+                        {
+                            children.splice(index, 1); 
+                        } 
+                        else 
+                        {
+                            removeText(node, child, start, end);
+                        }
                     }
                 }
             }
