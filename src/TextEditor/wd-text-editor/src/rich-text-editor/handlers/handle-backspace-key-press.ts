@@ -1,17 +1,20 @@
-import { AstNode, AstUpdate, IHistoryManagerRecorder, IdableNode, UpdateData } from "../../components/wysiwyg/interface";
+import { AstNode, AstUpdate, IHistoryBuilder, IHistoryManagerRecorder, IdableNode, UpdateData } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
 import { createNewAstNode, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
 import { removeText } from "../text-manipulation";
 import { trimSpecial } from "../undo-redo-ot";
+import HistoryBuilder from "../undo-redo-ot/history/history-builder";
 
 
 const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, container: Node, endContainer: Node, children: AstNode[], updateData: UpdateData, commonAncestorContainer: IdableNode, startOffset: number, endOffset: number): AstUpdate | null => {
     const commonAncestor = commonAncestorContainer;
     const higherLevelChildren = updateData.higherLevelChildren;
     if (commonAncestor.nodeName !== '#text') {
+        const { child, astParent, rootChildId } = updateData;
         const ancestorChildNodes = processArray(Array.from(commonAncestor.childNodes) as (Node | Text)[], (i) => i === container, (j) => j === endContainer);
         if (ancestorChildNodes.length > 0) {
             const reversed = reverse(ancestorChildNodes);
+            const historyBuilder: IHistoryBuilder = new HistoryBuilder();
             for (const node of reversed)
             {
                 const parent = node.parentElement;
@@ -23,6 +26,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                     if (!isStartNode && !isEndNode)
                     {
                         children.splice(index, 1);
+                        historyBuilder.
                     }
                     else
                     {

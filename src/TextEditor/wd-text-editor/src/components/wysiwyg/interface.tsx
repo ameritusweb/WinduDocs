@@ -232,11 +232,19 @@ export interface AstContext {
   types: string[];
 }
 
+export interface IHistoryUpdate {
+  oldText: string;
+  startOffset: number;
+  parentNode: AstNode;
+  rootChildId: string;
+}
+
 export interface IHistoryCommand {
-  type: 'insertBefore' | 'insertAfter' | 'removeBefore' | 'removeAfter' | 'replace';
+  type: 'insertBefore' | 'insertAfter' | 'removeBefore' | 'removeAfter' | 'replace' | 'update';
   siblingId: string | null;
   oldNode: AstNode | null;
   newNode: AstNode;
+  update: IHistoryUpdate | null;
 }
 
 export interface CustomNode {
@@ -254,5 +262,6 @@ export interface IHistoryBuilder {
   addRemoveBeforeCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
   addRemoveAfterCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
   addReplaceCommand(oldNode: AstNode, newNode: AstNode): void;
+  addUpdateCommand(oldText: string, startOffset: number, parentNode: AstNode, textNode: AstNode, rootChildId: string): void;
   applyTo(historyManager: IHistoryManagerRecorder): void;
 }

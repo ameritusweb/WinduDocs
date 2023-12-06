@@ -27,23 +27,27 @@ class HistoryBuilder implements IHistoryBuilder {
 
     addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
 
-        this.commands.push({ type: 'insertBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode });
+        this.commands.push({ type: 'insertBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
     }
 
     addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode) {
-        this.commands.push({ type: 'insertAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode });
+        this.commands.push({ type: 'insertAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
     }
 
     addRemoveBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
-        this.commands.push({ type: 'removeBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode });
+        this.commands.push({ type: 'removeBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
     }
 
     addRemoveAfterCommand(siblingWithId: AstNode, newNode: AstNode) {
-        this.commands.push({ type: 'removeAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode });
+        this.commands.push({ type: 'removeAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
     }
 
     addReplaceCommand(oldNode: AstNode, newNode: AstNode) {
-        this.commands.push({ type: 'replace', siblingId: null, oldNode, newNode });
+        this.commands.push({ type: 'replace', siblingId: null, oldNode, newNode, update: null });
+    }
+
+    addUpdateCommand(oldText: string, startOffset: number, parentNode: AstNode, textNode: AstNode, rootChildId: string) {
+        this.commands.push({ type: 'update', siblingId: null, oldNode: null, newNode: textNode, update: { oldText, startOffset, parentNode, rootChildId } });
     }
 
     applyTo(historyManager: IHistoryManagerRecorder) {
@@ -91,6 +95,16 @@ class HistoryBuilder implements IHistoryBuilder {
                             ind > 0);
                     }
                         break;
+                case 'update':
+                    if (c.update) {
+                        historyManager.recordChildTextUpdate(
+                            c.update.oldText,
+                            c.update.startOffset,
+                            c.update.parentNode,
+                            c.newNode,
+                            c.update.rootChildId,
+                            ind > 0);
+                    }
             }
         })
     }
