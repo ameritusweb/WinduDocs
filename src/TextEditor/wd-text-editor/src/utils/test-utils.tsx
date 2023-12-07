@@ -60,9 +60,6 @@ export const selectText = (parentId: string, startOffset: number, endOffset: num
     
     const range = document.createRange();
 
-    if (!textNode.textContent)
-      throw new Error('No text content found for text node.');
-
     if ((textNode.textContent?.length || 0) < (endOffset - 1))
       throw new Error(`Range out of bounds for text node of length: ${textNode.textContent?.length}`);
     
@@ -101,7 +98,6 @@ export const selectTextRange = (startParentId: string, endParentId: string, star
       throw new Error('No text node found in the start parent element');
   }
 
-  console.log(startParent.outerHTML);
   if (!endNode || endNode.nodeType !== Node.TEXT_NODE) {
       throw new Error('No text node found in the end parent element');
   }
@@ -156,6 +152,20 @@ export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstN
     ) || [],
   };
 };
+
+export const getType = (value: any): string => {
+  if (Array.isArray(value)) {
+      return 'array';
+  } else if (value === null) {
+      return 'null';
+  } else if (value === undefined) {
+      return 'undefined';
+  } else if (typeof value === 'object') {
+      return 'object';
+  } else {
+      return typeof value;
+  }
+}
 
 export const safeMatch = <T extends object>(keys: Array<keyof T>) => {
   const compareValues = (v1: any, v2: any, keys: Array<keyof T>): boolean => {
@@ -213,20 +223,6 @@ export const safeMatch = <T extends object>(keys: Array<keyof T>) => {
   const isSimplifiable = (value: any): value is Simplifiable<Partial<T>> => {
       return value && typeof value === 'object' && !Array.isArray(value);
   };
-
-  const getType = (value: any): string => {
-    if (Array.isArray(value)) {
-        return 'array';
-    } else if (value === null) {
-        return 'null';
-    } else if (value === undefined) {
-        return 'undefined';
-    } else if (typeof value === 'object') {
-        return 'object';
-    } else {
-        return typeof value;
-    }
-}
 
   return (obj1: TestData, obj2: TestData) => {
       for (const key in obj1) {

@@ -1,7 +1,7 @@
 import { Mock, vi } from "vitest";
 import { mockAstContext, mockAstData, mockAstData2 } from "../__mocks__/editor-mocks";
 import { AstUpdate, TestData } from "../components/wysiwyg/interface";
-import { cleanup, createSimplifiedObject, render, renderHook, safeMatch, selectText, selectTextRange, toMockAstArray } from "../utils/test-utils";
+import { cleanup, createSimplifiedObject, getType, render, renderHook, safeMatch, selectText, selectTextRange, toMockAstArray } from "../utils/test-utils";
 import EditorData, { EditorDataType, EventAction } from "./editor-data";
 import { useRichTextEditor } from "./use-rich-text-editor";
 import RichTextEditor from "../components/wysiwyg/rich-text-editor";
@@ -966,6 +966,7 @@ describe('useRichTextEditor', () => {
     
         
         expect(res).not.toBeNull();
+        expect(getType(res)).toBe('object');
         expect(res!.container.nodeName).toBe('#text');
         expect(res!.endContainer.nodeName).toBe('#text');
         expect(res!.startOffset).toBe(14);
