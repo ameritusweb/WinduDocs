@@ -20,13 +20,12 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                 const parent = node.parentElement;
                 if (parent) {
                     const index = Array.from(parent.childNodes).findIndex((c) => c === node);
-                    const child = children[index];
+                    const childNode = children[index];
                     const isStartNode = node === container;
                     const isEndNode = node === endContainer;
                     if (!isStartNode && !isEndNode)
                     {
                         children.splice(index, 1);
-                        historyBuilder.
                     }
                     else
                     {
@@ -38,7 +37,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                         } 
                         else 
                         {
-                            removeText(node, child, start, end);
+                            removeText(node, childNode, start, end);
                         }
                     }
                 }

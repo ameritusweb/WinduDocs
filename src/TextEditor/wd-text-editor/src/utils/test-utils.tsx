@@ -51,7 +51,7 @@ export const selectText = (parentId: string, startOffset: number, endOffset: num
   const parent = document.getElementById(parentId);
   if (parent) {
 
-    
+    console.log(parent.outerHTML);
     const textNode = parent.childNodes[0];
     if (!textNode || textNode.nodeType !== Node.TEXT_NODE) {
       throw new Error('No text node found for the specified element');
@@ -65,7 +65,6 @@ export const selectText = (parentId: string, startOffset: number, endOffset: num
 
     if ((textNode.textContent?.length || 0) < (endOffset - 1))
       throw new Error(`Range out of bounds for text node of length: ${textNode.textContent?.length}`);
-
     
     range.setStart(textNode, startOffset);
     range.setEnd(textNode, endOffset);
@@ -158,49 +157,92 @@ export const toMockAst = (mockNode: PartialAst, depth = 0, childIndex = 0): AstN
   };
 };
 
-  export const safeMatch = <T extends object>(keys: Array<keyof T>): ((obj1: Simplifiable<TestData>, obj2: Simplifiable<TestData>) => boolean) => {
-  return (obj1, obj2) => {
-      
-      function compareObjects(o1: Simplifiable<TestData>, o2: Simplifiable<TestData>): boolean {
-          for (const key of keys) {
-              if (typeof key === 'string') {
-                if ((key in o1) && (key in o2)) {        
-                  if (o1[key] !== o2[key]) {
-                    console.warn(`Values for ${key}, ${o1[key]} and ${o2[key]} do not match.`);
-                    return false;
-                  }
-              }
-            }
-          }
-
-          
-          const hasChildren1 = 'Children' in o1 && Array.isArray(o1.Children);
-          const hasChildren2 = 'Children' in o2 && Array.isArray(o2.Children);
-
-          if (hasChildren1 || hasChildren2) {
-              if (!hasChildren1 || !hasChildren2) {
-                  console.warn(`One has Children and the other does not.`);
-                  return false; 
-              }
-              if (Array.isArray(o1.Children) && Array.isArray(o2.Children)) {
-                if (o1.Children.length !== o2.Children.length) {
-                    console.warn(`Children arrays are of different lengths.`);
-                    return false; 
-                }
-                for (let i = 0; i < o1.Children.length; i++) {
-                    if (!compareObjects(o1.Children[i], o2.Children[i])) {
-                        return false;
-                    }
-                }
-            }
-          }
-
-          return true;
+export const safeMatch = <T extends object>(keys: Array<keyof T>) => {
+  const compareValues = (v1: any, v2: any, keys: Array<keyof T>): boolean => {
+    if (Array.isArray(v1) && Array.isArray(v2)) {
+      // Check if arrays are of the same length
+      if (v1.length !== v2.length) {
+          return false;
       }
-
-      return compareObjects(obj1, obj2);
+      // Compare each element in the arrays
+      for (let i = 0; i < v1.length; i++) {
+          if (!compareValues(v1[i], v2[i], keys)) {
+              return false;
+          }
+      }
+      return true;
+    } else if (isSimplifiable(v1) && isSimplifiable(v2)) {
+        // Compare Simplifiable objects
+        return compareObjects(v1, v2, keys);
+    } else {
+        // Direct comparison for other types
+        return v1 === v2;
+    }
   };
+
+  const compareObjects = (o1: Simplifiable<T>, o2: Simplifiable<T>, keys: Array<keyof T>): boolean => {
+      for (const key of keys) {
+          if (key in o1 && key in o2) {
+              if (!compareValues(o1[key], o2[key], keys)) {
+                  console.warn(`Values for ${String(key)}, ${o1[key]} and ${o2[key]} do not match.`);
+                  return false;
+              }
+          }
+      }
+      return compareChildren(o1, o2);
+  };
+
+  const compareChildren = (o1: Simplifiable<T>, o2: Simplifiable<T>): boolean => {
+    const hasChildren1 = Array.isArray(o1.Children);
+    const hasChildren2 = Array.isArray(o2.Children);
+
+    if (hasChildren1 && hasChildren2) {
+        if (o1.Children!.length !== o2.Children!.length) {
+            console.warn(`Children arrays are of different lengths.`);
+            return false; 
+        }
+        for (let i = 0; i < o1.Children!.length; i++) {
+            if (!compareObjects(o1.Children![i], o2.Children![i], keys)) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
+
+  const isSimplifiable = (value: any): value is Simplifiable<Partial<T>> => {
+      return value && typeof value === 'object' && !Array.isArray(value);
+  };
+
+  const getType = (value: any): string => {
+    if (Array.isArray(value)) {
+        return 'array';
+    } else if (value === null) {
+        return 'null';
+    } else if (value === undefined) {
+        return 'undefined';
+    } else if (typeof value === 'object') {
+        return 'object';
+    } else {
+        return typeof value;
+    }
 }
+
+  return (obj1: TestData, obj2: TestData) => {
+      for (const key in obj1) {
+          if (obj1.hasOwnProperty(key) && obj2.hasOwnProperty(key)) {
+              if (!compareValues(obj1[key], obj2[key], keys)) {
+                  console.warn(`Top level values for ${key}, ${obj1[key]} and ${obj2[key]} do not match.`);
+                  return false;
+              }
+          } else {
+              console.warn(`One of the top level objects does not have the key ${key} of type ${obj1[key] ? getType(obj1[key]) : getType(obj2[key])}.`);
+              return false;
+          }
+      }
+      return true;
+  };
+};
 
 export const safeSimplify = <T extends object>(keys: Array<keyof T>): ((obj: Partial<T>) => Simplifiable<Partial<T>>) => {
   return (obj) => {
@@ -254,6 +296,8 @@ export const createSimplifiedObject = <T extends object>(obj: { [key: string]: a
           if (val.length > 0)
           {
             output[key] = val;
+          } else {
+            output[key] = [];
           }
       } else if (isPrimitive(obj[key])) {
         output[key] = obj[key];

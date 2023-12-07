@@ -451,7 +451,6 @@ describe('handleBackspaceKeyPress', () => {
             "textContent": "console.log('Hello, world!');"
           });
           const astUpdate = handleBackspaceKeyPress(mockHistoryManager, mockContainer, mockEndContainer, [mockUpdateData.child], mockUpdateData, commonAncestorContainer, 29, 29);
-          console.log(JSON.stringify(astUpdate, null, 2));
           expect(astUpdate).toStrictEqual({
             "type": "higherLevelRemove",
             "nodes": [

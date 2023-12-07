@@ -533,7 +533,6 @@ describe('insertStrongTextIntoEmphasisTextOrViceVersa', () => {
     expect(result).not.toBeNull();
     expect(result!.type).toBe('higherLevelSplitOrMove');
     expect(result!.nodes.length).toBe(3);
-    console.log(JSON.stringify(result!, null, 2));
     expect(result!).toStrictEqual({
       "type": "higherLevelSplitOrMove",
       "nodes": [

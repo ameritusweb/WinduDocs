@@ -17,6 +17,13 @@ class HistoryBuilder implements IHistoryBuilder {
         return this.commands;
     }
 
+    addInitialCursorPositionAuto(higherLevelChildren: AstNode[]) {
+        const selection = window.getSelection();
+        if (selection) {
+            
+        }
+    }
+
     addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
         this.initialCursorPosition = { targetParentId:  toId(parentWithId)!, nodeIndex: indexToTextNode, offset };
     }

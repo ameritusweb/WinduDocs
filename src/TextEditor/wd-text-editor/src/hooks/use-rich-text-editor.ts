@@ -99,6 +99,7 @@ export const useRichTextEditor = () => {
             const rootChildId = findClosestAncestor(parent, 'richTextEditor')?.id;
             if (!rootChildId)
             {
+                console.log(parent.outerHTML);
                 console.warn('rootChildId is null');
                 return null;
             }
@@ -171,9 +172,7 @@ export const useRichTextEditor = () => {
     }
 
     const restoreCursorPosition = (mutationsList: MutationRecord[]) => {
-
         historyManager.restoreCursorPosition();
-
     }
 
     return {

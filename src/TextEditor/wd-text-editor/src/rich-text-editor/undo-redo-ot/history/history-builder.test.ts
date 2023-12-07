@@ -45,7 +45,8 @@ describe('HistoryBuilder', () => {
         type: 'insertBefore',
         siblingId: 'sibling-id',
         oldNode: null,
-        newNode
+        newNode,
+        update: null
       });
     });
 
@@ -68,7 +69,8 @@ describe('HistoryBuilder', () => {
           type: 'removeBefore',
           siblingId: 'sibling-id',
           oldNode: null,
-          newNode
+          newNode,
+          update: null
         });
       });
 
@@ -91,7 +93,8 @@ describe('HistoryBuilder', () => {
           type: 'insertAfter',
           siblingId: 'sibling-id',
           oldNode: null,
-          newNode
+          newNode,
+          update: null
         });
       });
 
@@ -114,7 +117,8 @@ describe('HistoryBuilder', () => {
           type: 'removeAfter',
           siblingId: 'sibling-id',
           oldNode: null,
-          newNode
+          newNode,
+          update: null
         });
       });
 
@@ -137,7 +141,8 @@ describe('HistoryBuilder', () => {
           type: 'replace',
           siblingId: null,
           oldNode,
-          newNode
+          newNode,
+          update: null
         });
       });
   });

@@ -24,8 +24,6 @@ const updateHigherLevelNodes = (higherLevelChildIndex: number, higherLevelChildr
 
     const oldIndex = insertionIndex === 0 ? 0 : insertionIndex - 1;
     const oldNode = deepCopyAstNode(higherLevelChild.Children[oldIndex]);
-    console.log(higherLevelChild.Children);
-    console.log(insertionIndex);
     higherLevelChild.Children.splice(insertionIndex, 0, ...newNodes);
     const historyBuilder = new HistoryBuilder();
     historyBuilder.addInitialCursorPosition(oldNode, 0, startOffset);
