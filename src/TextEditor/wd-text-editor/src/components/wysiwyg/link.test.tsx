@@ -26,4 +26,24 @@ describe('Link', async () => {
 
     expect(linkElement?.getAttribute('href')).toBe(testUrl)
   })
+
+  it('should render the Link with a blank version', () => {
+
+    const testUrl = 'https://test.com';
+
+    const { container } = render(
+      <Link 
+        id={'B123456-123456-123456-123456'}
+        pathIndices={[]}      
+        version={''}
+        context={(() => { const c = {  } as AstContext; c.types = []; return c; }).call(this)}
+        url={testUrl}
+        children={[]}
+      />,
+    )
+    const linkElement = container.querySelector('#B123456-123456-123456-123456');
+    expect(linkElement).not.toBe(null);
+
+    expect(linkElement?.getAttribute('href')).toBe(testUrl)
+  })
 })
