@@ -1,5 +1,5 @@
 import { AstContext, AstNode, IHistoryManager } from "../components/wysiwyg/interface";
-import { createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, splitTreeAndExtract, splitTreeAndExtractSpan } from "../rich-text-editor/node-operations";
+import { createNewAstNode, deepCopyAstNode, findNodeByGuid, indentListItem, outdentListItem, splitTreeAndExtract, splitTreeAndExtractSpan } from "../rich-text-editor/node-operations";
 import { HistoryManager } from "../rich-text-editor/undo-redo-ot";
 import HistoryBuilder from "../rich-text-editor/undo-redo-ot/history/history-builder";
 import EditorData, { EditorDataType } from "./editor-data";
@@ -189,11 +189,32 @@ export const useParagraph = () => {
         }
     }
 
+    const handleOutdent = (higherLevelChildren: AstNode[], higherLevelChild: AstNode, pathIndices: number[]) => {
+        const selection = window.getSelection();
+        if (selection)
+        {
+            const range = selection.getRangeAt(0);
+            const container = range.startContainer;
+            const parent = container.parentElement;
+            if (parent) {
+                    const [foundNode, immediateChild] = findNodeByGuid(higherLevelChildren, parent.id, null);
+                    if (foundNode && immediateChild) {
+                    const index = higherLevelChildren.findIndex(h => h === immediateChild);
+                    const res = outdentListItem(deepCopyAstNode(higherLevelChild), index);
+                    if (res) {
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: pathIndices.slice(0, -1) });
+                    }
+                }
+            }
+        }
+    }
+
     return {
         handleMakeBold,
         handleMakeItalic,
         handleInsertLink,
         handleInsertInline,
-        handleIndent
+        handleIndent,
+        handleOutdent
       };
 }

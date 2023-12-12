@@ -39,7 +39,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const higherLevelCopyPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
     const pathIndicesRef = useRef<number[]>(props.pathIndices);
     const { updateAst } = useRichTextEditor();
-    const { handleMakeBold, handleMakeItalic, handleInsertLink, handleInsertInline, handleIndent } = useParagraph();
+    const { handleMakeBold, handleMakeItalic, handleInsertLink, handleInsertInline, handleIndent, handleOutdent } = useParagraph();
     const paraRef = useRef<T | null>(null);
     const editorData: EditorDataType = EditorData;
 
@@ -81,7 +81,10 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       editorData.events.subscribe(`para_${props.id}`, 'Indent', onIndent);
 
       const onOutdent = () => {
-          
+        const higherLevelAst = higherLevelCopyPropsRef.current?.content || [];
+        const higherLevelChild = higherLevelCopyPropsRef.current?.contentParent;
+        if (higherLevelChild)
+          handleOutdent(higherLevelAst, higherLevelChild, pathIndicesRef.current);
       };
 
       

@@ -1,5 +1,5 @@
 import { AstContext, AstNode, AstUpdate, IHistoryManagerRecorder, UpdateData } from "../../components/wysiwyg/interface";
-import { enterAroundCodeOrAlertBlocks, enterAroundHeadings, enterAroundLists, enterAroundNormalText, enterAroundQuoteBlocks, enterAroundStrongOrEmphasisText } from "../enter-operations";
+import { enterAroundCodeOrAlertBlocks, enterAroundLists, enterAroundNormalText, enterAroundQuoteBlocks, enterAroundStrongOrEmphasisText } from "../enter-operations";
 
 const handleEnterKeyPress = (historyManager: IHistoryManagerRecorder, container: Node, children: AstNode[], updateData: UpdateData, context: AstContext, range: Range, startOffset: number): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
