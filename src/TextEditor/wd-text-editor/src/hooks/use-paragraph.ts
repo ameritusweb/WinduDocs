@@ -182,7 +182,7 @@ export const useParagraph = () => {
                     const index = higherLevelChildren.findIndex(h => h === immediateChild);
                     const res = indentListItem(deepCopyAstNode(higherLevelChild), index);
                     if (res) {
-                        editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices });
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: pathIndices.slice(0, -1) });
                     }
                 }
             }
