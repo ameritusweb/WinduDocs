@@ -1,5 +1,5 @@
 import { AstContext, AstNode, AstUpdate, IHistoryManagerRecorder, UpdateData } from "../../components/wysiwyg/interface";
-import { enterAroundCodeOrAlertBlocks, enterAroundLists, enterAroundNormalText, enterAroundQuoteBlocks, enterAroundStrongOrEmphasisText } from "../enter-operations";
+import { enterAroundCodeOrAlertBlocks, enterAroundHeadings, enterAroundLists, enterAroundNormalText, enterAroundQuoteBlocks, enterAroundStrongOrEmphasisText } from "../enter-operations";
 
 const handleEnterKeyPress = (historyManager: IHistoryManagerRecorder, container: Node, children: AstNode[], updateData: UpdateData, context: AstContext, range: Range, startOffset: number): AstUpdate | null => {
     const commonAncestor = range.commonAncestorContainer;
@@ -21,7 +21,7 @@ const handleEnterKeyPress = (historyManager: IHistoryManagerRecorder, container:
                 if (res)
                     return res;
             }
-            else if (context.types.length === 0 && (parent.nodeName === 'STRONG' || parent.nodeName === 'EM'))
+            else if (context.isHeading || (context.types.length === 0 && (parent.nodeName === 'STRONG' || parent.nodeName === 'EM')))
             {
                 const res = enterAroundStrongOrEmphasisText(updateData, historyManager, container, startOffset);
                 if (res)

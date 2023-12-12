@@ -20,7 +20,7 @@ export const useParagraph = () => {
           if (container === endContainer && range.startOffset !== range.endOffset) {
                 const { parent, child, grandChild, containerIndex } = updateData;
                 if (parent && child && grandChild) {
-                    if (context.types.length === 0 && parent.nodeName === 'P')
+                    if ((context.types.length === 0 || context.isHeading) && parent.nodeName === 'P')
                     {
                         const [leftNode, rightNode, extractedText] = splitTreeAndExtract(grandChild, grandChild, startOffset, endOffset);
                         const newBold = createNewAstNode('Strong', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
@@ -55,7 +55,7 @@ export const useParagraph = () => {
           if (container === endContainer) {
                 const { parent, child, grandChild, containerIndex } = updateData;
                 if (parent && child && grandChild) {
-                    if (context.types.length === 0 && parent.nodeName === 'P')
+                    if ((context.types.length === 0 || context.isHeading) && parent.nodeName === 'P')
                     {
                         const [leftNode, rightNode, extractedText] = splitTreeAndExtract(grandChild, grandChild, startOffset, endOffset);
                         const newItalic = createNewAstNode('Emphasis', 0, 0, null, [createNewAstNode('Text', 0, 0, extractedText)]);
@@ -80,7 +80,7 @@ export const useParagraph = () => {
             } else {
                 const { parent, child, grandChild, astParent, containerIndex, endChild, endGrandChild } = updateData;
                 if (parent && child && grandChild && endChild && endGrandChild) {
-                    if (context.types.length === 0 && parent.nodeName === 'P')
+                    if ((context.types.length === 0 || context.isHeading) && parent.nodeName === 'P')
                     {
                         const index1 = child.Children.findIndex(c => c === grandChild);
                         const index2 = child.Children.findIndex(c => c === endGrandChild);

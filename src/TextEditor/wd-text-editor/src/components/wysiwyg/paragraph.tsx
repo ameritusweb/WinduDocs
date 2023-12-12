@@ -37,6 +37,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
     const [ast, setAst] = useState<AstNode[]>(props.content);
     const [higherLevelAst, setHigherLevelAst] = useState<AstNode[]>(props.higherLevelContent?.content || []);
     const higherLevelCopyPropsRef = useRef<HigherLevelProps | null>(props.higherLevelContent || null);
+    const pathIndicesRef = useRef<number[]>(props.pathIndices);
     const { updateAst } = useRichTextEditor();
     const { handleMakeBold, handleMakeItalic, handleInsertLink, handleInsertInline, handleIndent } = useParagraph();
     const paraRef = useRef<T | null>(null);
@@ -46,14 +47,16 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
 
       higherLevelCopyPropsRef.current = { ...{ ...props.higherLevelContent, content: (props.higherLevelContent?.content || []).map(h => deepCopyAstNode(h)) }, children: props.content.map(c => deepCopyAstNode(c)) } || null;
 
-    }, [props.higherLevelContent]);
+      pathIndicesRef.current = props.pathIndices;
+
+    }, [props.higherLevelContent, props.pathIndices]);
 
     useEffect(() => {
 
       const onInsertLink = (payload: { url: string, text: string }) => {
           const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
           if (higherLevelAstCopy)
-            handleInsertLink(higherLevelAstCopy, payload.text, payload.url, props.pathIndices);
+            handleInsertLink(higherLevelAstCopy, payload.text, payload.url, pathIndicesRef.current);
       };
 
       
@@ -62,7 +65,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       const onInsertInline = () => {
         const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
         if (higherLevelAstCopy)
-          handleInsertInline(higherLevelAstCopy, props.pathIndices);
+          handleInsertInline(higherLevelAstCopy, pathIndicesRef.current);
     };
 
       editorData.events.subscribe(`para_${props.id}`, 'InsertInline', onInsertInline);
@@ -71,7 +74,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         const higherLevelAst = higherLevelCopyPropsRef.current?.content || [];
         const higherLevelChild = higherLevelCopyPropsRef.current?.contentParent;
         if (higherLevelChild)
-          handleIndent(higherLevelAst, higherLevelChild, props.pathIndices);
+          handleIndent(higherLevelAst, higherLevelChild, pathIndicesRef.current);
       };
 
       
@@ -89,7 +92,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         const astCopy = higherLevelCopyPropsRef.current?.children;
         const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
         if (astCopy && higherLevelAstCopy)
-          handleMakeBold(astCopy, higherLevelAstCopy, props.context, props.pathIndices);
+          handleMakeBold(astCopy, higherLevelAstCopy, props.context, pathIndicesRef.current);
 
       };
 
@@ -101,7 +104,7 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
         const astCopy = higherLevelCopyPropsRef.current?.children;
         const higherLevelAstCopy = higherLevelCopyPropsRef.current?.content;
         if (astCopy && higherLevelAstCopy)
-          handleMakeItalic(astCopy, higherLevelAstCopy, props.context, props.pathIndices);
+          handleMakeItalic(astCopy, higherLevelAstCopy, props.context, pathIndicesRef.current);
 
       };
 
