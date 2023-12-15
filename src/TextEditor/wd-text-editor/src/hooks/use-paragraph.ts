@@ -177,9 +177,9 @@ export const useParagraph = () => {
             const container = range.startContainer;
             const parent = container.parentElement;
             if (parent) {
-                    const [foundNode, immediateChild] = findNodeByGuid(higherLevelChildren, parent.id, null);
-                    if (foundNode && immediateChild) {
-                    const index = higherLevelChildren.findIndex(h => h === immediateChild);
+                    const [foundNode, parentNode] = findNodeByGuid(higherLevelChildren, parent.id, null);
+                    if (foundNode && parentNode) {
+                    const index = higherLevelChildren.findIndex(h => h === parentNode);
                     const res = indentListItem(deepCopyAstNode(higherLevelChild), index);
                     if (res) {
                         editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: pathIndices.slice(0, -1) });
@@ -189,7 +189,7 @@ export const useParagraph = () => {
         }
     }
 
-    const handleOutdent = (higherLevelChildren: AstNode[], higherLevelChild: AstNode, pathIndices: number[]) => {
+    const handleOutdent = (higherLevelChildren: AstNode[], higherLevelChild: AstNode, higherLevelParent: AstNode, pathIndices: number[]) => {
         const selection = window.getSelection();
         if (selection)
         {
@@ -197,12 +197,12 @@ export const useParagraph = () => {
             const container = range.startContainer;
             const parent = container.parentElement;
             if (parent) {
-                    const [foundNode, immediateChild] = findNodeByGuid(higherLevelChildren, parent.id, null);
+                    const [foundNode, parentNode, immediateChild] = findNodeByGuid(higherLevelParent.Children, parent.id, null);
                     if (foundNode && immediateChild) {
-                    const index = higherLevelChildren.findIndex(h => h === immediateChild);
-                    const res = outdentListItem(deepCopyAstNode(higherLevelChild), index);
+                    const index = higherLevelParent.Children.findIndex(h => h === immediateChild);
+                    const res = outdentListItem(deepCopyAstNode(higherLevelParent), index);
                     if (res) {
-                        editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: pathIndices.slice(0, -1) });
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: pathIndices.slice(0, -2) });
                     }
                 }
             }

@@ -195,7 +195,8 @@ useEffect(() => {
                                 isTopLevel={true} 
                                 context={ initialContext.current }
                                 pathIndices={pathIndices} 
-                                higherLevelChild={node} 
+                                higherLevelChild={node}
+                                higherLevelParent={node}
                                 children={node.Children} 
                             />
                 } else {
@@ -205,7 +206,8 @@ useEffect(() => {
                                 isTopLevel={true} 
                                 context={ initialContext.current }
                                 pathIndices={pathIndices} 
-                                higherLevelChild={node} 
+                                higherLevelChild={node}
+                                higherLevelParent={node}
                                 children={node.Children} 
                             />
                 }

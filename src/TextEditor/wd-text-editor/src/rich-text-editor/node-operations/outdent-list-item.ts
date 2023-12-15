@@ -9,17 +9,18 @@ const outdentListItem = (ast: AstNode, itemIndex: number): AstNode | null => {
 
   const targetListItem = ast.Children[itemIndex];
 
-  // Remove the targetListItem from its current place
-  ast.Children.splice(itemIndex, 1);
+  const innerListBlock = targetListItem.Children[1];
 
-  // Determine where to place the outdented item
-  const insertIndex = itemIndex + 1;
+  const innerListItem = innerListBlock.Children[innerListBlock.Children.length - 1];
+
+  // Remove the targetListItem from its current place
+  targetListItem.Children.splice(1, 1);
 
   // Insert the outdented item back into the list at the determined position
-  ast.Children.splice(insertIndex, 0, targetListItem);
+  ast.Children.splice(itemIndex + 1, 0, innerListItem);
   
   // Adjust the Depth of the targetListItem to represent it being outdented
-  targetListItem.Depth -= 1;
+  innerListItem.Depth -= 1;
 
   // Return the modified AST
   return ast;

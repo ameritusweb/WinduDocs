@@ -11,9 +11,10 @@ export interface UnorderedListProps {
     pathIndices: number[];
     children: AstNode[];
     higherLevelChild: AstNode;
+    higherLevelParent: AstNode;
 }
 
-const UnorderedList: React.FC<UnorderedListProps> = ({ id, context, isTopLevel, pathIndices, children, higherLevelChild }) => {
+const UnorderedList: React.FC<UnorderedListProps> = ({ id, context, isTopLevel, pathIndices, children, higherLevelChild, higherLevelParent }) => {
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -45,7 +46,8 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ id, context, isTopLevel, 
                     id={child.Guid} 
                     context={{ ...context, isUnorderedList: true, types: [ ...context.types, 'ul' ] }}
                     pathIndices={childPathIndices} 
-                    higherLevelChild={higherLevelChild} 
+                    higherLevelChild={higherLevelChild}
+                    higherLevelParent={higherLevelParent}
                     children={child.Children} 
                     higherLevelChildren={children} 
                     higherLevelIndex={index}
@@ -72,7 +74,8 @@ const UnorderedList: React.FC<UnorderedListProps> = ({ id, context, isTopLevel, 
                     id={child.Guid}
                     context={{ ...context, isUnorderedList: true, types: [ ...context.types, 'ul' ] }}
                     pathIndices={childPathIndices} 
-                    higherLevelChild={higherLevelChild} 
+                    higherLevelChild={higherLevelChild}
+                    higherLevelParent={higherLevelParent} 
                     children={child.Children} 
                     higherLevelIndex={index}
                     higherLevelChildren={children} /> : null

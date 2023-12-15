@@ -83,8 +83,9 @@ const Paragraph = <T extends HTMLElement>(props: ParagraphProps<T>) => {
       const onOutdent = () => {
         const higherLevelAst = higherLevelCopyPropsRef.current?.content || [];
         const higherLevelChild = higherLevelCopyPropsRef.current?.contentParent;
-        if (higherLevelChild)
-          handleOutdent(higherLevelAst, higherLevelChild, pathIndicesRef.current);
+        const higherLevelParent = higherLevelCopyPropsRef.current?.higherLevelParent;
+        if (higherLevelChild && higherLevelParent)
+          handleOutdent(higherLevelAst, higherLevelChild, higherLevelParent, pathIndicesRef.current);
       };
 
       

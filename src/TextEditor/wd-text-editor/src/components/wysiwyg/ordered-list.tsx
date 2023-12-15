@@ -10,10 +10,11 @@ interface OrderedListProps {
     context: AstContext;
     pathIndices: number[];
     higherLevelChild: AstNode;
+    higherLevelParent: AstNode;
     children: AstNode[];
 }
 
-const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, pathIndices, higherLevelChild, children }) => {
+const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, pathIndices, higherLevelChild, higherLevelParent, children }) => {
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -50,6 +51,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, path
                                 higherLevelChildren={children} 
                                 higherLevelIndex={index}
                                 higherLevelChild={higherLevelChild}
+                                higherLevelParent={higherLevelParent}
                             />
                         ) : null;
                     })}
@@ -75,6 +77,7 @@ const OrderedList: React.FC<OrderedListProps> = ({ id, context, isTopLevel, path
                             children={child.Children} 
                             higherLevelChildren={children} 
                             higherLevelChild={higherLevelChild}
+                            higherLevelParent={higherLevelParent}
                             higherLevelIndex={index}
                         />
                     ) : null;

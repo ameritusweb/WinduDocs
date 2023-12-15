@@ -26,6 +26,7 @@ export interface AstNode extends AstNodeBase {
     content: AstNode[];
     children?: AstNode[];
     contentParent?: AstNode;
+    higherLevelParent?: AstNode;
     higherLevelIndex?: number;
     updater?: (nodes: AstNode[], updateProcessed: boolean) => void;
   }
