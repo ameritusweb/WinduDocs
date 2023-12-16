@@ -202,7 +202,7 @@ export const useParagraph = () => {
                     const index = higherLevelParent.Children.findIndex(h => h === immediateChild);
                     const res = outdentListItem(deepCopyAstNode(higherLevelParent), index);
                     if (res) {
-                        editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: pathIndices.slice(0, -2) });
+                        editorData.emitEvent('update', 'richTextEditor', { type: 'higherLevelIndent', nodes: res.Children, pathIndices: pathIndices.slice(0, -3) });
                     }
                 }
             }
