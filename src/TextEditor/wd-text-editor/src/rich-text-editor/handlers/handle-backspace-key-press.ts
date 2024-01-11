@@ -24,9 +24,11 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                     if (splitNode) {
                         const parentStart = findNodeByGuid([ancestorNode[0]], container.parentElement?.id || '', null);
                         const parentEnd = findNodeByGuid([ancestorNode[0]], endContainer.parentElement?.id || '', null);
-                        if (parentStart && parentEnd) {
-                            historyBuilder.addInitialCursorPosition(endNode[0], 0, endOffset)
-                                .addFinalCursorPosition(startNode[0], 0, startOffset)
+                        if (parentStart[0] && parentEnd[0]) {
+                            const startIndex = parentStart[0].Children.indexOf(startNode[0]);
+                            const endIndex = parentEnd[0].Children.indexOf(endNode[0]);
+                            historyBuilder.addInitialCursorPosition(parentEnd[0], endIndex, endOffset)
+                                .addFinalCursorPosition(parentStart[0], startIndex, startOffset)
                                 .addReplaceCommand(ancestorNode[0], splitNode[0])
                                 .applyTo(historyManager);
                         }
