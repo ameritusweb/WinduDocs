@@ -256,13 +256,13 @@ export interface CustomNode {
 };
 
 export interface IHistoryBuilder {
-  addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
-  addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): void;
-  addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode): void;
-  addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode): void;
-  addRemoveBeforeCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
-  addRemoveAfterCommand(siblingWithId: AstNode, oldNode: AstNode | null): void;
-  addReplaceCommand(oldNode: AstNode, newNode: AstNode): void;
-  addUpdateCommand(oldText: string, startOffset: number, parentNode: AstNode, textNode: AstNode, rootChildId: string): void;
+  addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): IHistoryBuilder;
+  addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number): IHistoryBuilder;
+  addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode): IHistoryBuilder;
+  addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode): IHistoryBuilder;
+  addRemoveBeforeCommand(siblingWithId: AstNode, oldNode: AstNode | null): IHistoryBuilder;
+  addRemoveAfterCommand(siblingWithId: AstNode, oldNode: AstNode | null): IHistoryBuilder;
+  addReplaceCommand(oldNode: AstNode, newNode: AstNode): IHistoryBuilder;
+  addUpdateCommand(oldText: string, startOffset: number, parentNode: AstNode, textNode: AstNode, rootChildId: string): IHistoryBuilder;
   applyTo(historyManager: IHistoryManagerRecorder): void;
 }

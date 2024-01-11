@@ -4,10 +4,12 @@ export { default as createNewAstNodeFromFormat } from './create-new-ast-node-fro
 export { default as splitNode } from './split-node';
 export { default as splitTreeAndExtract } from './split-tree-and-extract';
 export { default as splitTreeAndExtractSpan } from './split-tree-and-extract-span';
+export { default as splitTreeAndRemove } from './split-tree-and-remove';
 export { default as splitTreeDeux } from './split-tree-deux';
 export { default as replaceKeys } from './replace-keys';
 export { default as nestedSplitNode } from './nested-split-node';
 export { default as findNodeByGuid } from './find-node-by-guid';
+export { default as findTextNodeByNode } from './find-text-node-by-node';
 export { default as findHigherlevelIndex } from './find-higher-level-index';
 export { default as deepCopyAstNode } from './deep-copy-ast-node';
 export { default as findClosestAncestor } from './find-closest-ancestor';

@@ -17,44 +17,45 @@ class HistoryBuilder implements IHistoryBuilder {
         return this.commands;
     }
 
-    addInitialCursorPositionAuto(higherLevelChildren: AstNode[]) {
-        const selection = window.getSelection();
-        if (selection) {
-            
-        }
-    }
-
     addInitialCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
         this.initialCursorPosition = { targetParentId:  toId(parentWithId)!, nodeIndex: indexToTextNode, offset };
+        return this;
     }
 
     addFinalCursorPosition(parentWithId: AstNode, indexToTextNode: number, offset: number) {
         this.finalCursorPosition = { targetParentId: toId(parentWithId)!, nodeIndex: indexToTextNode, offset };
+        return this;
     }
 
     addInsertBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
 
         this.commands.push({ type: 'insertBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
+        return this;
     }
 
     addInsertAfterCommand(siblingWithId: AstNode, newNode: AstNode) {
         this.commands.push({ type: 'insertAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
+        return this;
     }
 
     addRemoveBeforeCommand(siblingWithId: AstNode, newNode: AstNode) {
         this.commands.push({ type: 'removeBefore', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
+        return this;
     }
 
     addRemoveAfterCommand(siblingWithId: AstNode, newNode: AstNode) {
         this.commands.push({ type: 'removeAfter', siblingId: siblingWithId.Guid, oldNode: null, newNode, update: null });
+        return this;
     }
 
     addReplaceCommand(oldNode: AstNode, newNode: AstNode) {
         this.commands.push({ type: 'replace', siblingId: null, oldNode, newNode, update: null });
+        return this;
     }
 
     addUpdateCommand(oldText: string, startOffset: number, parentNode: AstNode, textNode: AstNode, rootChildId: string) {
         this.commands.push({ type: 'update', siblingId: null, oldNode: null, newNode: textNode, update: { oldText, startOffset, parentNode, rootChildId } });
+        return this;
     }
 
     applyTo(historyManager: IHistoryManagerRecorder) {

@@ -1,6 +1,6 @@
 import { AstNode, AstUpdate, IHistoryBuilder, IHistoryManagerRecorder, IdableNode, UpdateData } from "../../components/wysiwyg/interface";
 import { processArray, reverse } from "../array-processing";
-import { createNewAstNode, findHigherlevelIndex, findNodeByGuid } from "../node-operations";
+import { createNewAstNode, findHigherlevelIndex, findNodeByGuid, findTextNodeByNode, splitTreeAndRemove } from "../node-operations";
 import { removeText } from "../text-manipulation";
 import { trimSpecial } from "../undo-redo-ot";
 import HistoryBuilder from "../undo-redo-ot/history/history-builder";
@@ -10,11 +10,32 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
     const commonAncestor = commonAncestorContainer;
     const higherLevelChildren = updateData.higherLevelChildren;
     if (commonAncestor.nodeName !== '#text') {
-        const { child, astParent, rootChildId } = updateData;
+        const historyBuilder: IHistoryBuilder = new HistoryBuilder();
         const ancestorChildNodes = processArray(Array.from(commonAncestor.childNodes) as (Node | Text)[], (i) => i === container, (j) => j === endContainer);
-        if (ancestorChildNodes.length > 0) {
+        if (ancestorChildNodes.length === 0) {
+            const higherLevelChildren = updateData.higherLevelChildren;
+            const id = commonAncestor.id;
+            const ancestorNode = findNodeByGuid(higherLevelChildren, id, null);
+            if (ancestorNode[0]) {
+                const startNode = findTextNodeByNode([ancestorNode[0]], container, null);
+                const endNode = findTextNodeByNode([ancestorNode[0]], endContainer, null);
+                if (startNode[0] && endNode[0]) {
+                    const splitNode = splitTreeAndRemove([ancestorNode[0]], startNode[0], startOffset, endNode[0], endOffset);
+                    if (splitNode) {
+                        const parentStart = findNodeByGuid([ancestorNode[0]], container.parentElement?.id || '', null);
+                        const parentEnd = findNodeByGuid([ancestorNode[0]], endContainer.parentElement?.id || '', null);
+                        if (parentStart && parentEnd) {
+                            historyBuilder.addInitialCursorPosition(endNode[0], 0, endOffset)
+                                .addFinalCursorPosition(startNode[0], 0, startOffset)
+                                .addReplaceCommand(ancestorNode[0], splitNode[0])
+                                .applyTo(historyManager);
+                        }
+                    }
+                }
+            }
+        }
+        else {
             const reversed = reverse(ancestorChildNodes);
-            const historyBuilder: IHistoryBuilder = new HistoryBuilder();
             for (const node of reversed)
             {
                 const parent = node.parentElement;
@@ -48,6 +69,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
             };
         }
     } else {
+        const isMultiText = startOffset !== endOffset;
         const {parent, child, astParent, rootChildId } = updateData;
         if (parent) {
             
@@ -64,7 +86,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                         text.TextContent = '';
                     }
                     removeText(container, text, startOffset, endOffset);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child, text, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, isMultiText ? startOffset + (endOffset - startOffset) : startOffset, child, text, rootChildId);
                     return { type: endOffset > startOffset ? 'removeSelected' : 'remove', nodes: children };
                 }
                 const text = children[index];
@@ -76,7 +98,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                         text.TextContent = '';
                     }
                     removeText(container, text, startOffset, endOffset);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, astParent, text, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, isMultiText ? startOffset + (endOffset - startOffset) : startOffset, astParent, text, rootChildId);
                     if (text.TextContent === '') {
                         const newLine = createNewAstNode('BlankLine', 0, 0, null);
                         const higherLevelIndex = findHigherlevelIndex(children, higherLevelChildren);
@@ -109,7 +131,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                     text.TextContent = '';
                 }
                 removeText(container, text, startOffset, endOffset);
-                historyManager.recordChildTextUpdate(oldText, startOffset, bchild, text, rootChildId);
+                historyManager.recordChildTextUpdate(oldText, isMultiText ? startOffset + (endOffset - startOffset) : startOffset, bchild, text, rootChildId);
                 if (text.TextContent === '') {
                     const newLine = createNewAstNode('BlankLine', 0, 0, null);
                     bchild = Object.assign({}, newLine);
@@ -133,7 +155,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                         bchild.TextContent = '';
                     }
                     removeText(container, bchild, startOffset, endOffset);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, bchild, null, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, isMultiText ? startOffset + (endOffset - startOffset) : startOffset, bchild, null, rootChildId);
                     return { type: endOffset > startOffset ? 'higherLevelRemoveSelected' : 'higherLevelRemove', nodes: higherLevelChildren };
                 } else if (node && child) {
                     const text = node.Children[index];
@@ -143,7 +165,7 @@ const handleBackspaceKeyPress = (historyManager: IHistoryManagerRecorder, contai
                         text.TextContent = '';
                     }
                     removeText(container, text, startOffset, endOffset);
-                    historyManager.recordChildTextUpdate(oldText, startOffset, child, text, rootChildId);
+                    historyManager.recordChildTextUpdate(oldText, isMultiText ? startOffset + (endOffset - startOffset) : startOffset, child, text, rootChildId);
                     if (text.TextContent === '') {
                         const newLine = createNewAstNode('BlankLine', 0, 0, null);
                         bchild = Object.assign({}, newLine);

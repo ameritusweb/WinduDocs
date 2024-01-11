@@ -111,7 +111,13 @@ class HistoryManager implements IHistoryManager {
         const newVersion = trimmed === 'New' ? 'V0' : incrementEnd(trimmed);
         const newTextLength = target.TextContent?.length || 0;
         const oldTextLength = oldTextContent.length;
-        const newOffset = oldTextLength < newTextLength ? offset + (newTextLength - oldTextLength) : newTextLength;
+        let newOffset = 0;
+        if (oldTextLength < newTextLength) {
+            newOffset = offset + (newTextLength - oldTextLength);
+        } else {
+            newOffset = offset - (oldTextLength - newTextLength);
+        }
+
         this.recordOperation<'update'>(createNodeOperation('update', { oldVersion: trimmed, oldOffset: offset, newVersion, parentNode: parent, offset: newOffset, node: child, newTextContent: target.TextContent, oldTextContent, rootChildId }), partOfTransaction);
         target.Version = newVersion;
     }
